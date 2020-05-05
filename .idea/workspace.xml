@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/cid3_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/ant.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cid3/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cid3/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.xml" beforeDir="false" afterPath="$PROJECT_DIR$/build.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +21,11 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="true" />
+    <property name="GenerateAntBuildDialog.generateSingleFile" value="true" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="build" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -64,19 +68,35 @@
       <option name="project" value="LOCAL" />
       <updated>1588720993796</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Third commit">
+      <created>1588721499778</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1588721499778</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Created new build.xml">
+      <created>1588721651791</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1588721651791</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First commit" />
     <MESSAGE value="Second commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Second commit" />
+    <MESSAGE value="Third commit" />
+    <MESSAGE value="Created new build.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Created new build.xml" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1021" y="373" key="#Project_Structure" timestamp="1588721380620">
+    <state x="1021" y="373" key="#Project_Structure" timestamp="1588721733033">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="1021" y="373" key="#Project_Structure/0.23.2560.1353@0.23.2560.1353" timestamp="1588721380620" />
+    <state x="1021" y="373" key="#Project_Structure/0.23.2560.1353@0.23.2560.1353" timestamp="1588721733033" />
     <state x="714" y="372" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588720615047">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -85,10 +105,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="987" y="507" key="#com.intellij.ide.util.TreeClassChooserDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588721345779" />
-    <state x="827" y="286" key="CommitChangelistDialog2" timestamp="1588720993682">
+    <state x="827" y="286" key="CommitChangelistDialog2" timestamp="1588721651691">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="827" y="286" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1588720993682" />
+    <state x="827" y="286" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1588721651691" />
     <state width="1606" height="330" key="GridCell.Tab.0.bottom" timestamp="1588720935765">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -105,10 +125,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state width="1606" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1588720935765" />
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1588721001010">
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1588721660814">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1588721001010" />
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1588721660814" />
     <state x="1072" y="611" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588720462057">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
