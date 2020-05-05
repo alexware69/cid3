@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="project-cid3" default="all">
+<project name="cid3" default="all">
   
   
   <property file="build.properties"/>
@@ -13,7 +13,7 @@
   <property name="compiler.debug" value="on"/>
   <property name="compiler.generate.no.warnings" value="off"/>
   <property name="compiler.args" value=""/>
-  <property name="compiler.max.memory" value="10000m"/>
+  <property name="compiler.max.memory" value="700m"/>
   <patternset id="ignored.files">
     <exclude name="**/*.hprof/**"/>
     <exclude name="**/*.pyc/**"/>
@@ -141,15 +141,17 @@
   <!-- Project Libraries -->
   
   <path id="library.commons-cli-1.4.classpath">
-    <pathelement location="${basedir}/cid3/commons-cli-1.4.jar"/>
+    <pathelement location="${basedir}/lib/commons-cli-1.4.jar"/>
+    <pathelement location="${basedir}/lib/commons-lang3-3.9.jar"/>
+    <pathelement location="${basedir}/lib/jdom-2.0.6.jar"/>
   </path>
   
   <path id="library.commons-lang3-3.9.classpath">
-    <pathelement location="${basedir}/cid3/commons-lang3-3.9.jar"/>
+    <pathelement location="${basedir}/lib/commons-lang3-3.9.jar"/>
   </path>
   
   <path id="library.jdom-2.0.6.classpath">
-    <pathelement location="${basedir}/cid3/jdom-2.0.6.jar"/>
+    <pathelement location="${basedir}/lib/jdom-2.0.6.jar"/>
   </path>
   <!-- Register Custom Compiler Taskdefs -->
   <property name="javac2.home" value="${idea.home}/lib"/>
@@ -178,7 +180,7 @@
   <property name="module.jdk.bin.cid3" value="${project.jdk.bin}"/>
   <property name="module.jdk.classpath.cid3" value="${project.jdk.classpath}"/>
   
-  <property name="compiler.args.cid3" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  <property name="compiler.args.cid3" value="-encoding UTF-8 -source 14 -target 14 ${compiler.args}"/>
   
   <property name="cid3.output.dir" value="${module.cid3.basedir}/out/production/cid3"/>
   <property name="cid3.testoutput.dir" value="${module.cid3.basedir}/out/test/cid3"/>
@@ -189,32 +191,32 @@
   
   <path id="cid3.module.production.classpath">
     <path refid="${module.jdk.classpath.cid3}"/>
-    <path refid="library.jdom-2.0.6.classpath"/>
-    <path refid="library.commons-lang3-3.9.classpath"/>
     <path refid="library.commons-cli-1.4.classpath"/>
+    <path refid="library.commons-lang3-3.9.classpath"/>
+    <path refid="library.jdom-2.0.6.classpath"/>
   </path>
   
   <path id="cid3.runtime.production.module.classpath">
     <pathelement location="${cid3.output.dir}"/>
-    <path refid="library.jdom-2.0.6.classpath"/>
-    <path refid="library.commons-lang3-3.9.classpath"/>
     <path refid="library.commons-cli-1.4.classpath"/>
+    <path refid="library.commons-lang3-3.9.classpath"/>
+    <path refid="library.jdom-2.0.6.classpath"/>
   </path>
   
   <path id="cid3.module.classpath">
     <path refid="${module.jdk.classpath.cid3}"/>
     <pathelement location="${cid3.output.dir}"/>
-    <path refid="library.jdom-2.0.6.classpath"/>
-    <path refid="library.commons-lang3-3.9.classpath"/>
     <path refid="library.commons-cli-1.4.classpath"/>
+    <path refid="library.commons-lang3-3.9.classpath"/>
+    <path refid="library.jdom-2.0.6.classpath"/>
   </path>
   
   <path id="cid3.runtime.module.classpath">
     <pathelement location="${cid3.testoutput.dir}"/>
     <pathelement location="${cid3.output.dir}"/>
-    <path refid="library.jdom-2.0.6.classpath"/>
-    <path refid="library.commons-lang3-3.9.classpath"/>
     <path refid="library.commons-cli-1.4.classpath"/>
+    <path refid="library.commons-lang3-3.9.classpath"/>
+    <path refid="library.jdom-2.0.6.classpath"/>
   </path>
   
   
@@ -228,8 +230,7 @@
   
   <path id="cid3.module.sourcepath">
     <dirset dir="${module.cid3.basedir}">
-      <include name="cid3/src"/>
-      <include name="cid3"/>
+      <include name="src"/>
     </dirset>
   </path>
   
@@ -247,11 +248,7 @@
     </javac2>
     
     <copy todir="${cid3.output.dir}">
-      <fileset dir="${module.cid3.basedir}/cid3/src">
-        <patternset refid="compiler.resources"/>
-        <type type="file"/>
-      </fileset>
-      <fileset dir="${module.cid3.basedir}/cid3">
+      <fileset dir="${module.cid3.basedir}/src">
         <patternset refid="compiler.resources"/>
         <type type="file"/>
       </fileset>
@@ -283,16 +280,11 @@
   <target name="artifact.cid3:jar" depends="init.artifacts, compile.module.cid3" description="Build &#39;cid3:jar&#39; artifact">
     <property name="artifact.temp.output.cid3:jar" value="${artifacts.temp.dir}/cid3_jar"/>
     <mkdir dir="${artifact.temp.output.cid3:jar}"/>
-
     <jar destfile="${temp.jar.path.cid3.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
-      <manifest>
-        <attribute name="Main-Class" value="cid3.cid3"/>
-      </manifest>
-      <zipfileset file="${basedir}/cid3/src/main/resources/META-INF/MANIFEST.MF" prefix="META-INF"/>
       <zipfileset dir="${cid3.output.dir}"/>
-      <zipfileset src="${basedir}/cid3/jdom-2.0.6.jar"/>
-      <zipfileset src="${basedir}/cid3/commons-lang3-3.9.jar"/>
-      <zipfileset src="${basedir}/cid3/commons-cli-1.4.jar"/>
+      <zipfileset src="${basedir}/lib/commons-cli-1.4.jar"/>
+      <zipfileset src="${basedir}/lib/commons-lang3-3.9.jar"/>
+      <zipfileset src="${basedir}/lib/jdom-2.0.6.jar"/>
     </jar>
     <copy file="${temp.jar.path.cid3.jar}" tofile="${artifact.temp.output.cid3:jar}/cid3.jar"/>
   </target>
