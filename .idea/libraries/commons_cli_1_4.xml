@@ -1,8 +1,8 @@
 <component name="libraryTable">
-  <library name="lib">
+  <library name="commons-cli-1.4">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/commons-lang3-3.9.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/commons-cli-1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-lang3-3.9.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jdom-2.0.6.jar!/" />
     </CLASSES>
     <JAVADOC />

@@ -1,56 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="First commit">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cid3.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/commons-cli-1.4.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/commons-lang3-3.9.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/jdom-2.0.6.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/Condicion.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/ConsultorDeReglas.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/DataFrequencies.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/NewJFrame.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/SumUnderAndOver.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/Threshold.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/Tuple.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/carcrash.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/cid3$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/cid3$2.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/cid3$AttributeType.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/cid3$Certainty.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/cid3$Criteria.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/cid3$DataPoint.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/cid3$Probabilities.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/cid3$TreeNode.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/cid3.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/cid3/DoubleParser.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/cid3/GuardadorDeReglas.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/production/cid3/cid3/SortedArrayList.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Condicion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ConsultorDeReglas.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DataFrequencies.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DoubleParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GuardadorDeReglas.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NewJFrame.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/NewJFrame.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SortedArrayList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SumUnderAndOver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Threshold.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Tuple.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/carcrash.wav" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/cid3.java" afterDir="false" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cid3/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3/DoubleParser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3/GuardadorDeReglas.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3/SortedArrayList.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,11 +27,15 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.21401751" />
+    <property name="project.structure.side.proportion" value="0.32484075" />
   </component>
   <component name="RunManager">
     <configuration name="Alex-Configuration" type="Application" factoryName="Application" show_console_on_std_err="true" show_console_on_std_out="true">
       <option name="MAIN_CLASS_NAME" value="cid3" />
       <module name="cid3" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/monks-1" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -91,6 +52,14 @@
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
     </task>
+    <task id="LOCAL-00001" summary="First commit">
+      <created>1588720306725</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1588720306725</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -98,33 +67,45 @@
     <option name="LAST_COMMIT_MESSAGE" value="First commit" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="714" y="372" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588719503238">
+    <state x="1021" y="373" key="#Project_Structure" timestamp="1588720925699">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="714" y="372" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588719503238" />
+    <state x="1021" y="373" key="#Project_Structure/0.23.2560.1353@0.23.2560.1353" timestamp="1588720925699" />
+    <state x="714" y="372" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588720615047">
+      <screen x="0" y="23" width="2560" height="1353" />
+    </state>
+    <state x="714" y="372" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588720615047" />
     <state x="987" y="507" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1588719469733">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="987" y="507" key="#com.intellij.ide.util.TreeClassChooserDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588719469733" />
-    <state x="827" y="286" key="CommitChangelistDialog2" timestamp="1588720238988">
+    <state x="827" y="286" key="CommitChangelistDialog2" timestamp="1588720306548">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="827" y="286" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1588720238988" />
-    <state width="1606" height="330" key="GridCell.Tab.0.bottom" timestamp="1588719941954">
+    <state x="827" y="286" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1588720306548" />
+    <state width="1606" height="330" key="GridCell.Tab.0.bottom" timestamp="1588720620007">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1606" height="330" key="GridCell.Tab.0.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1588719941954" />
-    <state width="1606" height="330" key="GridCell.Tab.0.center" timestamp="1588719941953">
+    <state width="1606" height="330" key="GridCell.Tab.0.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1588720620007" />
+    <state width="1606" height="330" key="GridCell.Tab.0.center" timestamp="1588720620007">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1606" height="330" key="GridCell.Tab.0.center/0.23.2560.1353@0.23.2560.1353" timestamp="1588719941953" />
-    <state width="1606" height="330" key="GridCell.Tab.0.left" timestamp="1588719941953">
+    <state width="1606" height="330" key="GridCell.Tab.0.center/0.23.2560.1353@0.23.2560.1353" timestamp="1588720620007" />
+    <state width="1606" height="330" key="GridCell.Tab.0.left" timestamp="1588720620006">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1606" height="330" key="GridCell.Tab.0.left/0.23.2560.1353@0.23.2560.1353" timestamp="1588719941953" />
-    <state width="1606" height="330" key="GridCell.Tab.0.right" timestamp="1588719941953">
+    <state width="1606" height="330" key="GridCell.Tab.0.left/0.23.2560.1353@0.23.2560.1353" timestamp="1588720620006" />
+    <state width="1606" height="330" key="GridCell.Tab.0.right" timestamp="1588720620007">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1606" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1588719941953" />
+    <state width="1606" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1588720620007" />
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1588720473382">
+      <screen x="0" y="23" width="2560" height="1353" />
+    </state>
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1588720473382" />
+    <state x="1072" y="611" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588720462057">
+      <screen x="0" y="23" width="2560" height="1353" />
+    </state>
+    <state x="1072" y="611" key="git4idea.remote.GitConfigureRemotesDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588720462057" />
   </component>
 </project>
