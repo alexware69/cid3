@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: cid3
+Class-Path: commons-lang3-3.9.jar jdom-2.0.6.jar
+
