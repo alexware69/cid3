@@ -279,9 +279,6 @@
     <property name="artifact.temp.output.cid3:jar" value="${artifacts.temp.dir}/cid3_jar"/>
     <mkdir dir="${artifact.temp.output.cid3:jar}"/>
     <jar destfile="${temp.jar.path.cid3.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
-      <manifest>
-        <attribute name="Main-Class" value="cid3"/>
-      </manifest>
       <zipfileset dir="${cid3.output.dir}"/>
       <zipfileset src="${basedir}/lib/commons-cli-1.4.jar"/>
       <zipfileset src="${basedir}/lib/commons-lang3-3.9.jar"/>

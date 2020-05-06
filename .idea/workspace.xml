@@ -19,48 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="Included source code instead of jar files">
-      <change afterPath="$PROJECT_DIR$/src/AlreadySelectedException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/AmbiguousOptionException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/BasicParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/CommandLine.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/CommandLineParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DateParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DatePrinter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DefaultParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GnuParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/HelpFormatter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MissingArgumentException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MissingOptionException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Option.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Option.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/OptionBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/OptionGroup.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/OptionValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Options.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ParseException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Parser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PatternOptionBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PosixParser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Tuple.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/TypeHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/UnrecognizedOptionException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Util.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/overview.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/package-info.java" afterDir="false" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/commons-cli-1.4.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/commons-lang3-3.9.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/jdom-2.0.6.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cid3/ConsultorDeReglas.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cid3/NewJFrame.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cid3/cid3$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cid3/cid3$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cid3/cid3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ConsultorDeReglas.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GuardadorDeReglas.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NewJFrame.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cid3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cid3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.xml" beforeDir="false" afterPath="$PROJECT_DIR$/build.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,6 +45,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="true" />
@@ -165,7 +127,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588762539401</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Included source code instead of jar files">
+      <created>1588768959707</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1588768959707</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -190,10 +159,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="Included source code instead of jar files" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1021" y="373" key="#Project_Structure" timestamp="1588762396791">
+    <state x="1021" y="373" key="#Project_Structure" timestamp="1588769353805">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="1021" y="373" key="#Project_Structure/0.23.2560.1353@0.23.2560.1353" timestamp="1588762396791" />
+    <state x="1021" y="373" key="#Project_Structure/0.23.2560.1353@0.23.2560.1353" timestamp="1588769353805" />
     <state x="714" y="372" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588720615047">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -206,10 +175,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="1337" y="429" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588767940695" />
-    <state x="1289" y="255" key="CommitChangelistDialog2" timestamp="1588768875740">
+    <state x="1289" y="255" key="CommitChangelistDialog2" timestamp="1588768959531">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="1289" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1588768875740" />
+    <state x="1289" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1588768959531" />
     <state width="1606" height="330" key="GridCell.Tab.0.bottom" timestamp="1588768717031">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -226,10 +195,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state width="1606" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1588768717031" />
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1588762548271">
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1588768969783">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1588762548271" />
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1588768969783" />
     <state x="1072" y="611" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588720462057">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>

@@ -7,8 +7,5 @@
     </content>
     <orderEntry type="jdk" jdkName="14" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="commons-cli-1.4" level="project" />
-    <orderEntry type="library" name="commons-lang3-3.9" level="project" />
-    <orderEntry type="library" name="jdom-2.0.6" level="project" />
   </component>
 </module>
