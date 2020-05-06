@@ -19,12 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NewJFrame.form" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Tuple.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/package-info.java" beforeDir="false" />
-    </list>
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -157,7 +152,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588769664667</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="removed some files">
+      <created>1588792272759</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1588792272760</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -182,7 +184,8 @@
     <MESSAGE value="removed .jar dependencies from project" />
     <MESSAGE value="removed somo unused code files" />
     <MESSAGE value="fixed build.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed build.xml" />
+    <MESSAGE value="removed some files" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed some files" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1021" y="373" key="#Project_Structure" timestamp="1588769353805">
@@ -201,10 +204,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="1337" y="429" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588767940695" />
-    <state x="1289" y="255" key="CommitChangelistDialog2" timestamp="1588769664581">
+    <state x="1289" y="255" key="CommitChangelistDialog2" timestamp="1588792272616">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="1289" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1588769664581" />
+    <state x="1289" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1588792272616" />
     <state width="1606" height="330" key="GridCell.Tab.0.bottom" timestamp="1588769854918">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -221,10 +224,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state width="1606" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1588769854918" />
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1588769675883">
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1588792281718">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1588769675883" />
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1588792281718" />
     <state x="1072" y="611" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588720462057">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
