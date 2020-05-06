@@ -1,10 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/ant.xml" afterDir="false" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="Fixed build.xml">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/commons_cli_1_4.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/commons_cli_1_4.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.xml" beforeDir="false" afterPath="$PROJECT_DIR$/build.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cid3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cid3.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/Condicion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/ConsultorDeReglas.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/DataFrequencies.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/NewJFrame.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/SumUnderAndOver.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/Threshold.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/Tuple.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/carcrash.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$AttributeType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$Certainty.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$Criteria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$DataPoint.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$Probabilities.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$TreeNode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,9 +68,17 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.21401751" />
     <property name="project.structure.side.proportion" value="0.32484075" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/lib" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/lib/org/apache/commons/lang3/time" />
+      <recent name="$PROJECT_DIR$/lib/org/apache/commons/cli" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="Alex-Configuration" type="Application" factoryName="Application" show_console_on_std_err="true" show_console_on_std_out="true">
@@ -85,6 +132,18 @@
     <option name="localTasksCounter" value="5" />
     <servers />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First commit" />
     <MESSAGE value="Second commit" />
@@ -93,10 +152,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="Created new build.xml" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1021" y="373" key="#Project_Structure" timestamp="1588721733033">
+    <state x="1021" y="373" key="#Project_Structure" timestamp="1588762396791">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="1021" y="373" key="#Project_Structure/0.23.2560.1353@0.23.2560.1353" timestamp="1588721733033" />
+    <state x="1021" y="373" key="#Project_Structure/0.23.2560.1353@0.23.2560.1353" timestamp="1588762396791" />
     <state x="714" y="372" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588720615047">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -109,22 +168,22 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="827" y="286" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1588721651691" />
-    <state width="1606" height="330" key="GridCell.Tab.0.bottom" timestamp="1588720935765">
+    <state width="1606" height="330" key="GridCell.Tab.0.bottom" timestamp="1588762377406">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1606" height="330" key="GridCell.Tab.0.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1588720935765" />
-    <state width="1606" height="330" key="GridCell.Tab.0.center" timestamp="1588720935765">
+    <state width="1606" height="330" key="GridCell.Tab.0.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1588762377406" />
+    <state width="1606" height="330" key="GridCell.Tab.0.center" timestamp="1588762377405">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1606" height="330" key="GridCell.Tab.0.center/0.23.2560.1353@0.23.2560.1353" timestamp="1588720935765" />
-    <state width="1606" height="330" key="GridCell.Tab.0.left" timestamp="1588720935764">
+    <state width="1606" height="330" key="GridCell.Tab.0.center/0.23.2560.1353@0.23.2560.1353" timestamp="1588762377405" />
+    <state width="1606" height="330" key="GridCell.Tab.0.left" timestamp="1588762377404">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1606" height="330" key="GridCell.Tab.0.left/0.23.2560.1353@0.23.2560.1353" timestamp="1588720935764" />
-    <state width="1606" height="330" key="GridCell.Tab.0.right" timestamp="1588720935765">
+    <state width="1606" height="330" key="GridCell.Tab.0.left/0.23.2560.1353@0.23.2560.1353" timestamp="1588762377404" />
+    <state width="1606" height="330" key="GridCell.Tab.0.right" timestamp="1588762377405">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1606" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1588720935765" />
+    <state width="1606" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1588762377405" />
     <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1588721660814">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>

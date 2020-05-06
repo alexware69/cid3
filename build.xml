@@ -55,9 +55,9 @@
   
   <!-- JDK definitions -->
   
-  <property name="jdk.bin.openjdk-14" value="${jdk.home.openjdk-14}/bin"/>
-  <path id="jdk.classpath.openjdk-14">
-    <fileset dir="${jdk.home.openjdk-14}">
+  <property name="jdk.bin.14" value="${jdk.home.14}/bin"/>
+  <path id="jdk.classpath.14">
+    <fileset dir="${jdk.home.14}">
       <include name="../Home!/java.base"/>
       <include name="../Home!/java.compiler"/>
       <include name="../Home!/java.datatransfer"/>
@@ -133,17 +133,15 @@
     </fileset>
   </path>
   
-  <property name="project.jdk.home" value="${jdk.home.openjdk-14}"/>
-  <property name="project.jdk.bin" value="${jdk.bin.openjdk-14}"/>
-  <property name="project.jdk.classpath" value="jdk.classpath.openjdk-14"/>
+  <property name="project.jdk.home" value="${jdk.home.14}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.14}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.14"/>
   
   
   <!-- Project Libraries -->
   
   <path id="library.commons-cli-1.4.classpath">
     <pathelement location="${basedir}/lib/commons-cli-1.4.jar"/>
-    <pathelement location="${basedir}/lib/commons-lang3-3.9.jar"/>
-    <pathelement location="${basedir}/lib/jdom-2.0.6.jar"/>
   </path>
   
   <path id="library.commons-lang3-3.9.classpath">
@@ -176,9 +174,9 @@
   <dirname property="module.cid3.basedir" file="${ant.file}"/>
   
   
-  <property name="module.jdk.home.cid3" value="${project.jdk.home}"/>
-  <property name="module.jdk.bin.cid3" value="${project.jdk.bin}"/>
-  <property name="module.jdk.classpath.cid3" value="${project.jdk.classpath}"/>
+  <property name="module.jdk.home.cid3" value="${jdk.home.14}"/>
+  <property name="module.jdk.bin.cid3" value="${jdk.bin.14}"/>
+  <property name="module.jdk.classpath.cid3" value="jdk.classpath.14"/>
   
   <property name="compiler.args.cid3" value="-encoding UTF-8 -source 14 -target 14 ${compiler.args}"/>
   
