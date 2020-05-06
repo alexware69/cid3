@@ -1,11 +1,11 @@
 import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import org.jdom2.*;
+//import org.jdom2.*;
 import java.time.Instant;
 import java.time.Duration;
-import org.apache.commons.lang3.time.DurationFormatUtils;
-import org.apache.commons.cli.*;
+//import org.apache.commons.lang3.time.DurationFormatUtils;
+//import org.apache.commons.cli.*;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.GZIPInputStream;
 
@@ -1136,7 +1136,7 @@ public class cid3 implements Serializable{
         return ret;
     }
 
-    private void crearArchivo(TreeNode nodo, Element arbol) {
+    /*private void crearArchivo(TreeNode nodo, Element arbol) {
 
         if ( nodo.children == null ) {
             int[] valores = getAllValues(nodo.data, classAttribute);
@@ -1172,7 +1172,19 @@ public class cid3 implements Serializable{
 
             crearArchivo((TreeNode)nodo.children.get(i), condicion );
         }
+    }*/
+
+    public static String formatDuration(Duration duration) {
+        long seconds = duration.getSeconds();
+        long absSeconds = Math.abs(seconds);
+        String positive = String.format(
+                "%d:%02d:%02d",
+                absSeconds / 3600,
+                (absSeconds % 3600) / 60,
+                absSeconds % 60);
+        return seconds < 0 ? "-" + positive : positive;
     }
+
     public void createDecisionTree() {
         Instant start = Instant.now();
 
@@ -1198,8 +1210,8 @@ public class cid3 implements Serializable{
         //crearArchivo( root, arbol );
         //gdr.guardarAtributos(attributeNames, domains, arbol, atributoClase);
         Instant finish = Instant.now();
-        long timeElapsed = Duration.between(start, finish).toMillis();
-        String timeElapsedString = DurationFormatUtils.formatDuration(timeElapsed, "HHH:mm:ss", true);
+        Duration timeElapsed = Duration.between(start, finish);
+        String timeElapsedString = formatDuration(timeElapsed);
         System.out.print("Time: " + timeElapsedString);
         System.out.print("\n");
         playSound();
@@ -1298,8 +1310,8 @@ public class cid3 implements Serializable{
 
         testCrossValidation();
         Instant finish = Instant.now();
-        long timeElapsed = Duration.between(start, finish).toMillis();
-        String timeElapsedString = DurationFormatUtils.formatDuration(timeElapsed, "HHH:mm:ss", true);
+        Duration timeElapsed = Duration.between(start, finish);
+        String timeElapsedString = formatDuration(timeElapsed);
         System.out.print("\n");
         System.out.print("Time: " + timeElapsedString);
         System.out.print("\n");
@@ -1379,8 +1391,8 @@ public class cid3 implements Serializable{
         testCrossValidationRF();
 
         Instant finish = Instant.now();
-        long timeElapsed = Duration.between(start, finish).toMillis();
-        String timeElapsedString = DurationFormatUtils.formatDuration(timeElapsed, "HHH:mm:ss", true);
+        Duration timeElapsed = Duration.between(start, finish);
+        String timeElapsedString = formatDuration(timeElapsed);
         System.out.print("\n");
         System.out.print("Time: " + timeElapsedString);
         System.out.print("\n");
@@ -1443,8 +1455,8 @@ public class cid3 implements Serializable{
             //crearArchivo( root, arbol );
             //gdr.guardarAtributos(attributeNames, domains, arbol, atributoClase);
             Instant finish = Instant.now();
-            long timeElapsed = Duration.between(start, finish).toMillis();
-            String timeElapsedString = DurationFormatUtils.formatDuration(timeElapsed, "HHH:mm:ss", true);
+            Duration timeElapsed = Duration.between(start, finish);
+            String timeElapsedString = formatDuration(timeElapsed);
             System.out.print("\n");
             System.out.print("\n");
             System.out.print("Time: " + timeElapsedString);
