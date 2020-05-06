@@ -159,7 +159,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588792272760</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="removed some deprecated files">
+      <created>1588805686766</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1588805686766</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -185,7 +192,8 @@
     <MESSAGE value="removed somo unused code files" />
     <MESSAGE value="fixed build.xml" />
     <MESSAGE value="removed some files" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed some files" />
+    <MESSAGE value="removed some deprecated files" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed some deprecated files" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1021" y="373" key="#Project_Structure" timestamp="1588769353805">
@@ -200,14 +208,14 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="987" y="507" key="#com.intellij.ide.util.TreeClassChooserDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588721345779" />
-    <state x="1337" y="429" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1588767940695">
+    <state x="1337" y="429" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1588805618846">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="1337" y="429" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588767940695" />
-    <state x="1289" y="255" key="CommitChangelistDialog2" timestamp="1588792272616">
+    <state x="1337" y="429" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588805618846" />
+    <state x="1289" y="255" key="CommitChangelistDialog2" timestamp="1588805686639">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="1289" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1588792272616" />
+    <state x="1289" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1588805686639" />
     <state width="1606" height="330" key="GridCell.Tab.0.bottom" timestamp="1588769854918">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -224,10 +232,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state width="1606" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1588769854918" />
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1588792281718">
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1588805694152">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1588792281718" />
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1588805694152" />
     <state x="1072" y="611" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588720462057">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
