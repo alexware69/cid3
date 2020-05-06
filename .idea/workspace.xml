@@ -20,7 +20,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.xml" beforeDir="false" afterPath="$PROJECT_DIR$/build.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -134,7 +133,21 @@
       <option name="project" value="LOCAL" />
       <updated>1588768959707</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="removed .jar dependencies from project">
+      <created>1588769399855</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1588769399855</updated>
+    </task>
+    <task id="LOCAL-00008" summary="removed somo unused code files">
+      <created>1588769504476</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1588769504476</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -156,7 +169,9 @@
     <MESSAGE value="Created new build.xml" />
     <MESSAGE value="Fixed build.xml" />
     <MESSAGE value="Included source code instead of jar files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Included source code instead of jar files" />
+    <MESSAGE value="removed .jar dependencies from project" />
+    <MESSAGE value="removed somo unused code files" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed somo unused code files" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1021" y="373" key="#Project_Structure" timestamp="1588769353805">
@@ -175,10 +190,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="1337" y="429" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588767940695" />
-    <state x="1289" y="255" key="CommitChangelistDialog2" timestamp="1588768959531">
+    <state x="1289" y="255" key="CommitChangelistDialog2" timestamp="1588769504399">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="1289" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1588768959531" />
+    <state x="1289" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1588769504399" />
     <state width="1606" height="330" key="GridCell.Tab.0.bottom" timestamp="1588768717031">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -195,10 +210,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state width="1606" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1588768717031" />
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1588768969783">
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1588769514218">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1588768969783" />
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1588769514218" />
     <state x="1072" y="611" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588720462057">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>

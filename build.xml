@@ -136,21 +136,6 @@
   <property name="project.jdk.home" value="${jdk.home.14}"/>
   <property name="project.jdk.bin" value="${jdk.bin.14}"/>
   <property name="project.jdk.classpath" value="jdk.classpath.14"/>
-  
-  
-  <!-- Project Libraries -->
-  
-  <path id="library.commons-cli-1.4.classpath">
-    <pathelement location="${basedir}/lib/commons-cli-1.4.jar"/>
-  </path>
-  
-  <path id="library.commons-lang3-3.9.classpath">
-    <pathelement location="${basedir}/lib/commons-lang3-3.9.jar"/>
-  </path>
-  
-  <path id="library.jdom-2.0.6.classpath">
-    <pathelement location="${basedir}/lib/jdom-2.0.6.jar"/>
-  </path>
   <!-- Register Custom Compiler Taskdefs -->
   <property name="javac2.home" value="${idea.home}/lib"/>
   <path id="javac2.classpath">
@@ -189,32 +174,20 @@
   
   <path id="cid3.module.production.classpath">
     <path refid="${module.jdk.classpath.cid3}"/>
-    <path refid="library.commons-cli-1.4.classpath"/>
-    <path refid="library.commons-lang3-3.9.classpath"/>
-    <path refid="library.jdom-2.0.6.classpath"/>
   </path>
   
   <path id="cid3.runtime.production.module.classpath">
     <pathelement location="${cid3.output.dir}"/>
-    <path refid="library.commons-cli-1.4.classpath"/>
-    <path refid="library.commons-lang3-3.9.classpath"/>
-    <path refid="library.jdom-2.0.6.classpath"/>
   </path>
   
   <path id="cid3.module.classpath">
     <path refid="${module.jdk.classpath.cid3}"/>
     <pathelement location="${cid3.output.dir}"/>
-    <path refid="library.commons-cli-1.4.classpath"/>
-    <path refid="library.commons-lang3-3.9.classpath"/>
-    <path refid="library.jdom-2.0.6.classpath"/>
   </path>
   
   <path id="cid3.runtime.module.classpath">
     <pathelement location="${cid3.testoutput.dir}"/>
     <pathelement location="${cid3.output.dir}"/>
-    <path refid="library.commons-cli-1.4.classpath"/>
-    <path refid="library.commons-lang3-3.9.classpath"/>
-    <path refid="library.jdom-2.0.6.classpath"/>
   </path>
   
   
@@ -279,10 +252,10 @@
     <property name="artifact.temp.output.cid3:jar" value="${artifacts.temp.dir}/cid3_jar"/>
     <mkdir dir="${artifact.temp.output.cid3:jar}"/>
     <jar destfile="${temp.jar.path.cid3.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <manifest>
+        <attribute name="Main-Class" value="cid3"/>
+      </manifest>
       <zipfileset dir="${cid3.output.dir}"/>
-      <zipfileset src="${basedir}/lib/commons-cli-1.4.jar"/>
-      <zipfileset src="${basedir}/lib/commons-lang3-3.9.jar"/>
-      <zipfileset src="${basedir}/lib/jdom-2.0.6.jar"/>
     </jar>
     <copy file="${temp.jar.path.cid3.jar}" tofile="${artifact.temp.output.cid3:jar}/cid3.jar"/>
   </target>
