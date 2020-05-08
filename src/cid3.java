@@ -1164,10 +1164,6 @@ public class cid3 implements Serializable{
         testDecisionTree();
         System.out.print("\n");
 
-        //GuardadorDeReglas gdr = new GuardadorDeReglas();
-        //Element arbol = new Element( "arbol-de-decision" );
-        //crearArchivo( root, arbol );
-        //gdr.guardarAtributos(attributeNames, domains, arbol, atributoClase);
         Instant finish = Instant.now();
         Duration timeElapsed = Duration.between(start, finish);
         String timeElapsedString = formatDuration(timeElapsed);
