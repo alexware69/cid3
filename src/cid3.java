@@ -1136,44 +1136,6 @@ public class cid3 implements Serializable{
         return ret;
     }
 
-    /*private void crearArchivo(TreeNode nodo, Element arbol) {
-
-        if ( nodo.children == null ) {
-            int[] valores = getAllValues(nodo.data, classAttribute);
-            Element list = new Element("lista-de-resultados");
-
-            for (int i = 0; i < valores.length; i++) {
-                Element result = new Element("resultado");
-                result.addContent( domainsIndexToValue[classAttribute].get( valores[0] ).toString() );
-                list.addContent(result);
-            }
-
-            arbol.addContent(list);
-
-            return;
-        }
-
-        int num = nodo.children.size();
-
-        for (int i = 0; i < num; i++) {
-
-            Element condicion = new Element("condicion");
-
-            Element atrib = new Element( "atributo" );
-            atrib.addContent(attributeNames[nodo.decompositionAttribute] );
-
-            Element valor = new Element( "valor" );
-            valor.addContent( domainsIndexToValue[nodo.decompositionAttribute].get(i).toString() );
-
-            condicion.addContent(atrib);
-            condicion.addContent(valor);
-
-            arbol.addContent( condicion );
-
-            crearArchivo((TreeNode)nodo.children.get(i), condicion );
-        }
-    }*/
-
     public static String formatDuration(Duration duration) {
         long seconds = duration.getSeconds();
         long absSeconds = Math.abs(seconds);
