@@ -2092,11 +2092,5 @@ public class cid3 implements Serializable{
                 else me.createDecisionTree();
             }
         }
-
-//            java.awt.EventQueue.invokeLater(new Runnable() {
-//                public void run() {
-//                    new NewJFrame().setVisible(true);
-//                }
-//            });
     }
 }
