@@ -537,6 +537,170 @@ public class cid3 implements Serializable{
             //*******************************************************************************************//
         }
     }
+
+    //This is Gini.
+    public Certainty calculateGini(ArrayList data, int givenThatAttribute){
+        int numdata = data.size();
+        if (numdata == 0) return new Certainty(0,0);
+        int numvaluesClass = domainsIndexToValue[classAttribute].size();
+        int numvaluesgivenAtt = domainsIndexToValue[givenThatAttribute].size();
+        //If attribute is discrete
+        if (attributeTypes[givenThatAttribute] == AttributeType.Discrete){
+            Probabilities[] probabilities = CalculateAllProbabilities(data);
+            double sum = 0, sum2 = 0;
+            double probability, probabilityCgivenA, gini;
+            for (int j = 0; j < numvaluesgivenAtt; j++) {
+                //probability = prob(data,givenThatAttribute,j);
+                probability = probabilities[givenThatAttribute].prob[j];
+                sum = 0;
+                for (int i = 0; i < numvaluesClass; i++){
+                    //probabilityCandA = probCandA(data, givenThatAttribute, j, i);
+                    probabilityCgivenA = probabilities[givenThatAttribute].probCgivenA[j][i];
+                    sum += Math.pow(probabilityCgivenA,2);
+                }
+                gini = 1 - sum;
+                sum2 += probability * gini;
+            }
+            return new Certainty(sum2,0);
+        }
+        //If attribute is continuous.
+        else{
+            double finalThreshold = 0, totalGini = 0, finalTotalGini = 0;
+            /*---------------------------------------------------------------------------------------------------------*/
+            //Implementation of thresholds using a sorted set
+            SortedSet attributeValuesSet = new TreeSet();
+            HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap();
+            for (int i=0; i< numdata; i++){
+                DataPoint point  = (DataPoint)data.get(i);
+                double attribute = (double)domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]);
+                int clas = point.attributes[classAttribute];
+                attributeValuesSet.add(attribute);
+                Tuple<Integer,Boolean> tuple = attributeToClass.get(attribute);
+                if (tuple != null){
+                    if (tuple.x != clas && tuple.y)
+                        attributeToClass.put(attribute, new Tuple(clas,false));
+//                            else
+//                                if (tuple.y)
+//                                    attributeToClass.put(attribute, new Tuple(clas,true));
+                }
+                else attributeToClass.put(attribute, new Tuple(clas,true));
+            }
+            Iterator it = attributeValuesSet.iterator();
+            double attributeValue = (double)it.next();
+            Tuple<Integer,Boolean> attributeClass1 = attributeToClass.get(attributeValue);
+            int theClass = attributeClass1.x;
+            ArrayList<Threshold> thresholds = new ArrayList();
+            while (it.hasNext()) {
+                double attributeValue2 = (double)it.next();
+                Tuple<Integer,Boolean> attributeClass2 = attributeToClass.get(attributeValue2);
+                int theClass2 = attributeClass2.x;
+                if(theClass2 != theClass || !attributeClass2.y || !attributeClass1.y){
+                    //Add threshold
+                    double median = (attributeValue+attributeValue2)/2;
+                    thresholds.add(new Threshold(median, new SumUnderAndOver[numvaluesClass]));
+                }
+                //Set new point
+                attributeValue = attributeValue2;
+                theClass = theClass2;
+                attributeClass1 = attributeClass2;
+            }
+            /*---------------------------------------------------------------------------------------------------------*/
+            //If there are no thresholds return -1.
+            if (thresholds.isEmpty()) return new Certainty(-1,0);
+            //This trick reduces the possible thresholds to just ONE 0r TWO, dramatically improving running times!
+            //=========================================================
+
+            int centerThresholdIndex = thresholds.size()/2;
+            Threshold centerThreshold, centerThreshold1;
+
+            if (thresholds.size() == 1){
+                centerThreshold = thresholds.get(0);
+                thresholds.clear();
+                thresholds.add(centerThreshold);
+            }
+            else
+            if (thresholds.size() % 2 != 0){
+                centerThreshold = thresholds.get(centerThresholdIndex);
+                thresholds.clear();
+                thresholds.add(centerThreshold);
+            }
+            else {
+                centerThreshold = thresholds.get(centerThresholdIndex);
+                centerThreshold1 = thresholds.get(centerThresholdIndex - 1);
+                thresholds.clear();
+                thresholds.add(centerThreshold);
+                thresholds.add(centerThreshold1);
+            }
+            //=========================================================
+            double probAUnder, probAOver, probCandAUnder, probCandAOver, giniUnder = 0, giniOver = 0;
+            Boolean selected = false;
+            DataPoint point;
+            //Loop through the data just one time
+            for (int j = 0; j < numdata; j++){
+                point = (DataPoint)data.get(j);
+                //For each threshold count data to get prob and probCandA
+                int clas = point.attributes[classAttribute];
+                for (int i = 0; i < thresholds.size(); i++){
+                    Threshold iThreshold = thresholds.get(i);
+                    //if (thresholds[i].sumsClassesAndAttribute == null) thresholds[i].sumsClassesAndAttribute = new SumUnderAndOver[numvaluesClass];
+                    if (iThreshold.sumsClassesAndAttribute[clas] == null) iThreshold.sumsClassesAndAttribute[clas] = new SumUnderAndOver(0,0);
+                    if ((double)domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]) < iThreshold.value) {
+                        iThreshold.sumAUnder++;
+                        //Next calculate probability of c and a
+                        iThreshold.sumsClassesAndAttribute[clas].under++;
+                    }
+                    else {
+                        iThreshold.sumAOver++;
+                        //Next calculate probability of c and a
+                        iThreshold.sumsClassesAndAttribute[clas].over++;
+                    }
+                }
+            }
+            //Now calculate probabilities
+            for (int i = 0; i < thresholds.size(); i++){
+                //Calculate prob
+                probAUnder = 1.*thresholds.get(i).sumAUnder/numdata;
+                probAOver = 1.*thresholds.get(i).sumAOver/numdata;
+                //Reset the informations
+                giniUnder = 0;
+                giniOver = 0;
+                for (int c = 0; c < numvaluesClass; c++){
+                    if (thresholds.get(i).sumsClassesAndAttribute != null && thresholds.get(i).sumsClassesAndAttribute[c] != null){
+                        probCandAUnder = 1.*thresholds.get(i).sumsClassesAndAttribute[c].under/numdata;
+                        probCandAOver = 1.*thresholds.get(i).sumsClassesAndAttribute[c].over/numdata;
+                    }
+                    else {
+                        probCandAUnder = 0;
+                        probCandAOver = 0;
+                    }
+                    giniUnder += Math.pow(probCandAUnder/probAUnder,2);
+                    giniOver += Math.pow(probCandAOver/probAOver,2);
+                }
+                //Calculate totals
+                giniUnder = 1 - giniUnder;
+                giniOver = 1 - giniOver;
+                totalGini = giniUnder * probAUnder + giniOver * probAOver;
+                if (selected == false) {
+                    selected = true;
+                    finalTotalGini = totalGini;
+                    finalThreshold = thresholds.get(i).value;
+                }
+                else {
+                    if (finalTotalGini > totalGini) {
+                        finalTotalGini = totalGini;
+                        finalThreshold = thresholds.get(i).value;
+                    }
+                }
+//                        if (finalTotalGini > totalGini){
+//                                finalTotalGini= totalGini;
+//                                finalThreshold = thresholds.get(i).value;
+//                            }
+            }
+            return new Certainty(finalTotalGini, finalThreshold);
+            //*******************************************************************************************//
+        }
+    }
+
     //This method calculates all probabilities in one run
     public Probabilities[] CalculateAllProbabilities(ArrayList data){
         int numdata = data.size();
@@ -654,6 +818,32 @@ public class cid3 implements Serializable{
                     if (entropy.certainty < bestCertainty.certainty) {
                         selected = true;
                         bestCertainty = entropy;
+                        selectedAttribute = selectedAtts.get(i);
+                    }
+                }
+            }
+            if (selected == false) return;
+        }
+        else
+        if(criteria == Criteria.Gini){
+            if (node.data == null || node.data.size() <= 1) return;
+            if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return;
+                        /*  In the following two loops, the best attribute is located which
+                            causes maximum increase in information*/
+            Certainty gini;
+            for (int i=0; i< selectedAtts.size(); i++) {
+                if ( classAttribute == selectedAtts.get(i) ) continue;
+                if (attributeTypes[selectedAtts.get(i)] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtts.get(i))) continue;
+                gini =  calculateGini(node.data,selectedAtts.get(i));
+                if (gini.certainty == -1) continue;
+                if (selected == false) {
+                    selected = true;
+                    bestCertainty = gini;
+                    selectedAttribute = selectedAtts.get(i);
+                } else {
+                    if (gini.certainty < bestCertainty.certainty) {
+                        selected = true;
+                        bestCertainty = gini;
                         selectedAttribute = selectedAtts.get(i);
                     }
                 }
@@ -2124,7 +2314,7 @@ public class cid3 implements Serializable{
         save.setRequired(false);
         options.addOption(save);
 
-        Option criteria = new Option("c", "criteria", true, "input criteria: l[certainty], e[ntropy]");
+        Option criteria = new Option("c", "criteria", true, "input criteria: l[certainty], e[ntropy], g[ini]");
         criteria.setRequired(true);
         options.addOption(criteria);
 
@@ -2170,7 +2360,7 @@ public class cid3 implements Serializable{
         String strCriteria = cmd.getOptionValue("criteria");
         if (strCriteria.equals("I") || strCriteria.equals("i") ) me.criteria = Criteria.Certainty;
         //else if (strCriteria.equals("N") || strCriteria.equals("n")) me.criteria = Criteria.CertaintyNonLinear;
-        //else if (strCriteria.equals("G") || strCriteria.equals("g") ) me.criteria = Criteria.Gini;
+        else if (strCriteria.equals("G") || strCriteria.equals("g") ) me.criteria = Criteria.Gini;
         else if (strCriteria.equals("E") || strCriteria.equals("e")) me.criteria = Criteria.Entropy;
 
         //Set file path
