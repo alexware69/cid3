@@ -20,11 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="now Intellij IDEA is compiling again">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cid3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cid3.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/cid3/Condicion.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cid3/Condicion.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/cid3/DataFrequencies.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cid3/DataFrequencies.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/cid3/SumUnderAndOver.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cid3/SumUnderAndOver.class" afterDir="false" />
@@ -75,7 +71,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.21401751" />
     <property name="project.structure.side.proportion" value="0.32484075" />
-    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -196,7 +192,14 @@
       <option name="project" value="LOCAL" />
       <updated>1588806041421</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="now Intellij IDEA is compiling again">
+      <created>1589281615895</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1589281615895</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -234,7 +237,8 @@
     <MESSAGE value="removed some files" />
     <MESSAGE value="removed some deprecated files" />
     <MESSAGE value="removed a file" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed a file" />
+    <MESSAGE value="now Intellij IDEA is compiling again" />
+    <option name="LAST_COMMIT_MESSAGE" value="now Intellij IDEA is compiling again" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1021" y="373" key="#Project_Structure" timestamp="1589281546181">
@@ -253,34 +257,34 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="1337" y="429" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588805618846" />
-    <state x="1289" y="255" key="CommitChangelistDialog2" timestamp="1589281497255">
+    <state x="1289" y="255" key="CommitChangelistDialog2" timestamp="1589281615742">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="1289" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1589281497255" />
-    <state width="1606" height="330" key="GridCell.Tab.0.bottom" timestamp="1589281515568">
+    <state x="1289" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1589281615742" />
+    <state width="1606" height="330" key="GridCell.Tab.0.bottom" timestamp="1589281719413">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1606" height="330" key="GridCell.Tab.0.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1589281515568" />
-    <state width="1606" height="330" key="GridCell.Tab.0.center" timestamp="1589281515567">
+    <state width="1606" height="330" key="GridCell.Tab.0.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1589281719413" />
+    <state width="1606" height="330" key="GridCell.Tab.0.center" timestamp="1589281719412">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1606" height="330" key="GridCell.Tab.0.center/0.23.2560.1353@0.23.2560.1353" timestamp="1589281515567" />
-    <state width="1606" height="330" key="GridCell.Tab.0.left" timestamp="1589281515567">
+    <state width="1606" height="330" key="GridCell.Tab.0.center/0.23.2560.1353@0.23.2560.1353" timestamp="1589281719412" />
+    <state width="1606" height="330" key="GridCell.Tab.0.left" timestamp="1589281719412">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1606" height="330" key="GridCell.Tab.0.left/0.23.2560.1353@0.23.2560.1353" timestamp="1589281515567" />
-    <state width="1606" height="330" key="GridCell.Tab.0.right" timestamp="1589281515567">
+    <state width="1606" height="330" key="GridCell.Tab.0.left/0.23.2560.1353@0.23.2560.1353" timestamp="1589281719412" />
+    <state width="1606" height="330" key="GridCell.Tab.0.right" timestamp="1589281719413">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1606" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1589281515567" />
-    <state x="711" y="224" key="SettingsEditor" timestamp="1589281364434">
+    <state width="1606" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1589281719413" />
+    <state x="711" y="224" key="SettingsEditor" timestamp="1589281770935">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="711" y="224" key="SettingsEditor/0.23.2560.1353@0.23.2560.1353" timestamp="1589281364434" />
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1588806047785">
+    <state x="711" y="224" key="SettingsEditor/0.23.2560.1353@0.23.2560.1353" timestamp="1589281770935" />
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1589281625090">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1588806047785" />
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1589281625090" />
     <state x="1072" y="611" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588720462057">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
