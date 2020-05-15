@@ -2314,7 +2314,7 @@ public class cid3 implements Serializable{
         save.setRequired(false);
         options.addOption(save);
 
-        Option criteria = new Option("c", "criteria", true, "input criteria: i[certainty], e[ntropy], g[ini]");
+        Option criteria = new Option("c", "criteria", true, "input criteria: c[ertainty], e[ntropy], g[ini]");
         criteria.setRequired(false);
         options.addOption(criteria);
 
@@ -2359,7 +2359,7 @@ public class cid3 implements Serializable{
         //me.criteria = Criteria.Certainty;
         if (cmd.hasOption("criteria")) {
             String strCriteria = cmd.getOptionValue("criteria");
-            if (strCriteria.equals("I") || strCriteria.equals("i")) me.criteria = Criteria.Certainty;
+            if (strCriteria.equals("C") || strCriteria.equals("c")) me.criteria = Criteria.Certainty;
                 //else if (strCriteria.equals("N") || strCriteria.equals("n")) me.criteria = Criteria.CertaintyNonLinear;
             else if (strCriteria.equals("G") || strCriteria.equals("g")) me.criteria = Criteria.Gini;
             else if (strCriteria.equals("E") || strCriteria.equals("e")) me.criteria = Criteria.Entropy;
