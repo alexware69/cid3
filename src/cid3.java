@@ -1508,7 +1508,7 @@ public class cid3 implements Serializable{
             }
         }
         catch (Exception e) {
-            System.out.print("Error deserializing tree file.");
+            System.out.print("Error deserializing file.");
             System.out.print("\n");
             System.exit(1);
         }
@@ -2175,8 +2175,8 @@ public class cid3 implements Serializable{
         Scanner in = new Scanner(System.in);
         cid3 id3 = new cid3();
         if (inputFile.exists()) {
-            System.out.print("\n");
             id3 = deserializeFile(file);
+            System.out.print("\n");
             System.out.print("Random Forest file deserialized.");
             System.out.print("\n");
             DataPoint example = new DataPoint(id3.numAttributes);
