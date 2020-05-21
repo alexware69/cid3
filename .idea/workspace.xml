@@ -21,11 +21,22 @@
   <component name="ChangeListManager">
     <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="handling some exceptions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cid3/cid3$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cid3/cid3$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$Criteria.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cid3/cid3$Criteria.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/cid3/cid3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cid3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cid3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/Condicion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/DataFrequencies.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/SumUnderAndOver.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/Threshold.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/Tuple.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/carcrash.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$AttributeType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$Certainty.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$Criteria.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$DataPoint.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$Probabilities.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3$TreeNode.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/cid3/cid3.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -239,7 +250,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590048182988</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="some text output formatting">
+      <created>1590048734897</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1590048734897</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -285,7 +303,8 @@
     <MESSAGE value="small changes to gitignore and exclude" />
     <MESSAGE value="reintroduced other criteria, but is optional" />
     <MESSAGE value="handling some exceptions" />
-    <option name="LAST_COMMIT_MESSAGE" value="handling some exceptions" />
+    <MESSAGE value="some text output formatting" />
+    <option name="LAST_COMMIT_MESSAGE" value="some text output formatting" />
   </component>
   <component name="WindowStateProjectService">
     <state x="935" y="519" key="#Notifications" timestamp="1589290329455">
@@ -308,10 +327,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="1337" y="429" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588805618846" />
-    <state x="1288" y="255" key="CommitChangelistDialog2" timestamp="1590048660871">
+    <state x="1288" y="255" key="CommitChangelistDialog2" timestamp="1590049818492">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1590048660871" />
+    <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1590049818492" />
     <state x="512" y="109" key="DiffContextDialog" timestamp="1589338879520">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -356,10 +375,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="711" y="224" key="SettingsEditor/0.23.2560.1353@0.23.2560.1353" timestamp="1589291398168" />
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1590048193292">
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1590048744421">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1590048193292" />
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1590048744421" />
     <state x="1072" y="611" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588720462057">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
