@@ -25,7 +25,7 @@ public class cid3 implements Serializable{
     */
     HashMap<Integer,Object> [] domainsIndexToValue;
     HashMap<Object,Integer> [] domainsValueToIndex;
-    enum Criteria {Entropy, Certainty, CertaintyNonLinear, Gini, Gain, Voting};
+    enum Criteria {Entropy, Certainty, Gini};
     /*  The class to represent a data point consisting of numAttributes values of attributes  */
     class DataPoint implements Serializable{
 
@@ -1495,7 +1495,7 @@ public class cid3 implements Serializable{
         }
     }
 
-    private cid3 deserializeFile(String file) throws IOException {
+    private cid3 deserializeFile(String file){
         cid3 ret = null;
         ObjectInputStream objectinputstream = null;
         try {
@@ -1503,12 +1503,14 @@ public class cid3 implements Serializable{
             GZIPInputStream is = new GZIPInputStream(new FileInputStream(file));
             objectinputstream = new ObjectInputStream(is);
             ret = (cid3) objectinputstream.readObject();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
             if(objectinputstream != null){
                 objectinputstream.close();
             }
+        }
+        catch (Exception e) {
+            System.out.print("Error deserializing tree file.");
+            System.out.print("\n");
+            System.exit(1);
         }
         return ret;
     }
@@ -2066,13 +2068,7 @@ public class cid3 implements Serializable{
         cid3 id3 = new cid3();
         if (inputFile.exists()) {
             Scanner in = new Scanner(System.in);
-            try {
-                id3 = deserializeFile(file);
-            }
-            catch (Exception e){
-                System.out.print("Error deserializing tree file.");
-                System.out.print("\n");
-            }
+            id3 = deserializeFile(file);
             System.out.print("\n");
             System.out.print("Tree file deserialized.");
             System.out.print("\n");
@@ -2180,13 +2176,7 @@ public class cid3 implements Serializable{
         cid3 id3 = new cid3();
         if (inputFile.exists()) {
             System.out.print("\n");
-            try {
-                id3 = deserializeFile(file);
-            }
-            catch (Exception e){
-                System.out.print("Error deserializing random forest file.");
-                System.out.print("\n");
-            }
+            id3 = deserializeFile(file);
             System.out.print("Random Forest file deserialized.");
             System.out.print("\n");
             DataPoint example = new DataPoint(id3.numAttributes);
