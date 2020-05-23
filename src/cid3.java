@@ -2217,9 +2217,8 @@ public class cid3 implements Serializable{
                 System.exit(1);
             }
             while(input != null) {
-                if (input.trim().equals("")) break;
+                if (input.trim().equals("")) continue;
                 if (input.startsWith("//")) continue;
-                if (input.equals("")) continue;
 
                 tokenizer = new StringTokenizer(input, ",");
                 int numtokens = tokenizer.countTokens();
@@ -2309,7 +2308,7 @@ public class cid3 implements Serializable{
             fileOutStr = casesFile.substring(0, casesFile.length() - 5) + "tmp";
         }
 
-        File inputTreeFile = new File(rfFile);
+        File inputForestFile = new File(rfFile);
         FileInputStream cases = null;
         cid3 id3;
 
@@ -2324,7 +2323,7 @@ public class cid3 implements Serializable{
         BufferedWriter fileBuf = new BufferedWriter(fileout);
         PrintWriter printOut = new PrintWriter(fileBuf);
 
-        if (inputTreeFile.exists()) {
+        if (inputForestFile.exists()) {
             id3 = deserializeFile(rfFile);
             System.out.print("\n");
             System.out.print("Forest file deserialized.");
@@ -2353,9 +2352,8 @@ public class cid3 implements Serializable{
                 System.exit(1);
             }
             while(input != null) {
-                if (input.trim().equals("")) break;
+                if (input.trim().equals("")) continue;
                 if (input.startsWith("//")) continue;
-                if (input.equals("")) continue;
 
                 tokenizer = new StringTokenizer(input, ",");
                 int numtokens = tokenizer.countTokens();
