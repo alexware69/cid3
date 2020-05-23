@@ -2259,7 +2259,7 @@ public class cid3 implements Serializable{
                     }
                     else
                     if (id3.attributeTypes[i] == AttributeType.Ignore){
-                        point.attributes[i]  = id3.getSymbolValue(i, next);
+                        continue;
                     }
                 }
                 //Test the example point
