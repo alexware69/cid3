@@ -73,6 +73,7 @@ public class cid3 implements Serializable{
     transient ArrayList trainData = new ArrayList();
     transient ArrayList[] crossValidationChunks = new ArrayList[10];
     transient boolean testDataExists = false;
+    transient boolean splitTrainData = false;
     transient boolean isRandomForest = false;
     transient boolean isCrossValidation = false;
     transient int numberOfTrees = 1;
@@ -1274,7 +1275,7 @@ public class cid3 implements Serializable{
         int size = data.size();
 
         root.frequencyClasses = new int[domainsIndexToValue[classAttribute].size()];
-        /*if (!testDataExists && !isCrossValidation){
+        if (splitTrainData && !testDataExists && !isCrossValidation){
             //Randomize the data
             Collections.shuffle(data);
             numTraining = (int)(size * 80/100);
@@ -1288,21 +1289,21 @@ public class cid3 implements Serializable{
             }
         }
         //here I need to loop through the data and add one by one while updating FrequencyClasses
-        else {*/
+        else {
             for (int i = 0; i < size; i++){
                 DataPoint point = (DataPoint)data.get(i);
                 root.data.add(point);
                 root.frequencyClasses[point.attributes[classAttribute]]++;
             }
-        //}
+        }
 
         trainData = root.data;
-        /*if (!testDataExists){
+        if (splitTrainData && !testDataExists){
             System.out.print("Read data: " + root.data.size() + " cases for training.");
             System.out.print("\n");
             System.out.print("Read data: " + testData.size() + " cases for testing.");
         }
-        else*/ System.out.print("Read data: " + root.data.size() + " cases for training. ");
+        else System.out.print("Read data: " + root.data.size() + " cases for training. ");
         System.out.print("\n");
 
         return 1;
@@ -2581,6 +2582,10 @@ public class cid3 implements Serializable{
         save.setRequired(false);
         options.addOption(save);
 
+        Option split = new Option("p", "split", false, "split train/test data");
+        save.setRequired(false);
+        options.addOption(split);
+
         Option criteria = new Option("c", "criteria", true, "input criteria: c[ertainty], e[ntropy], g[ini]");
         criteria.setRequired(false);
         options.addOption(criteria);
@@ -2649,6 +2654,12 @@ public class cid3 implements Serializable{
             me.isCrossValidation = true;
         }
         else me.isCrossValidation = false;
+
+        //Set split data
+        if (cmd.hasOption("split")){
+            me.splitTrainData = true;
+        }
+        else me.splitTrainData = false;
 
         //Set Random Forest
         if (cmd.hasOption("forest")){

@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="removed splitting train data for testing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cid3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cid3.java" afterDir="false" />
     </list>
@@ -333,7 +333,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590231028963</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="removed splitting train data for testing">
+      <created>1590232296117</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1590232296117</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -359,7 +366,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="removed some files" />
     <MESSAGE value="removed some deprecated files" />
     <MESSAGE value="removed a file" />
     <MESSAGE value="now Intellij IDEA is compiling again" />
@@ -384,7 +390,8 @@
     <MESSAGE value="finished implementing query random forest to output file" />
     <MESSAGE value="fixed some details in query random forest to output file" />
     <MESSAGE value="fixed other details in query random forest to output file" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed other details in query random forest to output file" />
+    <MESSAGE value="removed splitting train data for testing" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed splitting train data for testing" />
   </component>
   <component name="WindowStateProjectService">
     <state x="935" y="519" key="#Notifications" timestamp="1589290329455">
@@ -411,10 +418,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="947" y="592" key="#xdebugger.evaluate/0.23.2560.1353@0.23.2560.1353" timestamp="1590211618966" />
-    <state x="1288" y="255" key="CommitChangelistDialog2" timestamp="1590231028866">
+    <state x="1288" y="255" key="CommitChangelistDialog2" timestamp="1590232604095">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1590231028866" />
+    <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1590232604095" />
     <state x="512" y="109" key="DiffContextDialog" timestamp="1589338879520">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
