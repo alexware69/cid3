@@ -2301,15 +2301,15 @@ public class cid3 implements Serializable{
         else System.out.println("The tree file doesn't exist.");
     }
 
-    public void queryRandomForestOutput(String treeFile, String casesFile) {
-        if (!treeFile.endsWith(".tree")) treeFile += ".tree";
+    public void queryRandomForestOutput(String rfFile, String casesFile) {
+        if (!rfFile.endsWith(".forest")) rfFile += ".forest";
         String fileOutStr;
         if (!casesFile.endsWith(".cases")) fileOutStr = casesFile + ".tmp";
         else {
             fileOutStr = casesFile.substring(0, casesFile.length() - 5) + "tmp";
         }
 
-        File inputTreeFile = new File(treeFile);
+        File inputTreeFile = new File(rfFile);
         FileInputStream cases = null;
         cid3 id3;
 
@@ -2325,9 +2325,9 @@ public class cid3 implements Serializable{
         PrintWriter printOut = new PrintWriter(fileBuf);
 
         if (inputTreeFile.exists()) {
-            id3 = deserializeFile(treeFile);
+            id3 = deserializeFile(rfFile);
             System.out.print("\n");
-            System.out.print("Tree file deserialized.");
+            System.out.print("Forest file deserialized.");
             System.out.print("\n");
 
             FileInputStream inCases = null;
@@ -2443,7 +2443,7 @@ public class cid3 implements Serializable{
             System.out.print("Results saved to tmp file.");
             System.out.print("\n");
         }
-        else System.out.println("The tree file doesn't exist.");
+        else System.out.println("The forest file doesn't exist.");
     }
 
 

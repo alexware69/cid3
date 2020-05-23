@@ -20,6 +20,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cid3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cid3.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -311,7 +312,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590230162628</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="finished implementing query random forest to output file">
+      <created>1590230311992</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1590230311992</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -337,7 +345,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="removed .jar dependencies from project" />
     <MESSAGE value="removed somo unused code files" />
     <MESSAGE value="fixed build.xml" />
     <MESSAGE value="removed some files" />
@@ -362,7 +369,8 @@
     <MESSAGE value="fixed missing value implementation in query tree output" />
     <MESSAGE value="fixed ignore attribute in query tree output" />
     <MESSAGE value="implemented query random forest to output file" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented query random forest to output file" />
+    <MESSAGE value="finished implementing query random forest to output file" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished implementing query random forest to output file" />
   </component>
   <component name="WindowStateProjectService">
     <state x="935" y="519" key="#Notifications" timestamp="1589290329455">
@@ -389,10 +397,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="947" y="592" key="#xdebugger.evaluate/0.23.2560.1353@0.23.2560.1353" timestamp="1590211618966" />
-    <state x="1288" y="255" key="CommitChangelistDialog2" timestamp="1590230162501">
+    <state x="1288" y="255" key="CommitChangelistDialog2" timestamp="1590230311899">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1590230162501" />
+    <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1590230311899" />
     <state x="512" y="109" key="DiffContextDialog" timestamp="1589338879520">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -437,10 +445,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="711" y="224" key="SettingsEditor/0.23.2560.1353@0.23.2560.1353" timestamp="1589291398168" />
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1590230169525">
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1590230317800">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1590230169525" />
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1590230317800" />
     <state x="1072" y="611" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588720462057">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
