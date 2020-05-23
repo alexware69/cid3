@@ -2233,8 +2233,12 @@ public class cid3 implements Serializable{
                 for (int i=0; i < id3.numAttributes - 1; i++) {
                     next = tokenizer.nextToken().trim();
                     if(id3.attributeTypes[i] == AttributeType.Continuous) {
-                        if (next.equals("?") || next.equals("NaN"))
-                            point.attributes[i] = id3.getSymbolValue(i, "?");
+                        if (next.equals("?") || next.equals("NaN")) {
+                            double value;
+                            value = id3.meanValues[i];
+                            point.attributes[i] = id3.getSymbolValue(i,value);
+                        }
+
                         else
                         {
                             try {
@@ -2248,7 +2252,10 @@ public class cid3 implements Serializable{
                     }
                     else
                     if (id3.attributeTypes[i] == AttributeType.Discrete) {
-                        point.attributes[i] = id3.getSymbolValue(i, next);
+                        if (next.equals("?") || next.equals("NaN")) {
+                            point.attributes[i] = id3.mostCommonValues[i];
+                        }
+                        else point.attributes[i] = id3.getSymbolValue(i, next);
                     }
                     else
                     if (id3.attributeTypes[i] == AttributeType.Ignore){
