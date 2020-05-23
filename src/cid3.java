@@ -2301,6 +2301,151 @@ public class cid3 implements Serializable{
         else System.out.println("The tree file doesn't exist.");
     }
 
+    public void queryRandomForestOutput(String treeFile, String casesFile) {
+        if (!treeFile.endsWith(".tree")) treeFile += ".tree";
+        String fileOutStr;
+        if (!casesFile.endsWith(".cases")) fileOutStr = casesFile + ".tmp";
+        else {
+            fileOutStr = casesFile.substring(0, casesFile.length() - 5) + "tmp";
+        }
+
+        File inputTreeFile = new File(treeFile);
+        FileInputStream cases = null;
+        cid3 id3;
+
+        FileWriter fileout = null;
+        try {
+            fileout = new FileWriter(fileOutStr, false);
+        }
+        catch (Exception e){
+            System.err.println( "Error creating temporal file." + "\n");
+            System.exit(1);
+        }
+        BufferedWriter fileBuf = new BufferedWriter(fileout);
+        PrintWriter printOut = new PrintWriter(fileBuf);
+
+        if (inputTreeFile.exists()) {
+            id3 = deserializeFile(treeFile);
+            System.out.print("\n");
+            System.out.print("Tree file deserialized.");
+            System.out.print("\n");
+
+            FileInputStream inCases = null;
+
+            try {
+                if (!casesFile.endsWith(".cases")) casesFile += ".cases";
+                File inputFile = new File(casesFile);
+                inCases = new FileInputStream(inputFile);
+            } catch ( Exception e) {
+                System.err.println( "Unable to open cases file." + "\n");
+                System.exit(1);
+            }
+
+            BufferedReader bin = new BufferedReader(new InputStreamReader(inCases));
+            String input = null;
+            StringTokenizer tokenizer;
+
+            try {
+                input = bin.readLine();
+            }
+            catch (Exception e){
+                System.err.println( "Unable to read line: " + "\n");
+                System.exit(1);
+            }
+            while(input != null) {
+                if (input.trim().equals("")) break;
+                if (input.startsWith("//")) continue;
+                if (input.equals("")) continue;
+
+                tokenizer = new StringTokenizer(input, ",");
+                int numtokens = tokenizer.countTokens();
+                if (numtokens != id3.numAttributes - 1) {
+                    System.err.println( "Expecting " + (id3.numAttributes - 1)  + " attributes");
+                    System.exit(1);
+                }
+
+                DataPoint point = new DataPoint(id3.numAttributes);
+                String next;
+                for (int i=0; i < id3.numAttributes - 1; i++) {
+                    next = tokenizer.nextToken().trim();
+                    if(id3.attributeTypes[i] == AttributeType.Continuous) {
+                        if (next.equals("?") || next.equals("NaN")) {
+                            double value;
+                            value = id3.meanValues[i];
+                            point.attributes[i] = id3.getSymbolValue(i,value);
+                        }
+
+                        else
+                        {
+                            try {
+                                point.attributes[i] = id3.getSymbolValue(i, Double.parseDouble(next));
+                            }
+                            catch (Exception e){
+                                System.err.println( "Error reading continuous value in train data.");
+                                System.exit(1);
+                            }
+                        }
+                    }
+                    else
+                    if (id3.attributeTypes[i] == AttributeType.Discrete) {
+                        if (next.equals("?") || next.equals("NaN")) {
+                            point.attributes[i] = id3.mostCommonValues[i];
+                        }
+                        else point.attributes[i] = id3.getSymbolValue(i, next);
+                    }
+                    else
+                    if (id3.attributeTypes[i] == AttributeType.Ignore){
+                        continue;
+                    }
+                }
+                //Check the created example against the random forest
+                int[] classAttrValues = new int[id3.domainsIndexToValue[id3.classAttribute].size()];
+                ArrayList<TreeNode> roots = id3.rootsRandomForest;
+                TreeNode node;
+                int resultClass = 0;
+
+                for (int i = 0; i < roots.size(); i++){
+                    node = id3.testExamplePoint(point, roots.get(i));
+                    //Check if the node is empty, if so, return its parent most frequent class.
+                    boolean isEmpty = true;
+                    for (int j = 0; j < node.frequencyClasses.length; j ++){
+                        if (node.frequencyClasses[j] != 0){
+                            isEmpty = false;
+                            break;
+                        }
+                    }
+                    //If node is empty
+                    if (isEmpty) classAttrValues[id3.mostCommonFinal(node.parent)]++;
+                    else classAttrValues[id3.mostCommonFinal(node)]++;
+                }
+                //Voting now
+                for (int i = 1; i < classAttrValues.length; i++){
+                    if (classAttrValues[i] > resultClass)
+                        resultClass = i;
+                }
+                //Print line to output tmp file
+                String classValue = (String) id3.domainsIndexToValue[id3.classAttribute].get(resultClass);
+                String line = input + "," + classValue;
+                printOut.write(line);
+                printOut.println();
+
+                //continue the loop
+                try {
+                    input = bin.readLine();
+                }
+                catch (Exception e){
+                    System.err.println( "Unable to read line. " + "\n");
+                    System.exit(1);
+                }
+            }
+            printOut.close();
+            System.out.print("\n");
+            System.out.print("Results saved to tmp file.");
+            System.out.print("\n");
+        }
+        else System.out.println("The tree file doesn't exist.");
+    }
+
 
     public void queryRandomForest(String file) {
         if (!file.endsWith(".forest")) file += ".forest";
