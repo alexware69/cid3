@@ -2216,11 +2216,11 @@ public class cid3 implements Serializable{
                     next = tokenizer.nextToken().trim();
                     if(id3.attributeTypes[i] == AttributeType.Continuous) {
                         if (next.equals("?") || next.equals("NaN"))
-                            point.attributes[i] = getSymbolValue(i, "?");
+                            point.attributes[i] = id3.getSymbolValue(i, "?");
                         else
                         {
                             try {
-                                point.attributes[i] = getSymbolValue(i, Double.parseDouble(next));
+                                point.attributes[i] = id3.getSymbolValue(i, Double.parseDouble(next));
                             }
                             catch (Exception e){
                                 System.err.println( "Error reading continuous value in train data.");
@@ -2229,12 +2229,12 @@ public class cid3 implements Serializable{
                         }
                     }
                     else
-                    if (attributeTypes[i] == AttributeType.Discrete) {
-                        point.attributes[i] = getSymbolValue(i, next);
+                    if (id3.attributeTypes[i] == AttributeType.Discrete) {
+                        point.attributes[i] = id3.getSymbolValue(i, next);
                     }
                     else
-                    if (attributeTypes[i] == AttributeType.Ignore){
-                        point.attributes[i]  = getSymbolValue(i, next);
+                    if (id3.attributeTypes[i] == AttributeType.Ignore){
+                        point.attributes[i]  = id3.getSymbolValue(i, next);
                     }
                 }
                 //Test the example point
@@ -2254,7 +2254,8 @@ public class cid3 implements Serializable{
                 else caseClass = id3.mostCommonFinal(node);
 
                 //Print line to output tmp file
-                String line = input + "," + caseClass + "\n";
+                String classValue = (String) id3.domainsIndexToValue[id3.classAttribute].get(caseClass);
+                String line = input + "," + classValue + "\n";
 
                 //continue the loop
                 try {
@@ -2434,7 +2435,7 @@ public class cid3 implements Serializable{
 
         Option output = new Option("o", "output", true, "output file");
         query.setRequired(false);
-        options.addOption(query);
+        options.addOption(output);
 
         //Declare parser and formatter
         CommandLineParser parser = new DefaultParser();
