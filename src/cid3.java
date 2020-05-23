@@ -2287,6 +2287,9 @@ public class cid3 implements Serializable{
                 }
             }
             printOut.close();
+            System.out.print("\n");
+            System.out.print("Results writen to tmp file.");
+            System.out.print("\n");
         }
         else System.out.println("The tree file doesn't exist.");
     }
