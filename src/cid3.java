@@ -2703,6 +2703,7 @@ public class cid3 implements Serializable{
             else if (model.equals("r")) {
                 if (cmd.hasOption("output")){
                     outputFilePath = cmd.getOptionValue("output");
+                    me.queryRandomForestOutput(originalInputFilePath, outputFilePath);
                 }
                 else me.queryRandomForest(originalInputFilePath);
             }
