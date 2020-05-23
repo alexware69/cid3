@@ -1200,7 +1200,6 @@ public class cid3 implements Serializable{
         FileInputStream in = null;
         ArrayList data = new ArrayList();
         int numTraining = 0;
-        int numPruning = 0;
 
         try {
             File inputFile = new File(filename);
@@ -1445,7 +1444,7 @@ public class cid3 implements Serializable{
         }
     }
 
-    private void createFile() throws IOException {
+    private void createFile(){
         ObjectOutputStream oos = null;
         FileOutputStream fout = null;
         String fName = fileName;
@@ -1461,16 +1460,15 @@ public class cid3 implements Serializable{
             GZIPOutputStream gz = new GZIPOutputStream(fout);
             oos = new ObjectOutputStream(gz);
             oos.writeObject(this);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
             if(oos != null){
                 oos.close();
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
-    private void createFileRF() throws IOException {
+    private void createFileRF(){
         ObjectOutputStream oos = null;
         FileOutputStream fout = null;
         String fName = fileName;
@@ -1486,12 +1484,11 @@ public class cid3 implements Serializable{
             GZIPOutputStream gz = new GZIPOutputStream(fout);
             oos = new ObjectOutputStream(gz);
             oos.writeObject(this);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
             if(oos != null){
                 oos.close();
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -2168,8 +2165,99 @@ public class cid3 implements Serializable{
         } else System.out.println("The file doesn't exist.");
     }
 
+    public void queryTreeOutput(String treeFile, String casesFile) {
+        if (!treeFile.endsWith(".tree")) treeFile += ".tree";
+        File inputTreeFile = new File(treeFile);
+        FileInputStream cases = null;
+        cid3 id3;
+        if (inputTreeFile.exists()) {
+            id3 = deserializeFile(treeFile);
+            System.out.print("\n");
+            System.out.print("Tree file deserialized.");
+            System.out.print("\n");
+            TreeNode currentNode = id3.root;
+            int attributeValue = 0;
+
+            //=======================================================
+            FileInputStream inCases = null;
+            ArrayList data = new ArrayList();
+
+            try {
+                File inputFile = new File(casesFile);
+                inCases = new FileInputStream(inputFile);
+            } catch ( Exception e) {
+                System.err.println( "Unable to open cases file: " + casesFile + "\n");
+                System.exit(1);
+            }
+
+            BufferedReader bin = new BufferedReader(new InputStreamReader(inCases));
+            String input = null;
+            StringTokenizer tokenizer;
+
+            try {
+                input = bin.readLine();
+            }
+            catch (Exception e){
+                System.err.println( "Unable to read line: " + "\n");
+                System.exit(1);
+            }
+            while(input != null) {
+                if (input.trim().equals("")) break;
+                if (input.startsWith("//")) continue;
+                if (input.equals("")) continue;
+
+                tokenizer = new StringTokenizer(input, ",");
+                int numtokens = tokenizer.countTokens();
+                if (numtokens != numAttributes) {
+                    System.err.println( "Read " + data.size() + " data");
+                    System.err.println( "Last line read: " + input);
+                    System.err.println( "Expecting " + numAttributes  + " attributes");
+                    System.exit(1);
+                }
+
+                DataPoint point = new DataPoint(numAttributes);
+                String next;
+                for (int i=0; i < numAttributes - 1; i++) {
+                    next = tokenizer.nextToken().trim();
+                    if(attributeTypes[i] == AttributeType.Continuous) {
+                        if (next.equals("?") || next.equals("NaN"))
+                            point.attributes[i] = getSymbolValue(i, "?");
+                        else
+                        {
+                            try {
+                                point.attributes[i] = getSymbolValue(i, Double.parseDouble(next));
+                            }
+                            catch (Exception e){
+                                System.err.println( "Error reading continuous value in train data.");
+                                System.exit(1);
+                            }
+                        }
+                    }
+                    else
+                    if (attributeTypes[i] == AttributeType.Discrete) {
+                        point.attributes[i] = getSymbolValue(i, next);
+                    }
+                    else
+                    if (attributeTypes[i] == AttributeType.Ignore){
+                        point.attributes[i]  = getSymbolValue(i, next);
+                    }
+                }
+
+            }
+
+
+
+
+
+
+
+        }
+        else System.out.println("The tree file doesn't exist.");
+    }
+
+
     public void queryRandomForest(String file) {
-        if (!file.endsWith(".tree")) file += ".forest";
+        if (!file.endsWith(".forest")) file += ".forest";
 
         File inputFile = new File(file);
         Scanner in = new Scanner(System.in);
@@ -2324,6 +2412,10 @@ public class cid3 implements Serializable{
         query.setRequired(false);
         options.addOption(query);
 
+        Option output = new Option("o", "output", true, "output file");
+        query.setRequired(false);
+        options.addOption(query);
+
         //Declare parser and formatter
         CommandLineParser parser = new DefaultParser();
         HelpFormatter formatter = new HelpFormatter();
@@ -2407,13 +2499,20 @@ public class cid3 implements Serializable{
         System.out.print("\n");
 
         //if is a query, deserialize file and query model
+        String outputFilePath;
         if (cmd.hasOption("query")) {
             String model = cmd.getOptionValue("query");
             if (model.equals("t")) {
-                me.queryTree(originalInputFilePath);
+                if (cmd.hasOption("output")){
+                    outputFilePath = cmd.getOptionValue("output");
+                }
+                else me.queryTree(originalInputFilePath);
             }
             else if (model.equals("r")) {
-                me.queryRandomForest(originalInputFilePath);
+                if (cmd.hasOption("output")){
+                    outputFilePath = cmd.getOptionValue("output");
+                }
+                else me.queryRandomForest(originalInputFilePath);
             }
         }
         else {
