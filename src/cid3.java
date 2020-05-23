@@ -2167,9 +2167,27 @@ public class cid3 implements Serializable{
 
     public void queryTreeOutput(String treeFile, String casesFile) {
         if (!treeFile.endsWith(".tree")) treeFile += ".tree";
+        String fileOutStr;
+        if (!casesFile.endsWith(".cases")) fileOutStr = casesFile + ".tmp";
+        else {
+            fileOutStr = casesFile.substring(0, casesFile.length() - 5) + "tmp";
+        }
+
         File inputTreeFile = new File(treeFile);
         FileInputStream cases = null;
         cid3 id3;
+
+        FileWriter fileout = null;
+        try {
+            fileout = new FileWriter(fileOutStr, false);
+        }
+        catch (Exception e){
+            System.err.println( "Error creating temporal file." + "\n");
+            System.exit(1);
+        }
+        BufferedWriter fileBuf = new BufferedWriter(fileout);
+        PrintWriter printOut = new PrintWriter(fileBuf);
+
         if (inputTreeFile.exists()) {
             id3 = deserializeFile(treeFile);
             System.out.print("\n");
@@ -2255,23 +2273,20 @@ public class cid3 implements Serializable{
 
                 //Print line to output tmp file
                 String classValue = (String) id3.domainsIndexToValue[id3.classAttribute].get(caseClass);
-                String line = input + "," + classValue + "\n";
+                String line = input + "," + classValue;
+                printOut.write(line);
+                printOut.println();
 
                 //continue the loop
                 try {
                     input = bin.readLine();
                 }
                 catch (Exception e){
-                    System.err.println( "Unable to read line: " + "\n");
+                    System.err.println( "Unable to read line. " + "\n");
                     System.exit(1);
                 }
             }
-
-
-
-
-
-
+            printOut.close();
         }
         else System.out.println("The tree file doesn't exist.");
     }
