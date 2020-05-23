@@ -2175,18 +2175,15 @@ public class cid3 implements Serializable{
             System.out.print("\n");
             System.out.print("Tree file deserialized.");
             System.out.print("\n");
-            TreeNode currentNode = id3.root;
-            int attributeValue = 0;
 
-            //=======================================================
             FileInputStream inCases = null;
-            ArrayList data = new ArrayList();
 
             try {
+                if (!casesFile.endsWith(".cases")) casesFile += ".cases";
                 File inputFile = new File(casesFile);
                 inCases = new FileInputStream(inputFile);
             } catch ( Exception e) {
-                System.err.println( "Unable to open cases file: " + casesFile + "\n");
+                System.err.println( "Unable to open cases file." + "\n");
                 System.exit(1);
             }
 
@@ -2208,18 +2205,16 @@ public class cid3 implements Serializable{
 
                 tokenizer = new StringTokenizer(input, ",");
                 int numtokens = tokenizer.countTokens();
-                if (numtokens != numAttributes) {
-                    System.err.println( "Read " + data.size() + " data");
-                    System.err.println( "Last line read: " + input);
-                    System.err.println( "Expecting " + numAttributes  + " attributes");
+                if (numtokens != id3.numAttributes - 1) {
+                    System.err.println( "Expecting " + (id3.numAttributes - 1)  + " attributes");
                     System.exit(1);
                 }
 
-                DataPoint point = new DataPoint(numAttributes);
+                DataPoint point = new DataPoint(id3.numAttributes);
                 String next;
-                for (int i=0; i < numAttributes - 1; i++) {
+                for (int i=0; i < id3.numAttributes - 1; i++) {
                     next = tokenizer.nextToken().trim();
-                    if(attributeTypes[i] == AttributeType.Continuous) {
+                    if(id3.attributeTypes[i] == AttributeType.Continuous) {
                         if (next.equals("?") || next.equals("NaN"))
                             point.attributes[i] = getSymbolValue(i, "?");
                         else
@@ -2242,9 +2237,34 @@ public class cid3 implements Serializable{
                         point.attributes[i]  = getSymbolValue(i, next);
                     }
                 }
+                //Test the example point
+                TreeNode node;
+                node = id3.testExamplePoint(point, id3.root);
+                boolean isEmpty = true;
+                int caseClass;
+                //Check if the node is empty, if so, return its parent most frequent class.
+                for (int j = 0; j < node.frequencyClasses.length; j ++){
+                    if (node.frequencyClasses[j] != 0){
+                        isEmpty = false;
+                        break;
+                    }
+                }
+                //If node is empty
+                if (isEmpty) caseClass =  id3.mostCommonFinal(node.parent);
+                else caseClass = id3.mostCommonFinal(node);
 
+                //Print line to output tmp file
+                String line = input + "," + caseClass + "\n";
+
+                //continue the loop
+                try {
+                    input = bin.readLine();
+                }
+                catch (Exception e){
+                    System.err.println( "Unable to read line: " + "\n");
+                    System.exit(1);
+                }
             }
-
 
 
 
@@ -2505,6 +2525,7 @@ public class cid3 implements Serializable{
             if (model.equals("t")) {
                 if (cmd.hasOption("output")){
                     outputFilePath = cmd.getOptionValue("output");
+                    me.queryTreeOutput(originalInputFilePath, outputFilePath);
                 }
                 else me.queryTree(originalInputFilePath);
             }
