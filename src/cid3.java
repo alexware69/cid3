@@ -1041,7 +1041,7 @@ public class cid3 implements Serializable{
                         String mostCommonValueStr = (String) domainsIndexToValue[attribute].get(mostCommonValue);
                         //Get index
                         int index = domainsValueToIndex[attribute].get("?");
-                        //Replace missing with mean
+                        //Replace missing with most common
                         domainsIndexToValue[attribute].replace(index,"?",mostCommonValueStr);
                         domainsValueToIndex[attribute].remove("?");
                         domainsValueToIndex[attribute].put(mostCommonValueStr,index);
