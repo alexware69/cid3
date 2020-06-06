@@ -1035,6 +1035,18 @@ public class cid3 implements Serializable{
             }
             else
                 if (attributeTypes[attribute] == AttributeType.Discrete){
+                    if(domainsIndexToValue[attribute].containsValue("?")){
+                        //Find most common value
+                        int mostCommonValue = mostCommonValues[attribute];
+                        String mostCommonValueStr = (String) domainsIndexToValue[attribute].get(mostCommonValue);
+                        //Get index
+                        int index = domainsValueToIndex[attribute].get("?");
+                        //Replace missing with mean
+                        domainsIndexToValue[attribute].replace(index,"?",mostCommonValueStr);
+                        domainsValueToIndex[attribute].remove("?");
+                        domainsValueToIndex[attribute].put(mostCommonValueStr,index);
+                    }
+                /*
                 int index_of_missing = 0;
                 int mostCommonValue = mostCommonValues[attribute];
                 for (int i = 0; i < trainData.size(); i++) {
@@ -1046,7 +1058,7 @@ public class cid3 implements Serializable{
                     DataPoint point = (DataPoint) testData.get(i);
                     if (point.attributes[attribute] == index_of_missing)
                         point.attributes[attribute] = mostCommonValue;
-                }
+                }*/
             }
         }
     }
@@ -1232,11 +1244,11 @@ public class cid3 implements Serializable{
             }
 
             //Insert missing value "?" into discrete attributes. This is needed for later accepting missing values.
-            for (int i = 0; i < numAttributes - 1; i++) {
+            /*for (int i = 0; i < numAttributes - 1; i++) {
                 if (attributeTypes[i] == AttributeType.Discrete){
                     getSymbolValue(i, "?");
                 }
-            }
+            }*/
 
             DataPoint point = new DataPoint(numAttributes);
             String next;
@@ -2063,7 +2075,7 @@ public class cid3 implements Serializable{
     public void queryTree(String file) {
         if (!file.endsWith(".tree")) file += ".tree";
         File inputFile = new File(file);
-        cid3 id3 = new cid3();
+        cid3 id3;
         if (inputFile.exists()) {
             Scanner in = new Scanner(System.in);
             id3 = deserializeFile(file);
@@ -2083,7 +2095,7 @@ public class cid3 implements Serializable{
                         values += (String) id3.domainsIndexToValue[currentNode.decompositionAttribute].get(i);
                         values += ", ";
                     }
-                    values = values.substring(0, values.length() - 2);
+                    values = "?, " + values.substring(0, values.length() - 2);
                     System.out.print(values + ")");
                     System.out.print("\n");
 
@@ -2472,7 +2484,7 @@ public class cid3 implements Serializable{
                         values += ", ";
                     }
                     //values += "?";
-                    values = values.substring(0, values.length() - 2);
+                    values = "?, " + values.substring(0, values.length() - 2);
                     System.out.print(values + ")");
                     System.out.print("\n");
 

@@ -19,7 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="removed splitting train data for testing">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="readded splitting train data for testing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cid3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cid3.java" afterDir="false" />
     </list>
@@ -78,7 +78,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/car -q t -o $USER_HOME$/Desktop/datasets/car" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/titanic -q t" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -340,7 +340,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590232296117</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="readded splitting train data for testing">
+      <created>1590233034034</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1590233034034</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -366,7 +373,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="removed some deprecated files" />
     <MESSAGE value="removed a file" />
     <MESSAGE value="now Intellij IDEA is compiling again" />
     <MESSAGE value="now Intellij IDEA is compiling again - 2" />
@@ -391,7 +397,8 @@
     <MESSAGE value="fixed some details in query random forest to output file" />
     <MESSAGE value="fixed other details in query random forest to output file" />
     <MESSAGE value="removed splitting train data for testing" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed splitting train data for testing" />
+    <MESSAGE value="readded splitting train data for testing" />
+    <option name="LAST_COMMIT_MESSAGE" value="readded splitting train data for testing" />
   </component>
   <component name="WindowStateProjectService">
     <state x="935" y="519" key="#Notifications" timestamp="1589290329455">
@@ -402,10 +409,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="1021" y="373" key="#Project_Structure/0.23.2560.1353@0.23.2560.1353" timestamp="1589297017704" />
-    <state x="714" y="372" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590210705835">
+    <state x="714" y="372" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591420795969">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="714" y="372" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1590210705835" />
+    <state x="714" y="372" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1591420795969" />
     <state x="987" y="507" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1588721345779">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -418,46 +425,50 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="947" y="592" key="#xdebugger.evaluate/0.23.2560.1353@0.23.2560.1353" timestamp="1590211618966" />
-    <state x="1288" y="255" key="CommitChangelistDialog2" timestamp="1590232604095">
+    <state x="1288" y="255" key="CommitChangelistDialog2" timestamp="1590463333365">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1590232604095" />
+    <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1590463333365" />
+    <state width="448" height="466" key="DebuggerActiveHint" timestamp="1590462471949">
+      <screen x="0" y="23" width="2560" height="1353" />
+    </state>
+    <state width="448" height="466" key="DebuggerActiveHint/0.23.2560.1353@0.23.2560.1353" timestamp="1590462471949" />
     <state x="512" y="109" key="DiffContextDialog" timestamp="1589338879520">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="512" y="109" key="DiffContextDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1589338879520" />
-    <state width="1627" height="406" key="GridCell.Tab.0.bottom" timestamp="1590213932033">
+    <state width="1627" height="330" key="GridCell.Tab.0.bottom" timestamp="1591421208070">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1627" height="406" key="GridCell.Tab.0.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1590213932033" />
-    <state width="1627" height="406" key="GridCell.Tab.0.center" timestamp="1590213932032">
+    <state width="1627" height="330" key="GridCell.Tab.0.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1591421208070" />
+    <state width="1627" height="330" key="GridCell.Tab.0.center" timestamp="1591421208070">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1627" height="406" key="GridCell.Tab.0.center/0.23.2560.1353@0.23.2560.1353" timestamp="1590213932032" />
-    <state width="1627" height="406" key="GridCell.Tab.0.left" timestamp="1590213932032">
+    <state width="1627" height="330" key="GridCell.Tab.0.center/0.23.2560.1353@0.23.2560.1353" timestamp="1591421208070" />
+    <state width="1627" height="330" key="GridCell.Tab.0.left" timestamp="1591421208070">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1627" height="406" key="GridCell.Tab.0.left/0.23.2560.1353@0.23.2560.1353" timestamp="1590213932032" />
-    <state width="1627" height="406" key="GridCell.Tab.0.right" timestamp="1590213932033">
+    <state width="1627" height="330" key="GridCell.Tab.0.left/0.23.2560.1353@0.23.2560.1353" timestamp="1591421208070" />
+    <state width="1627" height="330" key="GridCell.Tab.0.right" timestamp="1591421208070">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1627" height="406" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1590213932033" />
-    <state width="1627" height="406" key="GridCell.Tab.1.bottom" timestamp="1590213932034">
+    <state width="1627" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1591421208070" />
+    <state width="1627" height="406" key="GridCell.Tab.1.bottom" timestamp="1590463334764">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1627" height="406" key="GridCell.Tab.1.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1590213932034" />
-    <state width="1627" height="406" key="GridCell.Tab.1.center" timestamp="1590213932033">
+    <state width="1627" height="406" key="GridCell.Tab.1.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1590463334764" />
+    <state width="1627" height="406" key="GridCell.Tab.1.center" timestamp="1590463334764">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1627" height="406" key="GridCell.Tab.1.center/0.23.2560.1353@0.23.2560.1353" timestamp="1590213932033" />
-    <state width="1627" height="406" key="GridCell.Tab.1.left" timestamp="1590213932033">
+    <state width="1627" height="406" key="GridCell.Tab.1.center/0.23.2560.1353@0.23.2560.1353" timestamp="1590463334764" />
+    <state width="1627" height="406" key="GridCell.Tab.1.left" timestamp="1590463334763">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1627" height="406" key="GridCell.Tab.1.left/0.23.2560.1353@0.23.2560.1353" timestamp="1590213932033" />
-    <state width="1627" height="406" key="GridCell.Tab.1.right" timestamp="1590213932033">
+    <state width="1627" height="406" key="GridCell.Tab.1.left/0.23.2560.1353@0.23.2560.1353" timestamp="1590463334763" />
+    <state width="1627" height="406" key="GridCell.Tab.1.right" timestamp="1590463334764">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state width="1627" height="406" key="GridCell.Tab.1.right/0.23.2560.1353@0.23.2560.1353" timestamp="1590213932033" />
+    <state width="1627" height="406" key="GridCell.Tab.1.right/0.23.2560.1353@0.23.2560.1353" timestamp="1590463334764" />
     <state x="1495" y="370" key="RollbackChangesDialog" timestamp="1589338230929">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -466,13 +477,28 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="711" y="224" key="SettingsEditor/0.23.2560.1353@0.23.2560.1353" timestamp="1589291398168" />
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1590231036251">
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2" timestamp="1590233041333">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
-    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1590231036251" />
+    <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1590233041333" />
     <state x="1072" y="611" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588720462057">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="1072" y="611" key="git4idea.remote.GitConfigureRemotesDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1588720462057" />
+    <state x="718" y="325" width="670" height="676" key="search.everywhere.popup" timestamp="1591420105236">
+      <screen x="0" y="23" width="2560" height="1353" />
+    </state>
+    <state x="718" y="325" width="670" height="676" key="search.everywhere.popup/0.23.2560.1353@0.23.2560.1353" timestamp="1591420105236" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/cid3.java</url>
+          <line>2440</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
