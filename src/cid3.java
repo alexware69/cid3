@@ -1024,7 +1024,7 @@ public class cid3 implements Serializable{
             if (attributeTypes[attribute] == AttributeType.Continuous){
                 if(domainsIndexToValue[attribute].containsValue("?")){
                     //Find mean value
-                    double mean = meanValue(attribute);
+                    double mean = meanValues[attribute];
                     //Get index
                     int index = domainsValueToIndex[attribute].get("?");
                     //Replace missing with mean
