@@ -1,10 +1,12 @@
-import java.io.*;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.time.Instant;
 import java.time.Duration;
-import java.util.zip.GZIPOutputStream;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+
+import java.io.*;
+import java.util.*;
 
 public class cid3 implements Serializable{
     enum AttributeType {Discrete, Continuous, Ignore};
@@ -892,7 +894,7 @@ public class cid3 implements Serializable{
                     selectedAtts = new ArrayList<Integer>();
                     while (selectedAtts.size() < numAtt) {
                         randomAttribute = rand.nextInt(numAttributes - 1);
-                        if (!selectedAtts.contains(randomAttribute) && attributeTypes[j] != AttributeType.Ignore) selectedAtts.add(randomAttribute);
+                        if (!selectedAtts.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAtts.add(randomAttribute);
                     }
                     decomposeNode((TreeNode) node.children.get(j), selectedAtts, mySeed + 1 + j);
                 }
@@ -905,15 +907,15 @@ public class cid3 implements Serializable{
                     //if (globalThreads.size() < maxThreads) {
                     //    Thread thread = new Thread() {
                     //        public void run() {
-                                decomposeNode((TreeNode) node.children.get(j), selectedAtts, mySeed + 1 + j);
-                     //       }
-                      //  };
+                    decomposeNode((TreeNode) node.children.get(j), selectedAtts, mySeed + 1 + j);
+                    //       }
+                    //  };
 
                     //    threads.add(thread);
-                     //   globalThreads.add(thread);
-                     //   thread.start();
+                    //   globalThreads.add(thread);
+                    //   thread.start();
                     //}
-                   // else decomposeNode((TreeNode) node.children.get(j2), selectedAtts2, mySeed + 1 + j2);
+                    // else decomposeNode((TreeNode) node.children.get(j2), selectedAtts2, mySeed + 1 + j2);
                 }
 
                 while (threads.size() > 0){
@@ -961,61 +963,61 @@ public class cid3 implements Serializable{
                 decomposeNode((TreeNode) node.children.get(1), selectedAtts, 0);
             }
             else //if is a Random Forest, don't create more threads
-            if(isRandomForest) {
-                Random rand = new Random(mySeed);
-                int randomAttribute;
-                //randomAttribute = rand.nextInt(numAttributes - 1);
-                int numAtt = selectedAtts.size();
+                if(isRandomForest) {
+                    Random rand = new Random(mySeed);
+                    int randomAttribute;
+                    //randomAttribute = rand.nextInt(numAttributes - 1);
+                    int numAtt = selectedAtts.size();
 
-                selectedAtts = new ArrayList<Integer>();
-                while (selectedAtts.size() < numAtt) {
-                    randomAttribute = rand.nextInt(numAttributes - 1);
-                    if (!selectedAtts.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAtts.add(randomAttribute);
+                    selectedAtts = new ArrayList<Integer>();
+                    while (selectedAtts.size() < numAtt) {
+                        randomAttribute = rand.nextInt(numAttributes - 1);
+                        if (!selectedAtts.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAtts.add(randomAttribute);
+                    }
+                    decomposeNode((TreeNode) node.children.get(0), selectedAtts, mySeed + 1);
+
+                    selectedAtts = new ArrayList<Integer>();
+                    while (selectedAtts.size() < numAtt) {
+                        randomAttribute = rand.nextInt(numAttributes - 1);
+                        if (!selectedAtts.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAtts.add(randomAttribute);
+                    }
+                    decomposeNode((TreeNode) node.children.get(1), selectedAtts, mySeed + 2);
                 }
-                decomposeNode((TreeNode) node.children.get(0), selectedAtts, mySeed + 1);
+                else {//also now for single trees don't create more threads
+                    //final ArrayList<Integer> selectedAtts2 =  selectedAtts;
 
-                selectedAtts = new ArrayList<Integer>();
-                while (selectedAtts.size() < numAtt) {
-                    randomAttribute = rand.nextInt(numAttributes - 1);
-                    if (!selectedAtts.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAtts.add(randomAttribute);
+                    //if (globalThreads.size() < maxThreads) {
+                    //   Thread thread = new Thread() {
+                    //       public void run() {
+                    decomposeNode((TreeNode) node.children.get(0), selectedAtts, mySeed + 1);
+                    //       }
+                    //   };
+                    //   threads.add(thread);
+                    //   globalThreads.add(thread);
+                    //  thread.start();
+
+                    //  thread = new Thread() {
+                    //      public void run() {
+                    decomposeNode((TreeNode) node.children.get(1), selectedAtts, mySeed + 2);
+                    //      }
+                    //  };
+                    //  threads.add(thread);
+                    //  globalThreads.add(thread);
+                    //  thread.start();
+
+                    //  while (threads.size() > 0){
+                    //      Thread current = threads.get(threads.size()-1);
+                    //      if (!current.isAlive()) {
+                    //          globalThreads.remove(current);
+                    //          threads.remove(current);
+                    //     }
+                    //  }
+                    //}
+                    //else {
+                    //    decomposeNode((TreeNode) node.children.get(0), selectedAtts2, mySeed + 1);
+                    //    decomposeNode((TreeNode) node.children.get(1), selectedAtts2, mySeed + 2);
+                    //}
                 }
-                decomposeNode((TreeNode) node.children.get(1), selectedAtts, mySeed + 2);
-            }
-            else {//also now for single trees don't create more threads
-                //final ArrayList<Integer> selectedAtts2 =  selectedAtts;
-
-                //if (globalThreads.size() < maxThreads) {
-                 //   Thread thread = new Thread() {
-                 //       public void run() {
-                            decomposeNode((TreeNode) node.children.get(0), selectedAtts, mySeed + 1);
-                 //       }
-                 //   };
-                 //   threads.add(thread);
-                 //   globalThreads.add(thread);
-                  //  thread.start();
-
-                  //  thread = new Thread() {
-                  //      public void run() {
-                            decomposeNode((TreeNode) node.children.get(1), selectedAtts, mySeed + 2);
-                  //      }
-                  //  };
-                  //  threads.add(thread);
-                  //  globalThreads.add(thread);
-                  //  thread.start();
-
-                  //  while (threads.size() > 0){
-                  //      Thread current = threads.get(threads.size()-1);
-                  //      if (!current.isAlive()) {
-                  //          globalThreads.remove(current);
-                  //          threads.remove(current);
-                   //     }
-                  //  }
-                //}
-                //else {
-                //    decomposeNode((TreeNode) node.children.get(0), selectedAtts2, mySeed + 1);
-                //    decomposeNode((TreeNode) node.children.get(1), selectedAtts2, mySeed + 2);
-                //}
-            }
         }
     }
 
@@ -1034,31 +1036,18 @@ public class cid3 implements Serializable{
                 }
             }
             else
-                if (attributeTypes[attribute] == AttributeType.Discrete){
-                    if(domainsIndexToValue[attribute].containsValue("?")){
-                        //Find most common value
-                        int mostCommonValue = mostCommonValues[attribute];
-                        String mostCommonValueStr = (String) domainsIndexToValue[attribute].get(mostCommonValue);
-                        //Get index
-                        int index = domainsValueToIndex[attribute].get("?");
-                        //Replace missing with most common
-                        domainsIndexToValue[attribute].replace(index,"?",mostCommonValueStr);
-                        domainsValueToIndex[attribute].remove("?");
-                        domainsValueToIndex[attribute].put(mostCommonValueStr,index);
-                    }
-                /*
-                int index_of_missing = 0;
-                int mostCommonValue = mostCommonValues[attribute];
-                for (int i = 0; i < trainData.size(); i++) {
-                    DataPoint point = (DataPoint) trainData.get(i);
-                    if (point.attributes[attribute] == index_of_missing)
-                        point.attributes[attribute] = mostCommonValue;
+            if (attributeTypes[attribute] == AttributeType.Discrete){
+                if(domainsIndexToValue[attribute].containsValue("?")){
+                    //Find most common value
+                    int mostCommonValue = mostCommonValues[attribute];
+                    String mostCommonValueStr = (String) domainsIndexToValue[attribute].get(mostCommonValue);
+                    //Get index
+                    int index = domainsValueToIndex[attribute].get("?");
+                    //Replace missing with most common
+                    domainsIndexToValue[attribute].replace(index,"?",mostCommonValueStr);
+                    domainsValueToIndex[attribute].remove("?");
+                    domainsValueToIndex[attribute].put(mostCommonValueStr,index);
                 }
-                for (int i = 0; i < testData.size(); i++) {
-                    DataPoint point = (DataPoint) testData.get(i);
-                    if (point.attributes[attribute] == index_of_missing)
-                        point.attributes[attribute] = mostCommonValue;
-                }*/
             }
         }
     }
@@ -1107,7 +1096,7 @@ public class cid3 implements Serializable{
                 if (frequencies[i] > mostFrequent) {
                     mostFrequent = frequencies[i];
                     index = i;
-            }
+                }
         }
         return index;
     }
@@ -1172,13 +1161,13 @@ public class cid3 implements Serializable{
                     }
                 }
                 else
-                    if (attributeTypes[i] == AttributeType.Discrete) {
-                        point.attributes[i] = getSymbolValue(i, next);
-                    }
-                    else
-                        if (attributeTypes[i] == AttributeType.Ignore){
-                            point.attributes[i]  = getSymbolValue(i, next);
-                        }
+                if (attributeTypes[i] == AttributeType.Discrete) {
+                    point.attributes[i] = getSymbolValue(i, next);
+                }
+                else
+                if (attributeTypes[i] == AttributeType.Ignore){
+                    point.attributes[i]  = getSymbolValue(i, next);
+                }
             }
             data.add(point);
             //root.data.add(point);
@@ -1269,13 +1258,13 @@ public class cid3 implements Serializable{
                     }
                 }
                 else
-                    if (attributeTypes[i] == AttributeType.Discrete) {
-                        point.attributes[i] = getSymbolValue(i, next);
-                    }
-                    else
-                        if (attributeTypes[i] == AttributeType.Ignore){
-                            point.attributes[i]  = getSymbolValue(i, next);
-                        }
+                if (attributeTypes[i] == AttributeType.Discrete) {
+                    point.attributes[i] = getSymbolValue(i, next);
+                }
+                else
+                if (attributeTypes[i] == AttributeType.Ignore){
+                    point.attributes[i]  = getSymbolValue(i, next);
+                }
             }
             data.add(point);
             input = bin.readLine();
@@ -1432,7 +1421,7 @@ public class cid3 implements Serializable{
             //int []values = getAllValues(node.data, outputattr );
             //if (values.length == 1) {
 //				System.out.println(tab + "\t" + attributeNames[outputattr] + " = \"" + domainsIndexToValue[outputattr].get(values[0]) + "\";");
-             //   return;
+            //   return;
             //}
 //			System.out.print(tab + "\t" + attributeNames[outputattr] + " = {");
 //			for (int i=0; i < values.length; i++) {
@@ -2091,8 +2080,13 @@ public class cid3 implements Serializable{
                     System.out.print("\n");
                     System.out.print("(possible values are: ");
                     String values = "";
+                    ArrayList valuesArray = new ArrayList();
                     for (int i = 0; i < id3.domainsIndexToValue[currentNode.decompositionAttribute].size(); i++) {
-                        values += (String) id3.domainsIndexToValue[currentNode.decompositionAttribute].get(i);
+                        valuesArray.add(id3.domainsIndexToValue[currentNode.decompositionAttribute].get(i));
+                    }
+                    Collections.sort(valuesArray);
+                    for (int i = 0; i < valuesArray.size(); i++){
+                        values += (String) valuesArray.get(i);
                         values += ", ";
                     }
                     values = "?, " + values.substring(0, values.length() - 2);
@@ -2108,7 +2102,7 @@ public class cid3 implements Serializable{
                             }
                             else
                                 attributeValue = id3.domainsValueToIndex[currentNode.decompositionAttribute].get(s);
-                                break;
+                            break;
                         }
                         catch(Exception e){
                             System.out.println("Please enter a valid value:");
@@ -2128,21 +2122,21 @@ public class cid3 implements Serializable{
                                     break;
                                 }
                                 else
-                                    if (s.equals("?")){
-                                        double mean = id3.meanValues[currentNode.decompositionAttribute];
-                                        if (mean <= ((TreeNode)currentNode.children.get(i)).thresholdContinuous) {
-                                            currentNode = (TreeNode) currentNode.children.get(i);
-                                            break;
-                                        }
-                                        else {
-                                            currentNode = (TreeNode) currentNode.children.get(i + 1);
-                                            break;
-                                        }
+                                if (s.equals("?")){
+                                    double mean = id3.meanValues[currentNode.decompositionAttribute];
+                                    if (mean <= ((TreeNode)currentNode.children.get(i)).thresholdContinuous) {
+                                        currentNode = (TreeNode) currentNode.children.get(i);
+                                        break;
                                     }
                                     else {
                                         currentNode = (TreeNode) currentNode.children.get(i + 1);
                                         break;
                                     }
+                                }
+                                else {
+                                    currentNode = (TreeNode) currentNode.children.get(i + 1);
+                                    break;
+                                }
                             }
                             else{
                                 System.out.print("\n");
@@ -2479,11 +2473,16 @@ public class cid3 implements Serializable{
                     System.out.print("\n");
                     System.out.print("(possible values are: ");
                     String values = "";
+                    ArrayList valuesArray = new ArrayList();
                     for (int j = 0; j < id3.domainsIndexToValue[i].size(); j++) {
-                        values += (String) id3.domainsIndexToValue[i].get(j);
+                        valuesArray.add(id3.domainsIndexToValue[i].get(j));
+                    }
+                    Collections.sort(valuesArray);
+                    for (int j = 0; j < valuesArray.size(); j++){
+                        values += (String) valuesArray.get(j);
                         values += ", ";
                     }
-                    //values += "?";
+
                     values = "?, " + values.substring(0, values.length() - 2);
                     System.out.print(values + ")");
                     System.out.print("\n");
@@ -2497,12 +2496,12 @@ public class cid3 implements Serializable{
                             break;
                         }
                         else
-                            if (id3.domainsIndexToValue[i].containsValue(s)){
-                                example.attributes[i] = id3.getSymbolValue(i,s);
-                                break;
-                            }
-                            else
-                                System.out.println("Please enter a valid value:");
+                        if (id3.domainsIndexToValue[i].containsValue(s)){
+                            example.attributes[i] = id3.getSymbolValue(i,s);
+                            break;
+                        }
+                        else
+                            System.out.println("Please enter a valid value:");
                     }
                 }
                 else {
