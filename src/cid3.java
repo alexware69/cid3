@@ -1550,8 +1550,6 @@ public class cid3 implements Serializable{
         String timeElapsedString = formatDuration(timeElapsed);
         System.out.print("Time: " + timeElapsedString);
         System.out.print("\n");
-        playSound();
-
     }
 
     public void createCrossValidation() {
@@ -1651,7 +1649,6 @@ public class cid3 implements Serializable{
         System.out.print("\n");
         System.out.print("Time: " + timeElapsedString);
         System.out.print("\n");
-        playSound();
     }
 
     public void createCrossValidationRF() {
@@ -1732,7 +1729,6 @@ public class cid3 implements Serializable{
         System.out.print("\n");
         System.out.print("Time: " + timeElapsedString);
         System.out.print("\n");
-        playSound();
     }
 
     public void createRandomForest(ArrayList data, ArrayList<TreeNode> roots, boolean cv) {
@@ -1793,7 +1789,6 @@ public class cid3 implements Serializable{
             System.out.print("\n");
             System.out.print("Time: " + timeElapsedString);
             System.out.print("\n");
-            playSound();
         }
     }
 
@@ -2555,24 +2550,7 @@ public class cid3 implements Serializable{
         }
         else System.out.println("The file doesn't exist.");
     }
-
-    public void playSound(){
-        /*try{
-            AudioInputStream audioInputStream =
-                    AudioSystem.getAudioInputStream(
-                            this.getClass().getResource("carcrash.wav"));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.start();
-            // The next lines is needed for the program to play the whole sound, otherwise it plays just a bit and exits.
-            Thread.sleep(5000);
-        }
-        catch(Exception ex)
-        {
-            System.out.print(ex.toString());
-        }
-         */
-    }
+    
     /* Here is the definition of the main function */
     public static void main(String[] args) throws Exception {
 
@@ -2593,7 +2571,7 @@ public class cid3 implements Serializable{
         save.setRequired(false);
         options.addOption(save);
 
-        Option split = new Option("p", "split", false, "split train/test data");
+        Option split = new Option("p", "partition", false, "partition train/test data");
         save.setRequired(false);
         options.addOption(split);
 
