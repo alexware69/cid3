@@ -2571,9 +2571,9 @@ public class cid3 implements Serializable{
         save.setRequired(false);
         options.addOption(save);
 
-        Option split = new Option("p", "partition", false, "partition train/test data");
+        Option partition = new Option("p", "partition", false, "partition train/test data");
         save.setRequired(false);
-        options.addOption(split);
+        options.addOption(partition);
 
         Option criteria = new Option("c", "criteria", true, "input criteria: c[ertainty], e[ntropy], g[ini]");
         criteria.setRequired(false);
@@ -2645,7 +2645,7 @@ public class cid3 implements Serializable{
         else me.isCrossValidation = false;
 
         //Set split data
-        if (cmd.hasOption("split")){
+        if (cmd.hasOption("partition")){
             me.splitTrainData = true;
         }
         else me.splitTrainData = false;
