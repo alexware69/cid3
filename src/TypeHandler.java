@@ -123,7 +123,7 @@ public class TypeHandler
         
         try
         {
-            return cl.newInstance();
+            return cl.getDeclaredConstructor().newInstance();
         }
         catch (Exception e)
         {
