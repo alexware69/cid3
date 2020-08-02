@@ -58,7 +58,7 @@
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.21401751" />
     <property name="project.structure.side.proportion" value="0.32484075" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -84,6 +84,7 @@
       </method>
     </configuration>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -375,7 +376,14 @@
       <option name="project" value="LOCAL" />
       <updated>1593927921210</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="renamed option &quot;split&quot; as &quot;partition&quot;">
+      <created>1593975369100</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1593975369100</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -401,7 +409,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="change the sdk to 14" />
     <MESSAGE value="minor workspace change" />
     <MESSAGE value="small changes to gitignore and exclude" />
     <MESSAGE value="reintroduced other criteria, but is optional" />
@@ -426,7 +433,8 @@
     <MESSAGE value="some optimization" />
     <MESSAGE value="removed the sound file and respective code" />
     <MESSAGE value="replaced deprecated newinstance method with correct one" />
-    <option name="LAST_COMMIT_MESSAGE" value="replaced deprecated newinstance method with correct one" />
+    <MESSAGE value="renamed option &quot;split&quot; as &quot;partition&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="renamed option &quot;split&quot; as &quot;partition&quot;" />
   </component>
   <component name="WindowStateProjectService">
     <state x="935" y="519" key="#Notifications" timestamp="1589290329455">
@@ -454,10 +462,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="947" y="592" key="#xdebugger.evaluate/0.23.2560.1353@0.23.2560.1353" timestamp="1590211618966" />
-    <state x="966" y="165" key="CommitChangelistDialog2" timestamp="1593927921039">
+    <state x="966" y="165" key="CommitChangelistDialog2" timestamp="1593975368856">
       <screen x="0" y="23" width="1920" height="991" />
     </state>
-    <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1593927921039" />
+    <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1593975368856" />
     <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1591421682159" />
     <state width="448" height="466" key="DebuggerActiveHint" timestamp="1590462471949">
       <screen x="0" y="23" width="2560" height="1353" />
@@ -467,25 +475,25 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="512" y="109" key="DiffContextDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1589338879520" />
-    <state width="1358" height="255" key="GridCell.Tab.0.bottom" timestamp="1593779561348">
+    <state width="1358" height="255" key="GridCell.Tab.0.bottom" timestamp="1596361086184">
       <screen x="0" y="23" width="1920" height="991" />
     </state>
-    <state width="1358" height="255" key="GridCell.Tab.0.bottom/0.23.1920.991@0.23.1920.991" timestamp="1593779561348" />
+    <state width="1358" height="255" key="GridCell.Tab.0.bottom/0.23.1920.991@0.23.1920.991" timestamp="1596361086184" />
     <state width="1627" height="330" key="GridCell.Tab.0.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088199" />
-    <state width="1358" height="255" key="GridCell.Tab.0.center" timestamp="1593779561347">
+    <state width="1358" height="255" key="GridCell.Tab.0.center" timestamp="1596361086183">
       <screen x="0" y="23" width="1920" height="991" />
     </state>
-    <state width="1358" height="255" key="GridCell.Tab.0.center/0.23.1920.991@0.23.1920.991" timestamp="1593779561347" />
+    <state width="1358" height="255" key="GridCell.Tab.0.center/0.23.1920.991@0.23.1920.991" timestamp="1596361086183" />
     <state width="1627" height="330" key="GridCell.Tab.0.center/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088189" />
-    <state width="1358" height="255" key="GridCell.Tab.0.left" timestamp="1593779561347">
+    <state width="1358" height="255" key="GridCell.Tab.0.left" timestamp="1596361086183">
       <screen x="0" y="23" width="1920" height="991" />
     </state>
-    <state width="1358" height="255" key="GridCell.Tab.0.left/0.23.1920.991@0.23.1920.991" timestamp="1593779561347" />
+    <state width="1358" height="255" key="GridCell.Tab.0.left/0.23.1920.991@0.23.1920.991" timestamp="1596361086183" />
     <state width="1627" height="330" key="GridCell.Tab.0.left/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088189" />
-    <state width="1358" height="255" key="GridCell.Tab.0.right" timestamp="1593779561348">
+    <state width="1358" height="255" key="GridCell.Tab.0.right" timestamp="1596361086184">
       <screen x="0" y="23" width="1920" height="991" />
     </state>
-    <state width="1358" height="255" key="GridCell.Tab.0.right/0.23.1920.991@0.23.1920.991" timestamp="1593779561348" />
+    <state width="1358" height="255" key="GridCell.Tab.0.right/0.23.1920.991@0.23.1920.991" timestamp="1596361086184" />
     <state width="1627" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088199" />
     <state width="1627" height="406" key="GridCell.Tab.1.bottom" timestamp="1590463334764">
       <screen x="0" y="23" width="2560" height="1353" />
@@ -507,15 +515,15 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="1495" y="370" key="RollbackChangesDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1589338230929" />
-    <state x="555" y="134" key="SettingsEditor" timestamp="1593921825873">
+    <state x="527" y="164" key="SettingsEditor" timestamp="1594012692651">
       <screen x="0" y="23" width="1920" height="991" />
     </state>
-    <state x="555" y="134" key="SettingsEditor/0.23.1920.991@0.23.1920.991" timestamp="1593921825873" />
+    <state x="527" y="164" key="SettingsEditor/0.23.1920.991@0.23.1920.991" timestamp="1594012692651" />
     <state x="711" y="224" key="SettingsEditor/0.23.2560.1353@0.23.2560.1353" timestamp="1589291398168" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1593927936766">
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1593975377326">
       <screen x="0" y="23" width="1920" height="991" />
     </state>
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1593927936766" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1593975377326" />
     <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1591421688805" />
     <state x="1072" y="611" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1588720462057">
       <screen x="0" y="23" width="2560" height="1353" />

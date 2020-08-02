@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.*;
 
 public class cid3 implements Serializable{
-    enum AttributeType {Discrete, Continuous, Ignore};
+    enum AttributeType {Discrete, Continuous, Ignore}
     int numAttributes;		// The number of attributes including the output attribute
     String[] attributeNames;	// The names of all attributes.  It is an array of dimension numAttributes.  The last attribute is the output attribute
     AttributeType[] attributeTypes;
@@ -27,7 +27,7 @@ public class cid3 implements Serializable{
     */
     HashMap<Integer,Object> [] domainsIndexToValue;
     HashMap<Object,Integer> [] domainsValueToIndex;
-    enum Criteria {Entropy, Certainty, Gini};
+    enum Criteria {Entropy, Certainty, Gini}
     /*  The class to represent a data point consisting of numAttributes values of attributes  */
     class DataPoint implements Serializable{
 
@@ -44,7 +44,7 @@ public class cid3 implements Serializable{
         public DataPoint(int numattributes) {
             attributes = new int[numattributes];
         }
-    };
+    }
 
     //This class will be used to calculate all probabilities in one pass.
     public class Probabilities implements Serializable{
@@ -96,7 +96,7 @@ public class cid3 implements Serializable{
         public TreeNode() {
             data = new ArrayList();
         }
-    };
+    }
 
     /*  The root of the decomposition tree  */
     TreeNode root = new TreeNode();
