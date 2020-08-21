@@ -1332,16 +1332,19 @@ public class cid3 implements Serializable{
         ArrayList attributes = new ArrayList();
         //Read the names file
         try {
-            if (filename.endsWith(".data")){
+            if (filename.contains(".")){
                 String[] split = filename.split("\\.");
                 File inputFile = new File(split[0] + ".names");
                 in = new FileInputStream(inputFile);
             }
-            else return;
+            else {
+                File inputFile = new File(fileName + ".names");
+                in = new FileInputStream(inputFile);
+            }
 
 
         } catch ( Exception e) {
-            System.err.println( "Unable to open names file: " + filename.replaceFirst(".txt", ".names") + "\n" + e);
+            System.err.println( "Unable to open names file.");
             System.exit(1);
         }
         BufferedReader bin = new BufferedReader(new InputStreamReader(in) );
@@ -1351,7 +1354,7 @@ public class cid3 implements Serializable{
             input = bin.readLine();
         }
         catch (Exception e){
-            System.err.println( "Unable to read line.");
+            System.err.println( "Unable to read line in names file.");
             System.exit(1);
         }
         String[] theClass = input.split(":");
@@ -1361,7 +1364,7 @@ public class cid3 implements Serializable{
             input = bin.readLine();
         }
         catch (Exception e){
-            System.err.println( "Unable to read line.");
+            System.err.println( "Unable to read line in names file.");
             System.exit(1);
         }
         while(input != null) {
@@ -1376,7 +1379,7 @@ public class cid3 implements Serializable{
                 input = bin.readLine();
             }
             catch (Exception e){
-                System.err.println( "Unable to read line.");
+                System.err.println( "Unable to read line in names file.");
                 System.exit(1);
             }
         }
