@@ -1197,7 +1197,7 @@ public class cid3 implements Serializable{
      If any line starts with // it is taken as a comment and ignored.
      Blank lines are also ignored.
      */
-    public int readData(String filename)  throws Exception {
+    public void readData(String filename) {
 
         FileInputStream in = null;
         ArrayList data = new ArrayList();
@@ -1212,12 +1212,18 @@ public class cid3 implements Serializable{
         }
 
         BufferedReader bin = new BufferedReader(new InputStreamReader(in) );
-        String input;
+        String input = null;
         StringTokenizer tokenizer;
 
         //Read names file
-        if (readNames(filename) == 0) return 0;
-        input = bin.readLine();
+        readNames(filename);
+        try {
+            input = bin.readLine();
+        }
+        catch (Exception e){
+            System.err.println( "Unable to read line from file.");
+            System.exit(1);
+        }
         while(input != null) {
             if (input.trim().equals("")) break;
             if (input.startsWith("//")) continue;
@@ -1229,7 +1235,7 @@ public class cid3 implements Serializable{
                 System.err.println( "Read " + data.size() + " data");
                 System.err.println( "Last line read: " + input);
                 System.err.println( "Expecting " + numAttributes  + " attributes");
-                return 0;
+                System.exit(1);
             }
 
             //Insert missing value "?" into discrete attributes. This is needed for later accepting missing values.
@@ -1253,7 +1259,7 @@ public class cid3 implements Serializable{
                         }
                         catch (Exception e){
                             System.err.println( "Error reading continuous value in train data.");
-                            return 0;
+                            System.exit(1);
                         }
                     }
                 }
@@ -1267,10 +1273,21 @@ public class cid3 implements Serializable{
                 }
             }
             data.add(point);
-            input = bin.readLine();
+            try {
+                input = bin.readLine();
+            }
+            catch (Exception e){
+                System.err.println( "Unable to read line from file.");
+                System.exit(1);
+            }
         }
-
-        bin.close();
+        try {
+            bin.close();
+        }
+        catch (Exception e){
+            System.err.println( "Unable to close file.");
+            System.exit(1);
+        }
 
 
         int size = data.size();
@@ -1306,14 +1323,12 @@ public class cid3 implements Serializable{
         }
         else System.out.print("Read data: " + root.data.size() + " cases for training. ");
         System.out.print("\n");
-
-        return 1;
     }	// End of function readData
 
-    public int readNames(String filename) throws Exception{
+    public void readNames(String filename){
         FileInputStream in = null;
 
-        String input;
+        String input = null;
         ArrayList attributes = new ArrayList();
         //Read the names file
         try {
@@ -1322,22 +1337,34 @@ public class cid3 implements Serializable{
                 File inputFile = new File(split[0] + ".names");
                 in = new FileInputStream(inputFile);
             }
-            else return 0;
+            else return;
 
 
         } catch ( Exception e) {
             System.err.println( "Unable to open names file: " + filename.replaceFirst(".txt", ".names") + "\n" + e);
-            return 1;
+            System.exit(1);
         }
         BufferedReader bin = new BufferedReader(new InputStreamReader(in) );
         bin = new BufferedReader(new InputStreamReader(in) );
 
         //Read first line containing class values.
-        input = bin.readLine();
+        try {
+            input = bin.readLine();
+        }
+        catch (Exception e){
+            System.err.println( "Unable to read line.");
+            System.exit(1);
+        }
         String[] theClass = input.split(":");
 
         //Save attribute names and types to a tuple array.
-        input = bin.readLine();
+        try {
+            input = bin.readLine();
+        }
+        catch (Exception e){
+            System.err.println( "Unable to read line.");
+            System.exit(1);
+        }
         while(input != null) {
             if (!input.startsWith("|")) {
                 String[] split = input.split(":");
@@ -1346,7 +1373,13 @@ public class cid3 implements Serializable{
                     attributes.add(t);
                 }
             }
-            input = bin.readLine();
+            try {
+                input = bin.readLine();
+            }
+            catch (Exception e){
+                System.err.println( "Unable to read line.");
+                System.exit(1);
+            }
         }
 
         //Set numAttributes. +1 for the class attribute
@@ -1360,7 +1393,7 @@ public class cid3 implements Serializable{
             System.err.println( "Read line: " + input);
             System.err.println( "Could not obtain the names of attributes in the line");
             System.err.println( "Expecting at least one input attribute and one output attribute");
-            return 0;
+            System.exit(1);
         }
 
         //Initialize domains
@@ -1400,7 +1433,6 @@ public class cid3 implements Serializable{
 
         //Set attribute type for the class.
         attributeTypes[numAttributes - 1] = AttributeType.Discrete;
-        return 1;
     }
 
     //-----------------------------------------------------------------------
@@ -2717,7 +2749,7 @@ public class cid3 implements Serializable{
             else me.testDataExists = false;
 
             //Read data
-            int status = me.readData(inputFilePath);
+            me.readData(inputFilePath);
             //Set global variable
             me.fileName = inputFilePath;
             //Read test data
