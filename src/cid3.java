@@ -1345,7 +1345,6 @@ public class cid3 implements Serializable{
             System.exit(1);
         }
         BufferedReader bin = new BufferedReader(new InputStreamReader(in) );
-        bin = new BufferedReader(new InputStreamReader(in) );
 
         //Read first line containing class values.
         try {
