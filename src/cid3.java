@@ -1113,7 +1113,7 @@ public class cid3 implements Serializable{
         }
     }
 
-    public int readTestData(String filename){
+    public void readTestData(String filename){
         //Read the test file
         FileInputStream in = null;
         ArrayList data = new ArrayList();
@@ -1122,7 +1122,7 @@ public class cid3 implements Serializable{
             in = new FileInputStream(inputFile);
         } catch ( Exception e) {
             System.err.println( "Unable to open data file: " + filename + "\n" + e);
-            return 0;
+            System.exit(1);
         }
 
         BufferedReader bin = new BufferedReader(new InputStreamReader(in) );
@@ -1138,7 +1138,7 @@ public class cid3 implements Serializable{
             }
             if (input == null) {
                 System.err.println( "No data found in the data file: " + filename + "\n");
-                return 0;
+                System.exit(1);
             }
             if (input.startsWith("//")) continue;
             if (input.equals("")) continue;
@@ -1162,7 +1162,7 @@ public class cid3 implements Serializable{
                         }
                         catch (Exception e){
                             System.err.println( "Error reading continuous value in test data.");
-                            return 0;
+                            System.exit(1);
                         }
                     }
                 }
@@ -1204,7 +1204,6 @@ public class cid3 implements Serializable{
 
         System.out.print("Read data: " + testData.size() + " cases for testing. ");
         System.out.print("\n");
-        return 1;
     }
 
     /** Function to read the data file.
