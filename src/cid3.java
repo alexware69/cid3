@@ -1113,7 +1113,7 @@ public class cid3 implements Serializable{
         }
     }
 
-    public int readTestData(String filename) throws Exception{
+    public int readTestData(String filename){
         //Read the test file
         FileInputStream in = null;
         ArrayList data = new ArrayList();
@@ -1126,10 +1126,16 @@ public class cid3 implements Serializable{
         }
 
         BufferedReader bin = new BufferedReader(new InputStreamReader(in) );
-        String input;
+        String input = null;
 
         while(true) {
-            input = bin.readLine();
+            try {
+                input = bin.readLine();
+            }
+            catch (Exception e){
+                System.err.println( "Unable to read line from test file.");
+                System.exit(1);
+            }
             if (input == null) {
                 System.err.println( "No data found in the data file: " + filename + "\n");
                 return 0;
@@ -1171,10 +1177,22 @@ public class cid3 implements Serializable{
             }
             data.add(point);
             //root.data.add(point);
-            input = bin.readLine();
+            try {
+                input = bin.readLine();
+            }
+            catch (Exception e){
+                System.err.println( "Unable to read line from test file.");
+                System.exit(1);
+            }
         }
 
-        bin.close();
+        try {
+            bin.close();
+        }
+        catch (Exception e){
+            System.err.println( "Unable to close test file.");
+            System.exit(1);
+        }
         testData = data;
 
         //Resize root.frequencyClasses in case new class values were found in test dataset
@@ -1221,7 +1239,7 @@ public class cid3 implements Serializable{
             input = bin.readLine();
         }
         catch (Exception e){
-            System.err.println( "Unable to read line from file.");
+            System.err.println( "Unable to read line from data file.");
             System.exit(1);
         }
         while(input != null) {
@@ -1277,7 +1295,7 @@ public class cid3 implements Serializable{
                 input = bin.readLine();
             }
             catch (Exception e){
-                System.err.println( "Unable to read line from file.");
+                System.err.println( "Unable to read line from data file.");
                 System.exit(1);
             }
         }
@@ -1285,7 +1303,7 @@ public class cid3 implements Serializable{
             bin.close();
         }
         catch (Exception e){
-            System.err.println( "Unable to close file.");
+            System.err.println( "Unable to close data file.");
             System.exit(1);
         }
 
