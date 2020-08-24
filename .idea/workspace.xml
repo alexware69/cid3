@@ -58,7 +58,7 @@
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.21401751" />
     <property name="project.structure.side.proportion" value="0.32484075" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -418,7 +418,14 @@
       <option name="project" value="LOCAL" />
       <updated>1598088066099</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="finished something I thought it was done...again">
+      <created>1598088445968</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1598088445968</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -444,7 +451,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="removed some files from git" />
     <MESSAGE value="started implementing fill cases files" />
     <MESSAGE value="continue implementing fill cases files" />
     <MESSAGE value="still implementing fill cases files" />
@@ -469,7 +475,8 @@
     <MESSAGE value="removed a redundant initialization." />
     <MESSAGE value="fixed some error handling in readNames method" />
     <MESSAGE value="finished something I thought it was done" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished something I thought it was done" />
+    <MESSAGE value="finished something I thought it was done...again" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished something I thought it was done...again" />
   </component>
   <component name="WindowStateProjectService">
     <state x="536" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593779542200">
@@ -481,12 +488,12 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="947" y="592" key="#xdebugger.evaluate/0.23.2560.1353@0.23.2560.1353" timestamp="1590211618966" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1598088065913">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1598088445858">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
     <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1591421682159" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1598088065913" />
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1598088445858" />
     <state width="448" height="466" key="DebuggerActiveHint" timestamp="1590462471949">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -531,17 +538,17 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state width="1627" height="406" key="GridCell.Tab.1.right/0.23.2560.1353@0.23.2560.1353" timestamp="1590463334764" />
-    <state x="527" y="165" key="SettingsEditor" timestamp="1598013905897">
+    <state x="563" y="107" key="SettingsEditor" timestamp="1598233380702">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="527" y="164" key="SettingsEditor/0.23.1920.991@0.23.1920.991" timestamp="1594012692651" />
-    <state x="527" y="165" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1598013905897" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1598088076133">
+    <state x="563" y="107" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1598233380702" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1598088453858">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1596361336239" />
     <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1591421688805" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1598088076133" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1598088453858" />
     <state x="718" y="325" width="670" height="676" key="search.everywhere.popup" timestamp="1591420105236">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>

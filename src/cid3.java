@@ -2603,7 +2603,7 @@ public class cid3 implements Serializable{
     }
 
     /* Here is the definition of the main function */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         cid3 me = new cid3();
 
