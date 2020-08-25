@@ -165,9 +165,9 @@ public class cid3 implements Serializable{
         int numvaluesClass = domainsIndexToValue[classAttribute].size();
         int value = n.frequencyClasses[0];
         int result = 0;
-        if(n.frequencyClasses.length < numvaluesClass){
-            String error = "Error";
-        }
+        //if(n.frequencyClasses.length < numvaluesClass){
+        //    String error = "Error";
+        //}
         for(int i = 1; i < numvaluesClass; i++){
             if (n.frequencyClasses[i] > value){
                 value = n.frequencyClasses[i];
@@ -856,7 +856,7 @@ public class cid3 implements Serializable{
 
         node.certaintyUsedToDecompose = bestCertainty.certainty;
 
-        ArrayList<Thread> threads = new ArrayList<Thread>();
+        //ArrayList<Thread> threads = new ArrayList<Thread>();
         //if attribute is discrete
         if (attributeTypes[selectedAttribute] == AttributeType.Discrete){
             // Now divide the dataset using the selected attribute
@@ -918,13 +918,13 @@ public class cid3 implements Serializable{
                     // else decomposeNode((TreeNode) node.children.get(j2), selectedAtts2, mySeed + 1 + j2);
                 }
 
-                while (threads.size() > 0){
-                    Thread current = threads.get(threads.size()-1);
-                    if (!current.isAlive()) {
-                        globalThreads.remove(current);
-                        threads.remove(current);
-                    }
-                }
+                //while (threads.size() > 0){
+                //    Thread current = threads.get(threads.size()-1);
+                //    if (!current.isAlive()) {
+                //       globalThreads.remove(current);
+                //       threads.remove(current);
+                //   }
+                //}
             }
         } else { //If attribute is continuous
             node.decompositionAttribute = selectedAttribute;
@@ -1064,7 +1064,7 @@ public class cid3 implements Serializable{
                 counter++;
             }
             catch (Exception e){
-                continue;
+                //continue;
             }
         }
         return sum/counter;
@@ -1092,7 +1092,7 @@ public class cid3 implements Serializable{
         int mostFrequent = 0;
         int index = 0;
         for (int i = 0; i < frequencies.length; i++){
-            if (!((String)domainsIndexToValue[attribute].get(i)).equals("?"))
+            if (!(domainsIndexToValue[attribute].get(i)).equals("?"))
                 if (frequencies[i] > mostFrequent) {
                     mostFrequent = frequencies[i];
                     index = i;
@@ -1374,7 +1374,6 @@ public class cid3 implements Serializable{
             System.err.println( "Unable to read line in names file.");
             System.exit(1);
         }
-        String[] theClass = input.split(":");
 
         //Save attribute names and types to a tuple array.
         try {
@@ -1498,12 +1497,12 @@ public class cid3 implements Serializable{
     }
 
     private void createFile(){
-        ObjectOutputStream oos = null;
-        FileOutputStream fout = null;
+        ObjectOutputStream oos;
+        FileOutputStream fout;
         String fName = fileName;
         fName = fName.substring(0, fName.length() - 4);
         fName = fName + "tree";
-        try{
+        try {
             //Check if file exists...delete it
             File inputFile = new File(fName);
             if (inputFile.exists()) inputFile.delete();
@@ -1513,17 +1512,16 @@ public class cid3 implements Serializable{
             GZIPOutputStream gz = new GZIPOutputStream(fout);
             oos = new ObjectOutputStream(gz);
             oos.writeObject(this);
-            if(oos != null){
-                oos.close();
-            }
-        } catch (Exception ex) {
+            oos.close();
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     private void createFileRF(){
-        ObjectOutputStream oos = null;
-        FileOutputStream fout = null;
+        ObjectOutputStream oos;
+        FileOutputStream fout;
         String fName = fileName;
         fName = fName.substring(0, fName.length() - 4);
         fName = fName + "forest";
@@ -1537,9 +1535,8 @@ public class cid3 implements Serializable{
             GZIPOutputStream gz = new GZIPOutputStream(fout);
             oos = new ObjectOutputStream(gz);
             oos.writeObject(this);
-            if(oos != null){
-                oos.close();
-            }
+            oos.close();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1553,9 +1550,7 @@ public class cid3 implements Serializable{
             GZIPInputStream is = new GZIPInputStream(new FileInputStream(file));
             objectinputstream = new ObjectInputStream(is);
             ret = (cid3) objectinputstream.readObject();
-            if(objectinputstream != null){
-                objectinputstream.close();
-            }
+            objectinputstream.close();
         }
         catch (Exception e) {
             System.out.print("Error deserializing file.");
@@ -1914,10 +1909,10 @@ public class cid3 implements Serializable{
         }
         //Voting now
         for (int i=0; i < results.size(); i++){
-            if (results.get(i) == true) tru++;
+            if (results.get(i)) tru++;
             else fals++;
         }
-        return tru > fals ? true : false;
+        return tru > fals;
     }
 
     public void testDecisionTree(){
@@ -2227,7 +2222,6 @@ public class cid3 implements Serializable{
         }
 
         File inputTreeFile = new File(treeFile);
-        FileInputStream cases = null;
         cid3 id3;
 
         FileWriter fileout = null;
@@ -2309,10 +2303,6 @@ public class cid3 implements Serializable{
                         }
                         else point.attributes[i] = id3.getSymbolValue(i, next);
                     }
-                    else
-                    if (id3.attributeTypes[i] == AttributeType.Ignore){
-                        continue;
-                    }
                 }
                 //Test the example point
                 TreeNode node;
@@ -2362,7 +2352,6 @@ public class cid3 implements Serializable{
         }
 
         File inputForestFile = new File(rfFile);
-        FileInputStream cases = null;
         cid3 id3;
 
         FileWriter fileout = null;
