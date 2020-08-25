@@ -2503,7 +2503,7 @@ public class cid3 implements Serializable{
 
         File inputFile = new File(file);
         Scanner in = new Scanner(System.in);
-        cid3 id3 = new cid3();
+        cid3 id3;
         if (inputFile.exists()) {
             id3 = deserializeFile(file);
             System.out.print("\n");
