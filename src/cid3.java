@@ -127,39 +127,6 @@ public class cid3 implements Serializable{
         return index;
     }
 
-    public void insertSymbolValue(int attribute, Object symbol) {
-        if (!domainsIndexToValue[attribute].containsValue(symbol)) {
-            if (domainsIndexToValue[attribute].isEmpty()){
-                domainsIndexToValue[attribute].put(0, symbol);
-                domainsValueToIndex[attribute].put(symbol, 0);
-            }
-            else {
-                domainsIndexToValue[attribute].put(domainsIndexToValue[attribute].size(), symbol);
-                domainsValueToIndex[attribute].put(symbol, domainsValueToIndex[attribute].size());
-            }
-        }
-    }
-
-    /*  Returns all the values of the specified attribute in the data set  */
-    public int []getAllValues(ArrayList data, int attribute) {
-        ArrayList values = new ArrayList();
-        int num = data.size();
-        for (int i=0; i< num; i++) {
-            DataPoint point = (DataPoint)data.get(i);
-            String symbol = (String)domainsIndexToValue[attribute].get(point.attributes[attribute] );
-            int index = values.indexOf(symbol);
-            if (index < 0) {
-                values.add(symbol);
-            }
-        }
-
-        int []array = new int[values.size()];
-        for (int i=0; i< array.length; i++) {
-            String symbol = (String)values.get(i);
-            array[i] = domainsValueToIndex[attribute].get(symbol);
-        }
-        return array;
-    }
     // Returns the most common class for the specified node
     public int mostCommonFinal(TreeNode n){
         int numvaluesClass = domainsIndexToValue[classAttribute].size();
