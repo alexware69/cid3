@@ -1443,7 +1443,14 @@ public class cid3 implements Serializable{
         try {
             //Check if file exists...delete it
             File inputFile = new File(fName);
-            if (inputFile.exists()) inputFile.delete();
+            if (inputFile.exists()) {
+                boolean res = inputFile.delete();
+                if (!res){
+                    System.out.print("Error deleting previous tree file.");
+                    System.out.print("\n");
+                    System.exit(1);
+                }
+            }
 
             //Serialize and save to disk
             fout = new FileOutputStream(fName, false);
@@ -1466,7 +1473,12 @@ public class cid3 implements Serializable{
         try{
             //Check if file exists...delete it
             File inputFile = new File(fName);
-            if (inputFile.exists()) inputFile.delete();
+            boolean res = inputFile.delete();
+            if (!res){
+                System.out.print("Error deleting previous random forest file.");
+                System.out.print("\n");
+                System.exit(1);
+            }
 
             //Serialize and save to disk
             fout = new FileOutputStream(fName, false);
@@ -1606,12 +1618,8 @@ public class cid3 implements Serializable{
                 if (attributeTypes[j] == AttributeType.Ignore) continue;
                 selectedAttributes.add(j);
             }
-            final Integer i2 = i;
-            Thread thread = new Thread(){
-                public void run(){
-                    decomposeNode(rootsCrossValidation.get(i2), selectedAttributes, 0);
-                }
-            };
+            final int i2 = i;
+            Thread thread = new Thread(() -> decomposeNode(rootsCrossValidation.get(i2), selectedAttributes, 0));
             threads.add(thread);
             thread.start();
         }
@@ -1741,15 +1749,9 @@ public class cid3 implements Serializable{
             roots.add(cloneRoot);
 
             //Create the Random Forest in parallel
-            final Integer i2 = i;
+            final int i2 = i;
             final ArrayList<Integer> selectedAttributes2 =  selectedAttributes;
-            Thread thread = new Thread(){
-                public void run(){
-                    decomposeNode(roots.get(i2), selectedAttributes2, seed + 1 + i2);
-                    //System.out.print("Tree " + Integer.toString(i2 + 1) + " created.");
-                    //System.out.print("\n");
-                }
-            };
+            Thread thread = new Thread(() -> decomposeNode(roots.get(i2), selectedAttributes2, seed + 1 + i2));
             threads.add(thread);
             thread.start();
         }
@@ -1807,24 +1809,22 @@ public class cid3 implements Serializable{
         TreeNode node;
         node = testExamplePoint(example, root);
         if (node.data == null || node.data.isEmpty()){
-            if (example.attributes[classAttribute] == mostCommonFinal(node.parent)) return true;
+            return example.attributes[classAttribute] == mostCommonFinal(node.parent);
         }
         else{
-            if (example.attributes[classAttribute] == mostCommonFinal(node)) return true;
+            return example.attributes[classAttribute] == mostCommonFinal(node);
         }
-        return false;
     }
 
     public boolean testExampleCV(DataPoint example, TreeNode tree){
         TreeNode node;
         node = testExamplePoint(example, tree);
         if (node.data == null || node.data.isEmpty()){
-            if (example.attributes[classAttribute] == mostCommonFinal(node.parent)) return true;
+            return example.attributes[classAttribute] == mostCommonFinal(node.parent);
         }
         else{
-            if (example.attributes[classAttribute] == mostCommonFinal(node)) return true;
+            return example.attributes[classAttribute] == mostCommonFinal(node);
         }
-        return false;
     }
 
     public boolean testExampleRF(DataPoint example, ArrayList<TreeNode> roots){
@@ -1897,7 +1897,6 @@ public class cid3 implements Serializable{
 
     public void testCrossValidation(){
         int test_errors;
-        int test_corrects = 0;
         double meanErrors;
         double percentageErrors = 0;
         double[] errorsFoldK = new double[10];
@@ -1906,8 +1905,7 @@ public class cid3 implements Serializable{
             TreeNode currentTree = rootsCrossValidation.get(i);
             ArrayList<DataPoint> currentTest = crossValidationChunks[i];
             for (DataPoint point : currentTest) {
-                if (testExampleCV(point, currentTree)) test_corrects++;
-                else test_errors++;
+                if (!testExampleCV(point, currentTree)) test_errors++;
             }
             percentageErrors += (1.*test_errors/currentTest.size())*100;
 
@@ -1981,11 +1979,9 @@ public class cid3 implements Serializable{
     //This overload method is intended to be used when Random Forest cross-validation is selected.
     public double testRandomForest(ArrayList<DataPoint> testD, ArrayList<TreeNode> roots, int index){
         int test_errors = 0;
-        int test_corrects = 0;
         int test_size = testD.size();
         for (DataPoint point : testD) {
-            if (testExampleRF(point, roots)) test_corrects++;
-            else test_errors++;
+            if (!testExampleRF(point, roots)) test_errors++;
         }
         System.out.print("\n");
         double rounded1 = Math.round((1.*test_errors*100/test_size) * 10) / 10.0;
