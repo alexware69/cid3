@@ -71,9 +71,9 @@ public class cid3 implements Serializable{
         }
     }
 
-    transient ArrayList testData = new ArrayList();
-    transient ArrayList trainData = new ArrayList();
-    transient ArrayList[] crossValidationChunks = new ArrayList[10];
+    transient ArrayList<DataPoint> testData = new ArrayList<>();
+    transient ArrayList<DataPoint> trainData = new ArrayList<>();
+    transient ArrayList<DataPoint>[] crossValidationChunks = new ArrayList[10];
     transient boolean testDataExists = false;
     transient boolean splitTrainData = false;
     transient boolean isRandomForest = false;
@@ -83,26 +83,26 @@ public class cid3 implements Serializable{
      */
     class TreeNode implements Serializable{
         public double certaintyUsedToDecompose = 0;
-        public transient ArrayList data;			// The set of data points if this is a leaf node
+        public transient ArrayList<DataPoint> data;			// The set of data points if this is a leaf node
         public int[] frequencyClasses;          //This is for saving time when calculating most common class
         public int decompositionAttribute;	// If this is not a leaf node, the attribute that is used to divide the set of data points
         public int decompositionValue;		// the attribute-value that is used to divide the parent node
         public String decompositionValueContinuous = "";
         public String decompositionValueContinuousSymbol = "";
         public double thresholdContinuous = 0;
-        public ArrayList children;		// If this is not a leaf node, references to the children nodes
+        public ArrayList<TreeNode> children;		// If this is not a leaf node, references to the children nodes
         public TreeNode parent;			// The parent to this node.  The root has parent == null
 
         public TreeNode() {
-            data = new ArrayList();
+            data = new ArrayList<>();
         }
     }
 
     /*  The root of the decomposition tree  */
     TreeNode root = new TreeNode();
-    ArrayList<TreeNode> rootsRandomForest = new ArrayList<TreeNode>();
+    ArrayList<TreeNode> rootsRandomForest = new ArrayList<>();
     transient ArrayList<TreeNode>[] cvRandomForests = new ArrayList[10];
-    transient ArrayList<TreeNode> rootsCrossValidation = new ArrayList<TreeNode>();
+    transient ArrayList<TreeNode> rootsCrossValidation = new ArrayList<>();
     transient Criteria criteria = Criteria.Certainty;
     transient int totalRules = 0;
     transient int totalNodes = 0;
@@ -145,7 +145,7 @@ public class cid3 implements Serializable{
     }
     /*  Returns a subset of data, in which the value of the specfied attribute of all data points is the specified value  */
     public DataFrequencies getSubset(ArrayList data, int attribute, int value) {
-        ArrayList subset = new ArrayList();
+        ArrayList<DataPoint> subset = new ArrayList<>();
         int[] frequencies = new int[domainsIndexToValue[classAttribute].size()];
         int num = data.size();
         for (int i=0; i< num; i++) {
@@ -158,19 +158,19 @@ public class cid3 implements Serializable{
         return new DataFrequencies(subset, frequencies);
     }
 
-    public int[] getFrequencies(ArrayList data){
+    public int[] getFrequencies(ArrayList<DataPoint> data){
         int[] frequencies = new int[domainsIndexToValue[classAttribute].size()];
         int num = data.size();
         for (int i=0; i< num; i++) {
-            DataPoint point = (DataPoint)data.get(i);
+            DataPoint point = data.get(i);
             frequencies[point.attributes[classAttribute]]++;
         }
         return frequencies;
     }
 
     public Tuple<DataFrequencies,DataFrequencies> getSubsetsBelowAndAbove(ArrayList data, int attribute, double value){
-        ArrayList subsetBelow = new ArrayList();
-        ArrayList subsetAbove = new ArrayList();
+        ArrayList<DataPoint> subsetBelow = new ArrayList<>();
+        ArrayList<DataPoint> subsetAbove = new ArrayList<>();
         int[] frequenciesBelow = new int[domainsIndexToValue[classAttribute].size()];
         int[] frequenciesAbove = new int[domainsIndexToValue[classAttribute].size()];
         int num = data.size();
@@ -185,11 +185,11 @@ public class cid3 implements Serializable{
                 frequenciesAbove[point.attributes[classAttribute]]++;
             }
         }
-        return new Tuple (new DataFrequencies(subsetBelow, frequenciesBelow), new DataFrequencies(subsetAbove, frequenciesAbove));
+        return new Tuple<> (new DataFrequencies(subsetBelow, frequenciesBelow), new DataFrequencies(subsetAbove, frequenciesAbove));
     }
 
     //This is the final form of the certainty function.
-    public Certainty calculateCertainty(ArrayList data, int givenThatAttribute){
+    public Certainty calculateCertainty(ArrayList<DataPoint> data, int givenThatAttribute){
 
         int numdata = data.size();
         if (numdata == 0) return new Certainty(0,0);
@@ -200,7 +200,7 @@ public class cid3 implements Serializable{
         if (attributeTypes[givenThatAttribute] == AttributeType.Discrete){
             Probabilities[] probabilities = CalculateAllProbabilities(data);
 
-            double sum = 0, sum2 = 0;
+            double sum, sum2 = 0;
             double probability, probabilityCandA;
             for (int j = 0; j < numvaluesgivenAtt; j++) {
                 probability = probabilities[givenThatAttribute].prob[j];
@@ -219,10 +219,10 @@ public class cid3 implements Serializable{
             double finalThreshold = 0, totalCertainty = 0, finalTotalCertainty = 0;
             /*---------------------------------------------------------------------------------------------------------*/
             //Implementation of thresholds using a sorted set
-            SortedSet attributeValuesSet = new TreeSet();
-            HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap();
+            SortedSet<Double> attributeValuesSet = new TreeSet<>();
+            HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap<>();
             for (int i=0; i< numdata; i++){
-                DataPoint point  = (DataPoint)data.get(i);
+                DataPoint point  = data.get(i);
                 double attribute = (double)domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]);
                 int clas = point.attributes[classAttribute];
                 attributeValuesSet.add(attribute);
@@ -234,14 +234,14 @@ public class cid3 implements Serializable{
                 else attributeToClass.put(attribute, new Tuple(clas,true));
             }
 
-            Iterator it = attributeValuesSet.iterator();
-            double attributeValue = (double)it.next();
+            Iterator<Double> it = attributeValuesSet.iterator();
+            double attributeValue = it.next();
             Tuple<Integer,Boolean> attributeClass1 = attributeToClass.get(attributeValue);
             int theClass = attributeClass1.x;
 
             ArrayList<Threshold> thresholds = new ArrayList();
             while (it.hasNext()) {
-                double attributeValue2 = (double)it.next();
+                double attributeValue2 = it.next();
                 Tuple<Integer,Boolean> attributeClass2 = attributeToClass.get(attributeValue2);
                 int theClass2 = attributeClass2.x;
                 if(theClass2 != theClass || !attributeClass2.y || !attributeClass1.y){
@@ -315,7 +315,7 @@ public class cid3 implements Serializable{
                 probAUnder = 1.*thresholds.get(i).sumAUnder/numdata;
                 probAOver = 1.*thresholds.get(i).sumAOver/numdata;
 
-                //Reset the informations
+                //Reset the certainty
                 certaintyUnder = 0;
                 certaintyOver = 0;
 
@@ -346,7 +346,7 @@ public class cid3 implements Serializable{
     }
 
     //This is Entropy.
-    public Certainty calculateEntropy(ArrayList data, int givenThatAttribute){
+    public Certainty calculateEntropy(ArrayList<DataPoint> data, int givenThatAttribute){
         int numdata = data.size();
         if (numdata == 0) return new Certainty(0,0);
         int numvaluesClass = domainsIndexToValue[classAttribute].size();
@@ -375,8 +375,8 @@ public class cid3 implements Serializable{
             double finalThreshold = 0, totalEntropy = 0, finalTotalEntropy = 0;
             /*---------------------------------------------------------------------------------------------------------*/
             //Implementation of thresholds using a sorted set
-            SortedSet attributeValuesSet = new TreeSet();
-            HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap();
+            SortedSet<Double> attributeValuesSet = new TreeSet<>();
+            HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap<>();
             for (int i=0; i< numdata; i++){
                 DataPoint point  = (DataPoint)data.get(i);
                 double attribute = (double)domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]);
@@ -392,13 +392,13 @@ public class cid3 implements Serializable{
                 }
                 else attributeToClass.put(attribute, new Tuple(clas,true));
             }
-            Iterator it = attributeValuesSet.iterator();
-            double attributeValue = (double)it.next();
+            Iterator<Double> it = attributeValuesSet.iterator();
+            double attributeValue = it.next();
             Tuple<Integer,Boolean> attributeClass1 = attributeToClass.get(attributeValue);
             int theClass = attributeClass1.x;
-            ArrayList<Threshold> thresholds = new ArrayList();
+            ArrayList<Threshold> thresholds = new ArrayList<>();
             while (it.hasNext()) {
-                double attributeValue2 = (double)it.next();
+                double attributeValue2 = it.next();
                 Tuple<Integer,Boolean> attributeClass2 = attributeToClass.get(attributeValue2);
                 int theClass2 = attributeClass2.x;
                 if(theClass2 != theClass || !attributeClass2.y || !attributeClass1.y){
@@ -440,11 +440,11 @@ public class cid3 implements Serializable{
             }
             //=========================================================
             double probAUnder, probAOver, probCandAUnder, probCandAOver, entropyUnder = 0, entropyOver = 0;
-            Boolean selected = false;
+            boolean selected = false;
             DataPoint point;
             //Loop through the data just one time
             for (int j = 0; j < numdata; j++){
-                point = (DataPoint)data.get(j);
+                point = data.get(j);
                 //For each threshold count data to get prob and probCandA
                 int clas = point.attributes[classAttribute];
                 for (int i = 0; i < thresholds.size(); i++){
@@ -468,7 +468,7 @@ public class cid3 implements Serializable{
                 //Calculate prob
                 probAUnder = 1.*thresholds.get(i).sumAUnder/numdata;
                 probAOver = 1.*thresholds.get(i).sumAOver/numdata;
-                //Reset the informations
+                //Reset the entropy
                 entropyUnder = 0;
                 entropyOver = 0;
                 for (int c = 0; c < numvaluesClass; c++){
@@ -487,7 +487,7 @@ public class cid3 implements Serializable{
                 }
                 //Calculate totals
                 totalEntropy = entropyUnder * probAUnder + entropyOver * probAOver;
-                if (selected == false) {
+                if (!selected) {
                     selected = true;
                     finalTotalEntropy = totalEntropy;
                     finalThreshold = thresholds.get(i).value;
@@ -509,7 +509,7 @@ public class cid3 implements Serializable{
     }
 
     //This is Gini.
-    public Certainty calculateGini(ArrayList data, int givenThatAttribute){
+    public Certainty calculateGini(ArrayList<DataPoint> data, int givenThatAttribute){
         int numdata = data.size();
         if (numdata == 0) return new Certainty(0,0);
         int numvaluesClass = domainsIndexToValue[classAttribute].size();
@@ -538,10 +538,10 @@ public class cid3 implements Serializable{
             double finalThreshold = 0, totalGini = 0, finalTotalGini = 0;
             /*---------------------------------------------------------------------------------------------------------*/
             //Implementation of thresholds using a sorted set
-            SortedSet attributeValuesSet = new TreeSet();
-            HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap();
+            SortedSet<Double> attributeValuesSet = new TreeSet<>();
+            HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap<>();
             for (int i=0; i< numdata; i++){
-                DataPoint point  = (DataPoint)data.get(i);
+                DataPoint point  = data.get(i);
                 double attribute = (double)domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]);
                 int clas = point.attributes[classAttribute];
                 attributeValuesSet.add(attribute);
@@ -555,13 +555,13 @@ public class cid3 implements Serializable{
                 }
                 else attributeToClass.put(attribute, new Tuple(clas,true));
             }
-            Iterator it = attributeValuesSet.iterator();
-            double attributeValue = (double)it.next();
+            Iterator<Double> it = attributeValuesSet.iterator();
+            double attributeValue = it.next();
             Tuple<Integer,Boolean> attributeClass1 = attributeToClass.get(attributeValue);
             int theClass = attributeClass1.x;
-            ArrayList<Threshold> thresholds = new ArrayList();
+            ArrayList<Threshold> thresholds = new ArrayList<>();
             while (it.hasNext()) {
-                double attributeValue2 = (double)it.next();
+                double attributeValue2 = it.next();
                 Tuple<Integer,Boolean> attributeClass2 = attributeToClass.get(attributeValue2);
                 int theClass2 = attributeClass2.x;
                 if(theClass2 != theClass || !attributeClass2.y || !attributeClass1.y){
@@ -603,11 +603,11 @@ public class cid3 implements Serializable{
             }
             //=========================================================
             double probAUnder, probAOver, probCandAUnder, probCandAOver, giniUnder = 0, giniOver = 0;
-            Boolean selected = false;
+            boolean selected = false;
             DataPoint point;
             //Loop through the data just one time
             for (int j = 0; j < numdata; j++){
-                point = (DataPoint)data.get(j);
+                point = data.get(j);
                 //For each threshold count data to get prob and probCandA
                 int clas = point.attributes[classAttribute];
                 for (int i = 0; i < thresholds.size(); i++){
@@ -631,7 +631,7 @@ public class cid3 implements Serializable{
                 //Calculate prob
                 probAUnder = 1.*thresholds.get(i).sumAUnder/numdata;
                 probAOver = 1.*thresholds.get(i).sumAOver/numdata;
-                //Reset the informations
+                //Reset the gini
                 giniUnder = 0;
                 giniOver = 0;
                 for (int c = 0; c < numvaluesClass; c++){
@@ -650,7 +650,7 @@ public class cid3 implements Serializable{
                 giniUnder = 1 - giniUnder;
                 giniOver = 1 - giniOver;
                 totalGini = giniUnder * probAUnder + giniOver * probAOver;
-                if (selected == false) {
+                if (!selected) {
                     selected = true;
                     finalTotalGini = totalGini;
                     finalThreshold = thresholds.get(i).value;
@@ -672,7 +672,7 @@ public class cid3 implements Serializable{
     }
 
     //This method calculates all probabilities in one run
-    public Probabilities[] CalculateAllProbabilities(ArrayList data){
+    public Probabilities[] CalculateAllProbabilities(ArrayList<DataPoint> data){
         int numdata = data.size();
         Probabilities[] probabilities = new Probabilities[numAttributes - 1];
 
@@ -685,7 +685,7 @@ public class cid3 implements Serializable{
         //Count occurrences
         for (int i = 0; i < numdata; i++)
         {
-            DataPoint point = (DataPoint)data.get(i);
+            DataPoint point = data.get(i);
             for (int j = 0; j < point.attributes.length - 1; j++){
                 if (attributeTypes[j] == AttributeType.Ignore) continue;
                 probabilities[j].prob[point.attributes[j]]= probabilities[j].prob[point.attributes[j]] + 1;
@@ -732,9 +732,8 @@ public class cid3 implements Serializable{
         int numvaluesClass = domainsIndexToValue[classAttribute].size();
         boolean oneClassIsPresent = false;
         for (int i = 0; i < numvaluesClass; i++){
-            if (frequencyClasses[i] == 0) continue;
-            else {
-                if (oneClassIsPresent == false) oneClassIsPresent = true;
+            if (frequencyClasses[i] != 0) {
+                if (!oneClassIsPresent) oneClassIsPresent = true;
                 else return false;
             }
         }
@@ -765,7 +764,7 @@ public class cid3 implements Serializable{
                     selectedAttribute = selectedAtts.get(i);
                 }
             }
-            if (selected == false || bestCertainty.certainty == 0) return;
+            if (!selected || bestCertainty.certainty == 0) return;
         }
         else
         if (criteria == Criteria.Entropy)
@@ -780,7 +779,7 @@ public class cid3 implements Serializable{
                 if (attributeTypes[selectedAtts.get(i)] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtts.get(i))) continue;
                 entropy =  calculateEntropy(node.data,selectedAtts.get(i));
                 if (entropy.certainty == -1) continue;
-                if (selected == false) {
+                if (!selected) {
                     selected = true;
                     bestCertainty = entropy;
                     selectedAttribute = selectedAtts.get(i);
@@ -792,7 +791,7 @@ public class cid3 implements Serializable{
                     }
                 }
             }
-            if (selected == false) return;
+            if (!selected) return;
         }
         else
         if(criteria == Criteria.Gini){
@@ -806,7 +805,7 @@ public class cid3 implements Serializable{
                 if (attributeTypes[selectedAtts.get(i)] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtts.get(i))) continue;
                 gini =  calculateGini(node.data,selectedAtts.get(i));
                 if (gini.certainty == -1) continue;
-                if (selected == false) {
+                if (!selected) {
                     selected = true;
                     bestCertainty = gini;
                     selectedAttribute = selectedAtts.get(i);
@@ -818,7 +817,7 @@ public class cid3 implements Serializable{
                     }
                 }
             }
-            if (selected == false) return;
+            if (!selected) return;
         }
 
         node.certaintyUsedToDecompose = bestCertainty.certainty;
@@ -829,7 +828,7 @@ public class cid3 implements Serializable{
             // Now divide the dataset using the selected attribute
             int numvalues = domainsIndexToValue[selectedAttribute].size();
             node.decompositionAttribute = selectedAttribute;
-            node.children = new ArrayList();
+            node.children = new ArrayList<>();
             DataFrequencies df;
             for (int j=0; j< numvalues; j++) {
                 if (domainsIndexToValue[selectedAttribute].get(j) == null || domainsIndexToValue[selectedAttribute].get(j).equals("?"))
@@ -847,7 +846,7 @@ public class cid3 implements Serializable{
             // Recursively divides children nodes
             if (isCrossValidation){ // If is Cross Validation, don't create more threads
                 for (int j = 0; j < node.children.size(); j++) {
-                    decomposeNode((TreeNode) node.children.get(j), selectedAtts, 0);
+                    decomposeNode(node.children.get(j), selectedAtts, 0);
                 }
             }
             else
@@ -858,12 +857,12 @@ public class cid3 implements Serializable{
                 int numAtt = selectedAtts.size();
 
                 for (int j = 0; j < node.children.size(); j++) {
-                    selectedAtts = new ArrayList<Integer>();
+                    selectedAtts = new ArrayList<>();
                     while (selectedAtts.size() < numAtt) {
                         randomAttribute = rand.nextInt(numAttributes - 1);
                         if (!selectedAtts.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAtts.add(randomAttribute);
                     }
-                    decomposeNode((TreeNode) node.children.get(j), selectedAtts, mySeed + 1 + j);
+                    decomposeNode(node.children.get(j), selectedAtts, mySeed + 1 + j);
                 }
             }
             else{
@@ -874,7 +873,7 @@ public class cid3 implements Serializable{
                     //if (globalThreads.size() < maxThreads) {
                     //    Thread thread = new Thread() {
                     //        public void run() {
-                    decomposeNode((TreeNode) node.children.get(j), selectedAtts, mySeed + 1 + j);
+                    decomposeNode(node.children.get(j), selectedAtts, mySeed + 1 + j);
                     //       }
                     //  };
 
@@ -895,7 +894,7 @@ public class cid3 implements Serializable{
             }
         } else { //If attribute is continuous
             node.decompositionAttribute = selectedAttribute;
-            node.children = new ArrayList();
+            node.children = new ArrayList<>();
             DataFrequencies df;
             //First less than threshold
             TreeNode newNode;
@@ -922,12 +921,12 @@ public class cid3 implements Serializable{
             node.children.add(newNode);
 
             //Decompose children
-            if (((TreeNode) node.children.get(0)).data.isEmpty() || ((TreeNode) node.children.get(1)).data.isEmpty())
+            if ((node.children.get(0)).data.isEmpty() || (node.children.get(1)).data.isEmpty())
                 return;
 
             if (isCrossValidation){ //if is a Cross Validation, don't create more threads
-                decomposeNode((TreeNode) node.children.get(0), selectedAtts, 0);
-                decomposeNode((TreeNode) node.children.get(1), selectedAtts, 0);
+                decomposeNode(node.children.get(0), selectedAtts, 0);
+                decomposeNode(node.children.get(1), selectedAtts, 0);
             }
             else //if is a Random Forest, don't create more threads
                 if(isRandomForest) {
@@ -936,19 +935,19 @@ public class cid3 implements Serializable{
                     //randomAttribute = rand.nextInt(numAttributes - 1);
                     int numAtt = selectedAtts.size();
 
-                    selectedAtts = new ArrayList<Integer>();
+                    selectedAtts = new ArrayList<>();
                     while (selectedAtts.size() < numAtt) {
                         randomAttribute = rand.nextInt(numAttributes - 1);
                         if (!selectedAtts.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAtts.add(randomAttribute);
                     }
-                    decomposeNode((TreeNode) node.children.get(0), selectedAtts, mySeed + 1);
+                    decomposeNode(node.children.get(0), selectedAtts, mySeed + 1);
 
-                    selectedAtts = new ArrayList<Integer>();
+                    selectedAtts = new ArrayList<>();
                     while (selectedAtts.size() < numAtt) {
                         randomAttribute = rand.nextInt(numAttributes - 1);
                         if (!selectedAtts.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAtts.add(randomAttribute);
                     }
-                    decomposeNode((TreeNode) node.children.get(1), selectedAtts, mySeed + 2);
+                    decomposeNode(node.children.get(1), selectedAtts, mySeed + 2);
                 }
                 else {//also now for single trees don't create more threads
                     //final ArrayList<Integer> selectedAtts2 =  selectedAtts;
@@ -956,7 +955,7 @@ public class cid3 implements Serializable{
                     //if (globalThreads.size() < maxThreads) {
                     //   Thread thread = new Thread() {
                     //       public void run() {
-                    decomposeNode((TreeNode) node.children.get(0), selectedAtts, mySeed + 1);
+                    decomposeNode(node.children.get(0), selectedAtts, mySeed + 1);
                     //       }
                     //   };
                     //   threads.add(thread);
@@ -965,7 +964,7 @@ public class cid3 implements Serializable{
 
                     //  thread = new Thread() {
                     //      public void run() {
-                    decomposeNode((TreeNode) node.children.get(1), selectedAtts, mySeed + 2);
+                    decomposeNode(node.children.get(1), selectedAtts, mySeed + 2);
                     //      }
                     //  };
                     //  threads.add(thread);
@@ -1083,7 +1082,7 @@ public class cid3 implements Serializable{
     public void readTestData(String filename){
         //Read the test file
         FileInputStream in = null;
-        ArrayList data = new ArrayList();
+        ArrayList<DataPoint> data = new ArrayList<>();
         try {
             File inputFile = new File(filename);
             in = new FileInputStream(inputFile);
@@ -1184,8 +1183,8 @@ public class cid3 implements Serializable{
     public void readData(String filename) {
 
         FileInputStream in = null;
-        ArrayList data = new ArrayList();
-        int numTraining = 0;
+        ArrayList<DataPoint> data = new ArrayList<>();
+        int numTraining;
 
         try {
             File inputFile = new File(filename);
@@ -1280,10 +1279,10 @@ public class cid3 implements Serializable{
         if (splitTrainData && !testDataExists && !isCrossValidation){
             //Randomize the data
             Collections.shuffle(data);
-            numTraining = (int)(size * 80/100);
+            numTraining = size * 80/100;
             for (int i = 0; i < size; i++){
                 if (i < numTraining){
-                    DataPoint point = (DataPoint)data.get(i);
+                    DataPoint point = data.get(i);
                     root.data.add(point);
                     root.frequencyClasses[point.attributes[classAttribute]]++;
                 }
@@ -1293,7 +1292,7 @@ public class cid3 implements Serializable{
         //here I need to loop through the data and add one by one while updating FrequencyClasses
         else {
             for (int i = 0; i < size; i++){
-                DataPoint point = (DataPoint)data.get(i);
+                DataPoint point = data.get(i);
                 root.data.add(point);
                 root.frequencyClasses[point.attributes[classAttribute]]++;
             }
@@ -1313,7 +1312,7 @@ public class cid3 implements Serializable{
         FileInputStream in = null;
 
         String input = null;
-        ArrayList attributes = new ArrayList();
+        ArrayList<Tuple<String, String>> attributes = new ArrayList<>();
         //Read the names file
         try {
             if (filename.contains(".")){
@@ -1354,7 +1353,7 @@ public class cid3 implements Serializable{
             if (!input.startsWith("|")) {
                 String[] split = input.split(":");
                 if (split.length == 2) {
-                    Tuple<String, String> t = new Tuple(split[0].trim(), split[1].trim());
+                    Tuple<String, String> t = new Tuple<>(split[0].trim(), split[1].trim());
                     attributes.add(t);
                 }
             }
@@ -1385,13 +1384,13 @@ public class cid3 implements Serializable{
         domainsIndexToValue = new HashMap [numAttributes];
         domainsValueToIndex = new HashMap [numAttributes];
         //domains = new ArrayList[numAttributes];
-        for (int i=0; i < numAttributes; i++) domainsIndexToValue[i] = new HashMap();
-        for (int i=0; i < numAttributes; i++) domainsValueToIndex[i] = new HashMap();
+        for (int i=0; i < numAttributes; i++) domainsIndexToValue[i] = new HashMap<>();
+        for (int i=0; i < numAttributes; i++) domainsValueToIndex[i] = new HashMap<>();
 
         //Set attributeNames. They should be in the same order as they appear in the data. +1 for the class
         attributeNames = new String[numAttributes];
         for (int i=0; i < numAttributes - 1; i++) {
-            Tuple<String,String> t = (Tuple)attributes.get(i);
+            Tuple<String,String> t = attributes.get(i);
             attributeNames[i]  = t.x;
         }
 
@@ -1403,10 +1402,8 @@ public class cid3 implements Serializable{
 
         //Set the attribute types.
         for (int i=0; i< numAttributes - 1; i++){
-            Tuple<String,String> attribute = (Tuple)attributes.get(i);
+            Tuple<String,String> attribute = attributes.get(i);
             switch (attribute.y.trim()){
-                case "discrete.": attributeTypes[i] = AttributeType.Discrete;
-                    break;
                 case "continuous.": attributeTypes[i] = AttributeType.Continuous;
                     break;
                 case "ignore.": attributeTypes[i] = AttributeType.Ignore;
@@ -1457,7 +1454,7 @@ public class cid3 implements Serializable{
 //                  else symbol = " == " + domainsIndexToValue[node.decompositionAttribute].get(i);
 //                  System.out.println(tab + "if( " + attributeNames[node.decompositionAttribute] + symbol + "" +
 //                          ") {" );
-            printTree((TreeNode)node.children.get(i), tab + "\t");
+            printTree(node.children.get(i), tab + "\t");
 //                  if (i != numvalues-1) System.out.print(tab +  "} else ");
 //                  else System.out.println(tab +  "}");
         }
@@ -1511,7 +1508,7 @@ public class cid3 implements Serializable{
 
     private cid3 deserializeFile(String file){
         cid3 ret = null;
-        ObjectInputStream objectinputstream = null;
+        ObjectInputStream objectinputstream;
         try {
             //FileInputStream streamIn = new FileInputStream(file);
             GZIPInputStream is = new GZIPInputStream(new FileInputStream(file));
@@ -1541,7 +1538,7 @@ public class cid3 implements Serializable{
     public void createDecisionTree() {
         Instant start = Instant.now();
 
-        ArrayList<Integer> selectedAttributes = new ArrayList<Integer>();
+        ArrayList<Integer> selectedAttributes = new ArrayList<>();
         //Select ALL attributes
         for (int i=0; i < numAttributes; i++){
             if (attributeTypes[i] == AttributeType.Ignore) continue;
@@ -1582,14 +1579,14 @@ public class cid3 implements Serializable{
 
         //Initialize chunks
         for (int i = 0; i < 10; i++){
-            crossValidationChunks[i] = new ArrayList();
+            crossValidationChunks[i] = new ArrayList<>();
         }
 
         //First check if there is a remainder
         if (modulus != 0){
             for (int i = 0; i < root.data.size() - modulus; i++){
                 if (i < counter) {
-                    crossValidationChunks[counter_chunks].add((DataPoint)root.data.get(i));
+                    crossValidationChunks[counter_chunks].add(root.data.get(i));
                 }
                 else {
                     counter+= chunk_size;
@@ -1599,14 +1596,14 @@ public class cid3 implements Serializable{
             }
             counter = 0;
             for (int i = root.data.size() - modulus; i < root.data.size(); i++){
-                crossValidationChunks[counter].add((DataPoint)root.data.get(i));
+                crossValidationChunks[counter].add(root.data.get(i));
                 counter++;
             }
         }
         else {
             for (int i = 0; i < root.data.size(); i++){
                 if (i < counter) {
-                    crossValidationChunks[counter_chunks].add((DataPoint)root.data.get(i));
+                    crossValidationChunks[counter_chunks].add(root.data.get(i));
                 }
                 else {
                     counter+= chunk_size;
@@ -1616,11 +1613,11 @@ public class cid3 implements Serializable{
             }
         }
 
-        ArrayList<Thread> threads = new ArrayList<Thread>();
+        ArrayList<Thread> threads = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
             TreeNode newRoot = new TreeNode();
-            ArrayList trainData = new ArrayList();
+            ArrayList<DataPoint> trainData = new ArrayList<>();
             for (int k = 0; k < 10; k++){
                 if (k != i) trainData.addAll(crossValidationChunks[k]);
             }
@@ -1636,7 +1633,6 @@ public class cid3 implements Serializable{
                 selectedAttributes.add(j);
             }
             final Integer i2 = i;
-            final ArrayList<Integer> selectedAttributes2 =  selectedAttributes;
             Thread thread = new Thread(){
                 public void run(){
                     decomposeNode(rootsCrossValidation.get(i2), selectedAttributes, 0);
@@ -1669,7 +1665,7 @@ public class cid3 implements Serializable{
 
         //Initialize array
         for (int i = 0; i < 10; i++){
-            cvRandomForests[i] = new ArrayList();
+            cvRandomForests[i] = new ArrayList<>();
         }
 
         if (testDataExists){
@@ -1692,7 +1688,7 @@ public class cid3 implements Serializable{
         if (modulus != 0){
             for (int i = 0; i < root.data.size() - modulus; i++){
                 if (i < counter) {
-                    crossValidationChunks[counter_chunks].add((DataPoint)root.data.get(i));
+                    crossValidationChunks[counter_chunks].add(root.data.get(i));
                 }
                 else {
                     counter+= chunk_size;
@@ -1702,14 +1698,14 @@ public class cid3 implements Serializable{
             }
             counter = 0;
             for (int i = root.data.size() - modulus; i < root.data.size(); i++){
-                crossValidationChunks[counter].add((DataPoint)root.data.get(i));
+                crossValidationChunks[counter].add(root.data.get(i));
                 counter++;
             }
         }
         else {
             for (int i = 0; i < root.data.size(); i++){
                 if (i < counter) {
-                    crossValidationChunks[counter_chunks].add((DataPoint)root.data.get(i));
+                    crossValidationChunks[counter_chunks].add(root.data.get(i));
                 }
                 else {
                     counter+= chunk_size;
@@ -1721,7 +1717,7 @@ public class cid3 implements Serializable{
 
         //Create the 10 Random Forests
         for (int i = 0; i < 10; i++) {
-            ArrayList trainData = new ArrayList();
+            ArrayList<DataPoint> trainData = new ArrayList<>();
             for (int k = 0; k < 10; k++){
                 if (k != i) trainData.addAll(crossValidationChunks[k]);
             }
@@ -1744,7 +1740,7 @@ public class cid3 implements Serializable{
         System.out.print("\n");
     }
 
-    public void createRandomForest(ArrayList data, ArrayList<TreeNode> roots, boolean cv) {
+    public void createRandomForest(ArrayList<DataPoint> data, ArrayList<TreeNode> roots, boolean cv) {
         Instant start = Instant.now();
         int numberOfAttributes = 0;
         for (int i = 0; i < numAttributes - 1; i++){
@@ -1755,11 +1751,11 @@ public class cid3 implements Serializable{
         int numAttributesForRandomForestInt = numAttributesForRandomForest.intValue();
         int randomAttribute;
         ArrayList<Integer> selectedAttributes;
-        ArrayList<Thread> threads = new ArrayList<Thread>();
+        ArrayList<Thread> threads = new ArrayList<>();
         Random rand = new Random(seed);
 
         for (int i = 0; i < numberOfTrees; i++) {
-            selectedAttributes = new ArrayList<Integer>();
+            selectedAttributes = new ArrayList<>();
             while (selectedAttributes.size() < numAttributesForRandomForestInt){
                 randomAttribute = rand.nextInt(numAttributes - 1);
                 if (!selectedAttributes.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributes.add(randomAttribute);
@@ -1816,8 +1812,8 @@ public class cid3 implements Serializable{
         //Check if attribute is discrete
         if (attributeTypes[splitAttribute] == AttributeType.Discrete) {
             for (int i = 0; i < node.children.size(); i++) {
-                if (((TreeNode) node.children.get(i)).decompositionValue == attributeValue) {
-                    node = (TreeNode) node.children.get(i);
+                if ((node.children.get(i)).decompositionValue == attributeValue) {
+                    node = node.children.get(i);
                     break;
                 }
             }
@@ -1825,10 +1821,10 @@ public class cid3 implements Serializable{
         //Check if attribute is continuous
         if (attributeTypes[splitAttribute] == AttributeType.Continuous){
             attributeRealValue = (double)domainsIndexToValue[splitAttribute].get(example.attributes[splitAttribute]);
-            if (attributeRealValue <= ((TreeNode)node.children.get(0)).thresholdContinuous){
-                node = (TreeNode)node.children.get(0);
+            if (attributeRealValue <= (node.children.get(0)).thresholdContinuous){
+                node = node.children.get(0);
             }
-            else node = (TreeNode) node.children.get(1);
+            else node = node.children.get(1);
         }
         return testExamplePoint(example,node);
     }
@@ -1862,7 +1858,7 @@ public class cid3 implements Serializable{
         int tru = 0;
         int fals = 0;
 
-        ArrayList<Boolean> results = new ArrayList<Boolean>();
+        ArrayList<Boolean> results = new ArrayList<>();
         for (int i=0; i < roots.size(); i++){
             node = testExamplePoint(example, roots.get(i));
             if (node.data == null || node.data.isEmpty()){
@@ -1887,7 +1883,7 @@ public class cid3 implements Serializable{
         int test_corrects = 0;
         int test_size = testData.size();
         for (int i = 0; i < test_size; i++) {
-            DataPoint point = (DataPoint)testData.get(i);
+            DataPoint point = testData.get(i);
             if (testExample(point)) test_corrects++;
             else test_errors++;
         }
@@ -1896,7 +1892,7 @@ public class cid3 implements Serializable{
         int train_corrects = 0;
         int train_size = trainData.size();
         for (int i = 0; i < train_size; i++){
-            DataPoint point = (DataPoint)trainData.get(i);
+            DataPoint point = trainData.get(i);
             if (testExample(point)) train_corrects++;
             else train_errors++;
         }
@@ -1937,7 +1933,7 @@ public class cid3 implements Serializable{
         for (int i = 0; i < 10; i ++){
             test_errors = 0;
             TreeNode currentTree = rootsCrossValidation.get(i);
-            ArrayList currentTest = crossValidationChunks[i];
+            ArrayList<DataPoint> currentTest = crossValidationChunks[i];
             for (int j = 0; j < currentTest.size(); j++){
                 DataPoint point = (DataPoint)currentTest.get(j);
                 if (testExampleCV(point, currentTree)) test_corrects++;
@@ -1984,8 +1980,8 @@ public class cid3 implements Serializable{
         double current = 0;
         //For each Random Forest
         for (int i = 0; i < 10; i ++) {
-            ArrayList currentForest = cvRandomForests[i];
-            ArrayList currentTestData = crossValidationChunks[i];
+            ArrayList<TreeNode> currentForest = cvRandomForests[i];
+            ArrayList<DataPoint> currentTestData = crossValidationChunks[i];
             current = testRandomForest(currentTestData,currentForest,i+1);
             sum += current;
             //Save k errors for SE
@@ -2033,7 +2029,7 @@ public class cid3 implements Serializable{
         int test_corrects = 0;
         int test_size = testData.size();
         for (int i = 0; i < test_size; i++) {
-            DataPoint point = (DataPoint) testData.get(i);
+            DataPoint point = testData.get(i);
             if (testExampleRF(point, rootsRandomForest)) test_corrects++;
             else test_errors++;
         }
@@ -2042,7 +2038,7 @@ public class cid3 implements Serializable{
         int train_corrects = 0;
         int train_size = trainData.size();
         for (int i = 0; i < train_size; i++){
-            DataPoint point = (DataPoint)trainData.get(i);
+            DataPoint point = trainData.get(i);
             if (testExampleRF(point, rootsRandomForest)) train_corrects++;
             else train_errors++;
         }
@@ -2088,13 +2084,13 @@ public class cid3 implements Serializable{
                     System.out.print("\n");
                     System.out.print("(possible values are: ");
                     String values = "";
-                    ArrayList valuesArray = new ArrayList();
+                    ArrayList<String> valuesArray = new ArrayList<>();
                     for (int i = 0; i < id3.domainsIndexToValue[currentNode.decompositionAttribute].size(); i++) {
-                        valuesArray.add(id3.domainsIndexToValue[currentNode.decompositionAttribute].get(i));
+                        valuesArray.add((String) id3.domainsIndexToValue[currentNode.decompositionAttribute].get(i));
                     }
                     Collections.sort(valuesArray);
                     for (int i = 0; i < valuesArray.size(); i++){
-                        values += (String) valuesArray.get(i);
+                        values += valuesArray.get(i);
                         values += ", ";
                     }
                     values = "?, " + values.substring(0, values.length() - 2);
@@ -2120,29 +2116,29 @@ public class cid3 implements Serializable{
                 for (int i = 0; i < currentNode.children.size(); i++){
                     //Check if attribute is continuous
                     if(id3.attributeTypes[currentNode.decompositionAttribute] == AttributeType.Continuous){
-                        if (((TreeNode)currentNode.children.get(i)).decompositionValueContinuousSymbol.equals("<=")){
-                            System.out.print("Is attribute: " + id3.attributeNames[currentNode.decompositionAttribute] + " <= " + ((TreeNode)currentNode.children.get(i)).thresholdContinuous + " ? (y/n/?)");
+                        if ((currentNode.children.get(i)).decompositionValueContinuousSymbol.equals("<=")){
+                            System.out.print("Is attribute: " + id3.attributeNames[currentNode.decompositionAttribute] + " <= " + (currentNode.children.get(i)).thresholdContinuous + " ? (y/n/?)");
                             System.out.print("\n");
                             String s = in.nextLine();
                             if(s.equals("y") || s.equals("Y")|| s.equals("yes") || s.equals("Yes") || s.equals("YES") || s.equals("n") || s.equals("N") || s.equals("no") || s.equals("No") || s.equals("NO") || s.equals("?"))  {
                                 if (s.equals("y") || s.equals("Y") || s.equals("yes") || s.equals("Yes") || s.equals("YES")) {
-                                    currentNode = (TreeNode) currentNode.children.get(i);
+                                    currentNode = currentNode.children.get(i);
                                     break;
                                 }
                                 else
                                 if (s.equals("?")){
                                     double mean = id3.meanValues[currentNode.decompositionAttribute];
-                                    if (mean <= ((TreeNode)currentNode.children.get(i)).thresholdContinuous) {
-                                        currentNode = (TreeNode) currentNode.children.get(i);
+                                    if (mean <= (currentNode.children.get(i)).thresholdContinuous) {
+                                        currentNode = currentNode.children.get(i);
                                         break;
                                     }
                                     else {
-                                        currentNode = (TreeNode) currentNode.children.get(i + 1);
+                                        currentNode = currentNode.children.get(i + 1);
                                         break;
                                     }
                                 }
                                 else {
-                                    currentNode = (TreeNode) currentNode.children.get(i + 1);
+                                    currentNode = currentNode.children.get(i + 1);
                                     break;
                                 }
                             }
@@ -2155,8 +2151,8 @@ public class cid3 implements Serializable{
                         }
                     }
                     else
-                    if (((TreeNode)currentNode.children.get(i)).decompositionValue == attributeValue){
-                        currentNode = (TreeNode)currentNode.children.get(i);
+                    if ((currentNode.children.get(i)).decompositionValue == attributeValue){
+                        currentNode = currentNode.children.get(i);
                         break;
                     }
                 }
@@ -2400,10 +2396,10 @@ public class cid3 implements Serializable{
                         }
                         else point.attributes[i] = id3.getSymbolValue(i, next);
                     }
-                    else
-                    if (id3.attributeTypes[i] == AttributeType.Ignore){
-                        continue;
-                    }
+                    //else
+                    //if (id3.attributeTypes[i] == AttributeType.Ignore){
+                    //    continue;
+                    //}
                 }
                 //Check the created example against the random forest
                 int[] classAttrValues = new int[id3.domainsIndexToValue[id3.classAttribute].size()];
@@ -2466,7 +2462,7 @@ public class cid3 implements Serializable{
             System.out.print("Random Forest file deserialized.");
             System.out.print("\n");
             DataPoint example = new DataPoint(id3.numAttributes);
-            //Enter all attributes into an example except the class, thats why -1
+            //Enter all attributes into an example except the class, that's why -1
             for (int i = 0; i < id3.numAttributes - 1; i ++){
                 if (id3.attributeTypes[i] == AttributeType.Ignore) continue;
                 if (id3.attributeTypes[i] == AttributeType.Discrete) {
@@ -2475,13 +2471,13 @@ public class cid3 implements Serializable{
                     System.out.print("\n");
                     System.out.print("(possible values are: ");
                     String values = "";
-                    ArrayList valuesArray = new ArrayList();
+                    ArrayList<String> valuesArray = new ArrayList<>();
                     for (int j = 0; j < id3.domainsIndexToValue[i].size(); j++) {
-                        valuesArray.add(id3.domainsIndexToValue[i].get(j));
+                        valuesArray.add((String) id3.domainsIndexToValue[i].get(j));
                     }
                     Collections.sort(valuesArray);
                     for (int j = 0; j < valuesArray.size(); j++){
-                        values += (String) valuesArray.get(j);
+                        values += valuesArray.get(j);
                         values += ", ";
                     }
 
@@ -2632,7 +2628,6 @@ public class cid3 implements Serializable{
         if (cmd.hasOption("criteria")) {
             String strCriteria = cmd.getOptionValue("criteria");
             if (strCriteria.equals("C") || strCriteria.equals("c")) me.criteria = Criteria.Certainty;
-                //else if (strCriteria.equals("N") || strCriteria.equals("n")) me.criteria = Criteria.CertaintyNonLinear;
             else if (strCriteria.equals("G") || strCriteria.equals("g")) me.criteria = Criteria.Gini;
             else if (strCriteria.equals("E") || strCriteria.equals("e")) me.criteria = Criteria.Entropy;
             else{
@@ -2646,16 +2641,10 @@ public class cid3 implements Serializable{
         String originalInputFilePath = inputFilePath;
 
         //Set validation
-        if (cmd.hasOption("validation")){
-            me.isCrossValidation = true;
-        }
-        else me.isCrossValidation = false;
+        me.isCrossValidation = cmd.hasOption("validation");
 
         //Set split data
-        if (cmd.hasOption("partition")){
-            me.splitTrainData = true;
-        }
-        else me.splitTrainData = false;
+        me.splitTrainData = cmd.hasOption("partition");
 
         //Set Random Forest
         if (cmd.hasOption("forest")){
@@ -2720,8 +2709,7 @@ public class cid3 implements Serializable{
             nameTestData = nameTestData + "test";
 
             File inputFile = new File(nameTestData);
-            if (inputFile.exists()) me.testDataExists = true;
-            else me.testDataExists = false;
+            me.testDataExists = inputFile.exists();
 
             //Read data
             me.readData(inputFilePath);

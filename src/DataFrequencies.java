@@ -12,10 +12,10 @@ import java.util.*;
  * @author alex
  */
 public class DataFrequencies implements Serializable {
-    public ArrayList data;
+    public ArrayList<cid3.DataPoint> data;
     public int[] frequencyClasses;  
     
-    public DataFrequencies(ArrayList d, int[] f){
+    public DataFrequencies(ArrayList<cid3.DataPoint> d, int[] f){
         data = d;
         frequencyClasses = f;
     }
