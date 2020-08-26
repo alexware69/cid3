@@ -42,8 +42,8 @@ public class cid3 implements Serializable{
         */
         public int []attributes;
 
-        public DataPoint(int numattributes) {
-            attributes = new int[numattributes];
+        public DataPoint(int numAttributes) {
+            attributes = new int[numAttributes];
         }
     }
 
@@ -51,14 +51,14 @@ public class cid3 implements Serializable{
     public class Probabilities implements Serializable{
         int attribute;
         double[] prob;
-        double[][] probCandA;
-        double[][] probCgivenA;
+        double[][] probC_And_A;
+        double[][] probC_Given_A;
 
         public Probabilities(int att){
             attribute = att;
             prob = new double[domainsIndexToValue[attribute].size()];
-            probCandA = new double[domainsIndexToValue[attribute].size()][domainsIndexToValue[classAttribute].size()];
-            probCgivenA = new double[domainsIndexToValue[attribute].size()][domainsIndexToValue[classAttribute].size()];
+            probC_And_A = new double[domainsIndexToValue[attribute].size()][domainsIndexToValue[classAttribute].size()];
+            probC_Given_A = new double[domainsIndexToValue[attribute].size()][domainsIndexToValue[classAttribute].size()];
         }
     }
     //This is an utility class to return the information and threshold of continuous attributes.
@@ -130,13 +130,13 @@ public class cid3 implements Serializable{
 
     // Returns the most common class for the specified node
     public int mostCommonFinal(TreeNode n){
-        int numvaluesClass = domainsIndexToValue[classAttribute].size();
+        int numValuesClass = domainsIndexToValue[classAttribute].size();
         int value = n.frequencyClasses[0];
         int result = 0;
-        //if(n.frequencyClasses.length < numvaluesClass){
+        //if(n.frequencyClasses.length < numValuesClass){
         //    String error = "Error";
         //}
-        for(int i = 1; i < numvaluesClass; i++){
+        for(int i = 1; i < numValuesClass; i++){
             if (n.frequencyClasses[i] > value){
                 value = n.frequencyClasses[i];
                 result = i;
@@ -144,7 +144,7 @@ public class cid3 implements Serializable{
         }
         return result;
     }
-    /*  Returns a subset of data, in which the value of the specfied attribute of all data points is the specified value  */
+    /*  Returns a subset of data, in which the value of the specified attribute of all data points is the specified value  */
     public DataFrequencies getSubset(ArrayList<DataPoint> data, int attribute, int value) {
         ArrayList<DataPoint> subset = new ArrayList<>();
         int[] frequencies = new int[domainsIndexToValue[classAttribute].size()];
@@ -185,23 +185,23 @@ public class cid3 implements Serializable{
     //This is the final form of the certainty function.
     public Certainty calculateCertainty(ArrayList<DataPoint> data, int givenThatAttribute){
 
-        int numdata = data.size();
-        if (numdata == 0) return new Certainty(0, 0);
-        int numvaluesClass = domainsIndexToValue[classAttribute].size();
-        int numvaluesgivenAtt = domainsIndexToValue[givenThatAttribute].size();
+        int numData = data.size();
+        if (numData == 0) return new Certainty(0, 0);
+        int numValuesClass = domainsIndexToValue[classAttribute].size();
+        int numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size();
 
         //If attribute is discrete
         if (attributeTypes[givenThatAttribute] == AttributeType.Discrete){
             Probabilities[] probabilities = CalculateAllProbabilities(data);
 
             double sum, sum2 = 0;
-            double probability, probabilityCandA;
-            for (int j = 0; j < numvaluesgivenAtt; j++) {
+            double probability, probabilityC_And_A;
+            for (int j = 0; j < numValuesGivenAtt; j++) {
                 probability = probabilities[givenThatAttribute].prob[j];
                 sum = 0;
-                for (int i = 0; i < numvaluesClass; i++){
-                    probabilityCandA = probabilities[givenThatAttribute].probCandA[j][i];
-                    sum += Math.abs(probabilityCandA - 1.*probability/numvaluesClass);
+                for (int i = 0; i < numValuesClass; i++){
+                    probabilityC_And_A = probabilities[givenThatAttribute].probC_And_A[j][i];
+                    sum += Math.abs(probabilityC_And_A - 1.*probability/numValuesClass);
                 }
 
                 sum2 += sum;
@@ -217,13 +217,13 @@ public class cid3 implements Serializable{
             HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap<>();
             for (DataPoint point : data) {
                 double attribute = (double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]);
-                int clas = point.attributes[classAttribute];
+                int theClass = point.attributes[classAttribute];
                 attributeValuesSet.add(attribute);
                 Tuple<Integer, Boolean> tuple = attributeToClass.get(attribute);
                 if (tuple != null) {
-                    if (tuple.x != clas && tuple.y)
-                        attributeToClass.put(attribute, new Tuple<>(clas, false));
-                } else attributeToClass.put(attribute, new Tuple<>(clas, true));
+                    if (tuple.x != theClass && tuple.y)
+                        attributeToClass.put(attribute, new Tuple<>(theClass, false));
+                } else attributeToClass.put(attribute, new Tuple<>(theClass, true));
             }
 
             Iterator<Double> it = attributeValuesSet.iterator();
@@ -239,7 +239,7 @@ public class cid3 implements Serializable{
                 if(theClass2 != theClass || !attributeClass2.y || !attributeClass1.y){
                     //Add threshold
                     double median = (attributeValue+attributeValue2)/2;
-                    thresholds.add(new Threshold(median, new SumUnderAndOver[numvaluesClass]));
+                    thresholds.add(new Threshold(median, new SumUnderAndOver[numValuesClass]));
                 }
                 //Set new point
                 attributeValue = attributeValue2;
@@ -278,24 +278,24 @@ public class cid3 implements Serializable{
             //=========================================================
 
 
-            double probAUnder, probAOver, probCandAUnder, probCandAOver, certaintyUnder, certaintyOver;
+            double probAUnder, probAOver, probC_And_A_Under, probC_And_A_Over, certaintyUnder, certaintyOver;
             DataPoint point;
             //Loop through the data just one time
             for (DataPoint datum : data) {
                 point = datum;
-                //For each threshold count data to get prob and probCandA
-                int clas = point.attributes[classAttribute];
+                //For each threshold count data to get prob and probC_And_A
+                int the_Class = point.attributes[classAttribute];
                 for (Threshold iThreshold : thresholds) {
-                    if (iThreshold.sumsClassesAndAttribute[clas] == null)
-                        iThreshold.sumsClassesAndAttribute[clas] = new SumUnderAndOver(0, 0);
+                    if (iThreshold.sumsClassesAndAttribute[the_Class] == null)
+                        iThreshold.sumsClassesAndAttribute[the_Class] = new SumUnderAndOver(0, 0);
                     if ((double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]) <= iThreshold.value) {
                         iThreshold.sumAUnder++;
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[clas].under++;
+                        iThreshold.sumsClassesAndAttribute[the_Class].under++;
                     } else {
                         iThreshold.sumAOver++;
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[clas].over++;
+                        iThreshold.sumsClassesAndAttribute[the_Class].over++;
                     }
                 }
             }
@@ -303,24 +303,24 @@ public class cid3 implements Serializable{
             //Now calculate probabilities
             for (Threshold threshold : thresholds) {
                 //Calculate prob
-                probAUnder = 1. * threshold.sumAUnder / numdata;
-                probAOver = 1. * threshold.sumAOver / numdata;
+                probAUnder = 1. * threshold.sumAUnder / numData;
+                probAOver = 1. * threshold.sumAOver / numData;
 
                 //Reset the certainty
                 certaintyUnder = 0;
                 certaintyOver = 0;
 
-                for (int c = 0; c < numvaluesClass; c++) {
+                for (int c = 0; c < numValuesClass; c++) {
                     if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probCandAUnder = 1. * threshold.sumsClassesAndAttribute[c].under / numdata;
-                        probCandAOver = 1. * threshold.sumsClassesAndAttribute[c].over / numdata;
+                        probC_And_A_Under = 1. * threshold.sumsClassesAndAttribute[c].under / numData;
+                        probC_And_A_Over = 1. * threshold.sumsClassesAndAttribute[c].over / numData;
                     } else {
-                        probCandAUnder = 0;
-                        probCandAOver = 0;
+                        probC_And_A_Under = 0;
+                        probC_And_A_Over = 0;
                     }
 
-                    certaintyUnder += Math.abs(probCandAUnder - probAUnder / numvaluesClass);
-                    certaintyOver += Math.abs(probCandAOver - probAOver / numvaluesClass);
+                    certaintyUnder += Math.abs(probC_And_A_Under - probAUnder / numValuesClass);
+                    certaintyOver += Math.abs(probC_And_A_Over - probAOver / numValuesClass);
                 }
                 //Calculate totals
                 totalCertainty = certaintyUnder + certaintyOver;
@@ -336,24 +336,22 @@ public class cid3 implements Serializable{
 
     //This is Entropy.
     public Certainty calculateEntropy(ArrayList<DataPoint> data, int givenThatAttribute){
-        int numdata = data.size();
-        if (numdata == 0) return new Certainty(0, 0);
-        int numvaluesClass = domainsIndexToValue[classAttribute].size();
-        int numvaluesgivenAtt = domainsIndexToValue[givenThatAttribute].size();
+        int numData = data.size();
+        if (numData == 0) return new Certainty(0, 0);
+        int numValuesClass = domainsIndexToValue[classAttribute].size();
+        int numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size();
         //If attribute is discrete
         if (attributeTypes[givenThatAttribute] == AttributeType.Discrete){
             Probabilities[] probabilities = CalculateAllProbabilities(data);
             double sum, sum2 = 0;
-            double probability, probabilityCgivenA;
-            for (int j = 0; j < numvaluesgivenAtt; j++) {
-                //probability = prob(data,givenThatAttribute,j);
+            double probability, probabilityC_Given_A;
+            for (int j = 0; j < numValuesGivenAtt; j++) {
                 probability = probabilities[givenThatAttribute].prob[j];
                 sum = 0;
-                for (int i = 0; i < numvaluesClass; i++){
-                    //probabilityCandA = probCandA(data, givenThatAttribute, j, i);
-                    probabilityCgivenA = probabilities[givenThatAttribute].probCgivenA[j][i];
-                    if (probabilityCgivenA != 0)
-                        sum += -probabilityCgivenA * Math.log(probabilityCgivenA);
+                for (int i = 0; i < numValuesClass; i++){
+                    probabilityC_Given_A = probabilities[givenThatAttribute].probC_Given_A[j][i];
+                    if (probabilityC_Given_A != 0)
+                        sum += -probabilityC_Given_A * Math.log(probabilityC_Given_A);
                 }
                 sum2 += probability * sum;
             }
@@ -368,16 +366,16 @@ public class cid3 implements Serializable{
             HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap<>();
             for (DataPoint point : data) {
                 double attribute = (double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]);
-                int clas = point.attributes[classAttribute];
+                int theClass = point.attributes[classAttribute];
                 attributeValuesSet.add(attribute);
                 Tuple<Integer, Boolean> tuple = attributeToClass.get(attribute);
                 if (tuple != null) {
-                    if (tuple.x != clas && tuple.y)
-                        attributeToClass.put(attribute, new Tuple<>(clas, false));
+                    if (tuple.x != theClass && tuple.y)
+                        attributeToClass.put(attribute, new Tuple<>(theClass, false));
 //                            else
 //                                if (tuple.y)
-//                                    attributeToClass.put(attribute, new Tuple(clas,true));
-                } else attributeToClass.put(attribute, new Tuple<>(clas, true));
+//                                    attributeToClass.put(attribute, new Tuple(theClass,true));
+                } else attributeToClass.put(attribute, new Tuple<>(theClass, true));
             }
             Iterator<Double> it = attributeValuesSet.iterator();
             double attributeValue = it.next();
@@ -391,7 +389,7 @@ public class cid3 implements Serializable{
                 if(theClass2 != theClass || !attributeClass2.y || !attributeClass1.y){
                     //Add threshold
                     double median = (attributeValue+attributeValue2)/2;
-                    thresholds.add(new Threshold(median, new SumUnderAndOver[numvaluesClass]));
+                    thresholds.add(new Threshold(median, new SumUnderAndOver[numValuesClass]));
                 }
                 //Set new point
                 attributeValue = attributeValue2;
@@ -426,48 +424,48 @@ public class cid3 implements Serializable{
                 thresholds.add(centerThreshold1);
             }
             //=========================================================
-            double probAUnder, probAOver, probCandAUnder, probCandAOver, entropyUnder, entropyOver;
+            double probAUnder, probAOver, probC_And_A_Under, probC_And_A_Over, entropyUnder, entropyOver;
             boolean selected = false;
 
             //Loop through the data just one time
             for (DataPoint point : data) {
-                //For each threshold count data to get prob and probCandA
-                int clas = point.attributes[classAttribute];
+                //For each threshold count data to get prob and probC_And_A
+                int pointClass = point.attributes[classAttribute];
                 for (Threshold iThreshold : thresholds) {
-                    //if (thresholds[i].sumsClassesAndAttribute == null) thresholds[i].sumsClassesAndAttribute = new SumUnderAndOver[numvaluesClass];
-                    if (iThreshold.sumsClassesAndAttribute[clas] == null)
-                        iThreshold.sumsClassesAndAttribute[clas] = new SumUnderAndOver(0, 0);
+                    //if (thresholds[i].sumsClassesAndAttribute == null) thresholds[i].sumsClassesAndAttribute = new SumUnderAndOver[numValuesClass];
+                    if (iThreshold.sumsClassesAndAttribute[pointClass] == null)
+                        iThreshold.sumsClassesAndAttribute[pointClass] = new SumUnderAndOver(0, 0);
                     if ((double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]) < iThreshold.value) {
                         iThreshold.sumAUnder++;
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[clas].under++;
+                        iThreshold.sumsClassesAndAttribute[pointClass].under++;
                     } else {
                         iThreshold.sumAOver++;
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[clas].over++;
+                        iThreshold.sumsClassesAndAttribute[pointClass].over++;
                     }
                 }
             }
             //Now calculate probabilities
             for (Threshold threshold : thresholds) {
                 //Calculate prob
-                probAUnder = 1. * threshold.sumAUnder / numdata;
-                probAOver = 1. * threshold.sumAOver / numdata;
+                probAUnder = 1. * threshold.sumAUnder / numData;
+                probAOver = 1. * threshold.sumAOver / numData;
                 //Reset the entropy
                 entropyUnder = 0;
                 entropyOver = 0;
-                for (int c = 0; c < numvaluesClass; c++) {
+                for (int c = 0; c < numValuesClass; c++) {
                     if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probCandAUnder = 1. * threshold.sumsClassesAndAttribute[c].under / numdata;
-                        probCandAOver = 1. * threshold.sumsClassesAndAttribute[c].over / numdata;
+                        probC_And_A_Under = 1. * threshold.sumsClassesAndAttribute[c].under / numData;
+                        probC_And_A_Over = 1. * threshold.sumsClassesAndAttribute[c].over / numData;
                     } else {
-                        probCandAUnder = 0;
-                        probCandAOver = 0;
+                        probC_And_A_Under = 0;
+                        probC_And_A_Over = 0;
                     }
-                    if (probCandAUnder != 0 && probAUnder != 0)
-                        entropyUnder += -probCandAUnder / probAUnder * Math.log(probCandAUnder / probAUnder);
-                    if (probCandAOver != 0 && probAOver != 0)
-                        entropyOver += -probCandAOver / probAOver * Math.log(probCandAOver / probAOver);
+                    if (probC_And_A_Under != 0 && probAUnder != 0)
+                        entropyUnder += -probC_And_A_Under / probAUnder * Math.log(probC_And_A_Under / probAUnder);
+                    if (probC_And_A_Over != 0 && probAOver != 0)
+                        entropyOver += -probC_And_A_Over / probAOver * Math.log(probC_And_A_Over / probAOver);
                 }
                 //Calculate totals
                 totalEntropy = entropyUnder * probAUnder + entropyOver * probAOver;
@@ -493,23 +491,21 @@ public class cid3 implements Serializable{
 
     //This is Gini.
     public Certainty calculateGini(ArrayList<DataPoint> data, int givenThatAttribute){
-        int numdata = data.size();
-        if (numdata == 0) return new Certainty(0, 0);
-        int numvaluesClass = domainsIndexToValue[classAttribute].size();
-        int numvaluesgivenAtt = domainsIndexToValue[givenThatAttribute].size();
+        int numData = data.size();
+        if (numData == 0) return new Certainty(0, 0);
+        int numValuesClass = domainsIndexToValue[classAttribute].size();
+        int numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size();
         //If attribute is discrete
         if (attributeTypes[givenThatAttribute] == AttributeType.Discrete){
             Probabilities[] probabilities = CalculateAllProbabilities(data);
             double sum, sum2 = 0;
-            double probability, probabilityCgivenA, gini;
-            for (int j = 0; j < numvaluesgivenAtt; j++) {
-                //probability = prob(data,givenThatAttribute,j);
+            double probability, probabilityC_Given_A, gini;
+            for (int j = 0; j < numValuesGivenAtt; j++) {
                 probability = probabilities[givenThatAttribute].prob[j];
                 sum = 0;
-                for (int i = 0; i < numvaluesClass; i++){
-                    //probabilityCandA = probCandA(data, givenThatAttribute, j, i);
-                    probabilityCgivenA = probabilities[givenThatAttribute].probCgivenA[j][i];
-                    sum += Math.pow(probabilityCgivenA,2);
+                for (int i = 0; i < numValuesClass; i++){
+                    probabilityC_Given_A = probabilities[givenThatAttribute].probC_Given_A[j][i];
+                    sum += Math.pow(probabilityC_Given_A,2);
                 }
                 gini = 1 - sum;
                 sum2 += probability * gini;
@@ -525,16 +521,16 @@ public class cid3 implements Serializable{
             HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap<>();
             for (DataPoint point : data) {
                 double attribute = (double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]);
-                int clas = point.attributes[classAttribute];
+                int theClass = point.attributes[classAttribute];
                 attributeValuesSet.add(attribute);
                 Tuple<Integer, Boolean> tuple = attributeToClass.get(attribute);
                 if (tuple != null) {
-                    if (tuple.x != clas && tuple.y)
-                        attributeToClass.put(attribute, new Tuple<>(clas, false));
+                    if (tuple.x != theClass && tuple.y)
+                        attributeToClass.put(attribute, new Tuple<>(theClass, false));
 //                            else
 //                                if (tuple.y)
-//                                    attributeToClass.put(attribute, new Tuple(clas,true));
-                } else attributeToClass.put(attribute, new Tuple<>(clas, true));
+//                                    attributeToClass.put(attribute, new Tuple(theClass,true));
+                } else attributeToClass.put(attribute, new Tuple<>(theClass, true));
             }
             Iterator<Double> it = attributeValuesSet.iterator();
             double attributeValue = it.next();
@@ -548,7 +544,7 @@ public class cid3 implements Serializable{
                 if(theClass2 != theClass || !attributeClass2.y || !attributeClass1.y){
                     //Add threshold
                     double median = (attributeValue+attributeValue2)/2;
-                    thresholds.add(new Threshold(median, new SumUnderAndOver[numvaluesClass]));
+                    thresholds.add(new Threshold(median, new SumUnderAndOver[numValuesClass]));
                 }
                 //Set new point
                 attributeValue = attributeValue2;
@@ -583,46 +579,46 @@ public class cid3 implements Serializable{
                 thresholds.add(centerThreshold1);
             }
             //=========================================================
-            double probAUnder, probAOver, probCandAUnder, probCandAOver, giniUnder, giniOver;
+            double probAUnder, probAOver, probC_And_A_Under, probC_And_A_Over, giniUnder, giniOver;
             boolean selected = false;
 
             //Loop through the data just one time
             for (DataPoint point : data) {
-                //For each threshold count data to get prob and probCandA
-                int clas = point.attributes[classAttribute];
+                //For each threshold count data to get prob and probC_And_A
+                int pointClass = point.attributes[classAttribute];
                 for (Threshold iThreshold : thresholds) {
-                    //if (thresholds[i].sumsClassesAndAttribute == null) thresholds[i].sumsClassesAndAttribute = new SumUnderAndOver[numvaluesClass];
-                    if (iThreshold.sumsClassesAndAttribute[clas] == null)
-                        iThreshold.sumsClassesAndAttribute[clas] = new SumUnderAndOver(0, 0);
+                    //if (thresholds[i].sumsClassesAndAttribute == null) thresholds[i].sumsClassesAndAttribute = new SumUnderAndOver[numValuesClass];
+                    if (iThreshold.sumsClassesAndAttribute[pointClass] == null)
+                        iThreshold.sumsClassesAndAttribute[pointClass] = new SumUnderAndOver(0, 0);
                     if ((double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]) < iThreshold.value) {
                         iThreshold.sumAUnder++;
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[clas].under++;
+                        iThreshold.sumsClassesAndAttribute[pointClass].under++;
                     } else {
                         iThreshold.sumAOver++;
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[clas].over++;
+                        iThreshold.sumsClassesAndAttribute[pointClass].over++;
                     }
                 }
             }
             //Now calculate probabilities
             for (Threshold threshold : thresholds) {
                 //Calculate prob
-                probAUnder = 1. * threshold.sumAUnder / numdata;
-                probAOver = 1. * threshold.sumAOver / numdata;
+                probAUnder = 1. * threshold.sumAUnder / numData;
+                probAOver = 1. * threshold.sumAOver / numData;
                 //Reset the gini
                 giniUnder = 0;
                 giniOver = 0;
-                for (int c = 0; c < numvaluesClass; c++) {
+                for (int c = 0; c < numValuesClass; c++) {
                     if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probCandAUnder = 1. * threshold.sumsClassesAndAttribute[c].under / numdata;
-                        probCandAOver = 1. * threshold.sumsClassesAndAttribute[c].over / numdata;
+                        probC_And_A_Under = 1. * threshold.sumsClassesAndAttribute[c].under / numData;
+                        probC_And_A_Over = 1. * threshold.sumsClassesAndAttribute[c].over / numData;
                     } else {
-                        probCandAUnder = 0;
-                        probCandAOver = 0;
+                        probC_And_A_Under = 0;
+                        probC_And_A_Over = 0;
                     }
-                    giniUnder += Math.pow(probCandAUnder / probAUnder, 2);
-                    giniOver += Math.pow(probCandAOver / probAOver, 2);
+                    giniUnder += Math.pow(probC_And_A_Under / probAUnder, 2);
+                    giniOver += Math.pow(probC_And_A_Over / probAOver, 2);
                 }
                 //Calculate totals
                 giniUnder = 1 - giniUnder;
@@ -650,7 +646,7 @@ public class cid3 implements Serializable{
 
     //This method calculates all probabilities in one run
     public Probabilities[] CalculateAllProbabilities(ArrayList<DataPoint> data){
-        int numdata = data.size();
+        int numData = data.size();
         Probabilities[] probabilities = new Probabilities[numAttributes - 1];
 
         //Initialize the array
@@ -664,7 +660,7 @@ public class cid3 implements Serializable{
             for (int j = 0; j < point.attributes.length - 1; j++) {
                 if (attributeTypes[j] == AttributeType.Ignore) continue;
                 probabilities[j].prob[point.attributes[j]] = probabilities[j].prob[point.attributes[j]] + 1;
-                probabilities[j].probCandA[point.attributes[j]][point.attributes[classAttribute]] = probabilities[j].probCandA[point.attributes[j]][point.attributes[classAttribute]] + 1;
+                probabilities[j].probC_And_A[point.attributes[j]][point.attributes[classAttribute]] = probabilities[j].probC_And_A[point.attributes[j]][point.attributes[classAttribute]] + 1;
             }
         }
         // Divide all values by total data size to get probabilities.
@@ -673,17 +669,17 @@ public class cid3 implements Serializable{
             if (attributeTypes[i] == AttributeType.Ignore) continue;
             current = probabilities[i];
             for (int j = 0; j < current.prob.length; j++){
-                current.prob[j] = current.prob[j]/numdata;
+                current.prob[j] = current.prob[j]/numData;
             }
-            for (int j = 0; j < current.probCandA.length; j++){
-                for (int k = 0; k < current.probCandA[j].length; k++){
-                    current.probCandA[j][k] = current.probCandA[j][k]/numdata;
+            for (int j = 0; j < current.probC_And_A.length; j++){
+                for (int k = 0; k < current.probC_And_A[j].length; k++){
+                    current.probC_And_A[j][k] = current.probC_And_A[j][k]/numData;
                 }
             }
-            //Calculate ProbCgivenA
-            for (int j = 0; j < current.probCgivenA.length; j++){
-                for (int k = 0; k < current.probCgivenA[j].length; k++){
-                    current.probCgivenA[j][k] = current.probCandA[j][k]/current.prob[j];
+            //Calculate ProbC_Given_A
+            for (int j = 0; j < current.probC_Given_A.length; j++){
+                for (int k = 0; k < current.probC_Given_A[j].length; k++){
+                    current.probC_Given_A[j][k] = current.probC_And_A[j][k]/current.prob[j];
                 }
             }
         }
@@ -691,7 +687,7 @@ public class cid3 implements Serializable{
     }
 
     /*  This function checks if the specified attribute is used to decompose the data set
-        in any of the parents of the specfied node in the decomposition tree.
+        in any of the parents of the specified node in the decomposition tree.
         Recursively checks the specified node as well as all parents
     */
     public boolean alreadyUsedToDecompose(TreeNode node, int attribute) {
@@ -704,9 +700,9 @@ public class cid3 implements Serializable{
     }
     public boolean stopConditionAllClassesEqualEfficient(int[] frequencyClasses){
 
-        int numvaluesClass = domainsIndexToValue[classAttribute].size();
+        int numValuesClass = domainsIndexToValue[classAttribute].size();
         boolean oneClassIsPresent = false;
-        for (int i = 0; i < numvaluesClass; i++){
+        for (int i = 0; i < numValuesClass; i++){
             if (frequencyClasses[i] != 0) {
                 if (!oneClassIsPresent) oneClassIsPresent = true;
                 else return false;
@@ -717,7 +713,7 @@ public class cid3 implements Serializable{
 
     /*  This function decomposes the specified node according to the id3 algorithm.
     Recursively divides all children nodes until it is not possible to divide any further  */
-    public void decomposeNode(TreeNode node,  ArrayList<Integer> selectedAtts, long mySeed) {
+    public void decomposeNode(TreeNode node,  ArrayList<Integer> selectedAttributes, long mySeed) {
         Certainty bestCertainty = new Certainty(0, 0);
         boolean selected=false;
         int selectedAttribute=0;
@@ -727,7 +723,7 @@ public class cid3 implements Serializable{
             if (node.data == null || node.data.size() <= 1) return;
             if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return;
             Certainty certainty;
-            for (Integer selectedAtt : selectedAtts) {
+            for (Integer selectedAtt : selectedAttributes) {
                 if (classAttribute == selectedAtt) continue;
                 if (attributeTypes[selectedAtt] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtt))
                     continue;
@@ -750,7 +746,7 @@ public class cid3 implements Serializable{
                     /*  In the following two loops, the best attribute is located which
                         causes maximum increase in information*/
             Certainty entropy;
-            for (Integer selectedAtt : selectedAtts) {
+            for (Integer selectedAtt : selectedAttributes) {
                 if (classAttribute == selectedAtt) continue;
                 if (attributeTypes[selectedAtt] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtt))
                     continue;
@@ -777,7 +773,7 @@ public class cid3 implements Serializable{
                         /*  In the following two loops, the best attribute is located which
                             causes maximum increase in information*/
             Certainty gini;
-            for (Integer selectedAtt : selectedAtts) {
+            for (Integer selectedAtt : selectedAttributes) {
                 if (classAttribute == selectedAtt) continue;
                 if (attributeTypes[selectedAtt] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtt))
                     continue;
@@ -804,11 +800,11 @@ public class cid3 implements Serializable{
         //if attribute is discrete
         if (attributeTypes[selectedAttribute] == AttributeType.Discrete){
             // Now divide the dataset using the selected attribute
-            int numvalues = domainsIndexToValue[selectedAttribute].size();
+            int numValues = domainsIndexToValue[selectedAttribute].size();
             node.decompositionAttribute = selectedAttribute;
             node.children = new ArrayList<>();
             DataFrequencies df;
-            for (int j=0; j< numvalues; j++) {
+            for (int j=0; j< numValues; j++) {
                 if (domainsIndexToValue[selectedAttribute].get(j) == null || domainsIndexToValue[selectedAttribute].get(j).equals("?"))
                     continue;
                 TreeNode newNode  = new TreeNode();
@@ -824,7 +820,7 @@ public class cid3 implements Serializable{
             // Recursively divides children nodes
             if (isCrossValidation){ // If is Cross Validation, don't create more threads
                 for (int j = 0; j < node.children.size(); j++) {
-                    decomposeNode(node.children.get(j), selectedAtts, 0);
+                    decomposeNode(node.children.get(j), selectedAttributes, 0);
                 }
             }
             else
@@ -832,26 +828,26 @@ public class cid3 implements Serializable{
                 Random rand = new Random(mySeed);
                 int randomAttribute;
                 //randomAttribute = rand.nextInt(numAttributes - 1);
-                int numAtt = selectedAtts.size();
+                int numAtt = selectedAttributes.size();
 
                 for (int j = 0; j < node.children.size(); j++) {
-                    selectedAtts = new ArrayList<>();
-                    while (selectedAtts.size() < numAtt) {
+                    selectedAttributes = new ArrayList<>();
+                    while (selectedAttributes.size() < numAtt) {
                         randomAttribute = rand.nextInt(numAttributes - 1);
-                        if (!selectedAtts.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAtts.add(randomAttribute);
+                        if (!selectedAttributes.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributes.add(randomAttribute);
                     }
-                    decomposeNode(node.children.get(j), selectedAtts, mySeed + 1 + j);
+                    decomposeNode(node.children.get(j), selectedAttributes, mySeed + 1 + j);
                 }
             }
             else{
                 for (int j = 0; j < node.children.size(); j++) {//For single trees now also don't create more threads
                     //final Integer j2 = j;
-                    //final ArrayList<Integer> selectedAtts2 =  selectedAtts;
+                    //final ArrayList<Integer> selectedAttributes2 =  selectedAttributes;
 
                     //if (globalThreads.size() < maxThreads) {
                     //    Thread thread = new Thread() {
                     //        public void run() {
-                    decomposeNode(node.children.get(j), selectedAtts, mySeed + 1 + j);
+                    decomposeNode(node.children.get(j), selectedAttributes, mySeed + 1 + j);
                     //       }
                     //  };
 
@@ -859,7 +855,7 @@ public class cid3 implements Serializable{
                     //   globalThreads.add(thread);
                     //   thread.start();
                     //}
-                    // else decomposeNode((TreeNode) node.children.get(j2), selectedAtts2, mySeed + 1 + j2);
+                    // else decomposeNode((TreeNode) node.children.get(j2), selectedAttributes2, mySeed + 1 + j2);
                 }
 
                 //while (threads.size() > 0){
@@ -903,37 +899,37 @@ public class cid3 implements Serializable{
                 return;
 
             if (isCrossValidation){ //if is a Cross Validation, don't create more threads
-                decomposeNode(node.children.get(0), selectedAtts, 0);
-                decomposeNode(node.children.get(1), selectedAtts, 0);
+                decomposeNode(node.children.get(0), selectedAttributes, 0);
+                decomposeNode(node.children.get(1), selectedAttributes, 0);
             }
             else //if is a Random Forest, don't create more threads
                 if(isRandomForest) {
                     Random rand = new Random(mySeed);
                     int randomAttribute;
                     //randomAttribute = rand.nextInt(numAttributes - 1);
-                    int numAtt = selectedAtts.size();
+                    int numAtt = selectedAttributes.size();
 
-                    selectedAtts = new ArrayList<>();
-                    while (selectedAtts.size() < numAtt) {
+                    selectedAttributes = new ArrayList<>();
+                    while (selectedAttributes.size() < numAtt) {
                         randomAttribute = rand.nextInt(numAttributes - 1);
-                        if (!selectedAtts.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAtts.add(randomAttribute);
+                        if (!selectedAttributes.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributes.add(randomAttribute);
                     }
-                    decomposeNode(node.children.get(0), selectedAtts, mySeed + 1);
+                    decomposeNode(node.children.get(0), selectedAttributes, mySeed + 1);
 
-                    selectedAtts = new ArrayList<>();
-                    while (selectedAtts.size() < numAtt) {
+                    selectedAttributes = new ArrayList<>();
+                    while (selectedAttributes.size() < numAtt) {
                         randomAttribute = rand.nextInt(numAttributes - 1);
-                        if (!selectedAtts.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAtts.add(randomAttribute);
+                        if (!selectedAttributes.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributes.add(randomAttribute);
                     }
-                    decomposeNode(node.children.get(1), selectedAtts, mySeed + 2);
+                    decomposeNode(node.children.get(1), selectedAttributes, mySeed + 2);
                 }
                 else {//also now for single trees don't create more threads
-                    //final ArrayList<Integer> selectedAtts2 =  selectedAtts;
+                    //final ArrayList<Integer> selectedAttributes2 =  selectedAttributes;
 
                     //if (globalThreads.size() < maxThreads) {
                     //   Thread thread = new Thread() {
                     //       public void run() {
-                    decomposeNode(node.children.get(0), selectedAtts, mySeed + 1);
+                    decomposeNode(node.children.get(0), selectedAttributes, mySeed + 1);
                     //       }
                     //   };
                     //   threads.add(thread);
@@ -942,7 +938,7 @@ public class cid3 implements Serializable{
 
                     //  thread = new Thread() {
                     //      public void run() {
-                    decomposeNode(node.children.get(1), selectedAtts, mySeed + 2);
+                    decomposeNode(node.children.get(1), selectedAttributes, mySeed + 2);
                     //      }
                     //  };
                     //  threads.add(thread);
@@ -958,8 +954,8 @@ public class cid3 implements Serializable{
                     //  }
                     //}
                     //else {
-                    //    decomposeNode((TreeNode) node.children.get(0), selectedAtts2, mySeed + 1);
-                    //    decomposeNode((TreeNode) node.children.get(1), selectedAtts2, mySeed + 2);
+                    //    decomposeNode((TreeNode) node.children.get(0), selectedAttributes2, mySeed + 1);
+                    //    decomposeNode((TreeNode) node.children.get(1), selectedAttributes2, mySeed + 2);
                     //}
                 }
         }
@@ -1024,7 +1020,7 @@ public class cid3 implements Serializable{
         }
     }
 
-    //Find the most common values of a discrete attribute. This is neede for imputation.
+    //Find the most common values of a discrete attribute. This is needed for imputation.
     public int mostCommonValue(int attribute){
         int[] frequencies = new int[domainsIndexToValue[attribute].size()];
         for (DataPoint point : trainData) {
@@ -1188,8 +1184,8 @@ public class cid3 implements Serializable{
             if (input.equals("")) continue;
 
             tokenizer = new StringTokenizer(input, ",");
-            int numtokens = tokenizer.countTokens();
-            if (numtokens != numAttributes) {
+            int numTokens = tokenizer.countTokens();
+            if (numTokens != numAttributes) {
                 System.err.println( "Read " + data.size() + " data");
                 System.err.println( "Last line read: " + input);
                 System.err.println( "Expecting " + numAttributes  + " attributes");
@@ -1401,27 +1397,25 @@ public class cid3 implements Serializable{
         The second form is printed if the node cannot be decomposed any further into an homogenous set
     */
     public void printTree(TreeNode node, String tab) {
-
-        //int outputattr = classAttribute;
         if (node.data != null && !node.data.isEmpty()) totalNodes++;
         if (node.children == null) {
             if (node.data != null && !node.data.isEmpty()) totalRules++;
-            //int []values = getAllValues(node.data, outputattr );
+            //int []values = getAllValues(node.data, classAttribute );
             //if (values.length == 1) {
-//				System.out.println(tab + "\t" + attributeNames[outputattr] + " = \"" + domainsIndexToValue[outputattr].get(values[0]) + "\";");
+//				System.out.println(tab + "\t" + attributeNames[classAttribute] + " = \"" + domainsIndexToValue[classAttribute].get(values[0]) + "\";");
             //   return;
             //}
-//			System.out.print(tab + "\t" + attributeNames[outputattr] + " = {");
+//			System.out.print(tab + "\t" + attributeNames[classAttribute] + " = {");
 //			for (int i=0; i < values.length; i++) {
-//				System.out.print("\"" + domainsIndexToValue[outputattr].get(values[i]) + "\" ");
+//				System.out.print("\"" + domainsIndexToValue[classAttribute].get(values[i]) + "\" ");
 //				if ( i != values.length-1 ) System.out.print( " , " );
 //			}
 //			System.out.println( " };");
             return;
         }
 
-        int numvalues = node.children.size();
-        for (int i=0; i < numvalues; i++) {
+        int numValues = node.children.size();
+        for (int i=0; i < numValues; i++) {
             //String symbol;
 //                  if (attributeTypes[node.decompositionAttribute] == AttributeType.Continuous)
 //                      symbol = node.children[i].decompositionValueContinuous;
@@ -1429,14 +1423,14 @@ public class cid3 implements Serializable{
 //                  System.out.println(tab + "if( " + attributeNames[node.decompositionAttribute] + symbol + "" +
 //                          ") {" );
             printTree(node.children.get(i), tab + "\t");
-//                  if (i != numvalues-1) System.out.print(tab +  "} else ");
+//                  if (i != numValues-1) System.out.print(tab +  "} else ");
 //                  else System.out.println(tab +  "}");
         }
     }
 
     private void createFile(){
         ObjectOutputStream oos;
-        FileOutputStream fout;
+        FileOutputStream fOut;
         String fName = fileName;
         fName = fName.substring(0, fName.length() - 4);
         fName = fName + "tree";
@@ -1453,8 +1447,8 @@ public class cid3 implements Serializable{
             }
 
             //Serialize and save to disk
-            fout = new FileOutputStream(fName, false);
-            GZIPOutputStream gz = new GZIPOutputStream(fout);
+            fOut = new FileOutputStream(fName, false);
+            GZIPOutputStream gz = new GZIPOutputStream(fOut);
             oos = new ObjectOutputStream(gz);
             oos.writeObject(this);
             oos.close();
@@ -1466,7 +1460,7 @@ public class cid3 implements Serializable{
 
     private void createFileRF(){
         ObjectOutputStream oos;
-        FileOutputStream fout;
+        FileOutputStream fOut;
         String fName = fileName;
         fName = fName.substring(0, fName.length() - 4);
         fName = fName + "forest";
@@ -1481,8 +1475,8 @@ public class cid3 implements Serializable{
             }
 
             //Serialize and save to disk
-            fout = new FileOutputStream(fName, false);
-            GZIPOutputStream gz = new GZIPOutputStream(fout);
+            fOut = new FileOutputStream(fName, false);
+            GZIPOutputStream gz = new GZIPOutputStream(fOut);
             oos = new ObjectOutputStream(gz);
             oos.writeObject(this);
             oos.close();
@@ -1829,8 +1823,8 @@ public class cid3 implements Serializable{
 
     public boolean testExampleRF(DataPoint example, ArrayList<TreeNode> roots){
         TreeNode node;
-        int tru = 0;
-        int fals = 0;
+        int isTrue = 0;
+        int isFalse = 0;
 
         ArrayList<Boolean> results = new ArrayList<>();
         for (TreeNode treeNode : roots) {
@@ -1845,10 +1839,10 @@ public class cid3 implements Serializable{
         }
         //Voting now
         for (Boolean result : results) {
-            if (result) tru++;
-            else fals++;
+            if (result) isTrue++;
+            else isFalse++;
         }
-        return tru > fals;
+        return isTrue > isFalse;
     }
 
     public void testDecisionTree(){
@@ -2091,12 +2085,11 @@ public class cid3 implements Serializable{
                                     double mean = id3.meanValues[currentNode.decompositionAttribute];
                                     if (mean <= (currentNode.children.get(i)).thresholdContinuous) {
                                         currentNode = currentNode.children.get(i);
-                                        break;
                                     }
                                     else {
                                         currentNode = currentNode.children.get(i + 1);
-                                        break;
                                     }
+                                    break;
                                 }
                                 else {
                                     currentNode = currentNode.children.get(i + 1);
@@ -2132,7 +2125,7 @@ public class cid3 implements Serializable{
 
             String mostCommonStr = (String) id3.domainsIndexToValue[id3.classAttribute].get(mostCommon);
             //Print class attribute value
-            System.out.println("Class attibute value is: " + mostCommonStr);
+            System.out.println("Class attribute value is: " + mostCommonStr);
 
         } else System.out.println("The file doesn't exist.");
     }
@@ -2148,15 +2141,15 @@ public class cid3 implements Serializable{
         File inputTreeFile = new File(treeFile);
         cid3 id3;
 
-        FileWriter fileout = null;
+        FileWriter fileOut = null;
         try {
-            fileout = new FileWriter(fileOutStr, false);
+            fileOut = new FileWriter(fileOutStr, false);
         }
         catch (Exception e){
             System.err.println( "Error creating temporal file." + "\n");
             System.exit(1);
         }
-        BufferedWriter fileBuf = new BufferedWriter(fileout);
+        BufferedWriter fileBuf = new BufferedWriter(fileOut);
         PrintWriter printOut = new PrintWriter(fileBuf);
 
         if (inputTreeFile.exists()) {
@@ -2192,8 +2185,8 @@ public class cid3 implements Serializable{
                 if (input.startsWith("//")) continue;
 
                 tokenizer = new StringTokenizer(input, ",");
-                int numtokens = tokenizer.countTokens();
-                if (numtokens != id3.numAttributes - 1) {
+                int numTokens = tokenizer.countTokens();
+                if (numTokens != id3.numAttributes - 1) {
                     System.err.println( "Expecting " + (id3.numAttributes - 1)  + " attributes");
                     System.exit(1);
                 }
@@ -2278,15 +2271,15 @@ public class cid3 implements Serializable{
         File inputForestFile = new File(rfFile);
         cid3 id3;
 
-        FileWriter fileout = null;
+        FileWriter fileOut = null;
         try {
-            fileout = new FileWriter(fileOutStr, false);
+            fileOut = new FileWriter(fileOutStr, false);
         }
         catch (Exception e){
             System.err.println( "Error creating temporal file." + "\n");
             System.exit(1);
         }
-        BufferedWriter fileBuf = new BufferedWriter(fileout);
+        BufferedWriter fileBuf = new BufferedWriter(fileOut);
         PrintWriter printOut = new PrintWriter(fileBuf);
 
         if (inputForestFile.exists()) {
@@ -2322,8 +2315,8 @@ public class cid3 implements Serializable{
                 if (input.startsWith("//")) continue;
 
                 tokenizer = new StringTokenizer(input, ",");
-                int numtokens = tokenizer.countTokens();
-                if (numtokens != id3.numAttributes - 1) {
+                int numTokens = tokenizer.countTokens();
+                if (numTokens != id3.numAttributes - 1) {
                     System.err.println( "Expecting " + (id3.numAttributes - 1)  + " attributes");
                     System.exit(1);
                 }
@@ -2539,7 +2532,7 @@ public class cid3 implements Serializable{
         save.setRequired(false);
         options.addOption(partition);
 
-        Option criteria = new Option("c", "criteria", true, "input criteria: c[ertainty], e[ntropy], g[ini]");
+        Option criteria = new Option("c", "criteria", true, "input criteria: c[Certainty], e[Entropy], g[Gini]");
         criteria.setRequired(false);
         options.addOption(criteria);
 
@@ -2555,7 +2548,7 @@ public class cid3 implements Serializable{
         randomForest.setRequired(false);
         options.addOption(randomForest);
 
-        Option query = new Option("q", "query", true, "query model, enter: t[ree] or r[andom forest]");
+        Option query = new Option("q", "query", true, "query model, enter: t[Tree] or r[Random forest]");
         query.setRequired(false);
         options.addOption(query);
 
@@ -2694,7 +2687,6 @@ public class cid3 implements Serializable{
                     me.createFileRF();
                     System.out.print("\n");
                     System.out.print("Random forest saved to disk.");
-                    System.out.print("\n");
                 } else {
                     me.createDecisionTree();
                     System.out.print("\n");
@@ -2702,8 +2694,8 @@ public class cid3 implements Serializable{
                     me.createFile();
                     System.out.print("\n");
                     System.out.print("Tree saved to disk.");
-                    System.out.print("\n");
                 }
+                System.out.print("\n");
             } //Create CV, RF, Tree without saving
             else {
                 me.setMeanValues();
