@@ -19,7 +19,7 @@ public class cid3 implements Serializable{
     String fileName;
     long seed = 13579;
     int maxThreads = 500;
-    transient ArrayList<Thread> globalThreads = new ArrayList<Thread>();
+    transient ArrayList<Thread> globalThreads = new ArrayList<>();
     /* Possible values for each attribute is stored in a vector.  domains is an array of dimension numAttributes.
         Each element of this array is a vector that contains values for the corresponding attribute
         domains[0] is a vector containing the values of the 0-th attribute, etc..
@@ -144,12 +144,12 @@ public class cid3 implements Serializable{
         return result;
     }
     /*  Returns a subset of data, in which the value of the specfied attribute of all data points is the specified value  */
-    public DataFrequencies getSubset(ArrayList data, int attribute, int value) {
+    public DataFrequencies getSubset(ArrayList<DataPoint> data, int attribute, int value) {
         ArrayList<DataPoint> subset = new ArrayList<>();
         int[] frequencies = new int[domainsIndexToValue[classAttribute].size()];
         int num = data.size();
         for (int i=0; i< num; i++) {
-            DataPoint point = (DataPoint)data.get(i);
+            DataPoint point = data.get(i);
             if (point.attributes[attribute] == value) {
                 subset.add(point);
                 frequencies[point.attributes[classAttribute]]++;
@@ -168,14 +168,14 @@ public class cid3 implements Serializable{
         return frequencies;
     }
 
-    public Tuple<DataFrequencies,DataFrequencies> getSubsetsBelowAndAbove(ArrayList data, int attribute, double value){
+    public Tuple<DataFrequencies,DataFrequencies> getSubsetsBelowAndAbove(ArrayList<DataPoint> data, int attribute, double value){
         ArrayList<DataPoint> subsetBelow = new ArrayList<>();
         ArrayList<DataPoint> subsetAbove = new ArrayList<>();
         int[] frequenciesBelow = new int[domainsIndexToValue[classAttribute].size()];
         int[] frequenciesAbove = new int[domainsIndexToValue[classAttribute].size()];
         int num = data.size();
         for (int i = 0; i < num; i++) {
-            DataPoint point = (DataPoint)data.get(i);
+            DataPoint point = data.get(i);
             if ((double)domainsIndexToValue[attribute].get(point.attributes[attribute]) <= value) {
                 subsetBelow.add(point);
                 frequenciesBelow[point.attributes[classAttribute]]++;
@@ -229,9 +229,9 @@ public class cid3 implements Serializable{
                 Tuple<Integer,Boolean> tuple = attributeToClass.get(attribute);
                 if (tuple != null){
                     if (tuple.x != clas && tuple.y)
-                        attributeToClass.put(attribute, new Tuple(clas,false));
+                        attributeToClass.put(attribute, new Tuple<>(clas,false));
                 }
-                else attributeToClass.put(attribute, new Tuple(clas,true));
+                else attributeToClass.put(attribute, new Tuple<>(clas,true));
             }
 
             Iterator<Double> it = attributeValuesSet.iterator();
@@ -239,7 +239,7 @@ public class cid3 implements Serializable{
             Tuple<Integer,Boolean> attributeClass1 = attributeToClass.get(attributeValue);
             int theClass = attributeClass1.x;
 
-            ArrayList<Threshold> thresholds = new ArrayList();
+            ArrayList<Threshold> thresholds = new ArrayList<>();
             while (it.hasNext()) {
                 double attributeValue2 = it.next();
                 Tuple<Integer,Boolean> attributeClass2 = attributeToClass.get(attributeValue2);
@@ -290,7 +290,7 @@ public class cid3 implements Serializable{
             DataPoint point;
             //Loop through the data just one time
             for (int j = 0; j < numdata; j++){
-                point = (DataPoint)data.get(j);
+                point = data.get(j);
                 //For each threshold count data to get prob and probCandA
                 int clas = point.attributes[classAttribute];
                 for (int i = 0; i < thresholds.size(); i++){
@@ -385,12 +385,12 @@ public class cid3 implements Serializable{
                 Tuple<Integer,Boolean> tuple = attributeToClass.get(attribute);
                 if (tuple != null){
                     if (tuple.x != clas && tuple.y)
-                        attributeToClass.put(attribute, new Tuple(clas,false));
+                        attributeToClass.put(attribute, new Tuple<>(clas,false));
 //                            else
 //                                if (tuple.y)
 //                                    attributeToClass.put(attribute, new Tuple(clas,true));
                 }
-                else attributeToClass.put(attribute, new Tuple(clas,true));
+                else attributeToClass.put(attribute, new Tuple<>(clas,true));
             }
             Iterator<Double> it = attributeValuesSet.iterator();
             double attributeValue = it.next();
@@ -548,12 +548,12 @@ public class cid3 implements Serializable{
                 Tuple<Integer,Boolean> tuple = attributeToClass.get(attribute);
                 if (tuple != null){
                     if (tuple.x != clas && tuple.y)
-                        attributeToClass.put(attribute, new Tuple(clas,false));
+                        attributeToClass.put(attribute, new Tuple<>(clas,false));
 //                            else
 //                                if (tuple.y)
 //                                    attributeToClass.put(attribute, new Tuple(clas,true));
                 }
-                else attributeToClass.put(attribute, new Tuple(clas,true));
+                else attributeToClass.put(attribute, new Tuple<>(clas,true));
             }
             Iterator<Double> it = attributeValuesSet.iterator();
             double attributeValue = it.next();
@@ -1023,7 +1023,7 @@ public class cid3 implements Serializable{
         int counter = 0;
 
         for (int i = 0; i < trainData.size(); i++){
-            DataPoint point = (DataPoint)trainData.get(i);
+            DataPoint point = trainData.get(i);
             try {
                 double attValue = (double) domainsIndexToValue[attribute].get(point.attributes[attribute]);
                 sum += attValue;
@@ -1052,7 +1052,7 @@ public class cid3 implements Serializable{
     public int mostCommonValue(int attribute){
         int[] frequencies = new int[domainsIndexToValue[attribute].size()];
         for (int i = 0; i < trainData.size(); i++){
-            DataPoint point = (DataPoint)trainData.get(i);
+            DataPoint point = trainData.get(i);
             frequencies[point.attributes[attribute]]++;
         }
         int mostFrequent = 0;
@@ -1626,7 +1626,7 @@ public class cid3 implements Serializable{
             rootsCrossValidation.add(newRoot);
 
             //Create the cross-validation in parallel
-            ArrayList<Integer> selectedAttributes = new ArrayList<Integer>();
+            ArrayList<Integer> selectedAttributes = new ArrayList<>();
             //Select ALL attributes
             for (int j=0; j < numAttributes - 1; j++){
                 if (attributeTypes[j] == AttributeType.Ignore) continue;
@@ -1682,7 +1682,7 @@ public class cid3 implements Serializable{
 
         //Initialize chunks
         for (int i = 0; i < 10; i++){
-            crossValidationChunks[i] = new ArrayList();
+            crossValidationChunks[i] = new ArrayList<>();
         }
         //First check if there is a remainder
         if (modulus != 0){
@@ -1746,9 +1746,9 @@ public class cid3 implements Serializable{
         for (int i = 0; i < numAttributes - 1; i++){
             if (attributeTypes[i] != AttributeType.Ignore) numberOfAttributes++;
         }
-        Double numAttributesForRandomForest = Math.log(numberOfAttributes + 1) / Math.log(2);
+        double numAttributesForRandomForest = Math.log(numberOfAttributes + 1) / Math.log(2);
 
-        int numAttributesForRandomForestInt = numAttributesForRandomForest.intValue();
+        int numAttributesForRandomForestInt = (int) numAttributesForRandomForest;
         int randomAttribute;
         ArrayList<Integer> selectedAttributes;
         ArrayList<Thread> threads = new ArrayList<>();

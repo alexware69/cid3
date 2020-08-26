@@ -21,7 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataFrequencies.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFrequencies.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cid3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cid3.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -96,13 +95,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Third commit">
-      <created>1588721499778</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1588721499778</updated>
     </task>
     <task id="LOCAL-00004" summary="Created new build.xml">
       <created>1588721651791</created>
@@ -440,7 +432,14 @@
       <option name="project" value="LOCAL" />
       <updated>1598405352033</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="super big code sanitizing!">
+      <created>1598420576027</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1598420576028</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -466,7 +465,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added a comment to terminal output" />
     <MESSAGE value="fixed a spelling error" />
     <MESSAGE value="fixed missing value implementation in query tree output" />
     <MESSAGE value="fixed ignore attribute in query tree output" />
@@ -491,7 +489,8 @@
     <MESSAGE value="removed an unnecessary initialization" />
     <MESSAGE value="code sanitizing" />
     <MESSAGE value="removed two unused methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed two unused methods" />
+    <MESSAGE value="super big code sanitizing!" />
+    <option name="LAST_COMMIT_MESSAGE" value="super big code sanitizing!" />
   </component>
   <component name="WindowStateProjectService">
     <state x="455" y="87" key="#Project_Structure" timestamp="1598248721844">
@@ -507,40 +506,40 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="947" y="592" key="#xdebugger.evaluate/0.23.2560.1353@0.23.2560.1353" timestamp="1590211618966" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1598405351858">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1598420575835">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
     <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1591421682159" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1598405351858" />
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1598420575835" />
     <state width="448" height="466" key="DebuggerActiveHint" timestamp="1590462471949">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state width="448" height="466" key="DebuggerActiveHint/0.23.2560.1353@0.23.2560.1353" timestamp="1590462471949" />
-    <state width="1878" height="263" key="GridCell.Tab.0.bottom" timestamp="1598417107030">
+    <state width="1878" height="263" key="GridCell.Tab.0.bottom" timestamp="1598420835043">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.bottom/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
     <state width="1627" height="330" key="GridCell.Tab.0.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088199" />
-    <state width="1878" height="263" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1598417107030" />
-    <state width="1878" height="263" key="GridCell.Tab.0.center" timestamp="1598417107029">
+    <state width="1878" height="263" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1598420835043" />
+    <state width="1878" height="263" key="GridCell.Tab.0.center" timestamp="1598420835043">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.center/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
     <state width="1627" height="330" key="GridCell.Tab.0.center/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088189" />
-    <state width="1878" height="263" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1598417107029" />
-    <state width="1878" height="263" key="GridCell.Tab.0.left" timestamp="1598417107029">
+    <state width="1878" height="263" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1598420835043" />
+    <state width="1878" height="263" key="GridCell.Tab.0.left" timestamp="1598420835042">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.left/0.23.1920.991@0.23.1920.991" timestamp="1596361527518" />
     <state width="1627" height="330" key="GridCell.Tab.0.left/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088189" />
-    <state width="1878" height="263" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1598417107029" />
-    <state width="1878" height="263" key="GridCell.Tab.0.right" timestamp="1598417107029">
+    <state width="1878" height="263" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1598420835042" />
+    <state width="1878" height="263" key="GridCell.Tab.0.right" timestamp="1598420835043">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.right/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
     <state width="1627" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088199" />
-    <state width="1878" height="263" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1598417107029" />
+    <state width="1878" height="263" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1598420835043" />
     <state width="1627" height="406" key="GridCell.Tab.1.bottom" timestamp="1590463334764">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -562,12 +561,12 @@
     </state>
     <state x="527" y="164" key="SettingsEditor/0.23.1920.991@0.23.1920.991" timestamp="1594012692651" />
     <state x="563" y="107" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1598233380702" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1598405366088">
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1598420589563">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1596361336239" />
     <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1591421688805" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1598405366088" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1598420589563" />
     <state x="718" y="325" width="670" height="676" key="search.everywhere.popup" timestamp="1591420105236">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
