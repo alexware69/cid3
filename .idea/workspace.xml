@@ -21,6 +21,12 @@
   <component name="ChangeListManager">
     <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Condicion.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DoubleParser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SortedArrayList.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SumUnderAndOver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SumBelowAndAbove.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Threshold.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Threshold.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Tuple.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Tuple.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cid3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cid3.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,7 +61,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.21401751" />
     <property name="project.structure.side.proportion" value="0.32484075" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
@@ -95,13 +101,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00008" summary="removed somo unused code files">
-      <created>1588769504476</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1588769504476</updated>
     </task>
     <task id="LOCAL-00009" summary="fixed build.xml">
       <created>1588769664667</created>
@@ -439,7 +438,14 @@
       <option name="project" value="LOCAL" />
       <updated>1598456723953</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="more code sanitizing...removed all typos!">
+      <created>1598458649024</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1598458649024</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -465,7 +471,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="finished implementing query random forest to output file" />
     <MESSAGE value="fixed some details in query random forest to output file" />
     <MESSAGE value="fixed other details in query random forest to output file" />
     <MESSAGE value="removed splitting train data for testing" />
@@ -490,28 +495,30 @@
     <MESSAGE value="more code sanitizing...almost done!" />
     <MESSAGE value="more code sanitizing...down to 16 warnings!" />
     <MESSAGE value="more code sanitizing...down to 6 warnings!" />
-    <option name="LAST_COMMIT_MESSAGE" value="more code sanitizing...down to 6 warnings!" />
+    <MESSAGE value="more code sanitizing...removed all typos!" />
+    <option name="LAST_COMMIT_MESSAGE" value="more code sanitizing...removed all typos!" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="455" y="87" key="#Project_Structure" timestamp="1598455823890">
+    <state x="455" y="87" key="#Project_Structure" timestamp="1598500601315">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
-    <state x="455" y="87" key="#Project_Structure/0.25.1920.984@0.25.1920.984" timestamp="1598455823890" />
-    <state x="536" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593779542200">
-      <screen x="0" y="23" width="1920" height="991" />
+    <state x="455" y="87" key="#Project_Structure/0.25.1920.984@0.25.1920.984" timestamp="1598500601315" />
+    <state x="536" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598500520579">
+      <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="536" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1920.991@0.23.1920.991" timestamp="1593779542200" />
     <state x="714" y="372" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1591420795969" />
+    <state x="536" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1920.984@0.25.1920.984" timestamp="1598500520579" />
     <state x="947" y="592" key="#xdebugger.evaluate" timestamp="1590211618966">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="947" y="592" key="#xdebugger.evaluate/0.23.2560.1353@0.23.2560.1353" timestamp="1590211618966" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1598456723846">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1598458648901">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
     <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1591421682159" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1598456723846" />
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1598458648901" />
     <state width="448" height="466" key="DebuggerActiveHint" timestamp="1590462471949">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -561,12 +568,12 @@
     </state>
     <state x="527" y="164" key="SettingsEditor/0.23.1920.991@0.23.1920.991" timestamp="1594012692651" />
     <state x="563" y="107" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1598233380702" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1598456733190">
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1598458657356">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1596361336239" />
     <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1591421688805" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1598456733190" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1598458657356" />
     <state x="718" y="325" width="670" height="676" key="search.everywhere.popup" timestamp="1591420105236">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>

@@ -13,20 +13,13 @@ import java.io.Serializable;
 public class Threshold implements Serializable {
     public int sumAUnder;
     public int sumAOver;
-    public SumUnderAndOver[] sumsClassesAndAttribute;
+    public SumBelowAndAbove[] sumsClassesAndAttribute;
     double value;
 
-    public Threshold(int uA, int oA, int uCandA, int oCandA, double v){
-        sumAUnder = uA;
-        sumAOver = oA;
-        value = v;
-    }
-    public Threshold(double t, SumUnderAndOver[] s){
+    public Threshold(double t, SumBelowAndAbove[] s){
         value = t;
         sumAUnder = 0;
         sumAOver = 0;
         sumsClassesAndAttribute = s;
-        //sumCandAUnder = 0;
-        //sumCandAOver = 0;
     }
 }

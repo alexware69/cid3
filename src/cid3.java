@@ -239,7 +239,7 @@ public class cid3 implements Serializable{
                 if(theClass2 != theClass || !attributeClass2.y || !attributeClass1.y){
                     //Add threshold
                     double median = (attributeValue+attributeValue2)/2;
-                    thresholds.add(new Threshold(median, new SumUnderAndOver[numValuesClass]));
+                    thresholds.add(new Threshold(median, new SumBelowAndAbove[numValuesClass]));
                 }
                 //Set new point
                 attributeValue = attributeValue2;
@@ -287,7 +287,7 @@ public class cid3 implements Serializable{
                 int the_Class = point.attributes[classAttribute];
                 for (Threshold iThreshold : thresholds) {
                     if (iThreshold.sumsClassesAndAttribute[the_Class] == null)
-                        iThreshold.sumsClassesAndAttribute[the_Class] = new SumUnderAndOver(0, 0);
+                        iThreshold.sumsClassesAndAttribute[the_Class] = new SumBelowAndAbove(0, 0);
                     if ((double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]) <= iThreshold.value) {
                         iThreshold.sumAUnder++;
                         //Next calculate probability of c and a
@@ -389,7 +389,7 @@ public class cid3 implements Serializable{
                 if(theClass2 != theClass || !attributeClass2.y || !attributeClass1.y){
                     //Add threshold
                     double median = (attributeValue+attributeValue2)/2;
-                    thresholds.add(new Threshold(median, new SumUnderAndOver[numValuesClass]));
+                    thresholds.add(new Threshold(median, new SumBelowAndAbove[numValuesClass]));
                 }
                 //Set new point
                 attributeValue = attributeValue2;
@@ -434,7 +434,7 @@ public class cid3 implements Serializable{
                 for (Threshold iThreshold : thresholds) {
                     //if (thresholds[i].sumsClassesAndAttribute == null) thresholds[i].sumsClassesAndAttribute = new SumUnderAndOver[numValuesClass];
                     if (iThreshold.sumsClassesAndAttribute[pointClass] == null)
-                        iThreshold.sumsClassesAndAttribute[pointClass] = new SumUnderAndOver(0, 0);
+                        iThreshold.sumsClassesAndAttribute[pointClass] = new SumBelowAndAbove(0, 0);
                     if ((double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]) < iThreshold.value) {
                         iThreshold.sumAUnder++;
                         //Next calculate probability of c and a
@@ -544,7 +544,7 @@ public class cid3 implements Serializable{
                 if(theClass2 != theClass || !attributeClass2.y || !attributeClass1.y){
                     //Add threshold
                     double median = (attributeValue+attributeValue2)/2;
-                    thresholds.add(new Threshold(median, new SumUnderAndOver[numValuesClass]));
+                    thresholds.add(new Threshold(median, new SumBelowAndAbove[numValuesClass]));
                 }
                 //Set new point
                 attributeValue = attributeValue2;
@@ -589,7 +589,7 @@ public class cid3 implements Serializable{
                 for (Threshold iThreshold : thresholds) {
                     //if (thresholds[i].sumsClassesAndAttribute == null) thresholds[i].sumsClassesAndAttribute = new SumUnderAndOver[numValuesClass];
                     if (iThreshold.sumsClassesAndAttribute[pointClass] == null)
-                        iThreshold.sumsClassesAndAttribute[pointClass] = new SumUnderAndOver(0, 0);
+                        iThreshold.sumsClassesAndAttribute[pointClass] = new SumBelowAndAbove(0, 0);
                     if ((double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]) < iThreshold.value) {
                         iThreshold.sumAUnder++;
                         //Next calculate probability of c and a
