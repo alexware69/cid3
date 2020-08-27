@@ -74,7 +74,7 @@ public class cid3 implements Serializable{
 
     transient ArrayList<DataPoint> testData = new ArrayList<>();
     transient ArrayList<DataPoint> trainData = new ArrayList<>();
-    transient ArrayList<DataPoint>[] crossValidationChunks = new ArrayList[10];
+    transient ArrayList<ArrayList<DataPoint>> crossValidationChunks = new ArrayList<>();
     transient boolean testDataExists = false;
     transient boolean splitTrainData = false;
     transient boolean isRandomForest = false;
@@ -102,7 +102,7 @@ public class cid3 implements Serializable{
     /*  The root of the decomposition tree  */
     TreeNode root = new TreeNode();
     ArrayList<TreeNode> rootsRandomForest = new ArrayList<>();
-    transient ArrayList<TreeNode>[] cvRandomForests = new ArrayList[10];
+    transient ArrayList<ArrayList<TreeNode>> cvRandomForests = new ArrayList<>();
     transient ArrayList<TreeNode> rootsCrossValidation = new ArrayList<>();
     transient Criteria criteria = Criteria.Certainty;
     transient int totalRules = 0;
@@ -1557,14 +1557,14 @@ public class cid3 implements Serializable{
 
         //Initialize chunks
         for (int i = 0; i < 10; i++){
-            crossValidationChunks[i] = new ArrayList<>();
+            crossValidationChunks.add(new ArrayList<>());
         }
 
         //First check if there is a remainder
         if (modulus != 0){
             for (int i = 0; i < root.data.size() - modulus; i++){
                 if (i < counter) {
-                    crossValidationChunks[counter_chunks].add(root.data.get(i));
+                    crossValidationChunks.get(counter_chunks).add(root.data.get(i));
                 }
                 else {
                     counter+= chunk_size;
@@ -1574,14 +1574,14 @@ public class cid3 implements Serializable{
             }
             counter = 0;
             for (int i = root.data.size() - modulus; i < root.data.size(); i++){
-                crossValidationChunks[counter].add(root.data.get(i));
+                crossValidationChunks.get(counter).add(root.data.get(i));
                 counter++;
             }
         }
         else {
             for (int i = 0; i < root.data.size(); i++){
                 if (i < counter) {
-                    crossValidationChunks[counter_chunks].add(root.data.get(i));
+                    crossValidationChunks.get(counter_chunks).add(root.data.get(i));
                 }
                 else {
                     counter+= chunk_size;
@@ -1597,7 +1597,7 @@ public class cid3 implements Serializable{
             TreeNode newRoot = new TreeNode();
             ArrayList<DataPoint> trainData = new ArrayList<>();
             for (int k = 0; k < 10; k++){
-                if (k != i) trainData.addAll(crossValidationChunks[k]);
+                if (k != i) trainData.addAll(crossValidationChunks.get(k));
             }
             newRoot.data = trainData;
             newRoot.frequencyClasses =  getFrequencies(newRoot.data);
@@ -1639,7 +1639,7 @@ public class cid3 implements Serializable{
 
         //Initialize array
         for (int i = 0; i < 10; i++){
-            cvRandomForests[i] = new ArrayList<>();
+            cvRandomForests.add(new ArrayList<>());
         }
 
         if (testDataExists){
@@ -1656,13 +1656,13 @@ public class cid3 implements Serializable{
 
         //Initialize chunks
         for (int i = 0; i < 10; i++){
-            crossValidationChunks[i] = new ArrayList<>();
+            crossValidationChunks.add(new ArrayList<>());
         }
         //First check if there is a remainder
         if (modulus != 0){
             for (int i = 0; i < root.data.size() - modulus; i++){
                 if (i < counter) {
-                    crossValidationChunks[counter_chunks].add(root.data.get(i));
+                    crossValidationChunks.get(counter_chunks).add(root.data.get(i));
                 }
                 else {
                     counter+= chunk_size;
@@ -1672,14 +1672,14 @@ public class cid3 implements Serializable{
             }
             counter = 0;
             for (int i = root.data.size() - modulus; i < root.data.size(); i++){
-                crossValidationChunks[counter].add(root.data.get(i));
+                crossValidationChunks.get(counter).add(root.data.get(i));
                 counter++;
             }
         }
         else {
             for (int i = 0; i < root.data.size(); i++){
                 if (i < counter) {
-                    crossValidationChunks[counter_chunks].add(root.data.get(i));
+                    crossValidationChunks.get(counter_chunks).add(root.data.get(i));
                 }
                 else {
                     counter+= chunk_size;
@@ -1693,10 +1693,10 @@ public class cid3 implements Serializable{
         for (int i = 0; i < 10; i++) {
             ArrayList<DataPoint> trainData = new ArrayList<>();
             for (int k = 0; k < 10; k++){
-                if (k != i) trainData.addAll(crossValidationChunks[k]);
+                if (k != i) trainData.addAll(crossValidationChunks.get(k));
             }
 
-            createRandomForest(trainData, cvRandomForests[i],true);
+            createRandomForest(trainData, cvRandomForests.get(i),true);
         }
 
         System.out.print("\n");
@@ -1895,7 +1895,7 @@ public class cid3 implements Serializable{
         for (int i = 0; i < 10; i ++){
             test_errors = 0;
             TreeNode currentTree = rootsCrossValidation.get(i);
-            ArrayList<DataPoint> currentTest = crossValidationChunks[i];
+            ArrayList<DataPoint> currentTest = crossValidationChunks.get(i);
             for (DataPoint point : currentTest) {
                 if (!testExampleCV(point, currentTree)) test_errors++;
             }
@@ -1940,8 +1940,8 @@ public class cid3 implements Serializable{
         double current;
         //For each Random Forest
         for (int i = 0; i < 10; i ++) {
-            ArrayList<TreeNode> currentForest = cvRandomForests[i];
-            ArrayList<DataPoint> currentTestData = crossValidationChunks[i];
+            ArrayList<TreeNode> currentForest = cvRandomForests.get(i);
+            ArrayList<DataPoint> currentTestData = crossValidationChunks.get(i);
             current = testRandomForest(currentTestData,currentForest,i+1);
             sum += current;
             //Save k errors for SE
