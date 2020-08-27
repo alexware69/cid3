@@ -2583,12 +2583,22 @@ public class cid3 implements Serializable{
         //me.criteria = Criteria.Certainty;
         if (cmd.hasOption("criteria")) {
             String strCriteria = cmd.getOptionValue("criteria");
-            if (strCriteria.equals("C") || strCriteria.equals("c")) me.criteria = Criteria.Certainty;
-            else if (strCriteria.equals("G") || strCriteria.equals("g")) me.criteria = Criteria.Gini;
-            else if (strCriteria.equals("E") || strCriteria.equals("e")) me.criteria = Criteria.Entropy;
-            else{
-                formatter.printHelp("java -jar cid3.jar", options);
-                System.exit(1);
+            switch (strCriteria) {
+                case "C":
+                case "c":
+                    me.criteria = Criteria.Certainty;
+                    break;
+                case "G":
+                case "g":
+                    me.criteria = Criteria.Gini;
+                    break;
+                case "E":
+                case "e":
+                    me.criteria = Criteria.Entropy;
+                    break;
+                default:
+                    formatter.printHelp("java -jar cid3.jar", options);
+                    System.exit(1);
             }
         }
 
