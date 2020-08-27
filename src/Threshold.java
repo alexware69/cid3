@@ -11,15 +11,15 @@ import java.io.Serializable;
  * @author alex
  */
 public class Threshold implements Serializable {
-    public int sumAUnder;
-    public int sumAOver;
+    public int sumABelow;
+    public int sumAAbove;
     public SumBelowAndAbove[] sumsClassesAndAttribute;
     double value;
 
     public Threshold(double t, SumBelowAndAbove[] s){
         value = t;
-        sumAUnder = 0;
-        sumAOver = 0;
+        sumABelow = 0;
+        sumAAbove = 0;
         sumsClassesAndAttribute = s;
     }
 }
