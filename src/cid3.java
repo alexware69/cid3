@@ -1342,8 +1342,8 @@ public class cid3 implements Serializable{
 
         //Check for errors.
         if (numAttributes <= 1) {
-            System.err.println( "Read line: " + input);
-            System.err.println( "Could not obtain the names of attributes in the line");
+            //System.err.println( "Read line: " + input);
+            //System.err.println( "Could not obtain the names of attributes in the line");
             System.err.println( "Expecting at least one input attribute and one output attribute");
             System.exit(1);
         }
