@@ -26,8 +26,8 @@ public class cid3 implements Serializable{
         domains[0] is a vector containing the values of the 0-th attribute, etc..
         The last attribute is the output attribute
     */
-    HashMap<Integer,Object> [] domainsIndexToValue;
-    HashMap<Object,Integer> [] domainsValueToIndex;
+    ArrayList<HashMap<Integer,Object>> domainsIndexToValue;
+    ArrayList<HashMap<Object,Integer>> domainsValueToIndex;
     enum Criteria {Entropy, Certainty, Gini}
     /*  The class to represent a data point consisting of numAttributes values of attributes  */
     static class DataPoint implements Serializable{
@@ -56,9 +56,9 @@ public class cid3 implements Serializable{
 
         public Probabilities(int att){
             attribute = att;
-            prob = new double[domainsIndexToValue[attribute].size()];
-            probC_And_A = new double[domainsIndexToValue[attribute].size()][domainsIndexToValue[classAttribute].size()];
-            probC_Given_A = new double[domainsIndexToValue[attribute].size()][domainsIndexToValue[classAttribute].size()];
+            prob = new double[domainsIndexToValue.get(attribute).size()];
+            probC_And_A = new double[domainsIndexToValue.get(attribute).size()][domainsIndexToValue.get(classAttribute).size()];
+            probC_Given_A = new double[domainsIndexToValue.get(attribute).size()][domainsIndexToValue.get(classAttribute).size()];
         }
     }
     //This is an utility class to return the information and threshold of continuous attributes.
@@ -111,17 +111,17 @@ public class cid3 implements Serializable{
         If the symbol does not exist in the domain, the symbol is added to the domain of the attribute
     */
     public int getSymbolValue(int attribute, Object symbol) {
-        Integer index = domainsValueToIndex[attribute].get(symbol);
+        Integer index = domainsValueToIndex.get(attribute).get(symbol);
         if (index == null) {
-            if (domainsIndexToValue[attribute].isEmpty()){
-                domainsIndexToValue[attribute].put(0, symbol);
-                domainsValueToIndex[attribute].put(symbol, 0);
+            if (domainsIndexToValue.get(attribute).isEmpty()){
+                domainsIndexToValue.get(attribute).put(0, symbol);
+                domainsValueToIndex.get(attribute).put(symbol, 0);
                 return 0;
             }
             else {
-                int size = domainsIndexToValue[attribute].size();
-                domainsIndexToValue[attribute].put(size, symbol);
-                domainsValueToIndex[attribute].put(symbol, size);
+                int size = domainsIndexToValue.get(attribute).size();
+                domainsIndexToValue.get(attribute).put(size, symbol);
+                domainsValueToIndex.get(attribute).put(symbol, size);
                 return size;
             }
         }
@@ -130,7 +130,7 @@ public class cid3 implements Serializable{
 
     // Returns the most common class for the specified node
     public int mostCommonFinal(TreeNode n){
-        int numValuesClass = domainsIndexToValue[classAttribute].size();
+        int numValuesClass = domainsIndexToValue.get(classAttribute).size();
         int value = n.frequencyClasses[0];
         int result = 0;
         //if(n.frequencyClasses.length < numValuesClass){
@@ -147,7 +147,7 @@ public class cid3 implements Serializable{
     /*  Returns a subset of data, in which the value of the specified attribute of all data points is the specified value  */
     public DataFrequencies getSubset(ArrayList<DataPoint> data, int attribute, int value) {
         ArrayList<DataPoint> subset = new ArrayList<>();
-        int[] frequencies = new int[domainsIndexToValue[classAttribute].size()];
+        int[] frequencies = new int[domainsIndexToValue.get(classAttribute).size()];
         for (DataPoint point : data) {
             if (point.attributes[attribute] == value) {
                 subset.add(point);
@@ -158,7 +158,7 @@ public class cid3 implements Serializable{
     }
 
     public int[] getFrequencies(ArrayList<DataPoint> data){
-        int[] frequencies = new int[domainsIndexToValue[classAttribute].size()];
+        int[] frequencies = new int[domainsIndexToValue.get(classAttribute).size()];
         for (DataPoint point : data) {
             frequencies[point.attributes[classAttribute]]++;
         }
@@ -168,10 +168,10 @@ public class cid3 implements Serializable{
     public Tuple<DataFrequencies,DataFrequencies> getSubsetsBelowAndAbove(ArrayList<DataPoint> data, int attribute, double value){
         ArrayList<DataPoint> subsetBelow = new ArrayList<>();
         ArrayList<DataPoint> subsetAbove = new ArrayList<>();
-        int[] frequenciesBelow = new int[domainsIndexToValue[classAttribute].size()];
-        int[] frequenciesAbove = new int[domainsIndexToValue[classAttribute].size()];
+        int[] frequenciesBelow = new int[domainsIndexToValue.get(classAttribute).size()];
+        int[] frequenciesAbove = new int[domainsIndexToValue.get(classAttribute).size()];
         for (DataPoint point : data) {
-            if ((double) domainsIndexToValue[attribute].get(point.attributes[attribute]) <= value) {
+            if ((double) domainsIndexToValue.get(attribute).get(point.attributes[attribute]) <= value) {
                 subsetBelow.add(point);
                 frequenciesBelow[point.attributes[classAttribute]]++;
             } else {
@@ -187,8 +187,8 @@ public class cid3 implements Serializable{
 
         int numData = data.size();
         if (numData == 0) return new Certainty(0, 0);
-        int numValuesClass = domainsIndexToValue[classAttribute].size();
-        int numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size();
+        int numValuesClass = domainsIndexToValue.get(classAttribute).size();
+        int numValuesGivenAtt = domainsIndexToValue.get(givenThatAttribute).size();
 
         //If attribute is discrete
         if (attributeTypes[givenThatAttribute] == AttributeType.Discrete){
@@ -216,7 +216,7 @@ public class cid3 implements Serializable{
             SortedSet<Double> attributeValuesSet = new TreeSet<>();
             HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap<>();
             for (DataPoint point : data) {
-                double attribute = (double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]);
+                double attribute = (double) domainsIndexToValue.get(givenThatAttribute).get(point.attributes[givenThatAttribute]);
                 int theClass = point.attributes[classAttribute];
                 attributeValuesSet.add(attribute);
                 Tuple<Integer, Boolean> tuple = attributeToClass.get(attribute);
@@ -288,7 +288,7 @@ public class cid3 implements Serializable{
                 for (Threshold iThreshold : thresholds) {
                     if (iThreshold.sumsClassesAndAttribute[the_Class] == null)
                         iThreshold.sumsClassesAndAttribute[the_Class] = new SumBelowAndAbove(0, 0);
-                    if ((double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]) <= iThreshold.value) {
+                    if ((double) domainsIndexToValue.get(givenThatAttribute).get(point.attributes[givenThatAttribute]) <= iThreshold.value) {
                         iThreshold.sumABelow++;
                         //Next calculate probability of c and a
                         iThreshold.sumsClassesAndAttribute[the_Class].below++;
@@ -338,8 +338,8 @@ public class cid3 implements Serializable{
     public Certainty calculateEntropy(ArrayList<DataPoint> data, int givenThatAttribute){
         int numData = data.size();
         if (numData == 0) return new Certainty(0, 0);
-        int numValuesClass = domainsIndexToValue[classAttribute].size();
-        int numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size();
+        int numValuesClass = domainsIndexToValue.get(classAttribute).size();
+        int numValuesGivenAtt = domainsIndexToValue.get(givenThatAttribute).size();
         //If attribute is discrete
         if (attributeTypes[givenThatAttribute] == AttributeType.Discrete){
             Probabilities[] probabilities = CalculateAllProbabilities(data);
@@ -365,7 +365,7 @@ public class cid3 implements Serializable{
             SortedSet<Double> attributeValuesSet = new TreeSet<>();
             HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap<>();
             for (DataPoint point : data) {
-                double attribute = (double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]);
+                double attribute = (double) domainsIndexToValue.get(givenThatAttribute).get(point.attributes[givenThatAttribute]);
                 int theClass = point.attributes[classAttribute];
                 attributeValuesSet.add(attribute);
                 Tuple<Integer, Boolean> tuple = attributeToClass.get(attribute);
@@ -434,7 +434,7 @@ public class cid3 implements Serializable{
                 for (Threshold iThreshold : thresholds) {
                     if (iThreshold.sumsClassesAndAttribute[pointClass] == null)
                         iThreshold.sumsClassesAndAttribute[pointClass] = new SumBelowAndAbove(0, 0);
-                    if ((double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]) < iThreshold.value) {
+                    if ((double) domainsIndexToValue.get(givenThatAttribute).get(point.attributes[givenThatAttribute]) < iThreshold.value) {
                         iThreshold.sumABelow++;
                         //Next calculate probability of c and a
                         iThreshold.sumsClassesAndAttribute[pointClass].below++;
@@ -492,8 +492,8 @@ public class cid3 implements Serializable{
     public Certainty calculateGini(ArrayList<DataPoint> data, int givenThatAttribute){
         int numData = data.size();
         if (numData == 0) return new Certainty(0, 0);
-        int numValuesClass = domainsIndexToValue[classAttribute].size();
-        int numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size();
+        int numValuesClass = domainsIndexToValue.get(classAttribute).size();
+        int numValuesGivenAtt = domainsIndexToValue.get(givenThatAttribute).size();
         //If attribute is discrete
         if (attributeTypes[givenThatAttribute] == AttributeType.Discrete){
             Probabilities[] probabilities = CalculateAllProbabilities(data);
@@ -519,7 +519,7 @@ public class cid3 implements Serializable{
             SortedSet<Double> attributeValuesSet = new TreeSet<>();
             HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap<>();
             for (DataPoint point : data) {
-                double attribute = (double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]);
+                double attribute = (double) domainsIndexToValue.get(givenThatAttribute).get(point.attributes[givenThatAttribute]);
                 int theClass = point.attributes[classAttribute];
                 attributeValuesSet.add(attribute);
                 Tuple<Integer, Boolean> tuple = attributeToClass.get(attribute);
@@ -588,7 +588,7 @@ public class cid3 implements Serializable{
                 for (Threshold iThreshold : thresholds) {
                     if (iThreshold.sumsClassesAndAttribute[pointClass] == null)
                         iThreshold.sumsClassesAndAttribute[pointClass] = new SumBelowAndAbove(0, 0);
-                    if ((double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]) < iThreshold.value) {
+                    if ((double) domainsIndexToValue.get(givenThatAttribute).get(point.attributes[givenThatAttribute]) < iThreshold.value) {
                         iThreshold.sumABelow++;
                         //Next calculate probability of c and a
                         iThreshold.sumsClassesAndAttribute[pointClass].below++;
@@ -698,7 +698,7 @@ public class cid3 implements Serializable{
     }
     public boolean stopConditionAllClassesEqualEfficient(int[] frequencyClasses){
 
-        int numValuesClass = domainsIndexToValue[classAttribute].size();
+        int numValuesClass = domainsIndexToValue.get(classAttribute).size();
         boolean oneClassIsPresent = false;
         for (int i = 0; i < numValuesClass; i++){
             if (frequencyClasses[i] != 0) {
@@ -798,12 +798,12 @@ public class cid3 implements Serializable{
         //if attribute is discrete
         if (attributeTypes[selectedAttribute] == AttributeType.Discrete){
             // Now divide the dataset using the selected attribute
-            int numValues = domainsIndexToValue[selectedAttribute].size();
+            int numValues = domainsIndexToValue.get(selectedAttribute).size();
             node.decompositionAttribute = selectedAttribute;
             node.children = new ArrayList<>();
             DataFrequencies df;
             for (int j=0; j< numValues; j++) {
-                if (domainsIndexToValue[selectedAttribute].get(j) == null || domainsIndexToValue[selectedAttribute].get(j).equals("?"))
+                if (domainsIndexToValue.get(selectedAttribute).get(j) == null || domainsIndexToValue.get(selectedAttribute).get(j).equals("?"))
                     continue;
                 TreeNode newNode  = new TreeNode();
                 newNode.parent = node;
@@ -962,29 +962,29 @@ public class cid3 implements Serializable{
     public void imputeMissing(){
         for(int attribute = 0; attribute < numAttributes - 1; attribute++){
             if (attributeTypes[attribute] == AttributeType.Continuous){
-                if(domainsIndexToValue[attribute].containsValue("?")){
+                if(domainsIndexToValue.get(attribute).containsValue("?")){
                     //Find mean value
                     double mean = meanValues[attribute];
                     //Get index
-                    int index = domainsValueToIndex[attribute].get("?");
+                    int index = domainsValueToIndex.get(attribute).get("?");
                     //Replace missing with mean
-                    domainsIndexToValue[attribute].replace(index,"?",mean);
-                    domainsValueToIndex[attribute].remove("?");
-                    domainsValueToIndex[attribute].put(mean,index);
+                    domainsIndexToValue.get(attribute).replace(index,"?",mean);
+                    domainsValueToIndex.get(attribute).remove("?");
+                    domainsValueToIndex.get(attribute).put(mean,index);
                 }
             }
             else
             if (attributeTypes[attribute] == AttributeType.Discrete){
-                if(domainsIndexToValue[attribute].containsValue("?")){
+                if(domainsIndexToValue.get(attribute).containsValue("?")){
                     //Find most common value
                     int mostCommonValue = mostCommonValues[attribute];
-                    String mostCommonValueStr = (String) domainsIndexToValue[attribute].get(mostCommonValue);
+                    String mostCommonValueStr = (String) domainsIndexToValue.get(attribute).get(mostCommonValue);
                     //Get index
-                    int index = domainsValueToIndex[attribute].get("?");
+                    int index = domainsValueToIndex.get(attribute).get("?");
                     //Replace missing with most common
-                    domainsIndexToValue[attribute].replace(index,"?",mostCommonValueStr);
-                    domainsValueToIndex[attribute].remove("?");
-                    domainsValueToIndex[attribute].put(mostCommonValueStr,index);
+                    domainsIndexToValue.get(attribute).replace(index,"?",mostCommonValueStr);
+                    domainsValueToIndex.get(attribute).remove("?");
+                    domainsValueToIndex.get(attribute).put(mostCommonValueStr,index);
                 }
             }
         }
@@ -996,7 +996,7 @@ public class cid3 implements Serializable{
 
         for (DataPoint point : trainData) {
             try {
-                double attValue = (double) domainsIndexToValue[attribute].get(point.attributes[attribute]);
+                double attValue = (double) domainsIndexToValue.get(attribute).get(point.attributes[attribute]);
                 sum += attValue;
                 counter++;
             } catch (Exception e) {
@@ -1020,14 +1020,14 @@ public class cid3 implements Serializable{
 
     //Find the most common values of a discrete attribute. This is needed for imputation.
     public int mostCommonValue(int attribute){
-        int[] frequencies = new int[domainsIndexToValue[attribute].size()];
+        int[] frequencies = new int[domainsIndexToValue.get(attribute).size()];
         for (DataPoint point : trainData) {
             frequencies[point.attributes[attribute]]++;
         }
         int mostFrequent = 0;
         int index = 0;
         for (int i = 0; i < frequencies.length; i++){
-            if (!(domainsIndexToValue[attribute].get(i)).equals("?"))
+            if (!(domainsIndexToValue.get(attribute).get(i)).equals("?"))
                 if (frequencies[i] > mostFrequent) {
                     mostFrequent = frequencies[i];
                     index = i;
@@ -1131,8 +1131,8 @@ public class cid3 implements Serializable{
         testData = data;
 
         //Resize root.frequencyClasses in case new class values were found in test dataset
-        if(root.frequencyClasses.length < domainsIndexToValue[classAttribute].size()){
-            int[] newArray = new int[domainsIndexToValue[classAttribute].size()];
+        if(root.frequencyClasses.length < domainsIndexToValue.get(classAttribute).size()){
+            int[] newArray = new int[domainsIndexToValue.get(classAttribute).size()];
             java.lang.System.arraycopy(root.frequencyClasses, 0, newArray, 0, root.frequencyClasses.length);
             root.frequencyClasses = newArray;
         }
@@ -1244,7 +1244,7 @@ public class cid3 implements Serializable{
 
         int size = data.size();
 
-        root.frequencyClasses = new int[domainsIndexToValue[classAttribute].size()];
+        root.frequencyClasses = new int[domainsIndexToValue.get(classAttribute).size()];
         if (splitTrainData && !testDataExists && !isCrossValidation){
             //Randomize the data
             Collections.shuffle(data);
@@ -1349,11 +1349,15 @@ public class cid3 implements Serializable{
         }
 
         //Initialize domains
-        domainsIndexToValue = new HashMap [numAttributes];
-        domainsValueToIndex = new HashMap [numAttributes];
+        domainsIndexToValue = new ArrayList<>();
+        domainsValueToIndex = new ArrayList<>();
         //domains = new ArrayList[numAttributes];
-        for (int i=0; i < numAttributes; i++) domainsIndexToValue[i] = new HashMap<>();
-        for (int i=0; i < numAttributes; i++) domainsValueToIndex[i] = new HashMap<>();
+        for (int i=0; i < numAttributes; i++) {
+            domainsIndexToValue.add(new HashMap<>());
+        }
+        for (int i=0; i < numAttributes; i++){
+            domainsValueToIndex.add(new HashMap<>());
+        }
 
         //Set attributeNames. They should be in the same order as they appear in the data. +1 for the class
         attributeNames = new String[numAttributes];
@@ -1788,7 +1792,7 @@ public class cid3 implements Serializable{
         }
         //Check if attribute is continuous
         if (attributeTypes[splitAttribute] == AttributeType.Continuous){
-            attributeRealValue = (double)domainsIndexToValue[splitAttribute].get(example.attributes[splitAttribute]);
+            attributeRealValue = (double)domainsIndexToValue.get(splitAttribute).get(example.attributes[splitAttribute]);
             if (attributeRealValue <= (node.children.get(0)).thresholdContinuous){
                 node = node.children.get(0);
             }
@@ -2038,8 +2042,8 @@ public class cid3 implements Serializable{
                     System.out.print("(possible values are: ");
                     StringBuilder values = new StringBuilder();
                     ArrayList<String> valuesArray = new ArrayList<>();
-                    for (int i = 0; i < id3.domainsIndexToValue[currentNode.decompositionAttribute].size(); i++) {
-                        valuesArray.add((String) id3.domainsIndexToValue[currentNode.decompositionAttribute].get(i));
+                    for (int i = 0; i < id3.domainsIndexToValue.get(currentNode.decompositionAttribute).size(); i++) {
+                        valuesArray.add((String) id3.domainsIndexToValue.get(currentNode.decompositionAttribute).get(i));
                     }
                     Collections.sort(valuesArray);
                     for (String value : valuesArray) {
@@ -2058,7 +2062,7 @@ public class cid3 implements Serializable{
                                 break;
                             }
                             else
-                                attributeValue = id3.domainsValueToIndex[currentNode.decompositionAttribute].get(s);
+                                attributeValue = id3.domainsValueToIndex.get(currentNode.decompositionAttribute).get(s);
                             break;
                         }
                         catch(Exception e){
@@ -2121,7 +2125,7 @@ public class cid3 implements Serializable{
             if (isEmpty) mostCommon = id3.mostCommonFinal(currentNode.parent);
             else mostCommon = id3.mostCommonFinal(currentNode);
 
-            String mostCommonStr = (String) id3.domainsIndexToValue[id3.classAttribute].get(mostCommon);
+            String mostCommonStr = (String) id3.domainsIndexToValue.get(id3.classAttribute).get(mostCommon);
             //Print class attribute value
             System.out.println("Class attribute value is: " + mostCommonStr);
 
@@ -2236,7 +2240,7 @@ public class cid3 implements Serializable{
                 else caseClass = id3.mostCommonFinal(node);
 
                 //Print line to output tmp file
-                String classValue = (String) id3.domainsIndexToValue[id3.classAttribute].get(caseClass);
+                String classValue = (String) id3.domainsIndexToValue.get(id3.classAttribute).get(caseClass);
                 String line = input + "," + classValue;
                 printOut.write(line);
                 printOut.println();
@@ -2354,7 +2358,7 @@ public class cid3 implements Serializable{
                     //}
                 }
                 //Check the created example against the random forest
-                int[] classAttrValues = new int[id3.domainsIndexToValue[id3.classAttribute].size()];
+                int[] classAttrValues = new int[id3.domainsIndexToValue.get(id3.classAttribute).size()];
                 ArrayList<TreeNode> roots = id3.rootsRandomForest;
                 TreeNode node;
                 int resultClass = 0;
@@ -2379,7 +2383,7 @@ public class cid3 implements Serializable{
                         resultClass = i;
                 }
                 //Print line to output tmp file
-                String classValue = (String) id3.domainsIndexToValue[id3.classAttribute].get(resultClass);
+                String classValue = (String) id3.domainsIndexToValue.get(id3.classAttribute).get(resultClass);
                 String line = input + "," + classValue;
                 printOut.write(line);
                 printOut.println();
@@ -2424,8 +2428,8 @@ public class cid3 implements Serializable{
                     System.out.print("(possible values are: ");
                     StringBuilder values = new StringBuilder();
                     ArrayList<String> valuesArray = new ArrayList<>();
-                    for (int j = 0; j < id3.domainsIndexToValue[i].size(); j++) {
-                        valuesArray.add((String) id3.domainsIndexToValue[i].get(j));
+                    for (int j = 0; j < id3.domainsIndexToValue.get(i).size(); j++) {
+                        valuesArray.add((String) id3.domainsIndexToValue.get(i).get(j));
                     }
                     Collections.sort(valuesArray);
                     for (String item : valuesArray) {
@@ -2446,7 +2450,7 @@ public class cid3 implements Serializable{
                             break;
                         }
                         else
-                        if (id3.domainsIndexToValue[i].containsValue(s)){
+                        if (id3.domainsIndexToValue.get(i).containsValue(s)){
                             example.attributes[i] = id3.getSymbolValue(i,s);
                             break;
                         }
@@ -2474,7 +2478,7 @@ public class cid3 implements Serializable{
             }
 
             //Check the created example against the random forest
-            int[] classAttrValues = new int[id3.domainsIndexToValue[id3.classAttribute].size()];
+            int[] classAttrValues = new int[id3.domainsIndexToValue.get(id3.classAttribute).size()];
             ArrayList<TreeNode> roots = id3.rootsRandomForest;
             TreeNode node;
             int resultClass = 0;
@@ -2499,7 +2503,7 @@ public class cid3 implements Serializable{
                     resultClass = i;
             }
             //Print the answer
-            String mostCommonStr = (String) id3.domainsIndexToValue[id3.classAttribute].get(resultClass);
+            String mostCommonStr = (String) id3.domainsIndexToValue.get(id3.classAttribute).get(resultClass);
             System.out.print("\n");
             System.out.println("Class attribute value is: " + mostCommonStr);
         }
