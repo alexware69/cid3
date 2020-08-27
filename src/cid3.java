@@ -278,7 +278,7 @@ public class cid3 implements Serializable{
             //=========================================================
 
 
-            double probAUnder, probAOver, probC_And_A_Under, probC_And_A_Over, certaintyUnder, certaintyOver;
+            double probABelow, probAAbove, probC_And_A_Below, probC_And_A_Above, certaintyBelow, certaintyAbove;
             DataPoint point;
             //Loop through the data just one time
             for (DataPoint datum : data) {
@@ -291,11 +291,11 @@ public class cid3 implements Serializable{
                     if ((double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]) <= iThreshold.value) {
                         iThreshold.sumABelow++;
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[the_Class].under++;
+                        iThreshold.sumsClassesAndAttribute[the_Class].below++;
                     } else {
                         iThreshold.sumAAbove++;
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[the_Class].over++;
+                        iThreshold.sumsClassesAndAttribute[the_Class].above++;
                     }
                 }
             }
@@ -303,27 +303,27 @@ public class cid3 implements Serializable{
             //Now calculate probabilities
             for (Threshold threshold : thresholds) {
                 //Calculate prob
-                probAUnder = 1. * threshold.sumABelow / numData;
-                probAOver = 1. * threshold.sumAAbove / numData;
+                probABelow = 1. * threshold.sumABelow / numData;
+                probAAbove = 1. * threshold.sumAAbove / numData;
 
                 //Reset the certainty
-                certaintyUnder = 0;
-                certaintyOver = 0;
+                certaintyBelow = 0;
+                certaintyAbove = 0;
 
                 for (int c = 0; c < numValuesClass; c++) {
                     if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probC_And_A_Under = 1. * threshold.sumsClassesAndAttribute[c].under / numData;
-                        probC_And_A_Over = 1. * threshold.sumsClassesAndAttribute[c].over / numData;
+                        probC_And_A_Below = 1. * threshold.sumsClassesAndAttribute[c].below / numData;
+                        probC_And_A_Above = 1. * threshold.sumsClassesAndAttribute[c].above / numData;
                     } else {
-                        probC_And_A_Under = 0;
-                        probC_And_A_Over = 0;
+                        probC_And_A_Below = 0;
+                        probC_And_A_Above = 0;
                     }
 
-                    certaintyUnder += Math.abs(probC_And_A_Under - probAUnder / numValuesClass);
-                    certaintyOver += Math.abs(probC_And_A_Over - probAOver / numValuesClass);
+                    certaintyBelow += Math.abs(probC_And_A_Below - probABelow / numValuesClass);
+                    certaintyAbove += Math.abs(probC_And_A_Above - probAAbove / numValuesClass);
                 }
                 //Calculate totals
-                totalCertainty = certaintyUnder + certaintyOver;
+                totalCertainty = certaintyBelow + certaintyAbove;
                 if (finalTotalCertainty < totalCertainty) {
                     finalTotalCertainty = totalCertainty;
                     finalThreshold = threshold.value;
@@ -424,7 +424,7 @@ public class cid3 implements Serializable{
                 thresholds.add(centerThreshold1);
             }
             //=========================================================
-            double probAUnder, probAOver, probC_And_A_Under, probC_And_A_Over, entropyUnder, entropyOver;
+            double probABelow, probAAbove, probC_And_A_Below, probC_And_A_Above, entropyBelow, entropyAbove;
             boolean selected = false;
 
             //Loop through the data just one time
@@ -432,43 +432,42 @@ public class cid3 implements Serializable{
                 //For each threshold count data to get prob and probC_And_A
                 int pointClass = point.attributes[classAttribute];
                 for (Threshold iThreshold : thresholds) {
-                    //if (thresholds[i].sumsClassesAndAttribute == null) thresholds[i].sumsClassesAndAttribute = new SumUnderAndOver[numValuesClass];
                     if (iThreshold.sumsClassesAndAttribute[pointClass] == null)
                         iThreshold.sumsClassesAndAttribute[pointClass] = new SumBelowAndAbove(0, 0);
                     if ((double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]) < iThreshold.value) {
                         iThreshold.sumABelow++;
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[pointClass].under++;
+                        iThreshold.sumsClassesAndAttribute[pointClass].below++;
                     } else {
                         iThreshold.sumAAbove++;
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[pointClass].over++;
+                        iThreshold.sumsClassesAndAttribute[pointClass].above++;
                     }
                 }
             }
             //Now calculate probabilities
             for (Threshold threshold : thresholds) {
                 //Calculate prob
-                probAUnder = 1. * threshold.sumABelow / numData;
-                probAOver = 1. * threshold.sumAAbove / numData;
+                probABelow = 1. * threshold.sumABelow / numData;
+                probAAbove = 1. * threshold.sumAAbove / numData;
                 //Reset the entropy
-                entropyUnder = 0;
-                entropyOver = 0;
+                entropyBelow = 0;
+                entropyAbove = 0;
                 for (int c = 0; c < numValuesClass; c++) {
                     if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probC_And_A_Under = 1. * threshold.sumsClassesAndAttribute[c].under / numData;
-                        probC_And_A_Over = 1. * threshold.sumsClassesAndAttribute[c].over / numData;
+                        probC_And_A_Below = 1. * threshold.sumsClassesAndAttribute[c].below / numData;
+                        probC_And_A_Above = 1. * threshold.sumsClassesAndAttribute[c].above / numData;
                     } else {
-                        probC_And_A_Under = 0;
-                        probC_And_A_Over = 0;
+                        probC_And_A_Below = 0;
+                        probC_And_A_Above = 0;
                     }
-                    if (probC_And_A_Under != 0 && probAUnder != 0)
-                        entropyUnder += -probC_And_A_Under / probAUnder * Math.log(probC_And_A_Under / probAUnder);
-                    if (probC_And_A_Over != 0 && probAOver != 0)
-                        entropyOver += -probC_And_A_Over / probAOver * Math.log(probC_And_A_Over / probAOver);
+                    if (probC_And_A_Below != 0 && probABelow != 0)
+                        entropyBelow += -probC_And_A_Below / probABelow * Math.log(probC_And_A_Below / probABelow);
+                    if (probC_And_A_Above != 0 && probAAbove != 0)
+                        entropyAbove += -probC_And_A_Above / probAAbove * Math.log(probC_And_A_Above / probAAbove);
                 }
                 //Calculate totals
-                totalEntropy = entropyUnder * probAUnder + entropyOver * probAOver;
+                totalEntropy = entropyBelow * probABelow + entropyAbove * probAAbove;
                 if (!selected) {
                     selected = true;
                     finalTotalEntropy = totalEntropy;
@@ -579,7 +578,7 @@ public class cid3 implements Serializable{
                 thresholds.add(centerThreshold1);
             }
             //=========================================================
-            double probAUnder, probAOver, probC_And_A_Under, probC_And_A_Over, giniUnder, giniOver;
+            double probABelow, probAAbove, probC_And_A_Below, probC_And_A_Above, giniBelow, giniAbove;
             boolean selected = false;
 
             //Loop through the data just one time
@@ -587,43 +586,42 @@ public class cid3 implements Serializable{
                 //For each threshold count data to get prob and probC_And_A
                 int pointClass = point.attributes[classAttribute];
                 for (Threshold iThreshold : thresholds) {
-                    //if (thresholds[i].sumsClassesAndAttribute == null) thresholds[i].sumsClassesAndAttribute = new SumUnderAndOver[numValuesClass];
                     if (iThreshold.sumsClassesAndAttribute[pointClass] == null)
                         iThreshold.sumsClassesAndAttribute[pointClass] = new SumBelowAndAbove(0, 0);
                     if ((double) domainsIndexToValue[givenThatAttribute].get(point.attributes[givenThatAttribute]) < iThreshold.value) {
                         iThreshold.sumABelow++;
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[pointClass].under++;
+                        iThreshold.sumsClassesAndAttribute[pointClass].below++;
                     } else {
                         iThreshold.sumAAbove++;
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[pointClass].over++;
+                        iThreshold.sumsClassesAndAttribute[pointClass].above++;
                     }
                 }
             }
             //Now calculate probabilities
             for (Threshold threshold : thresholds) {
                 //Calculate prob
-                probAUnder = 1. * threshold.sumABelow / numData;
-                probAOver = 1. * threshold.sumAAbove / numData;
+                probABelow = 1. * threshold.sumABelow / numData;
+                probAAbove = 1. * threshold.sumAAbove / numData;
                 //Reset the gini
-                giniUnder = 0;
-                giniOver = 0;
+                giniBelow = 0;
+                giniAbove = 0;
                 for (int c = 0; c < numValuesClass; c++) {
                     if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probC_And_A_Under = 1. * threshold.sumsClassesAndAttribute[c].under / numData;
-                        probC_And_A_Over = 1. * threshold.sumsClassesAndAttribute[c].over / numData;
+                        probC_And_A_Below = 1. * threshold.sumsClassesAndAttribute[c].below / numData;
+                        probC_And_A_Above = 1. * threshold.sumsClassesAndAttribute[c].above / numData;
                     } else {
-                        probC_And_A_Under = 0;
-                        probC_And_A_Over = 0;
+                        probC_And_A_Below = 0;
+                        probC_And_A_Above = 0;
                     }
-                    giniUnder += Math.pow(probC_And_A_Under / probAUnder, 2);
-                    giniOver += Math.pow(probC_And_A_Over / probAOver, 2);
+                    giniBelow += Math.pow(probC_And_A_Below / probABelow, 2);
+                    giniAbove += Math.pow(probC_And_A_Above / probAAbove, 2);
                 }
                 //Calculate totals
-                giniUnder = 1 - giniUnder;
-                giniOver = 1 - giniOver;
-                totalGini = giniUnder * probAUnder + giniOver * probAOver;
+                giniBelow = 1 - giniBelow;
+                giniAbove = 1 - giniAbove;
+                totalGini = giniBelow * probABelow + giniAbove * probAAbove;
                 if (!selected) {
                     selected = true;
                     finalTotalGini = totalGini;

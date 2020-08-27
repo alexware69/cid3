@@ -11,11 +11,11 @@ import java.io.Serializable;
  * @author alex
  */
 public class SumBelowAndAbove implements Serializable {
-    int under;
-    int over;
+    int below;
+    int above;
 
     public SumBelowAndAbove(int u, int o){
-        under = u;
-        over = o;
+        below = u;
+        above = o;
     }
 }
