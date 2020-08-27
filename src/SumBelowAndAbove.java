@@ -14,8 +14,8 @@ public class SumBelowAndAbove implements Serializable {
     int below;
     int above;
 
-    public SumBelowAndAbove(int u, int o){
-        below = u;
-        above = o;
+    public SumBelowAndAbove(int b, int a){
+        below = b;
+        above = a;
     }
 }
