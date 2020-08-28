@@ -152,9 +152,6 @@ class cid3 : Serializable {
         val numValuesClass = domainsIndexToValue[classAttribute].size
         var value = n!!.frequencyClasses[0]
         var result = 0
-        //if(n.frequencyClasses.length < numValuesClass){
-        //    String error = "Error";
-        //}
         for (i in 1 until numValuesClass) {
             if (n.frequencyClasses[i] > value) {
                 value = n.frequencyClasses[i]
@@ -388,9 +385,6 @@ class cid3 : Serializable {
                 val tuple = attributeToClass[attribute]
                 if (tuple != null) {
                     if (tuple.x != theClass && tuple.y) attributeToClass[attribute] = Tuple(theClass, false)
-                    //                            else
-//                                if (tuple.y)
-//                                    attributeToClass.put(attribute, new Tuple(theClass,true));
                 } else attributeToClass[attribute] = Tuple(theClass, true)
             }
             val it: Iterator<Double> = attributeValuesSet.iterator()
@@ -496,10 +490,6 @@ class cid3 : Serializable {
                         finalThreshold = threshold.value
                     }
                 }
-                //                        if (finalTotalEntropy > totalEntropy){
-//                                finalTotalEntropy = totalEntropy;
-//                                finalThreshold = thresholds.get(i).value;
-//                            }
             }
             Certainty(finalTotalEntropy, finalThreshold)
             //*******************************************************************************************//
@@ -546,9 +536,6 @@ class cid3 : Serializable {
                 val tuple = attributeToClass[attribute]
                 if (tuple != null) {
                     if (tuple.x != theClass && tuple.y) attributeToClass[attribute] = Tuple(theClass, false)
-                    //                            else
-//                                if (tuple.y)
-//                                    attributeToClass.put(attribute, new Tuple(theClass,true));
                 } else attributeToClass[attribute] = Tuple(theClass, true)
             }
             val it: Iterator<Double> = attributeValuesSet.iterator()
@@ -656,10 +643,6 @@ class cid3 : Serializable {
                         finalThreshold = threshold.value
                     }
                 }
-                //                        if (finalTotalGini > totalGini){
-//                                finalTotalGini= totalGini;
-//                                finalThreshold = thresholds.get(i).value;
-//                            }
             }
             Certainty(finalTotalGini, finalThreshold)
             //*******************************************************************************************//
@@ -771,7 +754,6 @@ class cid3 : Serializable {
                     selectedAttribute = selectedAtt
                 } else {
                     if (entropy.certainty < bestCertainty.certainty) {
-                        //selected = true;
                         bestCertainty = entropy
                         selectedAttribute = selectedAtt
                     }
@@ -795,7 +777,6 @@ class cid3 : Serializable {
                     selectedAttribute = selectedAtt
                 } else {
                     if (gini.certainty < bestCertainty.certainty) {
-                        //selected = true;
                         bestCertainty = gini
                         selectedAttribute = selectedAtt
                     }
@@ -817,7 +798,6 @@ class cid3 : Serializable {
                 if (domainsIndexToValue[selectedAttribute][j] == null || domainsIndexToValue[selectedAttribute][j] == "?") continue
                 val newNode = TreeNode()
                 newNode.parent = node
-                //node.children[j].informationUsedToDecompose = bestInformation.information;
                 df = getSubset(node.data, selectedAttribute, j)
                 newNode.data = df.data
                 newNode.frequencyClasses = df.frequencyClasses
@@ -834,7 +814,6 @@ class cid3 : Serializable {
                 isRandomForest -> { //if is Random Forest, don't create more threads
                     val rand = Random(mySeed)
                     var randomAttribute: Int
-                    //randomAttribute = rand.nextInt(numAttributes - 1);
                     val numAtt = selectedAttributesLocal.size
                     for (j in node.children!!.indices) {
                         selectedAttributesLocal = ArrayList()
@@ -889,7 +868,6 @@ class cid3 : Serializable {
                 isRandomForest -> {
                     val rand = Random(mySeed)
                     var randomAttribute: Int
-                    //randomAttribute = rand.nextInt(numAttributes - 1);
                     val numAtt = selectedAttributesLocal.size
                     selectedAttributesLocal = ArrayList()
                     while (selectedAttributesLocal.size < numAtt) {
@@ -1024,7 +1002,6 @@ class cid3 : Serializable {
         }
         var tokenizer: StringTokenizer
         while (input != null) {
-            //if (input == null) break;
             tokenizer = StringTokenizer(input, ",")
             val point = DataPoint(numAttributes)
             var next: String
@@ -1046,7 +1023,6 @@ class cid3 : Serializable {
                 }
             }
             data.add(point)
-            //root.data.add(point);
             try {
                 input = bin.readLine()
             } catch (e: Exception) {
@@ -1116,12 +1092,6 @@ class cid3 : Serializable {
                 exitProcess(1)
             }
 
-            //Insert missing value "?" into discrete attributes. This is needed for later accepting missing values.
-            /*for (int i = 0; i < numAttributes - 1; i++) {
-                if (attributeTypes[i] == AttributeType.Discrete){
-                    getSymbolValue(i, "?");
-                }
-            }*/
             val point = DataPoint(numAttributes)
             var next: String
             for (i in 0 until numAttributes) {
@@ -1242,8 +1212,6 @@ class cid3 : Serializable {
 
         //Check for errors.
         if (numAttributes <= 1) {
-            //System.err.println( "Read line: " + input);
-            //System.err.println( "Could not obtain the names of attributes in the line");
             System.err.println("Expecting at least one input attribute and one output attribute")
             exitProcess(1)
         }
@@ -1385,7 +1353,6 @@ class cid3 : Serializable {
         val ret: cid3?
         val objectInputStream: ObjectInputStream
         try {
-            //FileInputStream streamIn = new FileInputStream(file);
             val `is` = GZIPInputStream(FileInputStream(file))
             objectInputStream = ObjectInputStream(`is`)
             ret = objectInputStream.readObject() as cid3
@@ -1706,13 +1673,11 @@ class cid3 : Serializable {
     private fun testDecisionTree() {
         var testErrors = 0
         var testCorrects = 0
-        //int test_size = testData.size();
         for (point in testData) {
             if (testExample(point)) testCorrects++ else testErrors++
         }
         var trainErrors = 0
         var trainCorrects = 0
-        //int train_size = trainData.size();
         for (point in trainData!!) {
             if (testExample(point)) trainCorrects++ else trainErrors++
         }
@@ -2149,10 +2114,6 @@ class cid3 : Serializable {
                             point.attributes[i] = id3.mostCommonValues[i]
                         } else point.attributes[i] = id3.getSymbolValue(i, next)
                     }
-                    //else
-                    //if (id3.attributeTypes[i] == AttributeType.Ignore){
-                    //    continue;
-                    //}
                 }
                 //Check the created example against the random forest
                 val classAttrValues = IntArray(id3.domainsIndexToValue[id3.classAttribute].size)
@@ -2358,7 +2319,6 @@ class cid3 : Serializable {
             }
 
             //Set criteria
-            //me.criteria = Criteria.Certainty;
             if (cmd!!.hasOption("criteria")) {
                 when (cmd.getOptionValue("criteria")) {
                     "C", "c" -> me.criteria = Criteria.Certainty
