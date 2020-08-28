@@ -32,8 +32,8 @@ class cid3 : Serializable {
         domains[0] is a vector containing the values of the 0-th attribute, etc..
         The last attribute is the output attribute
     */
-    private lateinit var domainsIndexToValue: ArrayList<HashMap<Int, Any?>>
-    private lateinit var domainsValueToIndex: ArrayList<HashMap<Any?, Int>>
+    private lateinit var domainsIndexToValue: ArrayList<HashMap<Int, Any>>
+    private lateinit var domainsValueToIndex: ArrayList<HashMap<Any, Int>>
 
     enum class Criteria {
         Entropy, Certainty, Gini
@@ -133,7 +133,7 @@ class cid3 : Serializable {
     /*  This function returns an integer corresponding to the symbolic value of the attribute.
         If the symbol does not exist in the domain, the symbol is added to the domain of the attribute
     */
-    private fun getSymbolValue(attribute: Int, symbol: Any?): Int {
+    private fun getSymbolValue(attribute: Int, symbol: Any): Int {
         return domainsValueToIndex[attribute][symbol]
                 ?: return if (domainsIndexToValue[attribute].isEmpty()) {
                     domainsIndexToValue[attribute][0] = symbol
@@ -929,7 +929,7 @@ class cid3 : Serializable {
                 if (domainsIndexToValue[attribute].containsValue("?")) {
                     //Find most common value
                     val mostCommonValue = mostCommonValues[attribute]
-                    val mostCommonValueStr = domainsIndexToValue[attribute][mostCommonValue] as String?
+                    val mostCommonValueStr = domainsIndexToValue[attribute][mostCommonValue] as String
                     //Get index
                     val index = domainsValueToIndex[attribute]["?"]!!
                     //Replace missing with most common
