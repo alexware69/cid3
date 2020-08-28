@@ -22,7 +22,7 @@ class cid3 : Serializable {
     private var classAttribute = 0
     private lateinit var meanValues: DoubleArray
     private lateinit var mostCommonValues: IntArray
-    var fileName: String? = null
+    lateinit var fileName: String
     private var seed: Long = 13579
 
     //int maxThreads = 500;
@@ -1329,7 +1329,7 @@ class cid3 : Serializable {
         val oos: ObjectOutputStream
         val fOut: FileOutputStream
         var fName = fileName
-        fName = fName!!.substring(0, fName.length - 4)
+        fName = fName.substring(0, fName.length - 4)
         fName += "tree"
         try {
             //Check if file exists...delete it
@@ -1358,7 +1358,7 @@ class cid3 : Serializable {
         val oos: ObjectOutputStream
         val fOut: FileOutputStream
         var fName = fileName
-        fName = fName!!.substring(0, fName.length - 4)
+        fName = fName.substring(0, fName.length - 4)
         fName += "forest"
         try {
             //Check if file exists...delete it
