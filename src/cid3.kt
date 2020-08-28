@@ -32,8 +32,8 @@ class cid3 : Serializable {
         domains[0] is a vector containing the values of the 0-th attribute, etc..
         The last attribute is the output attribute
     */
-    private var domainsIndexToValue: ArrayList<HashMap<Int, Any?>>? = null
-    private var domainsValueToIndex: ArrayList<HashMap<Any?, Int>>? = null
+    private lateinit var domainsIndexToValue: ArrayList<HashMap<Int, Any?>>
+    private lateinit var domainsValueToIndex: ArrayList<HashMap<Any?, Int>>
 
     enum class Criteria {
         Entropy, Certainty, Gini
@@ -55,9 +55,9 @@ class cid3 : Serializable {
 
     //This class will be used to calculate all probabilities in one pass.
     inner class Probabilities(attribute: Int) : Serializable {
-        var prob: DoubleArray = DoubleArray(domainsIndexToValue!![attribute].size)
-        var probCAndA: Array<DoubleArray> = Array(domainsIndexToValue!![attribute].size) { DoubleArray(domainsIndexToValue!![classAttribute].size) }
-        var probCGivenA: Array<DoubleArray> = Array(domainsIndexToValue!![attribute].size) { DoubleArray(domainsIndexToValue!![classAttribute].size) }
+        var prob: DoubleArray = DoubleArray(domainsIndexToValue[attribute].size)
+        var probCAndA: Array<DoubleArray> = Array(domainsIndexToValue[attribute].size) { DoubleArray(domainsIndexToValue[classAttribute].size) }
+        var probCGivenA: Array<DoubleArray> = Array(domainsIndexToValue[attribute].size) { DoubleArray(domainsIndexToValue[classAttribute].size) }
 
     }
 
@@ -134,22 +134,22 @@ class cid3 : Serializable {
         If the symbol does not exist in the domain, the symbol is added to the domain of the attribute
     */
     private fun getSymbolValue(attribute: Int, symbol: Any?): Int {
-        return domainsValueToIndex!![attribute][symbol]
-                ?: return if (domainsIndexToValue!![attribute].isEmpty()) {
-                    domainsIndexToValue!![attribute][0] = symbol
-                    domainsValueToIndex!![attribute][symbol] = 0
+        return domainsValueToIndex[attribute][symbol]
+                ?: return if (domainsIndexToValue[attribute].isEmpty()) {
+                    domainsIndexToValue[attribute][0] = symbol
+                    domainsValueToIndex[attribute][symbol] = 0
                     0
                 } else {
-                    val size = domainsIndexToValue!![attribute].size
-                    domainsIndexToValue!![attribute][size] = symbol
-                    domainsValueToIndex!![attribute][symbol] = size
+                    val size = domainsIndexToValue[attribute].size
+                    domainsIndexToValue[attribute][size] = symbol
+                    domainsValueToIndex[attribute][symbol] = size
                     size
                 }
     }
 
     // Returns the most common class for the specified node
     private fun mostCommonFinal(n: TreeNode?): Int {
-        val numValuesClass = domainsIndexToValue!![classAttribute].size
+        val numValuesClass = domainsIndexToValue[classAttribute].size
         var value = n!!.frequencyClasses[0]
         var result = 0
         //if(n.frequencyClasses.length < numValuesClass){
@@ -167,7 +167,7 @@ class cid3 : Serializable {
     /*  Returns a subset of data, in which the value of the specified attribute of all data points is the specified value  */
     private fun getSubset(data: ArrayList<DataPoint?>?, attribute: Int, value: Int): DataFrequencies {
         val subset = ArrayList<DataPoint?>()
-        val frequencies = IntArray(domainsIndexToValue!![classAttribute].size)
+        val frequencies = IntArray(domainsIndexToValue[classAttribute].size)
         for (point in data!!) {
             if (point!!.attributes[attribute] == value) {
                 subset.add(point)
@@ -178,7 +178,7 @@ class cid3 : Serializable {
     }
 
     private fun getFrequencies(data: ArrayList<DataPoint?>?): IntArray {
-        val frequencies = IntArray(domainsIndexToValue!![classAttribute].size)
+        val frequencies = IntArray(domainsIndexToValue[classAttribute].size)
         for (point in data!!) {
             frequencies[point!!.attributes[classAttribute]]++
         }
@@ -188,10 +188,10 @@ class cid3 : Serializable {
     private fun getSubsetsBelowAndAbove(data: ArrayList<DataPoint?>?, attribute: Int, value: Double): Tuple<DataFrequencies, DataFrequencies> {
         val subsetBelow = ArrayList<DataPoint?>()
         val subsetAbove = ArrayList<DataPoint?>()
-        val frequenciesBelow = IntArray(domainsIndexToValue!![classAttribute].size)
-        val frequenciesAbove = IntArray(domainsIndexToValue!![classAttribute].size)
+        val frequenciesBelow = IntArray(domainsIndexToValue[classAttribute].size)
+        val frequenciesAbove = IntArray(domainsIndexToValue[classAttribute].size)
         for (point in data!!) {
-            if (domainsIndexToValue!![attribute][point!!.attributes[attribute]] as Double <= value) {
+            if (domainsIndexToValue[attribute][point!!.attributes[attribute]] as Double <= value) {
                 subsetBelow.add(point)
                 frequenciesBelow[point.attributes[classAttribute]]++
             } else {
@@ -206,8 +206,8 @@ class cid3 : Serializable {
     private fun calculateCertainty(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
         val numData = data!!.size
         if (numData == 0) return Certainty(0.0, 0.0)
-        val numValuesClass = domainsIndexToValue!![classAttribute].size
-        val numValuesGivenAtt = domainsIndexToValue!![givenThatAttribute].size
+        val numValuesClass = domainsIndexToValue[classAttribute].size
+        val numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size
 
         //If attribute is discrete
         return if (attributeTypes[givenThatAttribute] == AttributeType.Discrete) {
@@ -235,7 +235,7 @@ class cid3 : Serializable {
             val attributeValuesSet: SortedSet<Double> = TreeSet()
             val attributeToClass = HashMap<Double, Tuple<Int, Boolean>>()
             for (point in data) {
-                val attribute = domainsIndexToValue!![givenThatAttribute][point!!.attributes[givenThatAttribute]] as Double
+                val attribute = domainsIndexToValue[givenThatAttribute][point!!.attributes[givenThatAttribute]] as Double
                 val theClass = point.attributes[classAttribute]
                 attributeValuesSet.add(attribute)
                 val tuple = attributeToClass[attribute]
@@ -306,7 +306,7 @@ class cid3 : Serializable {
                 val theClass1 = point!!.attributes[classAttribute]
                 for (iThreshold in thresholds) {
                     if (iThreshold.sumsClassesAndAttribute[theClass1] == null) iThreshold.sumsClassesAndAttribute[theClass1] = SumBelowAndAbove(0, 0)
-                    if (domainsIndexToValue!![givenThatAttribute][point.attributes[givenThatAttribute]] as Double <= iThreshold.value) {
+                    if (domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double <= iThreshold.value) {
                         iThreshold.sumABelow++
                         //Next calculate probability of c and a
                         iThreshold.sumsClassesAndAttribute[theClass1].below++
@@ -354,8 +354,8 @@ class cid3 : Serializable {
     private fun calculateEntropy(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
         val numData = data!!.size
         if (numData == 0) return Certainty(0.0, 0.0)
-        val numValuesClass = domainsIndexToValue!![classAttribute].size
-        val numValuesGivenAtt = domainsIndexToValue!![givenThatAttribute].size
+        val numValuesClass = domainsIndexToValue[classAttribute].size
+        val numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size
         //If attribute is discrete
         return if (attributeTypes[givenThatAttribute] == AttributeType.Discrete) {
             val probabilities = calculateAllProbabilities(data)
@@ -382,7 +382,7 @@ class cid3 : Serializable {
             val attributeValuesSet: SortedSet<Double> = TreeSet()
             val attributeToClass = HashMap<Double, Tuple<Int, Boolean>>()
             for (point in data) {
-                val attribute = domainsIndexToValue!![givenThatAttribute][point!!.attributes[givenThatAttribute]] as Double
+                val attribute = domainsIndexToValue[givenThatAttribute][point!!.attributes[givenThatAttribute]] as Double
                 val theClass = point.attributes[classAttribute]
                 attributeValuesSet.add(attribute)
                 val tuple = attributeToClass[attribute]
@@ -454,7 +454,7 @@ class cid3 : Serializable {
                 val pointClass = point!!.attributes[classAttribute]
                 for (iThreshold in thresholds) {
                     if (iThreshold.sumsClassesAndAttribute[pointClass] == null) iThreshold.sumsClassesAndAttribute[pointClass] = SumBelowAndAbove(0, 0)
-                    if ((domainsIndexToValue!![givenThatAttribute][point.attributes[givenThatAttribute]] as Double)<iThreshold.value) {
+                    if ((domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double)<iThreshold.value) {
                         iThreshold.sumABelow++
                         //Next calculate probability of c and a
                         iThreshold.sumsClassesAndAttribute[pointClass].below++
@@ -510,8 +510,8 @@ class cid3 : Serializable {
     private fun calculateGini(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
         val numData = data!!.size
         if (numData == 0) return Certainty(0.0, 0.0)
-        val numValuesClass = domainsIndexToValue!![classAttribute].size
-        val numValuesGivenAtt = domainsIndexToValue!![givenThatAttribute].size
+        val numValuesClass = domainsIndexToValue[classAttribute].size
+        val numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size
         //If attribute is discrete
         return if (attributeTypes[givenThatAttribute] == AttributeType.Discrete) {
             val probabilities = calculateAllProbabilities(data)
@@ -540,7 +540,7 @@ class cid3 : Serializable {
             val attributeValuesSet: SortedSet<Double> = TreeSet()
             val attributeToClass = HashMap<Double, Tuple<Int, Boolean>>()
             for (point in data) {
-                val attribute = domainsIndexToValue!![givenThatAttribute][point!!.attributes[givenThatAttribute]] as Double
+                val attribute = domainsIndexToValue[givenThatAttribute][point!!.attributes[givenThatAttribute]] as Double
                 val theClass = point.attributes[classAttribute]
                 attributeValuesSet.add(attribute)
                 val tuple = attributeToClass[attribute]
@@ -612,7 +612,7 @@ class cid3 : Serializable {
                 val pointClass = point!!.attributes[classAttribute]
                 for (iThreshold in thresholds) {
                     if (iThreshold.sumsClassesAndAttribute[pointClass] == null) iThreshold.sumsClassesAndAttribute[pointClass] = SumBelowAndAbove(0, 0)
-                    if ((domainsIndexToValue!![givenThatAttribute][point.attributes[givenThatAttribute]] as Double)<iThreshold.value) {
+                    if ((domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double)<iThreshold.value) {
                         iThreshold.sumABelow++
                         //Next calculate probability of c and a
                         iThreshold.sumsClassesAndAttribute[pointClass].below++
@@ -720,7 +720,7 @@ class cid3 : Serializable {
     }
 
     private fun stopConditionAllClassesEqualEfficient(frequencyClasses: IntArray): Boolean {
-        val numValuesClass = domainsIndexToValue!![classAttribute].size
+        val numValuesClass = domainsIndexToValue[classAttribute].size
         var oneClassIsPresent = false
         for (i in 0 until numValuesClass) {
             if (frequencyClasses[i] != 0) {
@@ -809,12 +809,12 @@ class cid3 : Serializable {
         //if attribute is discrete
         if (attributeTypes[selectedAttribute] == AttributeType.Discrete) {
             // Now divide the dataset using the selected attribute
-            val numValues = domainsIndexToValue!![selectedAttribute].size
+            val numValues = domainsIndexToValue[selectedAttribute].size
             node.decompositionAttribute = selectedAttribute
             node.children = ArrayList()
             var df: DataFrequencies
             for (j in 0 until numValues) {
-                if (domainsIndexToValue!![selectedAttribute][j] == null || domainsIndexToValue!![selectedAttribute][j] == "?") continue
+                if (domainsIndexToValue[selectedAttribute][j] == null || domainsIndexToValue[selectedAttribute][j] == "?") continue
                 val newNode = TreeNode()
                 newNode.parent = node
                 //node.children[j].informationUsedToDecompose = bestInformation.information;
@@ -915,27 +915,27 @@ class cid3 : Serializable {
     fun imputeMissing() {
         for (attribute in 0 until numAttributes - 1) {
             if (attributeTypes[attribute] == AttributeType.Continuous) {
-                if (domainsIndexToValue!![attribute].containsValue("?")) {
+                if (domainsIndexToValue[attribute].containsValue("?")) {
                     //Find mean value
                     val mean = meanValues[attribute]
                     //Get index
-                    val index = domainsValueToIndex!![attribute]["?"]!!
+                    val index = domainsValueToIndex[attribute]["?"]!!
                     //Replace missing with mean
-                    domainsIndexToValue!![attribute].replace(index, "?", mean)
-                    domainsValueToIndex!![attribute].remove("?")
-                    domainsValueToIndex!![attribute][mean] = index
+                    domainsIndexToValue[attribute].replace(index, "?", mean)
+                    domainsValueToIndex[attribute].remove("?")
+                    domainsValueToIndex[attribute][mean] = index
                 }
             } else if (attributeTypes[attribute] == AttributeType.Discrete) {
-                if (domainsIndexToValue!![attribute].containsValue("?")) {
+                if (domainsIndexToValue[attribute].containsValue("?")) {
                     //Find most common value
                     val mostCommonValue = mostCommonValues[attribute]
-                    val mostCommonValueStr = domainsIndexToValue!![attribute][mostCommonValue] as String?
+                    val mostCommonValueStr = domainsIndexToValue[attribute][mostCommonValue] as String?
                     //Get index
-                    val index = domainsValueToIndex!![attribute]["?"]!!
+                    val index = domainsValueToIndex[attribute]["?"]!!
                     //Replace missing with most common
-                    domainsIndexToValue!![attribute].replace(index, "?", mostCommonValueStr)
-                    domainsValueToIndex!![attribute].remove("?")
-                    domainsValueToIndex!![attribute][mostCommonValueStr] = index
+                    domainsIndexToValue[attribute].replace(index, "?", mostCommonValueStr)
+                    domainsValueToIndex[attribute].remove("?")
+                    domainsValueToIndex[attribute][mostCommonValueStr] = index
                 }
             }
         }
@@ -947,7 +947,7 @@ class cid3 : Serializable {
         var counter = 0
         for (point in trainData!!) {
             try {
-                val attValue = domainsIndexToValue!![attribute][point!!.attributes[attribute]] as Double
+                val attValue = domainsIndexToValue[attribute][point!!.attributes[attribute]] as Double
                 sum += attValue
                 counter++
             } catch (e: Exception) {
@@ -969,14 +969,14 @@ class cid3 : Serializable {
 
     //Find the most common values of a discrete attribute. This is needed for imputation.
     private fun mostCommonValue(attribute: Int): Int {
-        val frequencies = IntArray(domainsIndexToValue!![attribute].size)
+        val frequencies = IntArray(domainsIndexToValue[attribute].size)
         for (point in trainData!!) {
             frequencies[point!!.attributes[attribute]]++
         }
         var mostFrequent = 0
         var index = 0
         for (i in frequencies.indices) {
-            if (domainsIndexToValue!![attribute][i] != "?") if (frequencies[i] > mostFrequent) {
+            if (domainsIndexToValue[attribute][i] != "?") if (frequencies[i] > mostFrequent) {
                 mostFrequent = frequencies[i]
                 index = i
             }
@@ -1063,8 +1063,8 @@ class cid3 : Serializable {
         testData = data
 
         //Resize root.frequencyClasses in case new class values were found in test dataset
-        if (root.frequencyClasses.size < domainsIndexToValue!![classAttribute].size) {
-            val newArray = IntArray(domainsIndexToValue!![classAttribute].size)
+        if (root.frequencyClasses.size < domainsIndexToValue[classAttribute].size) {
+            val newArray = IntArray(domainsIndexToValue[classAttribute].size)
             System.arraycopy(root.frequencyClasses, 0, newArray, 0, root.frequencyClasses.size)
             root.frequencyClasses = newArray
         }
@@ -1156,7 +1156,7 @@ class cid3 : Serializable {
             exitProcess(1)
         }
         val size = data.size
-        root.frequencyClasses = IntArray(domainsIndexToValue!![classAttribute].size)
+        root.frequencyClasses = IntArray(domainsIndexToValue[classAttribute].size)
         if (splitTrainData && !testDataExists && !isCrossValidation) {
             //Randomize the data
             data.shuffle()
@@ -1253,10 +1253,10 @@ class cid3 : Serializable {
         domainsValueToIndex = ArrayList()
         //domains = new ArrayList[numAttributes];
         for (i in 0 until numAttributes) {
-            domainsIndexToValue!!.add(HashMap())
+            domainsIndexToValue.add(HashMap())
         }
         for (i in 0 until numAttributes) {
-            domainsValueToIndex!!.add(HashMap())
+            domainsValueToIndex.add(HashMap())
         }
 
         //Set attributeNames. They should be in the same order as they appear in the data. +1 for the class
@@ -1657,7 +1657,7 @@ class cid3 : Serializable {
         }
         //Check if attribute is continuous
         if (attributeTypes[splitAttribute] == AttributeType.Continuous) {
-            attributeRealValue = domainsIndexToValue!![splitAttribute][example.attributes[splitAttribute]] as Double
+            attributeRealValue = domainsIndexToValue[splitAttribute][example.attributes[splitAttribute]] as Double
             nodeLocal = if (attributeRealValue <= nodeLocal.children!![0].thresholdContinuous) {
                 nodeLocal.children!![0]
             } else nodeLocal.children!![1]
@@ -1887,8 +1887,8 @@ class cid3 : Serializable {
                     print("(possible values are: ")
                     var values = StringBuilder()
                     val valuesArray = ArrayList<String>()
-                    for (i in 0 until id3.domainsIndexToValue!![currentNode.decompositionAttribute].size) {
-                        valuesArray.add(id3.domainsIndexToValue!![currentNode.decompositionAttribute][i] as String)
+                    for (i in 0 until id3.domainsIndexToValue[currentNode.decompositionAttribute].size) {
+                        valuesArray.add(id3.domainsIndexToValue[currentNode.decompositionAttribute][i] as String)
                     }
                     valuesArray.sort()
                     for (value in valuesArray) {
@@ -1904,7 +1904,7 @@ class cid3 : Serializable {
                             if (s == "?") {
                                 attributeValue = id3.mostCommonValues[currentNode.decompositionAttribute]
                                 break
-                            } else attributeValue = id3.domainsValueToIndex!![currentNode.decompositionAttribute][s]!!
+                            } else attributeValue = id3.domainsValueToIndex[currentNode.decompositionAttribute][s]!!
                             break
                         } catch (e: Exception) {
                             println("Please enter a valid value:")
@@ -1957,7 +1957,7 @@ class cid3 : Serializable {
             }
             val mostCommon: Int
             mostCommon = if (isEmpty) id3.mostCommonFinal(currentNode.parent) else id3.mostCommonFinal(currentNode)
-            val mostCommonStr = id3.domainsIndexToValue!![id3.classAttribute][mostCommon] as String?
+            val mostCommonStr = id3.domainsIndexToValue[id3.classAttribute][mostCommon] as String?
             //Print class attribute value
             println("Class attribute value is: $mostCommonStr")
         } else println("The file doesn't exist.")
@@ -2055,7 +2055,7 @@ class cid3 : Serializable {
                 caseClass = if (isEmpty) id3.mostCommonFinal(node.parent) else id3.mostCommonFinal(node)
 
                 //Print line to output tmp file
-                val classValue = id3.domainsIndexToValue!![id3.classAttribute][caseClass] as String?
+                val classValue = id3.domainsIndexToValue[id3.classAttribute][caseClass] as String?
                 val line = "$input,$classValue"
                 printOut.write(line)
                 printOut.println()
@@ -2155,7 +2155,7 @@ class cid3 : Serializable {
                     //}
                 }
                 //Check the created example against the random forest
-                val classAttrValues = IntArray(id3.domainsIndexToValue!![id3.classAttribute].size)
+                val classAttrValues = IntArray(id3.domainsIndexToValue[id3.classAttribute].size)
                 val roots = id3.rootsRandomForest
                 var node: TreeNode
                 var resultClass = 0
@@ -2177,7 +2177,7 @@ class cid3 : Serializable {
                     if (classAttrValues[i] > resultClass) resultClass = i
                 }
                 //Print line to output tmp file
-                val classValue = id3.domainsIndexToValue!![id3.classAttribute][resultClass] as String?
+                val classValue = id3.domainsIndexToValue[id3.classAttribute][resultClass] as String?
                 val line = "$input,$classValue"
                 printOut.write(line)
                 printOut.println()
@@ -2219,8 +2219,8 @@ class cid3 : Serializable {
                     print("(possible values are: ")
                     var values = StringBuilder()
                     val valuesArray = ArrayList<String>()
-                    for (j in 0 until id3.domainsIndexToValue!![i].size) {
-                        valuesArray.add(id3.domainsIndexToValue!![i][j] as String)
+                    for (j in 0 until id3.domainsIndexToValue[i].size) {
+                        valuesArray.add(id3.domainsIndexToValue[i][j] as String)
                     }
                     valuesArray.sort()
                     for (item in valuesArray) {
@@ -2237,7 +2237,7 @@ class cid3 : Serializable {
                             value = id3.mostCommonValues[i]
                             example.attributes[i] = value
                             break
-                        } else if (id3.domainsIndexToValue!![i].containsValue(s)) {
+                        } else if (id3.domainsIndexToValue[i].containsValue(s)) {
                             example.attributes[i] = id3.getSymbolValue(i, s)
                             break
                         } else println("Please enter a valid value:")
@@ -2260,7 +2260,7 @@ class cid3 : Serializable {
             }
 
             //Check the created example against the random forest
-            val classAttrValues = IntArray(id3.domainsIndexToValue!![id3.classAttribute].size)
+            val classAttrValues = IntArray(id3.domainsIndexToValue[id3.classAttribute].size)
             val roots = id3.rootsRandomForest
             var node: TreeNode
             var resultClass = 0
@@ -2282,7 +2282,7 @@ class cid3 : Serializable {
                 if (classAttrValues[i] > resultClass) resultClass = i
             }
             //Print the answer
-            val mostCommonStr = id3.domainsIndexToValue!![id3.classAttribute][resultClass] as String?
+            val mostCommonStr = id3.domainsIndexToValue[id3.classAttribute][resultClass] as String?
             print("\n")
             println("Class attribute value is: $mostCommonStr")
         } else println("The file doesn't exist.")
