@@ -132,7 +132,7 @@ class cid3 : Serializable {
     /*  This function returns an integer corresponding to the symbolic value of the attribute.
         If the symbol does not exist in the domain, the symbol is added to the domain of the attribute
     */
-    fun getSymbolValue(attribute: Int, symbol: Any?): Int {
+    private fun getSymbolValue(attribute: Int, symbol: Any?): Int {
         return domainsValueToIndex!![attribute][symbol]
                 ?: return if (domainsIndexToValue!![attribute].isEmpty()) {
                     domainsIndexToValue!![attribute][0] = symbol
@@ -147,7 +147,7 @@ class cid3 : Serializable {
     }
 
     // Returns the most common class for the specified node
-    fun mostCommonFinal(n: TreeNode?): Int {
+    private fun mostCommonFinal(n: TreeNode?): Int {
         val numValuesClass = domainsIndexToValue!![classAttribute].size
         var value = n!!.frequencyClasses[0]
         var result = 0
@@ -164,7 +164,7 @@ class cid3 : Serializable {
     }
 
     /*  Returns a subset of data, in which the value of the specified attribute of all data points is the specified value  */
-    fun getSubset(data: ArrayList<DataPoint?>?, attribute: Int, value: Int): DataFrequencies {
+    private fun getSubset(data: ArrayList<DataPoint?>?, attribute: Int, value: Int): DataFrequencies {
         val subset = ArrayList<DataPoint?>()
         val frequencies = IntArray(domainsIndexToValue!![classAttribute].size)
         for (point in data!!) {
@@ -176,7 +176,7 @@ class cid3 : Serializable {
         return DataFrequencies(subset, frequencies)
     }
 
-    fun getFrequencies(data: ArrayList<DataPoint?>?): IntArray {
+    private fun getFrequencies(data: ArrayList<DataPoint?>?): IntArray {
         val frequencies = IntArray(domainsIndexToValue!![classAttribute].size)
         for (point in data!!) {
             frequencies[point!!.attributes[classAttribute]]++
@@ -184,7 +184,7 @@ class cid3 : Serializable {
         return frequencies
     }
 
-    fun getSubsetsBelowAndAbove(data: ArrayList<DataPoint?>?, attribute: Int, value: Double): Tuple<DataFrequencies, DataFrequencies> {
+    private fun getSubsetsBelowAndAbove(data: ArrayList<DataPoint?>?, attribute: Int, value: Double): Tuple<DataFrequencies, DataFrequencies> {
         val subsetBelow = ArrayList<DataPoint?>()
         val subsetAbove = ArrayList<DataPoint?>()
         val frequenciesBelow = IntArray(domainsIndexToValue!![classAttribute].size)
@@ -202,7 +202,7 @@ class cid3 : Serializable {
     }
 
     //This is the final form of the certainty function.
-    fun calculateCertainty(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
+    private fun calculateCertainty(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
         val numData = data!!.size
         if (numData == 0) return Certainty(0.0, 0.0)
         val numValuesClass = domainsIndexToValue!![classAttribute].size
@@ -271,20 +271,24 @@ class cid3 : Serializable {
             val centerThresholdIndex = thresholds.size / 2
             val centerThreshold: Threshold
             val centerThreshold1: Threshold
-            if (thresholds.size == 1) {
-                centerThreshold = thresholds[0]
-                thresholds.clear()
-                thresholds.add(centerThreshold)
-            } else if (thresholds.size % 2 != 0) {
-                centerThreshold = thresholds[centerThresholdIndex]
-                thresholds.clear()
-                thresholds.add(centerThreshold)
-            } else {
-                centerThreshold = thresholds[centerThresholdIndex]
-                centerThreshold1 = thresholds[centerThresholdIndex - 1]
-                thresholds.clear()
-                thresholds.add(centerThreshold)
-                thresholds.add(centerThreshold1)
+            when {
+                thresholds.size == 1 -> {
+                    centerThreshold = thresholds[0]
+                    thresholds.clear()
+                    thresholds.add(centerThreshold)
+                }
+                thresholds.size % 2 != 0 -> {
+                    centerThreshold = thresholds[centerThresholdIndex]
+                    thresholds.clear()
+                    thresholds.add(centerThreshold)
+                }
+                else -> {
+                    centerThreshold = thresholds[centerThresholdIndex]
+                    centerThreshold1 = thresholds[centerThresholdIndex - 1]
+                    thresholds.clear()
+                    thresholds.add(centerThreshold)
+                    thresholds.add(centerThreshold1)
+                }
             }
             //=========================================================
             var probABelow: Double
@@ -346,7 +350,7 @@ class cid3 : Serializable {
     }
 
     //This is Entropy.
-    fun calculateEntropy(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
+    private fun calculateEntropy(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
         val numData = data!!.size
         if (numData == 0) return Certainty(0.0, 0.0)
         val numValuesClass = domainsIndexToValue!![classAttribute].size
@@ -415,20 +419,24 @@ class cid3 : Serializable {
             val centerThresholdIndex = thresholds.size / 2
             val centerThreshold: Threshold
             val centerThreshold1: Threshold
-            if (thresholds.size == 1) {
-                centerThreshold = thresholds[0]
-                thresholds.clear()
-                thresholds.add(centerThreshold)
-            } else if (thresholds.size % 2 != 0) {
-                centerThreshold = thresholds[centerThresholdIndex]
-                thresholds.clear()
-                thresholds.add(centerThreshold)
-            } else {
-                centerThreshold = thresholds[centerThresholdIndex]
-                centerThreshold1 = thresholds[centerThresholdIndex - 1]
-                thresholds.clear()
-                thresholds.add(centerThreshold)
-                thresholds.add(centerThreshold1)
+            when {
+                thresholds.size == 1 -> {
+                    centerThreshold = thresholds[0]
+                    thresholds.clear()
+                    thresholds.add(centerThreshold)
+                }
+                thresholds.size % 2 != 0 -> {
+                    centerThreshold = thresholds[centerThresholdIndex]
+                    thresholds.clear()
+                    thresholds.add(centerThreshold)
+                }
+                else -> {
+                    centerThreshold = thresholds[centerThresholdIndex]
+                    centerThreshold1 = thresholds[centerThresholdIndex - 1]
+                    thresholds.clear()
+                    thresholds.add(centerThreshold)
+                    thresholds.add(centerThreshold1)
+                }
             }
             //=========================================================
             var probABelow: Double
@@ -498,7 +506,7 @@ class cid3 : Serializable {
     }
 
     //This is Gini.
-    fun calculateGini(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
+    private fun calculateGini(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
         val numData = data!!.size
         if (numData == 0) return Certainty(0.0, 0.0)
         val numValuesClass = domainsIndexToValue!![classAttribute].size
@@ -569,20 +577,24 @@ class cid3 : Serializable {
             val centerThresholdIndex = thresholds.size / 2
             val centerThreshold: Threshold
             val centerThreshold1: Threshold
-            if (thresholds.size == 1) {
-                centerThreshold = thresholds[0]
-                thresholds.clear()
-                thresholds.add(centerThreshold)
-            } else if (thresholds.size % 2 != 0) {
-                centerThreshold = thresholds[centerThresholdIndex]
-                thresholds.clear()
-                thresholds.add(centerThreshold)
-            } else {
-                centerThreshold = thresholds[centerThresholdIndex]
-                centerThreshold1 = thresholds[centerThresholdIndex - 1]
-                thresholds.clear()
-                thresholds.add(centerThreshold)
-                thresholds.add(centerThreshold1)
+            when {
+                thresholds.size == 1 -> {
+                    centerThreshold = thresholds[0]
+                    thresholds.clear()
+                    thresholds.add(centerThreshold)
+                }
+                thresholds.size % 2 != 0 -> {
+                    centerThreshold = thresholds[centerThresholdIndex]
+                    thresholds.clear()
+                    thresholds.add(centerThreshold)
+                }
+                else -> {
+                    centerThreshold = thresholds[centerThresholdIndex]
+                    centerThreshold1 = thresholds[centerThresholdIndex - 1]
+                    thresholds.clear()
+                    thresholds.add(centerThreshold)
+                    thresholds.add(centerThreshold1)
+                }
             }
             //=========================================================
             var probABelow: Double
@@ -699,14 +711,14 @@ class cid3 : Serializable {
         in any of the parents of the specified node in the decomposition tree.
         Recursively checks the specified node as well as all parents
     */
-    fun alreadyUsedToDecompose(node: TreeNode?, attribute: Int): Boolean {
+    private fun alreadyUsedToDecompose(node: TreeNode?, attribute: Int): Boolean {
         if (node!!.children != null) {
             if (node.decompositionAttribute == attribute) return true
         }
         return if (node.parent == null) false else alreadyUsedToDecompose(node.parent, attribute)
     }
 
-    fun stopConditionAllClassesEqualEfficient(frequencyClasses: IntArray): Boolean {
+    private fun stopConditionAllClassesEqualEfficient(frequencyClasses: IntArray): Boolean {
         val numValuesClass = domainsIndexToValue!![classAttribute].size
         var oneClassIsPresent = false
         for (i in 0 until numValuesClass) {
@@ -812,51 +824,34 @@ class cid3 : Serializable {
                 node.children!!.add(newNode)
             }
             // Recursively divides children nodes
-            if (isCrossValidation) { // If is Cross Validation, don't create more threads
-                for (j in node.children!!.indices) {
-                    decomposeNode(node.children!![j], selectedAttributesLocal, 0)
-                }
-            } else if (isRandomForest) { //if is Random Forest, don't create more threads
-                val rand = Random(mySeed)
-                var randomAttribute: Int
-                //randomAttribute = rand.nextInt(numAttributes - 1);
-                val numAtt = selectedAttributesLocal.size
-                for (j in node.children!!.indices) {
-                    selectedAttributesLocal = ArrayList()
-                    while (selectedAttributesLocal.size < numAtt) {
-                        randomAttribute = rand.nextInt(numAttributes - 1)
-                        if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributesLocal.add(randomAttribute)
+            when {
+                isCrossValidation -> { // If is Cross Validation, don't create more threads
+                    for (j in node.children!!.indices) {
+                        decomposeNode(node.children!![j], selectedAttributesLocal, 0)
                     }
-                    decomposeNode(node.children!![j], selectedAttributesLocal, mySeed + 1 + j)
                 }
-            } else {
-                for (j in node.children!!.indices) { //For single trees now also don't create more threads
-                    //final Integer j2 = j;
-                    //final ArrayList<Integer> selectedAttributes2 =  selectedAttributes;
-
-                    //if (globalThreads.size() < maxThreads) {
-                    //    Thread thread = new Thread() {
-                    //        public void run() {
-                    decomposeNode(node.children!![j], selectedAttributesLocal, mySeed + 1 + j)
-                    //       }
-                    //  };
-
-                    //    threads.add(thread);
-                    //   globalThreads.add(thread);
-                    //   thread.start();
-                    //}
-                    // else decomposeNode((TreeNode) node.children.get(j2), selectedAttributes2, mySeed + 1 + j2);
+                isRandomForest -> { //if is Random Forest, don't create more threads
+                    val rand = Random(mySeed)
+                    var randomAttribute: Int
+                    //randomAttribute = rand.nextInt(numAttributes - 1);
+                    val numAtt = selectedAttributesLocal.size
+                    for (j in node.children!!.indices) {
+                        selectedAttributesLocal = ArrayList()
+                        while (selectedAttributesLocal.size < numAtt) {
+                            randomAttribute = rand.nextInt(numAttributes - 1)
+                            if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributesLocal.add(randomAttribute)
+                        }
+                        decomposeNode(node.children!![j], selectedAttributesLocal, mySeed + 1 + j)
+                    }
                 }
-
-                //while (threads.size() > 0){
-                //    Thread current = threads.get(threads.size()-1);
-                //    if (!current.isAlive()) {
-                //       globalThreads.remove(current);
-                //       threads.remove(current);
-                //   }
-                //}
+                else -> {
+                    for (j in node.children!!.indices) { //For single trees now also don't create more threads
+                        decomposeNode(node.children!![j], selectedAttributesLocal, mySeed + 1 + j)
+                    }
+                }
             }
-        } else { //If attribute is continuous
+        }
+        else { //If attribute is continuous
             node.decompositionAttribute = selectedAttribute
             node.children = ArrayList()
             var df: DataFrequencies
@@ -885,11 +880,12 @@ class cid3 : Serializable {
 
             //Decompose children
             if (node.children!![0].data!!.isEmpty() || node.children!![1].data!!.isEmpty()) return
-            if (isCrossValidation) { //if is a Cross Validation, don't create more threads
-                decomposeNode(node.children!![0], selectedAttributesLocal, 0)
-                decomposeNode(node.children!![1], selectedAttributesLocal, 0)
-            } else  //if is a Random Forest, don't create more threads
-                if (isRandomForest) {
+            when {
+                isCrossValidation -> { //if is a Cross Validation, don't create more threads
+                    decomposeNode(node.children!![0], selectedAttributesLocal, 0)
+                    decomposeNode(node.children!![1], selectedAttributesLocal, 0)
+                }  //if is a Random Forest, don't create more threads
+                isRandomForest -> {
                     val rand = Random(mySeed)
                     var randomAttribute: Int
                     //randomAttribute = rand.nextInt(numAttributes - 1);
@@ -906,41 +902,12 @@ class cid3 : Serializable {
                         if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributesLocal.add(randomAttribute)
                     }
                     decomposeNode(node.children!![1], selectedAttributesLocal, mySeed + 2)
-                } else { //also now for single trees don't create more threads
-                    //final ArrayList<Integer> selectedAttributes2 =  selectedAttributes;
-
-                    //if (globalThreads.size() < maxThreads) {
-                    //   Thread thread = new Thread() {
-                    //       public void run() {
-                    decomposeNode(node.children!![0], selectedAttributesLocal, mySeed + 1)
-                    //       }
-                    //   };
-                    //   threads.add(thread);
-                    //   globalThreads.add(thread);
-                    //  thread.start();
-
-                    //  thread = new Thread() {
-                    //      public void run() {
-                    decomposeNode(node.children!![1], selectedAttributesLocal, mySeed + 2)
-                    //      }
-                    //  };
-                    //  threads.add(thread);
-                    //  globalThreads.add(thread);
-                    //  thread.start();
-
-                    //  while (threads.size() > 0){
-                    //      Thread current = threads.get(threads.size()-1);
-                    //      if (!current.isAlive()) {
-                    //          globalThreads.remove(current);
-                    //          threads.remove(current);
-                    //     }
-                    //  }
-                    //}
-                    //else {
-                    //    decomposeNode((TreeNode) node.children.get(0), selectedAttributes2, mySeed + 1);
-                    //    decomposeNode((TreeNode) node.children.get(1), selectedAttributes2, mySeed + 2);
-                    //}
                 }
+                else -> { //also now for single trees don't create more threads
+                    decomposeNode(node.children!![0], selectedAttributesLocal, mySeed + 1)
+                    decomposeNode(node.children!![1], selectedAttributesLocal, mySeed + 2)
+                }
+            }
         }
     }
 
@@ -974,7 +941,7 @@ class cid3 : Serializable {
     }
 
     //Find the mean value of a continuous attribute
-    fun meanValue(attribute: Int): Double {
+    private fun meanValue(attribute: Int): Double {
         var sum = 0.0
         var counter = 0
         for (point in trainData!!) {
@@ -1000,7 +967,7 @@ class cid3 : Serializable {
     }
 
     //Find the most common values of a discrete attribute. This is needed for imputation.
-    fun mostCommonValue(attribute: Int): Int {
+    private fun mostCommonValue(attribute: Int): Int {
         val frequencies = IntArray(domainsIndexToValue!![attribute].size)
         for (point in trainData!!) {
             frequencies[point!!.attributes[attribute]]++
