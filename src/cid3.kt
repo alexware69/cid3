@@ -861,7 +861,7 @@ class cid3 : Serializable {
             node.children = ArrayList()
             var df: DataFrequencies
             //First less than threshold
-            var newNode: TreeNode = TreeNode()
+            var newNode = TreeNode()
             newNode.parent = node
             val subsets = getSubsetsBelowAndAbove(node.data, selectedAttribute, bestCertainty.threshold)
             df = subsets.x
@@ -1038,7 +1038,7 @@ class cid3 : Serializable {
             exitProcess(1)
         }
         val bin = BufferedReader(InputStreamReader(`in`))
-        var input: String? = null
+        var input: String?
         while (true) {
             try {
                 input = bin.readLine()
@@ -1050,7 +1050,7 @@ class cid3 : Serializable {
                 System.err.println("No data found in the data file: $filename\n")
                 exitProcess(1)
             }
-            if (input!!.startsWith("//")) continue
+            if (input.startsWith("//")) continue
             if (input == "") continue
             break
         }
@@ -1216,8 +1216,8 @@ class cid3 : Serializable {
     } // End of function readData
 
     private fun readNames(filename: String) {
-        var `in`: FileInputStream? = null
-        var input: String? = null
+        val `in`: FileInputStream?
+        var input: String?
         val attributes = ArrayList<Tuple<String, String>>()
         //Read the names file
         try {
@@ -1237,7 +1237,7 @@ class cid3 : Serializable {
 
         //Read first line containing class values.
         try {
-            input = bin.readLine()
+            bin.readLine()
         } catch (e: Exception) {
             System.err.println("Unable to read line in names file.")
             exitProcess(1)
@@ -1414,7 +1414,7 @@ class cid3 : Serializable {
     }
 
     private fun deserializeFile(file: String): cid3? {
-        var ret: cid3? = null
+        val ret: cid3?
         val objectInputStream: ObjectInputStream
         try {
             //FileInputStream streamIn = new FileInputStream(file);
@@ -2373,7 +2373,7 @@ class cid3 : Serializable {
             //Declare parser and formatter
             val parser: CommandLineParser = DefaultParser()
             val formatter = HelpFormatter()
-            var cmd: CommandLine? = null
+            val cmd: CommandLine?
             try {
                 for (arg in args) {
                     if (arg.contains(" -h ") || arg.contains(" --help ")) {
