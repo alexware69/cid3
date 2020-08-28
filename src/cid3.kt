@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
+import kotlin.math.*
 import kotlin.system.exitProcess
 
 class cid3 : Serializable {
@@ -47,24 +48,16 @@ class cid3 : Serializable {
            no string comparison.
            The last attribute is the output attribute
         */
-        var attributes: IntArray
+        var attributes: IntArray = IntArray(numAttributes)
 
-        init {
-            attributes = IntArray(numAttributes)
-        }
     }
 
     //This class will be used to calculate all probabilities in one pass.
-    inner class Probabilities(var attribute: Int) : Serializable {
-        var prob: DoubleArray
-        var probC_And_A: Array<DoubleArray>
-        var probC_Given_A: Array<DoubleArray>
+    inner class Probabilities(attribute: Int) : Serializable {
+        var prob: DoubleArray = DoubleArray(domainsIndexToValue!![attribute].size)
+        var probCAndA: Array<DoubleArray> = Array(domainsIndexToValue!![attribute].size) { DoubleArray(domainsIndexToValue!![classAttribute].size) }
+        var probCGivenA: Array<DoubleArray> = Array(domainsIndexToValue!![attribute].size) { DoubleArray(domainsIndexToValue!![classAttribute].size) }
 
-        init {
-            prob = DoubleArray(domainsIndexToValue!![attribute].size)
-            probC_And_A = Array(domainsIndexToValue!![attribute].size) { DoubleArray(domainsIndexToValue!![classAttribute].size) }
-            probC_Given_A = Array(domainsIndexToValue!![attribute].size) { DoubleArray(domainsIndexToValue!![classAttribute].size) }
-        }
     }
 
     //This is an utility class to return the information and threshold of continuous attributes.
@@ -217,17 +210,17 @@ class cid3 : Serializable {
 
         //If attribute is discrete
         return if (attributeTypes[givenThatAttribute] == AttributeType.Discrete) {
-            val probabilities = CalculateAllProbabilities(data)
+            val probabilities = calculateAllProbabilities(data)
             var sum: Double
             var sum2 = 0.0
             var probability: Double
-            var probabilityC_And_A: Double
+            var probabilityCAndA: Double
             for (j in 0 until numValuesGivenAtt) {
                 probability = probabilities[givenThatAttribute]!!.prob[j]
                 sum = 0.0
                 for (i in 0 until numValuesClass) {
-                    probabilityC_And_A = probabilities[givenThatAttribute]!!.probC_And_A[j][i]
-                    sum += Math.abs(probabilityC_And_A - 1.0 * probability / numValuesClass)
+                    probabilityCAndA = probabilities[givenThatAttribute]!!.probCAndA[j][i]
+                    sum += abs(probabilityCAndA - 1.0 * probability / numValuesClass)
                 }
                 sum2 += sum
             }
@@ -296,8 +289,8 @@ class cid3 : Serializable {
             //=========================================================
             var probABelow: Double
             var probAAbove: Double
-            var probC_And_A_Below: Double
-            var probC_And_A_Above: Double
+            var probCAndABelow: Double
+            var probCAndAAbove: Double
             var certaintyBelow: Double
             var certaintyAbove: Double
             var point: DataPoint?
@@ -305,17 +298,17 @@ class cid3 : Serializable {
             for (datum in data) {
                 point = datum
                 //For each threshold count data to get prob and probC_And_A
-                val the_Class = point!!.attributes[classAttribute]
+                val theClass1 = point!!.attributes[classAttribute]
                 for (iThreshold in thresholds) {
-                    if (iThreshold.sumsClassesAndAttribute[the_Class] == null) iThreshold.sumsClassesAndAttribute[the_Class] = SumBelowAndAbove(0, 0)
+                    if (iThreshold.sumsClassesAndAttribute[theClass1] == null) iThreshold.sumsClassesAndAttribute[theClass1] = SumBelowAndAbove(0, 0)
                     if (domainsIndexToValue!![givenThatAttribute][point.attributes[givenThatAttribute]] as Double <= iThreshold.value) {
                         iThreshold.sumABelow++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[the_Class].below++
+                        iThreshold.sumsClassesAndAttribute[theClass1].below++
                     } else {
                         iThreshold.sumAAbove++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[the_Class].above++
+                        iThreshold.sumsClassesAndAttribute[theClass1].above++
                     }
                 }
             }
@@ -331,14 +324,14 @@ class cid3 : Serializable {
                 certaintyAbove = 0.0
                 for (c in 0 until numValuesClass) {
                     if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probC_And_A_Below = 1.0 * threshold.sumsClassesAndAttribute[c].below / numData
-                        probC_And_A_Above = 1.0 * threshold.sumsClassesAndAttribute[c].above / numData
+                        probCAndABelow = 1.0 * threshold.sumsClassesAndAttribute[c].below / numData
+                        probCAndAAbove = 1.0 * threshold.sumsClassesAndAttribute[c].above / numData
                     } else {
-                        probC_And_A_Below = 0.0
-                        probC_And_A_Above = 0.0
+                        probCAndABelow = 0.0
+                        probCAndAAbove = 0.0
                     }
-                    certaintyBelow += Math.abs(probC_And_A_Below - probABelow / numValuesClass)
-                    certaintyAbove += Math.abs(probC_And_A_Above - probAAbove / numValuesClass)
+                    certaintyBelow += abs(probCAndABelow - probABelow / numValuesClass)
+                    certaintyAbove += abs(probCAndAAbove - probAAbove / numValuesClass)
                 }
                 //Calculate totals
                 totalCertainty = certaintyBelow + certaintyAbove
@@ -360,17 +353,17 @@ class cid3 : Serializable {
         val numValuesGivenAtt = domainsIndexToValue!![givenThatAttribute].size
         //If attribute is discrete
         return if (attributeTypes[givenThatAttribute] == AttributeType.Discrete) {
-            val probabilities = CalculateAllProbabilities(data)
+            val probabilities = calculateAllProbabilities(data)
             var sum: Double
             var sum2 = 0.0
             var probability: Double
-            var probabilityC_Given_A: Double
+            var probabilityCGivenA: Double
             for (j in 0 until numValuesGivenAtt) {
                 probability = probabilities[givenThatAttribute]!!.prob[j]
                 sum = 0.0
                 for (i in 0 until numValuesClass) {
-                    probabilityC_Given_A = probabilities[givenThatAttribute]!!.probC_Given_A[j][i]
-                    if (probabilityC_Given_A != 0.0) sum += -probabilityC_Given_A * Math.log(probabilityC_Given_A)
+                    probabilityCGivenA = probabilities[givenThatAttribute]!!.probCGivenA[j][i]
+                    if (probabilityCGivenA != 0.0) sum += -probabilityCGivenA * ln(probabilityCGivenA)
                 }
                 sum2 += probability * sum
             }
@@ -440,8 +433,8 @@ class cid3 : Serializable {
             //=========================================================
             var probABelow: Double
             var probAAbove: Double
-            var probC_And_A_Below: Double
-            var probC_And_A_Above: Double
+            var probCAndABelow: Double
+            var probCAndAAbove: Double
             var entropyBelow: Double
             var entropyAbove: Double
             var selected = false
@@ -473,14 +466,14 @@ class cid3 : Serializable {
                 entropyAbove = 0.0
                 for (c in 0 until numValuesClass) {
                     if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probC_And_A_Below = 1.0 * threshold.sumsClassesAndAttribute[c].below / numData
-                        probC_And_A_Above = 1.0 * threshold.sumsClassesAndAttribute[c].above / numData
+                        probCAndABelow = 1.0 * threshold.sumsClassesAndAttribute[c].below / numData
+                        probCAndAAbove = 1.0 * threshold.sumsClassesAndAttribute[c].above / numData
                     } else {
-                        probC_And_A_Below = 0.0
-                        probC_And_A_Above = 0.0
+                        probCAndABelow = 0.0
+                        probCAndAAbove = 0.0
                     }
-                    if (probC_And_A_Below != 0.0 && probABelow != 0.0) entropyBelow += -probC_And_A_Below / probABelow * Math.log(probC_And_A_Below / probABelow)
-                    if (probC_And_A_Above != 0.0 && probAAbove != 0.0) entropyAbove += -probC_And_A_Above / probAAbove * Math.log(probC_And_A_Above / probAAbove)
+                    if (probCAndABelow != 0.0 && probABelow != 0.0) entropyBelow += -probCAndABelow / probABelow * ln(probCAndABelow / probABelow)
+                    if (probCAndAAbove != 0.0 && probAAbove != 0.0) entropyAbove += -probCAndAAbove / probAAbove * ln(probCAndAAbove / probAAbove)
                 }
                 //Calculate totals
                 totalEntropy = entropyBelow * probABelow + entropyAbove * probAAbove
@@ -512,18 +505,18 @@ class cid3 : Serializable {
         val numValuesGivenAtt = domainsIndexToValue!![givenThatAttribute].size
         //If attribute is discrete
         return if (attributeTypes[givenThatAttribute] == AttributeType.Discrete) {
-            val probabilities = CalculateAllProbabilities(data)
+            val probabilities = calculateAllProbabilities(data)
             var sum: Double
             var sum2 = 0.0
             var probability: Double
-            var probabilityC_Given_A: Double
+            var probabilityCGivenA: Double
             var gini: Double
             for (j in 0 until numValuesGivenAtt) {
                 probability = probabilities[givenThatAttribute]!!.prob[j]
                 sum = 0.0
                 for (i in 0 until numValuesClass) {
-                    probabilityC_Given_A = probabilities[givenThatAttribute]!!.probC_Given_A[j][i]
-                    sum += Math.pow(probabilityC_Given_A, 2.0)
+                    probabilityCGivenA = probabilities[givenThatAttribute]!!.probCGivenA[j][i]
+                    sum += probabilityCGivenA.pow(2.0)
                 }
                 gini = 1 - sum
                 sum2 += probability * gini
@@ -594,8 +587,8 @@ class cid3 : Serializable {
             //=========================================================
             var probABelow: Double
             var probAAbove: Double
-            var probC_And_A_Below: Double
-            var probC_And_A_Above: Double
+            var probCAndABelow: Double
+            var probCAndAAbove: Double
             var giniBelow: Double
             var giniAbove: Double
             var selected = false
@@ -627,14 +620,14 @@ class cid3 : Serializable {
                 giniAbove = 0.0
                 for (c in 0 until numValuesClass) {
                     if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probC_And_A_Below = 1.0 * threshold.sumsClassesAndAttribute[c].below / numData
-                        probC_And_A_Above = 1.0 * threshold.sumsClassesAndAttribute[c].above / numData
+                        probCAndABelow = 1.0 * threshold.sumsClassesAndAttribute[c].below / numData
+                        probCAndAAbove = 1.0 * threshold.sumsClassesAndAttribute[c].above / numData
                     } else {
-                        probC_And_A_Below = 0.0
-                        probC_And_A_Above = 0.0
+                        probCAndABelow = 0.0
+                        probCAndAAbove = 0.0
                     }
-                    giniBelow += Math.pow(probC_And_A_Below / probABelow, 2.0)
-                    giniAbove += Math.pow(probC_And_A_Above / probAAbove, 2.0)
+                    giniBelow += (probCAndABelow / probABelow).pow(2.0)
+                    giniAbove += (probCAndAAbove / probAAbove).pow(2.0)
                 }
                 //Calculate totals
                 giniBelow = 1 - giniBelow
@@ -661,7 +654,7 @@ class cid3 : Serializable {
     }
 
     //This method calculates all probabilities in one run
-    fun CalculateAllProbabilities(data: ArrayList<DataPoint?>?): Array<Probabilities?> {
+    private fun calculateAllProbabilities(data: ArrayList<DataPoint?>?): Array<Probabilities?> {
         val numData = data!!.size
         val probabilities = arrayOfNulls<Probabilities>(numAttributes - 1)
 
@@ -676,7 +669,7 @@ class cid3 : Serializable {
             for (j in 0 until point!!.attributes.size - 1) {
                 if (attributeTypes[j] == AttributeType.Ignore) continue
                 probabilities[j]!!.prob[point.attributes[j]] = probabilities[j]!!.prob[point.attributes[j]] + 1
-                probabilities[j]!!.probC_And_A[point.attributes[j]][point.attributes[classAttribute]] = probabilities[j]!!.probC_And_A[point.attributes[j]][point.attributes[classAttribute]] + 1
+                probabilities[j]!!.probCAndA[point.attributes[j]][point.attributes[classAttribute]] = probabilities[j]!!.probCAndA[point.attributes[j]][point.attributes[classAttribute]] + 1
             }
         }
         // Divide all values by total data size to get probabilities.
@@ -687,15 +680,15 @@ class cid3 : Serializable {
             for (j in current!!.prob.indices) {
                 current.prob[j] = current.prob[j] / numData
             }
-            for (j in current.probC_And_A.indices) {
-                for (k in current.probC_And_A[j].indices) {
-                    current.probC_And_A[j][k] = current.probC_And_A[j][k] / numData
+            for (j in current.probCAndA.indices) {
+                for (k in current.probCAndA[j].indices) {
+                    current.probCAndA[j][k] = current.probCAndA[j][k] / numData
                 }
             }
             //Calculate ProbC_Given_A
-            for (j in current.probC_Given_A.indices) {
-                for (k in current.probC_Given_A[j].indices) {
-                    current.probC_Given_A[j][k] = current.probC_And_A[j][k] / current.prob[j]
+            for (j in current.probCGivenA.indices) {
+                for (k in current.probCGivenA[j].indices) {
+                    current.probCGivenA[j][k] = current.probCAndA[j][k] / current.prob[j]
                 }
             }
         }
@@ -868,8 +861,7 @@ class cid3 : Serializable {
             node.children = ArrayList()
             var df: DataFrequencies
             //First less than threshold
-            var newNode: TreeNode
-            newNode = TreeNode()
+            var newNode: TreeNode = TreeNode()
             newNode.parent = node
             val subsets = getSubsetsBelowAndAbove(node.data, selectedAttribute, bestCertainty.threshold)
             df = subsets.x
@@ -1052,11 +1044,11 @@ class cid3 : Serializable {
                 input = bin.readLine()
             } catch (e: Exception) {
                 System.err.println("Unable to read line from test file.")
-                System.exit(1)
+                exitProcess(1)
             }
             if (input == null) {
                 System.err.println("No data found in the data file: $filename\n")
-                System.exit(1)
+                exitProcess(1)
             }
             if (input!!.startsWith("//")) continue
             if (input == "") continue
@@ -1076,7 +1068,7 @@ class cid3 : Serializable {
                             point.attributes[i] = getSymbolValue(i, next.toDouble())
                         } catch (e: Exception) {
                             System.err.println("Error reading continuous value in test data.")
-                            System.exit(1)
+                            exitProcess(1)
                         }
                     }
                 } else if (attributeTypes[i] == AttributeType.Discrete) {
@@ -1091,14 +1083,14 @@ class cid3 : Serializable {
                 input = bin.readLine()
             } catch (e: Exception) {
                 System.err.println("Unable to read line from test file.")
-                System.exit(1)
+                exitProcess(1)
             }
         }
         try {
             bin.close()
         } catch (e: Exception) {
             System.err.println("Unable to close test file.")
-            System.exit(1)
+            exitProcess(1)
         }
         testData = data
 
@@ -1132,7 +1124,7 @@ class cid3 : Serializable {
             exitProcess(1)
         }
         val bin = BufferedReader(InputStreamReader(`in`))
-        var input: String? = null
+        var input: String?
         var tokenizer: StringTokenizer
 
         //Read names file
@@ -1141,7 +1133,7 @@ class cid3 : Serializable {
             input = bin.readLine()
         } catch (e: Exception) {
             System.err.println("Unable to read line from data file.")
-            System.exit(1)
+            exitProcess(1)
         }
         while (input != null) {
             if (input.trim { it <= ' ' } == "") break
@@ -1153,7 +1145,7 @@ class cid3 : Serializable {
                 System.err.println("Read " + data.size + " data")
                 System.err.println("Last line read: $input")
                 System.err.println("Expecting $numAttributes attributes")
-                System.exit(1)
+                exitProcess(1)
             }
 
             //Insert missing value "?" into discrete attributes. This is needed for later accepting missing values.
@@ -1172,7 +1164,7 @@ class cid3 : Serializable {
                             point.attributes[i] = getSymbolValue(i, next.toDouble())
                         } catch (e: Exception) {
                             System.err.println("Error reading continuous value in train data.")
-                            System.exit(1)
+                            exitProcess(1)
                         }
                     }
                 } else if (attributeTypes[i] == AttributeType.Discrete) {
@@ -1186,20 +1178,20 @@ class cid3 : Serializable {
                 input = bin.readLine()
             } catch (e: Exception) {
                 System.err.println("Unable to read line from data file.")
-                System.exit(1)
+                exitProcess(1)
             }
         }
         try {
             bin.close()
         } catch (e: Exception) {
             System.err.println("Unable to close data file.")
-            System.exit(1)
+            exitProcess(1)
         }
         val size = data.size
         root.frequencyClasses = IntArray(domainsIndexToValue!![classAttribute].size)
         if (splitTrainData && !testDataExists && !isCrossValidation) {
             //Randomize the data
-            Collections.shuffle(data)
+            data.shuffle()
             numTraining = size * 80 / 100
             for (i in 0 until size) {
                 if (i < numTraining) {
@@ -1223,7 +1215,7 @@ class cid3 : Serializable {
         print("\n")
     } // End of function readData
 
-    fun readNames(filename: String) {
+    private fun readNames(filename: String) {
         var `in`: FileInputStream? = null
         var input: String? = null
         val attributes = ArrayList<Tuple<String, String>>()
@@ -1239,7 +1231,7 @@ class cid3 : Serializable {
             }
         } catch (e: Exception) {
             System.err.println("Unable to open names file.")
-            System.exit(1)
+            exitProcess(1)
         }
         val bin = BufferedReader(InputStreamReader(`in`))
 
@@ -1248,7 +1240,7 @@ class cid3 : Serializable {
             input = bin.readLine()
         } catch (e: Exception) {
             System.err.println("Unable to read line in names file.")
-            System.exit(1)
+            exitProcess(1)
         }
 
         //Save attribute names and types to a tuple array.
@@ -1256,7 +1248,7 @@ class cid3 : Serializable {
             input = bin.readLine()
         } catch (e: Exception) {
             System.err.println("Unable to read line in names file.")
-            System.exit(1)
+            exitProcess(1)
         }
         while (input != null) {
             if (!input.startsWith("|")) {
@@ -1270,7 +1262,7 @@ class cid3 : Serializable {
                 input = bin.readLine()
             } catch (e: Exception) {
                 System.err.println("Unable to read line in names file.")
-                System.exit(1)
+                exitProcess(1)
             }
         }
 
@@ -1285,7 +1277,7 @@ class cid3 : Serializable {
             //System.err.println( "Read line: " + input);
             //System.err.println( "Could not obtain the names of attributes in the line");
             System.err.println("Expecting at least one input attribute and one output attribute")
-            System.exit(1)
+            exitProcess(1)
         }
 
         //Initialize domains
@@ -1334,10 +1326,10 @@ class cid3 : Serializable {
             outputAttribute = { "Value1", "Value2", ..  }
         The second form is printed if the node cannot be decomposed any further into an homogenous set
     */
-    fun printTree(node: TreeNode, tab: String) {
-        if (node.data != null && !node.data!!.isEmpty()) totalNodes++
+    private fun printTree(node: TreeNode, tab: String) {
+        if (node.data != null && node.data!!.isNotEmpty()) totalNodes++
         if (node.children == null) {
-            if (node.data != null && !node.data!!.isEmpty()) totalRules++
+            if (node.data != null && node.data!!.isNotEmpty()) totalRules++
             //int []values = getAllValues(node.data, classAttribute );
             //if (values.length == 1) {
 //				System.out.println(tab + "\t" + attributeNames[classAttribute] + " = \"" + domainsIndexToValue[classAttribute].get(values[0]) + "\";");
@@ -1370,7 +1362,7 @@ class cid3 : Serializable {
         val fOut: FileOutputStream
         var fName = fileName
         fName = fName!!.substring(0, fName.length - 4)
-        fName = fName + "tree"
+        fName += "tree"
         try {
             //Check if file exists...delete it
             val inputFile = File(fName)
@@ -1379,7 +1371,7 @@ class cid3 : Serializable {
                 if (!res) {
                     print("Error deleting previous tree file.")
                     print("\n")
-                    System.exit(1)
+                    exitProcess(1)
                 }
             }
 
@@ -1399,7 +1391,7 @@ class cid3 : Serializable {
         val fOut: FileOutputStream
         var fName = fileName
         fName = fName!!.substring(0, fName.length - 4)
-        fName = fName + "forest"
+        fName += "forest"
         try {
             //Check if file exists...delete it
             val inputFile = File(fName)
@@ -1407,7 +1399,7 @@ class cid3 : Serializable {
             if (!res) {
                 print("Error deleting previous random forest file.")
                 print("\n")
-                System.exit(1)
+                exitProcess(1)
             }
 
             //Serialize and save to disk
@@ -1423,17 +1415,17 @@ class cid3 : Serializable {
 
     private fun deserializeFile(file: String): cid3? {
         var ret: cid3? = null
-        val objectinputstream: ObjectInputStream
+        val objectInputStream: ObjectInputStream
         try {
             //FileInputStream streamIn = new FileInputStream(file);
             val `is` = GZIPInputStream(FileInputStream(file))
-            objectinputstream = ObjectInputStream(`is`)
-            ret = objectinputstream.readObject() as cid3
-            objectinputstream.close()
+            objectInputStream = ObjectInputStream(`is`)
+            ret = objectInputStream.readObject() as cid3
+            objectInputStream.close()
         } catch (e: Exception) {
             print("Error deserializing file.")
             print("\n")
-            System.exit(1)
+            exitProcess(1)
         }
         return ret
     }
@@ -1469,12 +1461,12 @@ class cid3 : Serializable {
             trainData!!.addAll(testData)
             root.data = trainData
         }
-        val chunk_size = root.data!!.size / 10
+        val chunkSize = root.data!!.size / 10
         val modulus = root.data!!.size % 10
-        var counter = chunk_size
-        var counter_chunks = 0
+        var counter = chunkSize
+        var counterChunks = 0
         //Randomize the data
-        Collections.shuffle(root.data)
+        root.data!!.shuffle()
 
         //Initialize chunks
         for (i in 0..9) {
@@ -1487,10 +1479,10 @@ class cid3 : Serializable {
                 var i = 0
                 while (i < root.data!!.size - modulus) {
                     if (i < counter) {
-                        crossValidationChunks[counter_chunks].add(root.data!![i])
+                        crossValidationChunks[counterChunks].add(root.data!![i])
                     } else {
-                        counter += chunk_size
-                        counter_chunks++
+                        counter += chunkSize
+                        counterChunks++
                         i--
                     }
                     i++
@@ -1505,10 +1497,10 @@ class cid3 : Serializable {
             var i = 0
             while (i < root.data!!.size) {
                 if (i < counter) {
-                    crossValidationChunks[counter_chunks].add(root.data!![i])
+                    crossValidationChunks[counterChunks].add(root.data!![i])
                 } else {
-                    counter += chunk_size
-                    counter_chunks++
+                    counter += chunkSize
+                    counterChunks++
                     i--
                 }
                 i++
@@ -1562,12 +1554,12 @@ class cid3 : Serializable {
             trainData!!.addAll(testData)
             root.data = trainData
         }
-        val chunk_size = root.data!!.size / 10
+        val chunkSize = root.data!!.size / 10
         val modulus = root.data!!.size % 10
-        var counter = chunk_size
-        var counter_chunks = 0
+        var counter = chunkSize
+        var counterChunks = 0
         //Randomize the data
-        Collections.shuffle(root.data)
+        root.data!!.shuffle()
 
         //Initialize chunks
         for (i in 0..9) {
@@ -1579,10 +1571,10 @@ class cid3 : Serializable {
                 var i = 0
                 while (i < root.data!!.size - modulus) {
                     if (i < counter) {
-                        crossValidationChunks[counter_chunks].add(root.data!![i])
+                        crossValidationChunks[counterChunks].add(root.data!![i])
                     } else {
-                        counter += chunk_size
-                        counter_chunks++
+                        counter += chunkSize
+                        counterChunks++
                         i--
                     }
                     i++
@@ -1597,10 +1589,10 @@ class cid3 : Serializable {
             var i = 0
             while (i < root.data!!.size) {
                 if (i < counter) {
-                    crossValidationChunks[counter_chunks].add(root.data!![i])
+                    crossValidationChunks[counterChunks].add(root.data!![i])
                 } else {
-                    counter += chunk_size
-                    counter_chunks++
+                    counter += chunkSize
+                    counterChunks++
                     i--
                 }
                 i++
@@ -1635,7 +1627,7 @@ class cid3 : Serializable {
         for (i in 0 until numAttributes - 1) {
             if (attributeTypes[i] != AttributeType.Ignore) numberOfAttributes++
         }
-        val numAttributesForRandomForest = Math.log(numberOfAttributes + 1.toDouble()) / Math.log(2.0)
+        val numAttributesForRandomForest = ln(numberOfAttributes + 1.toDouble()) / ln(2.0)
         val numAttributesForRandomForestInt = numAttributesForRandomForest.toInt()
         var randomAttribute: Int
         var selectedAttributes: ArrayList<Int>
@@ -1705,9 +1697,8 @@ class cid3 : Serializable {
         return testExamplePoint(example, nodeLocal)
     }
 
-    fun testExample(example: DataPoint?): Boolean {
-        val node: TreeNode
-        node = testExamplePoint(example, root)
+    private fun testExample(example: DataPoint?): Boolean {
+        val node: TreeNode = testExamplePoint(example, root)
         return if (node.data == null || node.data!!.isEmpty()) {
             example!!.attributes[classAttribute] == mostCommonFinal(node.parent)
         } else {
@@ -1715,9 +1706,8 @@ class cid3 : Serializable {
         }
     }
 
-    fun testExampleCV(example: DataPoint?, tree: TreeNode): Boolean {
-        val node: TreeNode
-        node = testExamplePoint(example, tree)
+    private fun testExampleCV(example: DataPoint?, tree: TreeNode): Boolean {
+        val node: TreeNode = testExamplePoint(example, tree)
         return if (node.data == null || node.data!!.isEmpty()) {
             example!!.attributes[classAttribute] == mostCommonFinal(node.parent)
         } else {
@@ -1725,7 +1715,7 @@ class cid3 : Serializable {
         }
     }
 
-    fun testExampleRF(example: DataPoint?, roots: ArrayList<TreeNode>): Boolean {
+    private fun testExampleRF(example: DataPoint?, roots: ArrayList<TreeNode>): Boolean {
         var node: TreeNode
         var isTrue = 0
         var isFalse = 0
@@ -1745,39 +1735,39 @@ class cid3 : Serializable {
         return isTrue > isFalse
     }
 
-    fun testDecisionTree() {
-        var test_errors = 0
-        var test_corrects = 0
+    private fun testDecisionTree() {
+        var testErrors = 0
+        var testCorrects = 0
         //int test_size = testData.size();
         for (point in testData) {
-            if (testExample(point)) test_corrects++ else test_errors++
+            if (testExample(point)) testCorrects++ else testErrors++
         }
-        var train_errors = 0
-        var train_corrects = 0
+        var trainErrors = 0
+        var trainCorrects = 0
         //int train_size = trainData.size();
         for (point in trainData!!) {
-            if (testExample(point)) train_corrects++ else train_errors++
+            if (testExample(point)) trainCorrects++ else trainErrors++
         }
         print("\n")
         print("TRAIN DATA: ")
         print("\n")
         print("=================================")
         print("\n")
-        print("Correct guesses: $train_corrects")
+        print("Correct guesses: $trainCorrects")
         print("\n")
-        val rounded = Math.round(1.0 * train_errors * 100 / trainData!!.size * 10) / 10.0
-        print("Incorrect guesses: $train_errors ($rounded%)")
+        val rounded = (1.0 * trainErrors * 100 / trainData!!.size * 10).roundToInt() / 10.0
+        print("Incorrect guesses: $trainErrors ($rounded%)")
         print("\n")
-        if (!testData.isEmpty()) {
+        if (testData.isNotEmpty()) {
             print("\n")
             print("TEST DATA: ")
             print("\n")
             print("=================================")
             print("\n")
-            print("Correct guesses: $test_corrects")
+            print("Correct guesses: $testCorrects")
             print("\n")
-            val rounded1 = Math.round(1.0 * test_errors * 100 / testData.size * 10) / 10.0
-            print("Incorrect guesses: $test_errors ($rounded1%)")
+            val rounded1 = (1.0 * testErrors * 100 / testData.size * 10).roundToInt() / 10.0
+            print("Incorrect guesses: $testErrors ($rounded1%)")
         }
         print("\n")
         print("\n")
@@ -1785,27 +1775,27 @@ class cid3 : Serializable {
         print("\n")
     }
 
-    fun testCrossValidation() {
-        var test_errors: Int
+    private fun testCrossValidation() {
+        var testErrors: Int
         val meanErrors: Double
         var percentageErrors = 0.0
         val errorsFoldK = DoubleArray(10)
         for (i in 0..9) {
-            test_errors = 0
+            testErrors = 0
             val currentTree = rootsCrossValidation[i]
             val currentTest = crossValidationChunks[i]
             for (point in currentTest) {
-                if (!testExampleCV(point, currentTree)) test_errors++
+                if (!testExampleCV(point, currentTree)) testErrors++
             }
-            percentageErrors += 1.0 * test_errors / currentTest.size * 100
-            val rounded1 = Math.round(1.0 * test_errors / currentTest.size * 100 * 10) / 10.0
+            percentageErrors += 1.0 * testErrors / currentTest.size * 100
+            val rounded1 = (1.0 * testErrors / currentTest.size * 100 * 10).roundToInt() / 10.0
             print("\n")
             print("Fold #" + (i + 1) + " Errors: " + rounded1 + "%")
             //Save k errors for SE
-            errorsFoldK[i] = 1.0 * test_errors / currentTest.size * 100
+            errorsFoldK[i] = 1.0 * testErrors / currentTest.size * 100
         }
         meanErrors = percentageErrors / 10
-        val rounded1 = Math.round(meanErrors * 10) / 10.0
+        val rounded1 = (meanErrors * 10).roundToInt() / 10.0
         print("\n")
         print("\n")
         print("Mean errors: $rounded1%")
@@ -1818,19 +1808,19 @@ class cid3 : Serializable {
         meanFolds = 1.0 * meanFolds / 10
 
         //Calculate SE (Standard Errors)
-        var sum_meanSE = 0.0
+        var sumMeanSE = 0.0
         for (i in 0..9) {
-            sum_meanSE += (1.0 * errorsFoldK[i] - meanFolds) * (1.0 * errorsFoldK[i] - meanFolds)
+            sumMeanSE += (1.0 * errorsFoldK[i] - meanFolds) * (1.0 * errorsFoldK[i] - meanFolds)
         }
-        sum_meanSE = Math.sqrt(sum_meanSE / 10)
-        val SE = sum_meanSE / Math.sqrt(10.0)
-        val roundedSE = Math.round(SE * 10) / 10.0
+        sumMeanSE = sqrt(sumMeanSE / 10)
+        val SE = sumMeanSE / sqrt(10.0)
+        val roundedSE = (SE * 10).roundToInt() / 10.0
         print("\n")
         print("SE: $roundedSE%")
         print("\n")
     }
 
-    fun testCrossValidationRF() {
+    private fun testCrossValidationRF() {
         var sum = 0.0
         val errorsFoldK = DoubleArray(10)
         var current: Double
@@ -1844,67 +1834,67 @@ class cid3 : Serializable {
             errorsFoldK[i] = current
         }
         val meanErrors = sum / 10
-        val rounded1 = Math.round(meanErrors * 10) / 10.0
+        val rounded1 = (meanErrors * 10).roundToInt() / 10.0
         print("\n")
         print("\n")
         print("Mean errors: $rounded1%")
         print("\n")
 
         //Calculate SE (Standard Errors)
-        var sum_meanSE = 0.0
+        var sumMeanSE = 0.0
         for (i in 0..9) {
-            sum_meanSE += (1.0 * errorsFoldK[i] - meanErrors) * (1.0 * errorsFoldK[i] - meanErrors)
+            sumMeanSE += (1.0 * errorsFoldK[i] - meanErrors) * (1.0 * errorsFoldK[i] - meanErrors)
         }
-        sum_meanSE = Math.sqrt(sum_meanSE / 10)
-        val SE = sum_meanSE / Math.sqrt(10.0)
-        val roundedSE = Math.round(SE * 10) / 10.0
+        sumMeanSE = sqrt(sumMeanSE / 10)
+        val SE = sumMeanSE / sqrt(10.0)
+        val roundedSE = (SE * 10).roundToInt() / 10.0
         print("SE: $roundedSE%")
         print("\n")
     }
 
     //This overload method is intended to be used when Random Forest cross-validation is selected.
-    fun testRandomForest(testD: ArrayList<DataPoint?>, roots: ArrayList<TreeNode>, index: Int): Double {
-        var test_errors = 0
-        val test_size = testD.size
+    private fun testRandomForest(testD: ArrayList<DataPoint?>, roots: ArrayList<TreeNode>, index: Int): Double {
+        var testErrors = 0
+        val testSize = testD.size
         for (point in testD) {
-            if (!testExampleRF(point, roots)) test_errors++
+            if (!testExampleRF(point, roots)) testErrors++
         }
         print("\n")
-        val rounded1 = Math.round(1.0 * test_errors * 100 / test_size * 10) / 10.0
+        val rounded1 = (1.0 * testErrors * 100 / testSize * 10).roundToInt() / 10.0
         print("Fold #$index Errors: $rounded1%")
         return rounded1
     }
 
-    fun testRandomForest() {
-        var test_errors = 0
-        var test_corrects = 0
+    private fun testRandomForest() {
+        var testErrors = 0
+        var testCorrects = 0
         for (point in testData) {
-            if (testExampleRF(point, rootsRandomForest)) test_corrects++ else test_errors++
+            if (testExampleRF(point, rootsRandomForest)) testCorrects++ else testErrors++
         }
-        var train_errors = 0
-        var train_corrects = 0
+        var trainErrors = 0
+        var trainCorrects = 0
         for (point in trainData!!) {
-            if (testExampleRF(point, rootsRandomForest)) train_corrects++ else train_errors++
+            if (testExampleRF(point, rootsRandomForest)) trainCorrects++ else trainErrors++
         }
         print("TRAIN DATA: ")
         print("\n")
         print("=================================")
         print("\n")
-        print("Correct guesses: $train_corrects")
+        print("Correct guesses: $trainCorrects")
         print("\n")
-        val rounded = Math.round(1.0 * train_errors * 100 / trainData!!.size * 10) / 10.0
-        print("Incorrect guesses: $train_errors ($rounded%)")
+        val rounded = (1.0 * trainErrors * 100 / trainData!!.size * 10).roundToInt() / 10.0
+        print("Incorrect guesses: $trainErrors ($rounded%)")
         print("\n")
-        if (!testData.isEmpty()) {
+        if (testData.isNotEmpty()) {
             print("\n")
             print("TEST DATA: ")
             print("\n")
             print("=================================")
             print("\n")
-            print("Correct guesses: $test_corrects")
+            print("Correct guesses: $testCorrects")
             print("\n")
-            val rounded1 = Math.round(1.0 * test_errors * 100 / testData.size * 10) / 10.0
-            print("Incorrect guesses: $test_errors ($rounded1%)")
+            val rounded1 = (1.0 * testErrors * 100 / testData.size * 10).roundToInt() / 10.0
+            print("Incorrect guesses: $testErrors ($rounded1%)")
         }
     }
 
@@ -1980,7 +1970,7 @@ class cid3 : Serializable {
                                 print("\n")
                                 print("Error: wrong input value")
                                 print("\n")
-                                System.exit(1)
+                                exitProcess(1)
                             }
                         }
                     } else if (currentNode.children!![i].decompositionValue == attributeValue) {
@@ -2015,15 +2005,13 @@ class cid3 : Serializable {
         }
         val inputTreeFile = File(treeFileLocal)
         val id3: cid3?
-        var fileOut: FileWriter? = null
+        val fileOut: FileWriter?
         try {
             fileOut = FileWriter(fileOutStr, false)
-        } catch (e: Exception) {
-            System.err.println("""
-    Error creating temporal file.
-    
-    """.trimIndent())
-            System.exit(1)
+        }
+        catch (e: Exception) {
+            System.err.println("Error creating temporal file.")
+            exitProcess(1)
         }
         val fileBuf = BufferedWriter(fileOut)
         val printOut = PrintWriter(fileBuf)
@@ -2032,29 +2020,25 @@ class cid3 : Serializable {
             print("\n")
             print("Tree file deserialized.")
             print("\n")
-            var inCases: FileInputStream? = null
+            val inCases: FileInputStream?
             try {
                 if (!casesFileLocal.endsWith(".cases")) casesFileLocal += ".cases"
                 val inputFile = File(casesFileLocal)
                 inCases = FileInputStream(inputFile)
-            } catch (e: Exception) {
-                System.err.println("""
-    Unable to open cases file.
-    
-    """.trimIndent())
-                System.exit(1)
+            }
+            catch (e: Exception) {
+                System.err.println("Unable to open cases file.")
+                exitProcess(1)
             }
             val bin = BufferedReader(InputStreamReader(inCases))
-            var input: String? = null
+            var input: String?
             var tokenizer: StringTokenizer
             try {
                 input = bin.readLine()
-            } catch (e: Exception) {
-                System.err.println("""
-    Unable to read line: 
-    
-    """.trimIndent())
-                System.exit(1)
+            }
+            catch (e: Exception) {
+                System.err.println("Unable to read line:")
+                exitProcess(1)
             }
             while (input != null) {
                 if (input.trim { it <= ' ' } == "") continue
@@ -2063,7 +2047,7 @@ class cid3 : Serializable {
                 val numTokens = tokenizer.countTokens()
                 if (numTokens != id3!!.numAttributes - 1) {
                     System.err.println("Expecting " + (id3.numAttributes - 1) + " attributes")
-                    System.exit(1)
+                    exitProcess(1)
                 }
                 val point = DataPoint(id3.numAttributes)
                 var next: String
@@ -2071,15 +2055,14 @@ class cid3 : Serializable {
                     next = tokenizer.nextToken().trim { it <= ' ' }
                     if (id3.attributeTypes[i] == AttributeType.Continuous) {
                         if (next == "?" || next == "NaN") {
-                            var value: Double
-                            value = id3.meanValues[i]
+                            val value: Double = id3.meanValues[i]
                             point.attributes[i] = id3.getSymbolValue(i, value)
                         } else {
                             try {
                                 point.attributes[i] = id3.getSymbolValue(i, next.toDouble())
                             } catch (e: Exception) {
                                 System.err.println("Error reading continuous value in train data.")
-                                System.exit(1)
+                                exitProcess(1)
                             }
                         }
                     } else if (id3.attributeTypes[i] == AttributeType.Discrete) {
@@ -2112,12 +2095,10 @@ class cid3 : Serializable {
                 //continue the loop
                 try {
                     input = bin.readLine()
-                } catch (e: Exception) {
-                    System.err.println("""
-    Unable to read line. 
-    
-    """.trimIndent())
-                    System.exit(1)
+                }
+                catch (e: Exception) {
+                    System.err.println("Unable to read line.")
+                    exitProcess(1)
                 }
             }
             printOut.close()
@@ -2137,15 +2118,12 @@ class cid3 : Serializable {
         }
         val inputForestFile = File(rfFileLocal)
         val id3: cid3?
-        var fileOut: FileWriter? = null
+        val fileOut: FileWriter?
         try {
             fileOut = FileWriter(fileOutStr, false)
         } catch (e: Exception) {
-            System.err.println("""
-    Error creating temporal file.
-    
-    """.trimIndent())
-            System.exit(1)
+            System.err.println("Error creating temporal file.")
+            exitProcess(1)
         }
         val fileBuf = BufferedWriter(fileOut)
         val printOut = PrintWriter(fileBuf)
@@ -2154,29 +2132,24 @@ class cid3 : Serializable {
             print("\n")
             print("Forest file deserialized.")
             print("\n")
-            var inCases: FileInputStream? = null
+            val inCases: FileInputStream?
             try {
                 if (!casesFileLocal.endsWith(".cases")) casesFileLocal += ".cases"
                 val inputFile = File(casesFileLocal)
                 inCases = FileInputStream(inputFile)
             } catch (e: Exception) {
-                System.err.println("""
-    Unable to open cases file.
-    
-    """.trimIndent())
-                System.exit(1)
+                System.err.println("Unable to open cases file.")
+                exitProcess(1)
             }
             val bin = BufferedReader(InputStreamReader(inCases))
-            var input: String? = null
+            var input: String?
             var tokenizer: StringTokenizer
             try {
                 input = bin.readLine()
-            } catch (e: Exception) {
-                System.err.println("""
-    Unable to read line: 
-    
-    """.trimIndent())
-                System.exit(1)
+            }
+            catch (e: Exception) {
+                System.err.println("Unable to read line:")
+                exitProcess(1)
             }
             while (input != null) {
                 if (input.trim { it <= ' ' } == "") continue
@@ -2185,7 +2158,7 @@ class cid3 : Serializable {
                 val numTokens = tokenizer.countTokens()
                 if (numTokens != id3!!.numAttributes - 1) {
                     System.err.println("Expecting " + (id3.numAttributes - 1) + " attributes")
-                    System.exit(1)
+                    exitProcess(1)
                 }
                 val point = DataPoint(id3.numAttributes)
                 var next: String
@@ -2193,15 +2166,14 @@ class cid3 : Serializable {
                     next = tokenizer.nextToken().trim { it <= ' ' }
                     if (id3.attributeTypes[i] == AttributeType.Continuous) {
                         if (next == "?" || next == "NaN") {
-                            var value: Double
-                            value = id3.meanValues[i]
+                            val value: Double = id3.meanValues[i]
                             point.attributes[i] = id3.getSymbolValue(i, value)
                         } else {
                             try {
                                 point.attributes[i] = id3.getSymbolValue(i, next.toDouble())
                             } catch (e: Exception) {
                                 System.err.println("Error reading continuous value in train data.")
-                                System.exit(1)
+                                exitProcess(1)
                             }
                         }
                     } else if (id3.attributeTypes[i] == AttributeType.Discrete) {
@@ -2246,11 +2218,8 @@ class cid3 : Serializable {
                 try {
                     input = bin.readLine()
                 } catch (e: Exception) {
-                    System.err.println("""
-    Unable to read line. 
-    
-    """.trimIndent())
-                    System.exit(1)
+                    System.err.println("Unable to read line.")
+                    exitProcess(1)
                 }
             }
             printOut.close()
@@ -2312,8 +2281,7 @@ class cid3 : Serializable {
                     while (true) {
                         val s = `in`.nextLine()
                         try {
-                            var value: Double
-                            value = if (s == "?") id3.meanValues[i] else s.toDouble()
+                            val value: Double = if (s == "?") id3.meanValues[i] else s.toDouble()
                             example.attributes[i] = id3.getSymbolValue(i, value)
                             break
                         } catch (e: Exception) {
@@ -2355,7 +2323,7 @@ class cid3 : Serializable {
     companion object {
         fun formatDuration(duration: Duration): String {
             val seconds = duration.seconds
-            val absSeconds = Math.abs(seconds)
+            val absSeconds = abs(seconds)
             val positive = String.format(
                     "%d:%02d:%02d",
                     absSeconds / 3600,
@@ -2411,27 +2379,26 @@ class cid3 : Serializable {
                     if (arg.contains(" -h ") || arg.contains(" --help ")) {
                         //Print help message
                         formatter.printHelp("java -jar cid3.jar", options)
-                        System.exit(1)
+                        exitProcess(1)
                     }
                 }
                 cmd = parser.parse(options, args)
             } catch (e: ParseException) {
                 println(e.message)
                 formatter.printHelp("java -jar cid3.jar", options)
-                System.exit(1)
+                exitProcess(1)
             }
 
             //Set criteria
             //me.criteria = Criteria.Certainty;
             if (cmd!!.hasOption("criteria")) {
-                val strCriteria = cmd.getOptionValue("criteria")
-                when (strCriteria) {
+                when (cmd.getOptionValue("criteria")) {
                     "C", "c" -> me.criteria = Criteria.Certainty
                     "G", "g" -> me.criteria = Criteria.Gini
                     "E", "e" -> me.criteria = Criteria.Entropy
                     else -> {
                         formatter.printHelp("java -jar cid3.jar", options)
-                        System.exit(1)
+                        exitProcess(1)
                     }
                 }
             }
@@ -2454,7 +2421,7 @@ class cid3 : Serializable {
                 } catch (e: Exception) {
                     print("Error: Incorrect number of trees")
                     print("\n")
-                    System.exit(1)
+                    exitProcess(1)
                 }
                 me.isRandomForest = true
             } else me.isRandomForest = false
@@ -2462,7 +2429,7 @@ class cid3 : Serializable {
             //Print help message
             if (cmd.hasOption("help")) {
                 formatter.printHelp("java -jar cid3.jar", options)
-                System.exit(1)
+                exitProcess(1)
             }
 
             //Show application title
@@ -2494,11 +2461,12 @@ class cid3 : Serializable {
                         me.queryRandomForestOutput(originalInputFilePath, outputFilePath)
                     } else me.queryRandomForest(originalInputFilePath)
                 }
-            } else {
+            }
+            else {
                 //Check if test data exists
                 if (!inputFilePath.endsWith(".data")) inputFilePath += ".data"
                 var nameTestData = inputFilePath.substring(0, inputFilePath.length - 4)
-                nameTestData = nameTestData + "test"
+                nameTestData += "test"
                 val inputFile = File(nameTestData)
                 me.testDataExists = inputFile.exists()
 
@@ -2538,7 +2506,10 @@ class cid3 : Serializable {
                     me.setMeanValues()
                     me.setMostCommonValues()
                     me.imputeMissing()
-                    if (me.isCrossValidation && me.isRandomForest) me.createCrossValidationRF() else if (me.isCrossValidation) me.createCrossValidation() else if (me.isRandomForest) me.createRandomForest(me.root.data, me.rootsRandomForest, false) else me.createDecisionTree()
+                    if (me.isCrossValidation && me.isRandomForest) me.createCrossValidationRF()
+                    else if (me.isCrossValidation) me.createCrossValidation()
+                    else if (me.isRandomForest) me.createRandomForest(me.root.data, me.rootsRandomForest, false)
+                    else me.createDecisionTree()
                 }
             }
         }
