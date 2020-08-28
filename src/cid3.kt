@@ -8,6 +8,7 @@ import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 import kotlin.math.*
 import kotlin.system.exitProcess
+import org.apache.commons.cli.*
 
 class cid3 : Serializable {
     enum class AttributeType {
@@ -1780,8 +1781,8 @@ class cid3 : Serializable {
             sumMeanSE += (1.0 * errorsFoldK[i] - meanFolds) * (1.0 * errorsFoldK[i] - meanFolds)
         }
         sumMeanSE = sqrt(sumMeanSE / 10)
-        val SE = sumMeanSE / sqrt(10.0)
-        val roundedSE = (SE * 10).roundToInt() / 10.0
+        val se = sumMeanSE / sqrt(10.0)
+        val roundedSE = (se * 10).roundToInt() / 10.0
         print("\n")
         print("SE: $roundedSE%")
         print("\n")
@@ -1813,8 +1814,8 @@ class cid3 : Serializable {
             sumMeanSE += (1.0 * errorsFoldK[i] - meanErrors) * (1.0 * errorsFoldK[i] - meanErrors)
         }
         sumMeanSE = sqrt(sumMeanSE / 10)
-        val SE = sumMeanSE / sqrt(10.0)
-        val roundedSE = (SE * 10).roundToInt() / 10.0
+        val se = sumMeanSE / sqrt(10.0)
+        val roundedSE = (se * 10).roundToInt() / 10.0
         print("SE: $roundedSE%")
         print("\n")
     }
