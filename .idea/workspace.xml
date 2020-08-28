@@ -19,10 +19,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="more code sanitizing...commented two lines">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="more code sanitizing...changed if statement to a switch">
+      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cid3.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cid3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/cid3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cid3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cid3.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cid3.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +82,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/titanic -q t" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/arcene" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -498,50 +501,50 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="455" y="87" key="#Project_Structure/0.25.1920.984@0.25.1920.984" timestamp="1598524944992" />
-    <state x="536" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598513484190">
+    <state x="536" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598578888217">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="536" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1920.991@0.23.1920.991" timestamp="1593779542200" />
     <state x="714" y="372" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.2560.1353@0.23.2560.1353" timestamp="1591420795969" />
-    <state x="536" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1920.984@0.25.1920.984" timestamp="1598513484190" />
+    <state x="536" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1920.984@0.25.1920.984" timestamp="1598578888217" />
     <state x="947" y="592" key="#xdebugger.evaluate" timestamp="1590211618966">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="947" y="592" key="#xdebugger.evaluate/0.23.2560.1353@0.23.2560.1353" timestamp="1590211618966" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1598525047671">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1598566598691">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
     <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1591421682159" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1598525047671" />
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1598566598691" />
     <state width="448" height="466" key="DebuggerActiveHint" timestamp="1590462471949">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state width="448" height="466" key="DebuggerActiveHint/0.23.2560.1353@0.23.2560.1353" timestamp="1590462471949" />
-    <state width="1878" height="263" key="GridCell.Tab.0.bottom" timestamp="1598420835043">
+    <state width="1358" height="249" key="GridCell.Tab.0.bottom" timestamp="1598567152483">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.bottom/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
     <state width="1627" height="330" key="GridCell.Tab.0.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088199" />
-    <state width="1878" height="263" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1598420835043" />
-    <state width="1878" height="263" key="GridCell.Tab.0.center" timestamp="1598420835043">
+    <state width="1358" height="249" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1598567152483" />
+    <state width="1358" height="249" key="GridCell.Tab.0.center" timestamp="1598567152482">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.center/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
     <state width="1627" height="330" key="GridCell.Tab.0.center/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088189" />
-    <state width="1878" height="263" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1598420835043" />
-    <state width="1878" height="263" key="GridCell.Tab.0.left" timestamp="1598420835042">
+    <state width="1358" height="249" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1598567152482" />
+    <state width="1358" height="249" key="GridCell.Tab.0.left" timestamp="1598567152481">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.left/0.23.1920.991@0.23.1920.991" timestamp="1596361527518" />
     <state width="1627" height="330" key="GridCell.Tab.0.left/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088189" />
-    <state width="1878" height="263" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1598420835042" />
-    <state width="1878" height="263" key="GridCell.Tab.0.right" timestamp="1598420835043">
+    <state width="1358" height="249" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1598567152481" />
+    <state width="1358" height="249" key="GridCell.Tab.0.right" timestamp="1598567152482">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.right/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
     <state width="1627" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088199" />
-    <state width="1878" height="263" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1598420835043" />
+    <state width="1358" height="249" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1598567152482" />
     <state width="1627" height="406" key="GridCell.Tab.1.bottom" timestamp="1590463334764">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -558,6 +561,10 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state width="1627" height="406" key="GridCell.Tab.1.right/0.23.2560.1353@0.23.2560.1353" timestamp="1590463334764" />
+    <state x="1214" y="286" key="RollbackChangesDialog" timestamp="1598566559744">
+      <screen x="0" y="25" width="1920" height="984" />
+    </state>
+    <state x="1214" y="286" key="RollbackChangesDialog/0.25.1920.984@0.25.1920.984" timestamp="1598566559744" />
     <state x="563" y="107" key="SettingsEditor" timestamp="1598233380702">
       <screen x="0" y="25" width="1920" height="984" />
     </state>

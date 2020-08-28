@@ -1,37 +1,44 @@
-import java.time.Duration;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
+import java.io.*
+import java.time.Duration
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
+import java.util.zip.GZIPInputStream
+import java.util.zip.GZIPOutputStream
+import kotlin.system.exitProcess
 
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
+class cid3 : Serializable {
+    enum class AttributeType {
+        Discrete, Continuous, Ignore
+    }
+    // The number of attributes including the output attribute
+    private var numAttributes = 0
+    // The names of all attributes.  It is an array of dimension numAttributes.  The last attribute is the output attribute
+    private lateinit var attributeNames: Array<String?>
+    private lateinit var attributeTypes: Array<AttributeType?>
+    private var classAttribute = 0
+    private lateinit var meanValues: DoubleArray
+    private lateinit var mostCommonValues: IntArray
+    var fileName: String? = null
+    private var seed: Long = 13579
 
-import java.io.*;
-import java.util.*;
-
-public class cid3 implements Serializable{
-    enum AttributeType {Discrete, Continuous, Ignore}
-    int numAttributes;		// The number of attributes including the output attribute
-    String[] attributeNames;	// The names of all attributes.  It is an array of dimension numAttributes.  The last attribute is the output attribute
-    AttributeType[] attributeTypes;
-    private int classAttribute;
-    double[] meanValues;
-    int[] mostCommonValues;
-    String fileName;
-    long seed = 13579;
     //int maxThreads = 500;
     //transient ArrayList<Thread> globalThreads = new ArrayList<>();
-
     /* Possible values for each attribute is stored in a vector.  domains is an array of dimension numAttributes.
         Each element of this array is a vector that contains values for the corresponding attribute
         domains[0] is a vector containing the values of the 0-th attribute, etc..
         The last attribute is the output attribute
     */
-    ArrayList<HashMap<Integer,Object>> domainsIndexToValue;
-    ArrayList<HashMap<Object,Integer>> domainsValueToIndex;
-    enum Criteria {Entropy, Certainty, Gini}
-    /*  The class to represent a data point consisting of numAttributes values of attributes  */
-    static class DataPoint implements Serializable{
+    private var domainsIndexToValue: ArrayList<HashMap<Int, Any?>>? = null
+    private var domainsValueToIndex: ArrayList<HashMap<Any?, Int>>? = null
 
+    enum class Criteria {
+        Entropy, Certainty, Gini
+    }
+
+    /*  The class to represent a data point consisting of numAttributes values of attributes  */
+    class DataPoint(numAttributes: Int) : Serializable {
         /* The values of all attributes stored in this array.  i-th element in this array
            is the index to the element in the vector domains representing the symbolic value of
            the attribute.  For example, if attributes[2] is 1, then the actual value of the
@@ -40,812 +47,804 @@ public class cid3 implements Serializable{
            no string comparison.
            The last attribute is the output attribute
         */
-        public int []attributes;
+        var attributes: IntArray
 
-        public DataPoint(int numAttributes) {
-            attributes = new int[numAttributes];
+        init {
+            attributes = IntArray(numAttributes)
         }
     }
 
     //This class will be used to calculate all probabilities in one pass.
-    public class Probabilities implements Serializable{
-        int attribute;
-        double[] prob;
-        double[][] probC_And_A;
-        double[][] probC_Given_A;
+    inner class Probabilities(var attribute: Int) : Serializable {
+        var prob: DoubleArray
+        var probC_And_A: Array<DoubleArray>
+        var probC_Given_A: Array<DoubleArray>
 
-        public Probabilities(int att){
-            attribute = att;
-            prob = new double[domainsIndexToValue.get(attribute).size()];
-            probC_And_A = new double[domainsIndexToValue.get(attribute).size()][domainsIndexToValue.get(classAttribute).size()];
-            probC_Given_A = new double[domainsIndexToValue.get(attribute).size()][domainsIndexToValue.get(classAttribute).size()];
+        init {
+            prob = DoubleArray(domainsIndexToValue!![attribute].size)
+            probC_And_A = Array(domainsIndexToValue!![attribute].size) { DoubleArray(domainsIndexToValue!![classAttribute].size) }
+            probC_Given_A = Array(domainsIndexToValue!![attribute].size) { DoubleArray(domainsIndexToValue!![classAttribute].size) }
         }
     }
+
     //This is an utility class to return the information and threshold of continuous attributes.
-    public static class Certainty implements Serializable{
-        Double certainty;
-        Double threshold;
+    class Certainty(var certainty: Double, var threshold: Double) : Serializable
 
-        public Certainty(double info, double thresh){
-            certainty = info;
-            threshold = thresh;
-        }
-    }
+    @Transient
+    var testData = ArrayList<DataPoint?>()
 
-    transient ArrayList<DataPoint> testData = new ArrayList<>();
-    transient ArrayList<DataPoint> trainData = new ArrayList<>();
-    transient ArrayList<ArrayList<DataPoint>> crossValidationChunks = new ArrayList<>();
-    transient boolean testDataExists = false;
-    transient boolean splitTrainData = false;
-    transient boolean isRandomForest = false;
-    transient boolean isCrossValidation = false;
-    transient int numberOfTrees = 1;
+    @Transient
+    var trainData: ArrayList<DataPoint?>? = ArrayList()
+
+    @Transient
+    var crossValidationChunks = ArrayList<ArrayList<DataPoint?>>()
+
+    @Transient
+    var testDataExists = false
+
+    @Transient
+    var splitTrainData = false
+
+    @Transient
+    var isRandomForest = false
+
+    @Transient
+    var isCrossValidation = false
+
+    @Transient
+    var numberOfTrees = 1
+
     /* The class to represent a node in the decomposition tree.
      */
-    static class TreeNode implements Serializable{
-        public double certaintyUsedToDecompose = 0;
-        public transient ArrayList<DataPoint> data;			// The set of data points if this is a leaf node
-        public int[] frequencyClasses;          //This is for saving time when calculating most common class
-        public int decompositionAttribute;	// If this is not a leaf node, the attribute that is used to divide the set of data points
-        public int decompositionValue;		// the attribute-value that is used to divide the parent node
-        public String decompositionValueContinuous = "";
-        public String decompositionValueContinuousSymbol = "";
-        public double thresholdContinuous = 0;
-        public ArrayList<TreeNode> children;		// If this is not a leaf node, references to the children nodes
-        public TreeNode parent;			// The parent to this node.  The root has parent == null
+    class TreeNode : Serializable {
+        var certaintyUsedToDecompose = 0.0
+        // The set of data points if this is a leaf node
+        @Transient
+        var data: ArrayList<DataPoint?>? = ArrayList()
+        //This is for saving time when calculating most common class
+        lateinit var frequencyClasses: IntArray
+        // If this is not a leaf node, the attribute that is used to divide the set of data points
+        var decompositionAttribute = 0
+        // the attribute-value that is used to divide the parent node
+        var decompositionValue = 0
+        var decompositionValueContinuous = ""
+        var decompositionValueContinuousSymbol = ""
+        var thresholdContinuous = 0.0
+        // If this is not a leaf node, references to the children nodes
+        var children: ArrayList<TreeNode>? = null
+        // The parent to this node.  The root has parent == null
+        var parent: TreeNode? = null
 
-        public TreeNode() {
-            data = new ArrayList<>();
-        }
     }
 
     /*  The root of the decomposition tree  */
-    TreeNode root = new TreeNode();
-    ArrayList<TreeNode> rootsRandomForest = new ArrayList<>();
-    transient ArrayList<ArrayList<TreeNode>> cvRandomForests = new ArrayList<>();
-    transient ArrayList<TreeNode> rootsCrossValidation = new ArrayList<>();
-    transient Criteria criteria = Criteria.Certainty;
-    transient int totalRules = 0;
-    transient int totalNodes = 0;
+    var root = TreeNode()
+    var rootsRandomForest = ArrayList<TreeNode>()
+
+    @Transient
+    var cvRandomForests = ArrayList<ArrayList<TreeNode>>()
+
+    @Transient
+    var rootsCrossValidation = ArrayList<TreeNode>()
+
+    @Transient
+    var criteria = Criteria.Certainty
+
+    @Transient
+    var totalRules = 0
+
+    @Transient
+    var totalNodes = 0
+
     /*  This function returns an integer corresponding to the symbolic value of the attribute.
         If the symbol does not exist in the domain, the symbol is added to the domain of the attribute
     */
-    public int getSymbolValue(int attribute, Object symbol) {
-        Integer index = domainsValueToIndex.get(attribute).get(symbol);
-        if (index == null) {
-            if (domainsIndexToValue.get(attribute).isEmpty()){
-                domainsIndexToValue.get(attribute).put(0, symbol);
-                domainsValueToIndex.get(attribute).put(symbol, 0);
-                return 0;
-            }
-            else {
-                int size = domainsIndexToValue.get(attribute).size();
-                domainsIndexToValue.get(attribute).put(size, symbol);
-                domainsValueToIndex.get(attribute).put(symbol, size);
-                return size;
-            }
-        }
-        return index;
+    fun getSymbolValue(attribute: Int, symbol: Any?): Int {
+        return domainsValueToIndex!![attribute][symbol]
+                ?: return if (domainsIndexToValue!![attribute].isEmpty()) {
+                    domainsIndexToValue!![attribute][0] = symbol
+                    domainsValueToIndex!![attribute][symbol] = 0
+                    0
+                } else {
+                    val size = domainsIndexToValue!![attribute].size
+                    domainsIndexToValue!![attribute][size] = symbol
+                    domainsValueToIndex!![attribute][symbol] = size
+                    size
+                }
     }
 
     // Returns the most common class for the specified node
-    public int mostCommonFinal(TreeNode n){
-        int numValuesClass = domainsIndexToValue.get(classAttribute).size();
-        int value = n.frequencyClasses[0];
-        int result = 0;
+    fun mostCommonFinal(n: TreeNode?): Int {
+        val numValuesClass = domainsIndexToValue!![classAttribute].size
+        var value = n!!.frequencyClasses[0]
+        var result = 0
         //if(n.frequencyClasses.length < numValuesClass){
         //    String error = "Error";
         //}
-        for(int i = 1; i < numValuesClass; i++){
-            if (n.frequencyClasses[i] > value){
-                value = n.frequencyClasses[i];
-                result = i;
+        for (i in 1 until numValuesClass) {
+            if (n.frequencyClasses[i] > value) {
+                value = n.frequencyClasses[i]
+                result = i
             }
         }
-        return result;
+        return result
     }
+
     /*  Returns a subset of data, in which the value of the specified attribute of all data points is the specified value  */
-    public DataFrequencies getSubset(ArrayList<DataPoint> data, int attribute, int value) {
-        ArrayList<DataPoint> subset = new ArrayList<>();
-        int[] frequencies = new int[domainsIndexToValue.get(classAttribute).size()];
-        for (DataPoint point : data) {
-            if (point.attributes[attribute] == value) {
-                subset.add(point);
-                frequencies[point.attributes[classAttribute]]++;
+    fun getSubset(data: ArrayList<DataPoint?>?, attribute: Int, value: Int): DataFrequencies {
+        val subset = ArrayList<DataPoint?>()
+        val frequencies = IntArray(domainsIndexToValue!![classAttribute].size)
+        for (point in data!!) {
+            if (point!!.attributes[attribute] == value) {
+                subset.add(point)
+                frequencies[point.attributes[classAttribute]]++
             }
         }
-        return new DataFrequencies(subset, frequencies);
+        return DataFrequencies(subset, frequencies)
     }
 
-    public int[] getFrequencies(ArrayList<DataPoint> data){
-        int[] frequencies = new int[domainsIndexToValue.get(classAttribute).size()];
-        for (DataPoint point : data) {
-            frequencies[point.attributes[classAttribute]]++;
+    fun getFrequencies(data: ArrayList<DataPoint?>?): IntArray {
+        val frequencies = IntArray(domainsIndexToValue!![classAttribute].size)
+        for (point in data!!) {
+            frequencies[point!!.attributes[classAttribute]]++
         }
-        return frequencies;
+        return frequencies
     }
 
-    public Tuple<DataFrequencies,DataFrequencies> getSubsetsBelowAndAbove(ArrayList<DataPoint> data, int attribute, double value){
-        ArrayList<DataPoint> subsetBelow = new ArrayList<>();
-        ArrayList<DataPoint> subsetAbove = new ArrayList<>();
-        int[] frequenciesBelow = new int[domainsIndexToValue.get(classAttribute).size()];
-        int[] frequenciesAbove = new int[domainsIndexToValue.get(classAttribute).size()];
-        for (DataPoint point : data) {
-            if ((double) domainsIndexToValue.get(attribute).get(point.attributes[attribute]) <= value) {
-                subsetBelow.add(point);
-                frequenciesBelow[point.attributes[classAttribute]]++;
+    fun getSubsetsBelowAndAbove(data: ArrayList<DataPoint?>?, attribute: Int, value: Double): Tuple<DataFrequencies, DataFrequencies> {
+        val subsetBelow = ArrayList<DataPoint?>()
+        val subsetAbove = ArrayList<DataPoint?>()
+        val frequenciesBelow = IntArray(domainsIndexToValue!![classAttribute].size)
+        val frequenciesAbove = IntArray(domainsIndexToValue!![classAttribute].size)
+        for (point in data!!) {
+            if (domainsIndexToValue!![attribute][point!!.attributes[attribute]] as Double <= value) {
+                subsetBelow.add(point)
+                frequenciesBelow[point.attributes[classAttribute]]++
             } else {
-                subsetAbove.add(point);
-                frequenciesAbove[point.attributes[classAttribute]]++;
+                subsetAbove.add(point)
+                frequenciesAbove[point.attributes[classAttribute]]++
             }
         }
-        return new Tuple<> (new DataFrequencies(subsetBelow, frequenciesBelow), new DataFrequencies(subsetAbove, frequenciesAbove));
+        return Tuple(DataFrequencies(subsetBelow, frequenciesBelow), DataFrequencies(subsetAbove, frequenciesAbove))
     }
 
     //This is the final form of the certainty function.
-    public Certainty calculateCertainty(ArrayList<DataPoint> data, int givenThatAttribute){
-
-        int numData = data.size();
-        if (numData == 0) return new Certainty(0, 0);
-        int numValuesClass = domainsIndexToValue.get(classAttribute).size();
-        int numValuesGivenAtt = domainsIndexToValue.get(givenThatAttribute).size();
+    fun calculateCertainty(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
+        val numData = data!!.size
+        if (numData == 0) return Certainty(0.0, 0.0)
+        val numValuesClass = domainsIndexToValue!![classAttribute].size
+        val numValuesGivenAtt = domainsIndexToValue!![givenThatAttribute].size
 
         //If attribute is discrete
-        if (attributeTypes[givenThatAttribute] == AttributeType.Discrete){
-            Probabilities[] probabilities = CalculateAllProbabilities(data);
-
-            double sum, sum2 = 0;
-            double probability, probabilityC_And_A;
-            for (int j = 0; j < numValuesGivenAtt; j++) {
-                probability = probabilities[givenThatAttribute].prob[j];
-                sum = 0;
-                for (int i = 0; i < numValuesClass; i++){
-                    probabilityC_And_A = probabilities[givenThatAttribute].probC_And_A[j][i];
-                    sum += Math.abs(probabilityC_And_A - 1.*probability/numValuesClass);
+        return if (attributeTypes[givenThatAttribute] == AttributeType.Discrete) {
+            val probabilities = CalculateAllProbabilities(data)
+            var sum: Double
+            var sum2 = 0.0
+            var probability: Double
+            var probabilityC_And_A: Double
+            for (j in 0 until numValuesGivenAtt) {
+                probability = probabilities[givenThatAttribute]!!.prob[j]
+                sum = 0.0
+                for (i in 0 until numValuesClass) {
+                    probabilityC_And_A = probabilities[givenThatAttribute]!!.probC_And_A[j][i]
+                    sum += Math.abs(probabilityC_And_A - 1.0 * probability / numValuesClass)
                 }
-
-                sum2 += sum;
+                sum2 += sum
             }
-            return new Certainty(sum2, 0);
-        }
-        //If attribute is continuous.
-        else{
-            double finalThreshold = 0, totalCertainty, finalTotalCertainty = 0;
+            Certainty(sum2, 0.0)
+        } else {
+            var finalThreshold = 0.0
+            var totalCertainty: Double
+            var finalTotalCertainty = 0.0
             /*---------------------------------------------------------------------------------------------------------*/
             //Implementation of thresholds using a sorted set
-            SortedSet<Double> attributeValuesSet = new TreeSet<>();
-            HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap<>();
-            for (DataPoint point : data) {
-                double attribute = (double) domainsIndexToValue.get(givenThatAttribute).get(point.attributes[givenThatAttribute]);
-                int theClass = point.attributes[classAttribute];
-                attributeValuesSet.add(attribute);
-                Tuple<Integer, Boolean> tuple = attributeToClass.get(attribute);
+            val attributeValuesSet: SortedSet<Double> = TreeSet()
+            val attributeToClass = HashMap<Double, Tuple<Int, Boolean>>()
+            for (point in data) {
+                val attribute = domainsIndexToValue!![givenThatAttribute][point!!.attributes[givenThatAttribute]] as Double
+                val theClass = point.attributes[classAttribute]
+                attributeValuesSet.add(attribute)
+                val tuple = attributeToClass[attribute]
                 if (tuple != null) {
-                    if (tuple.x != theClass && tuple.y)
-                        attributeToClass.put(attribute, new Tuple<>(theClass, false));
-                } else attributeToClass.put(attribute, new Tuple<>(theClass, true));
+                    if (tuple.x != theClass && tuple.y) attributeToClass[attribute] = Tuple(theClass, false)
+                } else attributeToClass[attribute] = Tuple(theClass, true)
             }
-
-            Iterator<Double> it = attributeValuesSet.iterator();
-            double attributeValue = it.next();
-            Tuple<Integer,Boolean> attributeClass1 = attributeToClass.get(attributeValue);
-            int theClass = attributeClass1.x;
-
-            ArrayList<Threshold> thresholds = new ArrayList<>();
+            val it: Iterator<Double> = attributeValuesSet.iterator()
+            var attributeValue = it.next()
+            var attributeClass1 = attributeToClass[attributeValue]!!
+            var theClass = attributeClass1.x
+            val thresholds = ArrayList<Threshold>()
             while (it.hasNext()) {
-                double attributeValue2 = it.next();
-                Tuple<Integer,Boolean> attributeClass2 = attributeToClass.get(attributeValue2);
-                int theClass2 = attributeClass2.x;
-                if(theClass2 != theClass || !attributeClass2.y || !attributeClass1.y){
+                val attributeValue2 = it.next()
+                val attributeClass2 = attributeToClass[attributeValue2]!!
+                val theClass2 = attributeClass2.x
+                if (theClass2 != theClass || !attributeClass2.y || !attributeClass1.y) {
                     //Add threshold
-                    double median = (attributeValue+attributeValue2)/2;
-                    thresholds.add(new Threshold(median, new SumBelowAndAbove[numValuesClass]));
+                    val median = (attributeValue + attributeValue2) / 2
+                    thresholds.add(Threshold(median, arrayOfNulls(numValuesClass)))
                 }
                 //Set new point
-                attributeValue = attributeValue2;
-                theClass = theClass2;
-                attributeClass1 = attributeClass2;
+                attributeValue = attributeValue2
+                theClass = theClass2
+                attributeClass1 = attributeClass2
             }
 
             /*---------------------------------------------------------------------------------------------------------*/
             //If there are no thresholds return zero.
-            if (thresholds.isEmpty()) return new Certainty(0, 0);
+            if (thresholds.isEmpty()) return Certainty(0.0, 0.0)
 
             //This trick reduces the possible thresholds to just ONE 0r TWO, dramatically improving running times!
             //=========================================================
-
-            int centerThresholdIndex = thresholds.size()/2;
-            Threshold centerThreshold, centerThreshold1;
-
-            if (thresholds.size() == 1){
-                centerThreshold = thresholds.get(0);
-                thresholds.clear();
-                thresholds.add(centerThreshold);
-            }
-            else
-            if (thresholds.size() % 2 != 0){
-                centerThreshold = thresholds.get(centerThresholdIndex);
-                thresholds.clear();
-                thresholds.add(centerThreshold);
-            }
-            else {
-                centerThreshold = thresholds.get(centerThresholdIndex);
-                centerThreshold1 = thresholds.get(centerThresholdIndex - 1);
-                thresholds.clear();
-                thresholds.add(centerThreshold);
-                thresholds.add(centerThreshold1);
+            val centerThresholdIndex = thresholds.size / 2
+            val centerThreshold: Threshold
+            val centerThreshold1: Threshold
+            if (thresholds.size == 1) {
+                centerThreshold = thresholds[0]
+                thresholds.clear()
+                thresholds.add(centerThreshold)
+            } else if (thresholds.size % 2 != 0) {
+                centerThreshold = thresholds[centerThresholdIndex]
+                thresholds.clear()
+                thresholds.add(centerThreshold)
+            } else {
+                centerThreshold = thresholds[centerThresholdIndex]
+                centerThreshold1 = thresholds[centerThresholdIndex - 1]
+                thresholds.clear()
+                thresholds.add(centerThreshold)
+                thresholds.add(centerThreshold1)
             }
             //=========================================================
-
-
-            double probABelow, probAAbove, probC_And_A_Below, probC_And_A_Above, certaintyBelow, certaintyAbove;
-            DataPoint point;
+            var probABelow: Double
+            var probAAbove: Double
+            var probC_And_A_Below: Double
+            var probC_And_A_Above: Double
+            var certaintyBelow: Double
+            var certaintyAbove: Double
+            var point: DataPoint?
             //Loop through the data just one time
-            for (DataPoint datum : data) {
-                point = datum;
+            for (datum in data) {
+                point = datum
                 //For each threshold count data to get prob and probC_And_A
-                int the_Class = point.attributes[classAttribute];
-                for (Threshold iThreshold : thresholds) {
-                    if (iThreshold.sumsClassesAndAttribute[the_Class] == null)
-                        iThreshold.sumsClassesAndAttribute[the_Class] = new SumBelowAndAbove(0, 0);
-                    if ((double) domainsIndexToValue.get(givenThatAttribute).get(point.attributes[givenThatAttribute]) <= iThreshold.value) {
-                        iThreshold.sumABelow++;
+                val the_Class = point!!.attributes[classAttribute]
+                for (iThreshold in thresholds) {
+                    if (iThreshold.sumsClassesAndAttribute[the_Class] == null) iThreshold.sumsClassesAndAttribute[the_Class] = SumBelowAndAbove(0, 0)
+                    if (domainsIndexToValue!![givenThatAttribute][point.attributes[givenThatAttribute]] as Double <= iThreshold.value) {
+                        iThreshold.sumABelow++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[the_Class].below++;
+                        iThreshold.sumsClassesAndAttribute[the_Class].below++
                     } else {
-                        iThreshold.sumAAbove++;
+                        iThreshold.sumAAbove++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[the_Class].above++;
+                        iThreshold.sumsClassesAndAttribute[the_Class].above++
                     }
                 }
             }
 
             //Now calculate probabilities
-            for (Threshold threshold : thresholds) {
+            for (threshold in thresholds) {
                 //Calculate prob
-                probABelow = 1. * threshold.sumABelow / numData;
-                probAAbove = 1. * threshold.sumAAbove / numData;
+                probABelow = 1.0 * threshold.sumABelow / numData
+                probAAbove = 1.0 * threshold.sumAAbove / numData
 
                 //Reset the certainty
-                certaintyBelow = 0;
-                certaintyAbove = 0;
-
-                for (int c = 0; c < numValuesClass; c++) {
+                certaintyBelow = 0.0
+                certaintyAbove = 0.0
+                for (c in 0 until numValuesClass) {
                     if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probC_And_A_Below = 1. * threshold.sumsClassesAndAttribute[c].below / numData;
-                        probC_And_A_Above = 1. * threshold.sumsClassesAndAttribute[c].above / numData;
+                        probC_And_A_Below = 1.0 * threshold.sumsClassesAndAttribute[c].below / numData
+                        probC_And_A_Above = 1.0 * threshold.sumsClassesAndAttribute[c].above / numData
                     } else {
-                        probC_And_A_Below = 0;
-                        probC_And_A_Above = 0;
+                        probC_And_A_Below = 0.0
+                        probC_And_A_Above = 0.0
                     }
-
-                    certaintyBelow += Math.abs(probC_And_A_Below - probABelow / numValuesClass);
-                    certaintyAbove += Math.abs(probC_And_A_Above - probAAbove / numValuesClass);
+                    certaintyBelow += Math.abs(probC_And_A_Below - probABelow / numValuesClass)
+                    certaintyAbove += Math.abs(probC_And_A_Above - probAAbove / numValuesClass)
                 }
                 //Calculate totals
-                totalCertainty = certaintyBelow + certaintyAbove;
+                totalCertainty = certaintyBelow + certaintyAbove
                 if (finalTotalCertainty < totalCertainty) {
-                    finalTotalCertainty = totalCertainty;
-                    finalThreshold = threshold.value;
+                    finalTotalCertainty = totalCertainty
+                    finalThreshold = threshold.value
                 }
             }
-            return new Certainty(finalTotalCertainty, finalThreshold);
+            Certainty(finalTotalCertainty, finalThreshold)
             //*******************************************************************************************//
         }
     }
 
     //This is Entropy.
-    public Certainty calculateEntropy(ArrayList<DataPoint> data, int givenThatAttribute){
-        int numData = data.size();
-        if (numData == 0) return new Certainty(0, 0);
-        int numValuesClass = domainsIndexToValue.get(classAttribute).size();
-        int numValuesGivenAtt = domainsIndexToValue.get(givenThatAttribute).size();
+    fun calculateEntropy(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
+        val numData = data!!.size
+        if (numData == 0) return Certainty(0.0, 0.0)
+        val numValuesClass = domainsIndexToValue!![classAttribute].size
+        val numValuesGivenAtt = domainsIndexToValue!![givenThatAttribute].size
         //If attribute is discrete
-        if (attributeTypes[givenThatAttribute] == AttributeType.Discrete){
-            Probabilities[] probabilities = CalculateAllProbabilities(data);
-            double sum, sum2 = 0;
-            double probability, probabilityC_Given_A;
-            for (int j = 0; j < numValuesGivenAtt; j++) {
-                probability = probabilities[givenThatAttribute].prob[j];
-                sum = 0;
-                for (int i = 0; i < numValuesClass; i++){
-                    probabilityC_Given_A = probabilities[givenThatAttribute].probC_Given_A[j][i];
-                    if (probabilityC_Given_A != 0)
-                        sum += -probabilityC_Given_A * Math.log(probabilityC_Given_A);
+        return if (attributeTypes[givenThatAttribute] == AttributeType.Discrete) {
+            val probabilities = CalculateAllProbabilities(data)
+            var sum: Double
+            var sum2 = 0.0
+            var probability: Double
+            var probabilityC_Given_A: Double
+            for (j in 0 until numValuesGivenAtt) {
+                probability = probabilities[givenThatAttribute]!!.prob[j]
+                sum = 0.0
+                for (i in 0 until numValuesClass) {
+                    probabilityC_Given_A = probabilities[givenThatAttribute]!!.probC_Given_A[j][i]
+                    if (probabilityC_Given_A != 0.0) sum += -probabilityC_Given_A * Math.log(probabilityC_Given_A)
                 }
-                sum2 += probability * sum;
+                sum2 += probability * sum
             }
-            return new Certainty(sum2, 0);
-        }
-        //If attribute is continuous.
-        else{
-            double finalThreshold = 0, totalEntropy, finalTotalEntropy = 0;
+            Certainty(sum2, 0.0)
+        } else {
+            var finalThreshold = 0.0
+            var totalEntropy: Double
+            var finalTotalEntropy = 0.0
             /*---------------------------------------------------------------------------------------------------------*/
             //Implementation of thresholds using a sorted set
-            SortedSet<Double> attributeValuesSet = new TreeSet<>();
-            HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap<>();
-            for (DataPoint point : data) {
-                double attribute = (double) domainsIndexToValue.get(givenThatAttribute).get(point.attributes[givenThatAttribute]);
-                int theClass = point.attributes[classAttribute];
-                attributeValuesSet.add(attribute);
-                Tuple<Integer, Boolean> tuple = attributeToClass.get(attribute);
+            val attributeValuesSet: SortedSet<Double> = TreeSet()
+            val attributeToClass = HashMap<Double, Tuple<Int, Boolean>>()
+            for (point in data) {
+                val attribute = domainsIndexToValue!![givenThatAttribute][point!!.attributes[givenThatAttribute]] as Double
+                val theClass = point.attributes[classAttribute]
+                attributeValuesSet.add(attribute)
+                val tuple = attributeToClass[attribute]
                 if (tuple != null) {
-                    if (tuple.x != theClass && tuple.y)
-                        attributeToClass.put(attribute, new Tuple<>(theClass, false));
-//                            else
+                    if (tuple.x != theClass && tuple.y) attributeToClass[attribute] = Tuple(theClass, false)
+                    //                            else
 //                                if (tuple.y)
 //                                    attributeToClass.put(attribute, new Tuple(theClass,true));
-                } else attributeToClass.put(attribute, new Tuple<>(theClass, true));
+                } else attributeToClass[attribute] = Tuple(theClass, true)
             }
-            Iterator<Double> it = attributeValuesSet.iterator();
-            double attributeValue = it.next();
-            Tuple<Integer,Boolean> attributeClass1 = attributeToClass.get(attributeValue);
-            int theClass = attributeClass1.x;
-            ArrayList<Threshold> thresholds = new ArrayList<>();
+            val it: Iterator<Double> = attributeValuesSet.iterator()
+            var attributeValue = it.next()
+            var attributeClass1 = attributeToClass[attributeValue]!!
+            var theClass = attributeClass1.x
+            val thresholds = ArrayList<Threshold>()
             while (it.hasNext()) {
-                double attributeValue2 = it.next();
-                Tuple<Integer,Boolean> attributeClass2 = attributeToClass.get(attributeValue2);
-                int theClass2 = attributeClass2.x;
-                if(theClass2 != theClass || !attributeClass2.y || !attributeClass1.y){
+                val attributeValue2 = it.next()
+                val attributeClass2 = attributeToClass[attributeValue2]!!
+                val theClass2 = attributeClass2.x
+                if (theClass2 != theClass || !attributeClass2.y || !attributeClass1.y) {
                     //Add threshold
-                    double median = (attributeValue+attributeValue2)/2;
-                    thresholds.add(new Threshold(median, new SumBelowAndAbove[numValuesClass]));
+                    val median = (attributeValue + attributeValue2) / 2
+                    thresholds.add(Threshold(median, arrayOfNulls(numValuesClass)))
                 }
                 //Set new point
-                attributeValue = attributeValue2;
-                theClass = theClass2;
-                attributeClass1 = attributeClass2;
+                attributeValue = attributeValue2
+                theClass = theClass2
+                attributeClass1 = attributeClass2
             }
             /*---------------------------------------------------------------------------------------------------------*/
             //If there are no thresholds return -1.
-            if (thresholds.isEmpty()) return new Certainty(-1, 0);
+            if (thresholds.isEmpty()) return Certainty(-1.0, 0.0)
             //This trick reduces the possible thresholds to just ONE 0r TWO, dramatically improving running times!
             //=========================================================
-
-            int centerThresholdIndex = thresholds.size()/2;
-            Threshold centerThreshold, centerThreshold1;
-
-            if (thresholds.size() == 1){
-                centerThreshold = thresholds.get(0);
-                thresholds.clear();
-                thresholds.add(centerThreshold);
-            }
-            else
-            if (thresholds.size() % 2 != 0){
-                centerThreshold = thresholds.get(centerThresholdIndex);
-                thresholds.clear();
-                thresholds.add(centerThreshold);
-            }
-            else {
-                centerThreshold = thresholds.get(centerThresholdIndex);
-                centerThreshold1 = thresholds.get(centerThresholdIndex - 1);
-                thresholds.clear();
-                thresholds.add(centerThreshold);
-                thresholds.add(centerThreshold1);
+            val centerThresholdIndex = thresholds.size / 2
+            val centerThreshold: Threshold
+            val centerThreshold1: Threshold
+            if (thresholds.size == 1) {
+                centerThreshold = thresholds[0]
+                thresholds.clear()
+                thresholds.add(centerThreshold)
+            } else if (thresholds.size % 2 != 0) {
+                centerThreshold = thresholds[centerThresholdIndex]
+                thresholds.clear()
+                thresholds.add(centerThreshold)
+            } else {
+                centerThreshold = thresholds[centerThresholdIndex]
+                centerThreshold1 = thresholds[centerThresholdIndex - 1]
+                thresholds.clear()
+                thresholds.add(centerThreshold)
+                thresholds.add(centerThreshold1)
             }
             //=========================================================
-            double probABelow, probAAbove, probC_And_A_Below, probC_And_A_Above, entropyBelow, entropyAbove;
-            boolean selected = false;
+            var probABelow: Double
+            var probAAbove: Double
+            var probC_And_A_Below: Double
+            var probC_And_A_Above: Double
+            var entropyBelow: Double
+            var entropyAbove: Double
+            var selected = false
 
             //Loop through the data just one time
-            for (DataPoint point : data) {
+            for (point in data) {
                 //For each threshold count data to get prob and probC_And_A
-                int pointClass = point.attributes[classAttribute];
-                for (Threshold iThreshold : thresholds) {
-                    if (iThreshold.sumsClassesAndAttribute[pointClass] == null)
-                        iThreshold.sumsClassesAndAttribute[pointClass] = new SumBelowAndAbove(0, 0);
-                    if ((double) domainsIndexToValue.get(givenThatAttribute).get(point.attributes[givenThatAttribute]) < iThreshold.value) {
-                        iThreshold.sumABelow++;
+                val pointClass = point!!.attributes[classAttribute]
+                for (iThreshold in thresholds) {
+                    if (iThreshold.sumsClassesAndAttribute[pointClass] == null) iThreshold.sumsClassesAndAttribute[pointClass] = SumBelowAndAbove(0, 0)
+                    if ((domainsIndexToValue!![givenThatAttribute][point.attributes[givenThatAttribute]] as Double)<iThreshold.value) {
+                        iThreshold.sumABelow++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[pointClass].below++;
+                        iThreshold.sumsClassesAndAttribute[pointClass].below++
                     } else {
-                        iThreshold.sumAAbove++;
+                        iThreshold.sumAAbove++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[pointClass].above++;
+                        iThreshold.sumsClassesAndAttribute[pointClass].above++
                     }
                 }
             }
             //Now calculate probabilities
-            for (Threshold threshold : thresholds) {
+            for (threshold in thresholds) {
                 //Calculate prob
-                probABelow = 1. * threshold.sumABelow / numData;
-                probAAbove = 1. * threshold.sumAAbove / numData;
+                probABelow = 1.0 * threshold.sumABelow / numData
+                probAAbove = 1.0 * threshold.sumAAbove / numData
                 //Reset the entropy
-                entropyBelow = 0;
-                entropyAbove = 0;
-                for (int c = 0; c < numValuesClass; c++) {
+                entropyBelow = 0.0
+                entropyAbove = 0.0
+                for (c in 0 until numValuesClass) {
                     if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probC_And_A_Below = 1. * threshold.sumsClassesAndAttribute[c].below / numData;
-                        probC_And_A_Above = 1. * threshold.sumsClassesAndAttribute[c].above / numData;
+                        probC_And_A_Below = 1.0 * threshold.sumsClassesAndAttribute[c].below / numData
+                        probC_And_A_Above = 1.0 * threshold.sumsClassesAndAttribute[c].above / numData
                     } else {
-                        probC_And_A_Below = 0;
-                        probC_And_A_Above = 0;
+                        probC_And_A_Below = 0.0
+                        probC_And_A_Above = 0.0
                     }
-                    if (probC_And_A_Below != 0 && probABelow != 0)
-                        entropyBelow += -probC_And_A_Below / probABelow * Math.log(probC_And_A_Below / probABelow);
-                    if (probC_And_A_Above != 0 && probAAbove != 0)
-                        entropyAbove += -probC_And_A_Above / probAAbove * Math.log(probC_And_A_Above / probAAbove);
+                    if (probC_And_A_Below != 0.0 && probABelow != 0.0) entropyBelow += -probC_And_A_Below / probABelow * Math.log(probC_And_A_Below / probABelow)
+                    if (probC_And_A_Above != 0.0 && probAAbove != 0.0) entropyAbove += -probC_And_A_Above / probAAbove * Math.log(probC_And_A_Above / probAAbove)
                 }
                 //Calculate totals
-                totalEntropy = entropyBelow * probABelow + entropyAbove * probAAbove;
+                totalEntropy = entropyBelow * probABelow + entropyAbove * probAAbove
                 if (!selected) {
-                    selected = true;
-                    finalTotalEntropy = totalEntropy;
-                    finalThreshold = threshold.value;
+                    selected = true
+                    finalTotalEntropy = totalEntropy
+                    finalThreshold = threshold.value
                 } else {
                     if (finalTotalEntropy > totalEntropy) {
-                        finalTotalEntropy = totalEntropy;
-                        finalThreshold = threshold.value;
+                        finalTotalEntropy = totalEntropy
+                        finalThreshold = threshold.value
                     }
                 }
-//                        if (finalTotalEntropy > totalEntropy){
+                //                        if (finalTotalEntropy > totalEntropy){
 //                                finalTotalEntropy = totalEntropy;
 //                                finalThreshold = thresholds.get(i).value;
 //                            }
             }
-            return new Certainty(finalTotalEntropy, finalThreshold);
+            Certainty(finalTotalEntropy, finalThreshold)
             //*******************************************************************************************//
         }
     }
 
     //This is Gini.
-    public Certainty calculateGini(ArrayList<DataPoint> data, int givenThatAttribute){
-        int numData = data.size();
-        if (numData == 0) return new Certainty(0, 0);
-        int numValuesClass = domainsIndexToValue.get(classAttribute).size();
-        int numValuesGivenAtt = domainsIndexToValue.get(givenThatAttribute).size();
+    fun calculateGini(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
+        val numData = data!!.size
+        if (numData == 0) return Certainty(0.0, 0.0)
+        val numValuesClass = domainsIndexToValue!![classAttribute].size
+        val numValuesGivenAtt = domainsIndexToValue!![givenThatAttribute].size
         //If attribute is discrete
-        if (attributeTypes[givenThatAttribute] == AttributeType.Discrete){
-            Probabilities[] probabilities = CalculateAllProbabilities(data);
-            double sum, sum2 = 0;
-            double probability, probabilityC_Given_A, gini;
-            for (int j = 0; j < numValuesGivenAtt; j++) {
-                probability = probabilities[givenThatAttribute].prob[j];
-                sum = 0;
-                for (int i = 0; i < numValuesClass; i++){
-                    probabilityC_Given_A = probabilities[givenThatAttribute].probC_Given_A[j][i];
-                    sum += Math.pow(probabilityC_Given_A,2);
+        return if (attributeTypes[givenThatAttribute] == AttributeType.Discrete) {
+            val probabilities = CalculateAllProbabilities(data)
+            var sum: Double
+            var sum2 = 0.0
+            var probability: Double
+            var probabilityC_Given_A: Double
+            var gini: Double
+            for (j in 0 until numValuesGivenAtt) {
+                probability = probabilities[givenThatAttribute]!!.prob[j]
+                sum = 0.0
+                for (i in 0 until numValuesClass) {
+                    probabilityC_Given_A = probabilities[givenThatAttribute]!!.probC_Given_A[j][i]
+                    sum += Math.pow(probabilityC_Given_A, 2.0)
                 }
-                gini = 1 - sum;
-                sum2 += probability * gini;
+                gini = 1 - sum
+                sum2 += probability * gini
             }
-            return new Certainty(sum2, 0);
-        }
-        //If attribute is continuous.
-        else{
-            double finalThreshold = 0, totalGini, finalTotalGini = 0;
+            Certainty(sum2, 0.0)
+        } else {
+            var finalThreshold = 0.0
+            var totalGini: Double
+            var finalTotalGini = 0.0
             /*---------------------------------------------------------------------------------------------------------*/
             //Implementation of thresholds using a sorted set
-            SortedSet<Double> attributeValuesSet = new TreeSet<>();
-            HashMap<Double,Tuple<Integer,Boolean>> attributeToClass =  new HashMap<>();
-            for (DataPoint point : data) {
-                double attribute = (double) domainsIndexToValue.get(givenThatAttribute).get(point.attributes[givenThatAttribute]);
-                int theClass = point.attributes[classAttribute];
-                attributeValuesSet.add(attribute);
-                Tuple<Integer, Boolean> tuple = attributeToClass.get(attribute);
+            val attributeValuesSet: SortedSet<Double> = TreeSet()
+            val attributeToClass = HashMap<Double, Tuple<Int, Boolean>>()
+            for (point in data) {
+                val attribute = domainsIndexToValue!![givenThatAttribute][point!!.attributes[givenThatAttribute]] as Double
+                val theClass = point.attributes[classAttribute]
+                attributeValuesSet.add(attribute)
+                val tuple = attributeToClass[attribute]
                 if (tuple != null) {
-                    if (tuple.x != theClass && tuple.y)
-                        attributeToClass.put(attribute, new Tuple<>(theClass, false));
-//                            else
+                    if (tuple.x != theClass && tuple.y) attributeToClass[attribute] = Tuple(theClass, false)
+                    //                            else
 //                                if (tuple.y)
 //                                    attributeToClass.put(attribute, new Tuple(theClass,true));
-                } else attributeToClass.put(attribute, new Tuple<>(theClass, true));
+                } else attributeToClass[attribute] = Tuple(theClass, true)
             }
-            Iterator<Double> it = attributeValuesSet.iterator();
-            double attributeValue = it.next();
-            Tuple<Integer,Boolean> attributeClass1 = attributeToClass.get(attributeValue);
-            int theClass = attributeClass1.x;
-            ArrayList<Threshold> thresholds = new ArrayList<>();
+            val it: Iterator<Double> = attributeValuesSet.iterator()
+            var attributeValue = it.next()
+            var attributeClass1 = attributeToClass[attributeValue]!!
+            var theClass = attributeClass1.x
+            val thresholds = ArrayList<Threshold>()
             while (it.hasNext()) {
-                double attributeValue2 = it.next();
-                Tuple<Integer,Boolean> attributeClass2 = attributeToClass.get(attributeValue2);
-                int theClass2 = attributeClass2.x;
-                if(theClass2 != theClass || !attributeClass2.y || !attributeClass1.y){
+                val attributeValue2 = it.next()
+                val attributeClass2 = attributeToClass[attributeValue2]!!
+                val theClass2 = attributeClass2.x
+                if (theClass2 != theClass || !attributeClass2.y || !attributeClass1.y) {
                     //Add threshold
-                    double median = (attributeValue+attributeValue2)/2;
-                    thresholds.add(new Threshold(median, new SumBelowAndAbove[numValuesClass]));
+                    val median = (attributeValue + attributeValue2) / 2
+                    thresholds.add(Threshold(median, arrayOfNulls(numValuesClass)))
                 }
                 //Set new point
-                attributeValue = attributeValue2;
-                theClass = theClass2;
-                attributeClass1 = attributeClass2;
+                attributeValue = attributeValue2
+                theClass = theClass2
+                attributeClass1 = attributeClass2
             }
             /*---------------------------------------------------------------------------------------------------------*/
             //If there are no thresholds return -1.
-            if (thresholds.isEmpty()) return new Certainty(-1, 0);
+            if (thresholds.isEmpty()) return Certainty(-1.0, 0.0)
             //This trick reduces the possible thresholds to just ONE 0r TWO, dramatically improving running times!
             //=========================================================
-
-            int centerThresholdIndex = thresholds.size()/2;
-            Threshold centerThreshold, centerThreshold1;
-
-            if (thresholds.size() == 1){
-                centerThreshold = thresholds.get(0);
-                thresholds.clear();
-                thresholds.add(centerThreshold);
-            }
-            else
-            if (thresholds.size() % 2 != 0){
-                centerThreshold = thresholds.get(centerThresholdIndex);
-                thresholds.clear();
-                thresholds.add(centerThreshold);
-            }
-            else {
-                centerThreshold = thresholds.get(centerThresholdIndex);
-                centerThreshold1 = thresholds.get(centerThresholdIndex - 1);
-                thresholds.clear();
-                thresholds.add(centerThreshold);
-                thresholds.add(centerThreshold1);
+            val centerThresholdIndex = thresholds.size / 2
+            val centerThreshold: Threshold
+            val centerThreshold1: Threshold
+            if (thresholds.size == 1) {
+                centerThreshold = thresholds[0]
+                thresholds.clear()
+                thresholds.add(centerThreshold)
+            } else if (thresholds.size % 2 != 0) {
+                centerThreshold = thresholds[centerThresholdIndex]
+                thresholds.clear()
+                thresholds.add(centerThreshold)
+            } else {
+                centerThreshold = thresholds[centerThresholdIndex]
+                centerThreshold1 = thresholds[centerThresholdIndex - 1]
+                thresholds.clear()
+                thresholds.add(centerThreshold)
+                thresholds.add(centerThreshold1)
             }
             //=========================================================
-            double probABelow, probAAbove, probC_And_A_Below, probC_And_A_Above, giniBelow, giniAbove;
-            boolean selected = false;
+            var probABelow: Double
+            var probAAbove: Double
+            var probC_And_A_Below: Double
+            var probC_And_A_Above: Double
+            var giniBelow: Double
+            var giniAbove: Double
+            var selected = false
 
             //Loop through the data just one time
-            for (DataPoint point : data) {
+            for (point in data) {
                 //For each threshold count data to get prob and probC_And_A
-                int pointClass = point.attributes[classAttribute];
-                for (Threshold iThreshold : thresholds) {
-                    if (iThreshold.sumsClassesAndAttribute[pointClass] == null)
-                        iThreshold.sumsClassesAndAttribute[pointClass] = new SumBelowAndAbove(0, 0);
-                    if ((double) domainsIndexToValue.get(givenThatAttribute).get(point.attributes[givenThatAttribute]) < iThreshold.value) {
-                        iThreshold.sumABelow++;
+                val pointClass = point!!.attributes[classAttribute]
+                for (iThreshold in thresholds) {
+                    if (iThreshold.sumsClassesAndAttribute[pointClass] == null) iThreshold.sumsClassesAndAttribute[pointClass] = SumBelowAndAbove(0, 0)
+                    if ((domainsIndexToValue!![givenThatAttribute][point.attributes[givenThatAttribute]] as Double)<iThreshold.value) {
+                        iThreshold.sumABelow++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[pointClass].below++;
+                        iThreshold.sumsClassesAndAttribute[pointClass].below++
                     } else {
-                        iThreshold.sumAAbove++;
+                        iThreshold.sumAAbove++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[pointClass].above++;
+                        iThreshold.sumsClassesAndAttribute[pointClass].above++
                     }
                 }
             }
             //Now calculate probabilities
-            for (Threshold threshold : thresholds) {
+            for (threshold in thresholds) {
                 //Calculate prob
-                probABelow = 1. * threshold.sumABelow / numData;
-                probAAbove = 1. * threshold.sumAAbove / numData;
+                probABelow = 1.0 * threshold.sumABelow / numData
+                probAAbove = 1.0 * threshold.sumAAbove / numData
                 //Reset the gini
-                giniBelow = 0;
-                giniAbove = 0;
-                for (int c = 0; c < numValuesClass; c++) {
+                giniBelow = 0.0
+                giniAbove = 0.0
+                for (c in 0 until numValuesClass) {
                     if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probC_And_A_Below = 1. * threshold.sumsClassesAndAttribute[c].below / numData;
-                        probC_And_A_Above = 1. * threshold.sumsClassesAndAttribute[c].above / numData;
+                        probC_And_A_Below = 1.0 * threshold.sumsClassesAndAttribute[c].below / numData
+                        probC_And_A_Above = 1.0 * threshold.sumsClassesAndAttribute[c].above / numData
                     } else {
-                        probC_And_A_Below = 0;
-                        probC_And_A_Above = 0;
+                        probC_And_A_Below = 0.0
+                        probC_And_A_Above = 0.0
                     }
-                    giniBelow += Math.pow(probC_And_A_Below / probABelow, 2);
-                    giniAbove += Math.pow(probC_And_A_Above / probAAbove, 2);
+                    giniBelow += Math.pow(probC_And_A_Below / probABelow, 2.0)
+                    giniAbove += Math.pow(probC_And_A_Above / probAAbove, 2.0)
                 }
                 //Calculate totals
-                giniBelow = 1 - giniBelow;
-                giniAbove = 1 - giniAbove;
-                totalGini = giniBelow * probABelow + giniAbove * probAAbove;
+                giniBelow = 1 - giniBelow
+                giniAbove = 1 - giniAbove
+                totalGini = giniBelow * probABelow + giniAbove * probAAbove
                 if (!selected) {
-                    selected = true;
-                    finalTotalGini = totalGini;
-                    finalThreshold = threshold.value;
+                    selected = true
+                    finalTotalGini = totalGini
+                    finalThreshold = threshold.value
                 } else {
                     if (finalTotalGini > totalGini) {
-                        finalTotalGini = totalGini;
-                        finalThreshold = threshold.value;
+                        finalTotalGini = totalGini
+                        finalThreshold = threshold.value
                     }
                 }
-//                        if (finalTotalGini > totalGini){
+                //                        if (finalTotalGini > totalGini){
 //                                finalTotalGini= totalGini;
 //                                finalThreshold = thresholds.get(i).value;
 //                            }
             }
-            return new Certainty(finalTotalGini, finalThreshold);
+            Certainty(finalTotalGini, finalThreshold)
             //*******************************************************************************************//
         }
     }
 
     //This method calculates all probabilities in one run
-    public Probabilities[] CalculateAllProbabilities(ArrayList<DataPoint> data){
-        int numData = data.size();
-        Probabilities[] probabilities = new Probabilities[numAttributes - 1];
+    fun CalculateAllProbabilities(data: ArrayList<DataPoint?>?): Array<Probabilities?> {
+        val numData = data!!.size
+        val probabilities = arrayOfNulls<Probabilities>(numAttributes - 1)
 
         //Initialize the array
-        for (int j = 0; j < numAttributes - 1; j++){
-            if(attributeTypes[j] == AttributeType.Ignore) continue;
-            Probabilities p = new Probabilities(j);
-            probabilities[j] = p;
+        for (j in 0 until numAttributes - 1) {
+            if (attributeTypes[j] == AttributeType.Ignore) continue
+            val p = Probabilities(j)
+            probabilities[j] = p
         }
         //Count occurrences
-        for (DataPoint point : data) {
-            for (int j = 0; j < point.attributes.length - 1; j++) {
-                if (attributeTypes[j] == AttributeType.Ignore) continue;
-                probabilities[j].prob[point.attributes[j]] = probabilities[j].prob[point.attributes[j]] + 1;
-                probabilities[j].probC_And_A[point.attributes[j]][point.attributes[classAttribute]] = probabilities[j].probC_And_A[point.attributes[j]][point.attributes[classAttribute]] + 1;
+        for (point in data) {
+            for (j in 0 until point!!.attributes.size - 1) {
+                if (attributeTypes[j] == AttributeType.Ignore) continue
+                probabilities[j]!!.prob[point.attributes[j]] = probabilities[j]!!.prob[point.attributes[j]] + 1
+                probabilities[j]!!.probC_And_A[point.attributes[j]][point.attributes[classAttribute]] = probabilities[j]!!.probC_And_A[point.attributes[j]][point.attributes[classAttribute]] + 1
             }
         }
         // Divide all values by total data size to get probabilities.
-        Probabilities current;
-        for (int i = 0; i < probabilities.length; i++){
-            if (attributeTypes[i] == AttributeType.Ignore) continue;
-            current = probabilities[i];
-            for (int j = 0; j < current.prob.length; j++){
-                current.prob[j] = current.prob[j]/numData;
+        var current: Probabilities?
+        for (i in probabilities.indices) {
+            if (attributeTypes[i] == AttributeType.Ignore) continue
+            current = probabilities[i]
+            for (j in current!!.prob.indices) {
+                current.prob[j] = current.prob[j] / numData
             }
-            for (int j = 0; j < current.probC_And_A.length; j++){
-                for (int k = 0; k < current.probC_And_A[j].length; k++){
-                    current.probC_And_A[j][k] = current.probC_And_A[j][k]/numData;
+            for (j in current.probC_And_A.indices) {
+                for (k in current.probC_And_A[j].indices) {
+                    current.probC_And_A[j][k] = current.probC_And_A[j][k] / numData
                 }
             }
             //Calculate ProbC_Given_A
-            for (int j = 0; j < current.probC_Given_A.length; j++){
-                for (int k = 0; k < current.probC_Given_A[j].length; k++){
-                    current.probC_Given_A[j][k] = current.probC_And_A[j][k]/current.prob[j];
+            for (j in current.probC_Given_A.indices) {
+                for (k in current.probC_Given_A[j].indices) {
+                    current.probC_Given_A[j][k] = current.probC_And_A[j][k] / current.prob[j]
                 }
             }
         }
-        return probabilities;
+        return probabilities
     }
 
     /*  This function checks if the specified attribute is used to decompose the data set
         in any of the parents of the specified node in the decomposition tree.
         Recursively checks the specified node as well as all parents
     */
-    public boolean alreadyUsedToDecompose(TreeNode node, int attribute) {
-        if (node.children != null) {
-            if (node.decompositionAttribute == attribute )
-                return true;
+    fun alreadyUsedToDecompose(node: TreeNode?, attribute: Int): Boolean {
+        if (node!!.children != null) {
+            if (node.decompositionAttribute == attribute) return true
         }
-        if (node.parent == null) return false;
-        return alreadyUsedToDecompose(node.parent, attribute);
+        return if (node.parent == null) false else alreadyUsedToDecompose(node.parent, attribute)
     }
-    public boolean stopConditionAllClassesEqualEfficient(int[] frequencyClasses){
 
-        int numValuesClass = domainsIndexToValue.get(classAttribute).size();
-        boolean oneClassIsPresent = false;
-        for (int i = 0; i < numValuesClass; i++){
+    fun stopConditionAllClassesEqualEfficient(frequencyClasses: IntArray): Boolean {
+        val numValuesClass = domainsIndexToValue!![classAttribute].size
+        var oneClassIsPresent = false
+        for (i in 0 until numValuesClass) {
             if (frequencyClasses[i] != 0) {
-                if (!oneClassIsPresent) oneClassIsPresent = true;
-                else return false;
+                oneClassIsPresent = if (!oneClassIsPresent) true else return false
             }
         }
-        return true;
+        return true
     }
 
     /*  This function decomposes the specified node according to the id3 algorithm.
     Recursively divides all children nodes until it is not possible to divide any further  */
-    public void decomposeNode(TreeNode node,  ArrayList<Integer> selectedAttributes, long mySeed) {
-        Certainty bestCertainty = new Certainty(0, 0);
-        boolean selected=false;
-        int selectedAttribute=0;
-
-        if(criteria == Criteria.Certainty)
-        {
-            if (node.data == null || node.data.size() <= 1) return;
-            if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return;
-            Certainty certainty;
-            for (Integer selectedAtt : selectedAttributes) {
-                if (classAttribute == selectedAtt) continue;
-                if (attributeTypes[selectedAtt] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtt))
-                    continue;
-                certainty = calculateCertainty(node.data, selectedAtt);
-                if (certainty.certainty == 0) continue;
+    private fun decomposeNode(node: TreeNode, selectedAttributes: ArrayList<Int>, mySeed: Long) {
+        var selectedAttributesLocal = selectedAttributes
+        var bestCertainty = Certainty(0.0, 0.0)
+        var selected = false
+        var selectedAttribute = 0
+        if (criteria == Criteria.Certainty) {
+            if (node.data == null || node.data!!.size <= 1) return
+            if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return
+            var certainty: Certainty
+            for (selectedAtt in selectedAttributesLocal) {
+                if (classAttribute == selectedAtt) continue
+                if (attributeTypes[selectedAtt] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtt)) continue
+                certainty = calculateCertainty(node.data, selectedAtt)
+                if (certainty.certainty == 0.0) continue
                 //Select best attribute
                 if (certainty.certainty > bestCertainty.certainty) {
-                    selected = true;
-                    bestCertainty = certainty;
-                    selectedAttribute = selectedAtt;
+                    selected = true
+                    bestCertainty = certainty
+                    selectedAttribute = selectedAtt
                 }
             }
-            if (!selected || bestCertainty.certainty == 0) return;
-        }
-        else
-        if (criteria == Criteria.Entropy)
-        {
-            if (node.data == null || node.data.size() <= 1) return;
-            if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return;
-                    /*  In the following two loops, the best attribute is located which
+            if (!selected || bestCertainty.certainty == 0.0) return
+        } else if (criteria == Criteria.Entropy) {
+            if (node.data == null || node.data!!.size <= 1) return
+            if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return
+            /*  In the following two loops, the best attribute is located which
                         causes maximum increase in information*/
-            Certainty entropy;
-            for (Integer selectedAtt : selectedAttributes) {
-                if (classAttribute == selectedAtt) continue;
-                if (attributeTypes[selectedAtt] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtt))
-                    continue;
-                entropy = calculateEntropy(node.data, selectedAtt);
-                if (entropy.certainty == -1) continue;
+            var entropy: Certainty
+            for (selectedAtt in selectedAttributesLocal) {
+                if (classAttribute == selectedAtt) continue
+                if (attributeTypes[selectedAtt] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtt)) continue
+                entropy = calculateEntropy(node.data, selectedAtt)
+                if (entropy.certainty == -1.0) continue
                 if (!selected) {
-                    selected = true;
-                    bestCertainty = entropy;
-                    selectedAttribute = selectedAtt;
+                    selected = true
+                    bestCertainty = entropy
+                    selectedAttribute = selectedAtt
                 } else {
                     if (entropy.certainty < bestCertainty.certainty) {
                         //selected = true;
-                        bestCertainty = entropy;
-                        selectedAttribute = selectedAtt;
+                        bestCertainty = entropy
+                        selectedAttribute = selectedAtt
                     }
                 }
             }
-            if (!selected) return;
-        }
-        else
-        if(criteria == Criteria.Gini){
-            if (node.data == null || node.data.size() <= 1) return;
-            if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return;
-                        /*  In the following two loops, the best attribute is located which
+            if (!selected) return
+        } else if (criteria == Criteria.Gini) {
+            if (node.data == null || node.data!!.size <= 1) return
+            if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return
+            /*  In the following two loops, the best attribute is located which
                             causes maximum increase in information*/
-            Certainty gini;
-            for (Integer selectedAtt : selectedAttributes) {
-                if (classAttribute == selectedAtt) continue;
-                if (attributeTypes[selectedAtt] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtt))
-                    continue;
-                gini = calculateGini(node.data, selectedAtt);
-                if (gini.certainty == -1) continue;
+            var gini: Certainty
+            for (selectedAtt in selectedAttributesLocal) {
+                if (classAttribute == selectedAtt) continue
+                if (attributeTypes[selectedAtt] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtt)) continue
+                gini = calculateGini(node.data, selectedAtt)
+                if (gini.certainty == -1.0) continue
                 if (!selected) {
-                    selected = true;
-                    bestCertainty = gini;
-                    selectedAttribute = selectedAtt;
+                    selected = true
+                    bestCertainty = gini
+                    selectedAttribute = selectedAtt
                 } else {
                     if (gini.certainty < bestCertainty.certainty) {
                         //selected = true;
-                        bestCertainty = gini;
-                        selectedAttribute = selectedAtt;
+                        bestCertainty = gini
+                        selectedAttribute = selectedAtt
                     }
                 }
             }
-            if (!selected) return;
+            if (!selected) return
         }
-
-        node.certaintyUsedToDecompose = bestCertainty.certainty;
+        node.certaintyUsedToDecompose = bestCertainty.certainty
 
         //ArrayList<Thread> threads = new ArrayList<Thread>();
         //if attribute is discrete
-        if (attributeTypes[selectedAttribute] == AttributeType.Discrete){
+        if (attributeTypes[selectedAttribute] == AttributeType.Discrete) {
             // Now divide the dataset using the selected attribute
-            int numValues = domainsIndexToValue.get(selectedAttribute).size();
-            node.decompositionAttribute = selectedAttribute;
-            node.children = new ArrayList<>();
-            DataFrequencies df;
-            for (int j=0; j< numValues; j++) {
-                if (domainsIndexToValue.get(selectedAttribute).get(j) == null || domainsIndexToValue.get(selectedAttribute).get(j).equals("?"))
-                    continue;
-                TreeNode newNode  = new TreeNode();
-                newNode.parent = node;
+            val numValues = domainsIndexToValue!![selectedAttribute].size
+            node.decompositionAttribute = selectedAttribute
+            node.children = ArrayList()
+            var df: DataFrequencies
+            for (j in 0 until numValues) {
+                if (domainsIndexToValue!![selectedAttribute][j] == null || domainsIndexToValue!![selectedAttribute][j] == "?") continue
+                val newNode = TreeNode()
+                newNode.parent = node
                 //node.children[j].informationUsedToDecompose = bestInformation.information;
-                df = getSubset(node.data, selectedAttribute, j);
-                newNode.data = df.data;
-                newNode.frequencyClasses = df.frequencyClasses;
-                newNode.decompositionValue = j;
-                node.children.add(newNode);
-
+                df = getSubset(node.data, selectedAttribute, j)
+                newNode.data = df.data
+                newNode.frequencyClasses = df.frequencyClasses
+                newNode.decompositionValue = j
+                node.children!!.add(newNode)
             }
             // Recursively divides children nodes
-            if (isCrossValidation){ // If is Cross Validation, don't create more threads
-                for (int j = 0; j < node.children.size(); j++) {
-                    decomposeNode(node.children.get(j), selectedAttributes, 0);
+            if (isCrossValidation) { // If is Cross Validation, don't create more threads
+                for (j in node.children!!.indices) {
+                    decomposeNode(node.children!![j], selectedAttributesLocal, 0)
                 }
-            }
-            else
-            if(isRandomForest) { //if is Random Forest, don't create more threads
-                Random rand = new Random(mySeed);
-                int randomAttribute;
+            } else if (isRandomForest) { //if is Random Forest, don't create more threads
+                val rand = Random(mySeed)
+                var randomAttribute: Int
                 //randomAttribute = rand.nextInt(numAttributes - 1);
-                int numAtt = selectedAttributes.size();
-
-                for (int j = 0; j < node.children.size(); j++) {
-                    selectedAttributes = new ArrayList<>();
-                    while (selectedAttributes.size() < numAtt) {
-                        randomAttribute = rand.nextInt(numAttributes - 1);
-                        if (!selectedAttributes.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributes.add(randomAttribute);
+                val numAtt = selectedAttributesLocal.size
+                for (j in node.children!!.indices) {
+                    selectedAttributesLocal = ArrayList()
+                    while (selectedAttributesLocal.size < numAtt) {
+                        randomAttribute = rand.nextInt(numAttributes - 1)
+                        if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributesLocal.add(randomAttribute)
                     }
-                    decomposeNode(node.children.get(j), selectedAttributes, mySeed + 1 + j);
+                    decomposeNode(node.children!![j], selectedAttributesLocal, mySeed + 1 + j)
                 }
-            }
-            else{
-                for (int j = 0; j < node.children.size(); j++) {//For single trees now also don't create more threads
+            } else {
+                for (j in node.children!!.indices) { //For single trees now also don't create more threads
                     //final Integer j2 = j;
                     //final ArrayList<Integer> selectedAttributes2 =  selectedAttributes;
 
                     //if (globalThreads.size() < maxThreads) {
                     //    Thread thread = new Thread() {
                     //        public void run() {
-                    decomposeNode(node.children.get(j), selectedAttributes, mySeed + 1 + j);
+                    decomposeNode(node.children!![j], selectedAttributesLocal, mySeed + 1 + j)
                     //       }
                     //  };
 
@@ -865,69 +864,63 @@ public class cid3 implements Serializable{
                 //}
             }
         } else { //If attribute is continuous
-            node.decompositionAttribute = selectedAttribute;
-            node.children = new ArrayList<>();
-            DataFrequencies df;
+            node.decompositionAttribute = selectedAttribute
+            node.children = ArrayList()
+            var df: DataFrequencies
             //First less than threshold
-            TreeNode newNode;
-            newNode = new TreeNode();
-            newNode.parent = node;
-            Tuple<DataFrequencies,DataFrequencies> subsets = getSubsetsBelowAndAbove(node.data, selectedAttribute,bestCertainty.threshold);
-            df = subsets.x;
-            newNode.data = df.data;
-            newNode.frequencyClasses = df.frequencyClasses;
-            newNode.decompositionValueContinuous = " <= " + bestCertainty.threshold ;
-            newNode.decompositionValueContinuousSymbol = "<=";
-            newNode.thresholdContinuous = bestCertainty.threshold;
-            node.children.add(newNode);
+            var newNode: TreeNode
+            newNode = TreeNode()
+            newNode.parent = node
+            val subsets = getSubsetsBelowAndAbove(node.data, selectedAttribute, bestCertainty.threshold)
+            df = subsets.x
+            newNode.data = df.data
+            newNode.frequencyClasses = df.frequencyClasses
+            newNode.decompositionValueContinuous = " <= " + bestCertainty.threshold
+            newNode.decompositionValueContinuousSymbol = "<="
+            newNode.thresholdContinuous = bestCertainty.threshold
+            node.children!!.add(newNode)
 
             //Then over the threshold.
-            newNode  = new TreeNode();
-            newNode.parent = node;
-            df = subsets.y;
-            newNode.data = df.data;
-            newNode.frequencyClasses = df.frequencyClasses;
-            newNode.decompositionValueContinuous = " > " + bestCertainty.threshold ;
-            newNode.decompositionValueContinuousSymbol = ">";
-            newNode.thresholdContinuous = bestCertainty.threshold;
-            node.children.add(newNode);
+            newNode = TreeNode()
+            newNode.parent = node
+            df = subsets.y
+            newNode.data = df.data
+            newNode.frequencyClasses = df.frequencyClasses
+            newNode.decompositionValueContinuous = " > " + bestCertainty.threshold
+            newNode.decompositionValueContinuousSymbol = ">"
+            newNode.thresholdContinuous = bestCertainty.threshold
+            node.children!!.add(newNode)
 
             //Decompose children
-            if ((node.children.get(0)).data.isEmpty() || (node.children.get(1)).data.isEmpty())
-                return;
-
-            if (isCrossValidation){ //if is a Cross Validation, don't create more threads
-                decomposeNode(node.children.get(0), selectedAttributes, 0);
-                decomposeNode(node.children.get(1), selectedAttributes, 0);
-            }
-            else //if is a Random Forest, don't create more threads
-                if(isRandomForest) {
-                    Random rand = new Random(mySeed);
-                    int randomAttribute;
+            if (node.children!![0].data!!.isEmpty() || node.children!![1].data!!.isEmpty()) return
+            if (isCrossValidation) { //if is a Cross Validation, don't create more threads
+                decomposeNode(node.children!![0], selectedAttributesLocal, 0)
+                decomposeNode(node.children!![1], selectedAttributesLocal, 0)
+            } else  //if is a Random Forest, don't create more threads
+                if (isRandomForest) {
+                    val rand = Random(mySeed)
+                    var randomAttribute: Int
                     //randomAttribute = rand.nextInt(numAttributes - 1);
-                    int numAtt = selectedAttributes.size();
-
-                    selectedAttributes = new ArrayList<>();
-                    while (selectedAttributes.size() < numAtt) {
-                        randomAttribute = rand.nextInt(numAttributes - 1);
-                        if (!selectedAttributes.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributes.add(randomAttribute);
+                    val numAtt = selectedAttributesLocal.size
+                    selectedAttributesLocal = ArrayList()
+                    while (selectedAttributesLocal.size < numAtt) {
+                        randomAttribute = rand.nextInt(numAttributes - 1)
+                        if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributesLocal.add(randomAttribute)
                     }
-                    decomposeNode(node.children.get(0), selectedAttributes, mySeed + 1);
-
-                    selectedAttributes = new ArrayList<>();
-                    while (selectedAttributes.size() < numAtt) {
-                        randomAttribute = rand.nextInt(numAttributes - 1);
-                        if (!selectedAttributes.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributes.add(randomAttribute);
+                    decomposeNode(node.children!![0], selectedAttributesLocal, mySeed + 1)
+                    selectedAttributesLocal = ArrayList()
+                    while (selectedAttributesLocal.size < numAtt) {
+                        randomAttribute = rand.nextInt(numAttributes - 1)
+                        if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributesLocal.add(randomAttribute)
                     }
-                    decomposeNode(node.children.get(1), selectedAttributes, mySeed + 2);
-                }
-                else {//also now for single trees don't create more threads
+                    decomposeNode(node.children!![1], selectedAttributesLocal, mySeed + 2)
+                } else { //also now for single trees don't create more threads
                     //final ArrayList<Integer> selectedAttributes2 =  selectedAttributes;
 
                     //if (globalThreads.size() < maxThreads) {
                     //   Thread thread = new Thread() {
                     //       public void run() {
-                    decomposeNode(node.children.get(0), selectedAttributes, mySeed + 1);
+                    decomposeNode(node.children!![0], selectedAttributesLocal, mySeed + 1)
                     //       }
                     //   };
                     //   threads.add(thread);
@@ -936,7 +929,7 @@ public class cid3 implements Serializable{
 
                     //  thread = new Thread() {
                     //      public void run() {
-                    decomposeNode(node.children.get(1), selectedAttributes, mySeed + 2);
+                    decomposeNode(node.children!![1], selectedAttributesLocal, mySeed + 2)
                     //      }
                     //  };
                     //  threads.add(thread);
@@ -959,235 +952,208 @@ public class cid3 implements Serializable{
         }
     }
 
-    public void imputeMissing(){
-        for(int attribute = 0; attribute < numAttributes - 1; attribute++){
-            if (attributeTypes[attribute] == AttributeType.Continuous){
-                if(domainsIndexToValue.get(attribute).containsValue("?")){
+    fun imputeMissing() {
+        for (attribute in 0 until numAttributes - 1) {
+            if (attributeTypes[attribute] == AttributeType.Continuous) {
+                if (domainsIndexToValue!![attribute].containsValue("?")) {
                     //Find mean value
-                    double mean = meanValues[attribute];
+                    val mean = meanValues[attribute]
                     //Get index
-                    int index = domainsValueToIndex.get(attribute).get("?");
+                    val index = domainsValueToIndex!![attribute]["?"]!!
                     //Replace missing with mean
-                    domainsIndexToValue.get(attribute).replace(index,"?",mean);
-                    domainsValueToIndex.get(attribute).remove("?");
-                    domainsValueToIndex.get(attribute).put(mean,index);
+                    domainsIndexToValue!![attribute].replace(index, "?", mean)
+                    domainsValueToIndex!![attribute].remove("?")
+                    domainsValueToIndex!![attribute][mean] = index
                 }
-            }
-            else
-            if (attributeTypes[attribute] == AttributeType.Discrete){
-                if(domainsIndexToValue.get(attribute).containsValue("?")){
+            } else if (attributeTypes[attribute] == AttributeType.Discrete) {
+                if (domainsIndexToValue!![attribute].containsValue("?")) {
                     //Find most common value
-                    int mostCommonValue = mostCommonValues[attribute];
-                    String mostCommonValueStr = (String) domainsIndexToValue.get(attribute).get(mostCommonValue);
+                    val mostCommonValue = mostCommonValues[attribute]
+                    val mostCommonValueStr = domainsIndexToValue!![attribute][mostCommonValue] as String?
                     //Get index
-                    int index = domainsValueToIndex.get(attribute).get("?");
+                    val index = domainsValueToIndex!![attribute]["?"]!!
                     //Replace missing with most common
-                    domainsIndexToValue.get(attribute).replace(index,"?",mostCommonValueStr);
-                    domainsValueToIndex.get(attribute).remove("?");
-                    domainsValueToIndex.get(attribute).put(mostCommonValueStr,index);
+                    domainsIndexToValue!![attribute].replace(index, "?", mostCommonValueStr)
+                    domainsValueToIndex!![attribute].remove("?")
+                    domainsValueToIndex!![attribute][mostCommonValueStr] = index
                 }
             }
         }
     }
-    //Find the mean value of a continuous attribute
-    public double meanValue(int attribute){
-        double sum = 0;
-        int counter = 0;
 
-        for (DataPoint point : trainData) {
+    //Find the mean value of a continuous attribute
+    fun meanValue(attribute: Int): Double {
+        var sum = 0.0
+        var counter = 0
+        for (point in trainData!!) {
             try {
-                double attValue = (double) domainsIndexToValue.get(attribute).get(point.attributes[attribute]);
-                sum += attValue;
-                counter++;
-            } catch (Exception e) {
+                val attValue = domainsIndexToValue!![attribute][point!!.attributes[attribute]] as Double
+                sum += attValue
+                counter++
+            } catch (e: Exception) {
                 //continue;
             }
         }
-        return sum/counter;
+        return sum / counter
     }
 
-    public void setMeanValues(){
-        meanValues = new double[numAttributes - 1];
-
-        for (int i = 0; i < numAttributes -1; i++){
-            if (attributeTypes[i] == AttributeType.Ignore) continue;
+    fun setMeanValues() {
+        meanValues = DoubleArray(numAttributes - 1)
+        for (i in 0 until numAttributes - 1) {
+            if (attributeTypes[i] == AttributeType.Ignore) continue
             if (attributeTypes[i] == AttributeType.Continuous) {
-                meanValues[i] = meanValue(i);
-            }
-            else meanValues[i] = 0;
+                meanValues[i] = meanValue(i)
+            } else meanValues[i] = 0.0
         }
     }
 
     //Find the most common values of a discrete attribute. This is needed for imputation.
-    public int mostCommonValue(int attribute){
-        int[] frequencies = new int[domainsIndexToValue.get(attribute).size()];
-        for (DataPoint point : trainData) {
-            frequencies[point.attributes[attribute]]++;
+    fun mostCommonValue(attribute: Int): Int {
+        val frequencies = IntArray(domainsIndexToValue!![attribute].size)
+        for (point in trainData!!) {
+            frequencies[point!!.attributes[attribute]]++
         }
-        int mostFrequent = 0;
-        int index = 0;
-        for (int i = 0; i < frequencies.length; i++){
-            if (!(domainsIndexToValue.get(attribute).get(i)).equals("?"))
-                if (frequencies[i] > mostFrequent) {
-                    mostFrequent = frequencies[i];
-                    index = i;
-                }
+        var mostFrequent = 0
+        var index = 0
+        for (i in frequencies.indices) {
+            if (domainsIndexToValue!![attribute][i] != "?") if (frequencies[i] > mostFrequent) {
+                mostFrequent = frequencies[i]
+                index = i
+            }
         }
-        return index;
+        return index
     }
 
-    public void setMostCommonValues(){
-        mostCommonValues = new int[numAttributes - 1];
-
-        for (int i = 0; i < numAttributes -1; i++) {
-            if (attributeTypes[i] == AttributeType.Ignore) continue;
+    fun setMostCommonValues() {
+        mostCommonValues = IntArray(numAttributes - 1)
+        for (i in 0 until numAttributes - 1) {
+            if (attributeTypes[i] == AttributeType.Ignore) continue
             if (attributeTypes[i] == AttributeType.Discrete) {
-                mostCommonValues[i] = mostCommonValue(i);
-            }
-            else mostCommonValues[i] = 0;
+                mostCommonValues[i] = mostCommonValue(i)
+            } else mostCommonValues[i] = 0
         }
     }
 
-    public void readTestData(String filename){
+    fun readTestData(filename: String) {
         //Read the test file
-        FileInputStream in = null;
-        ArrayList<DataPoint> data = new ArrayList<>();
+        val `in`: FileInputStream?
+        val data = ArrayList<DataPoint?>()
         try {
-            File inputFile = new File(filename);
-            in = new FileInputStream(inputFile);
-        } catch ( Exception e) {
-            System.err.println( "Unable to open data file: " + filename + "\n" + e);
-            System.exit(1);
+            val inputFile = File(filename)
+            `in` = FileInputStream(inputFile)
+        } catch (e: Exception) {
+            System.err.println("Unable to open data file: $filename\n$e")
+            exitProcess(1)
         }
-
-        BufferedReader bin = new BufferedReader(new InputStreamReader(in) );
-        String input = null;
-
-        while(true) {
+        val bin = BufferedReader(InputStreamReader(`in`))
+        var input: String? = null
+        while (true) {
             try {
-                input = bin.readLine();
-            }
-            catch (Exception e){
-                System.err.println( "Unable to read line from test file.");
-                System.exit(1);
+                input = bin.readLine()
+            } catch (e: Exception) {
+                System.err.println("Unable to read line from test file.")
+                System.exit(1)
             }
             if (input == null) {
-                System.err.println( "No data found in the data file: " + filename + "\n");
-                System.exit(1);
+                System.err.println("No data found in the data file: $filename\n")
+                System.exit(1)
             }
-            if (input.startsWith("//")) continue;
-            if (input.equals("")) continue;
-            break;
+            if (input!!.startsWith("//")) continue
+            if (input == "") continue
+            break
         }
-
-        StringTokenizer tokenizer;
-        while(input != null) {
+        var tokenizer: StringTokenizer
+        while (input != null) {
             //if (input == null) break;
-            tokenizer = new StringTokenizer(input,",");
-            DataPoint point = new DataPoint(numAttributes);
-            String next;
-            for (int i=0; i < numAttributes; i++) {
-                next = tokenizer.nextToken().trim();
-                if(attributeTypes[i] == AttributeType.Continuous) {
-                    if (next.equals("?") || next.equals("NaN"))
-                        point.attributes[i] = getSymbolValue(i, "?");
-                    else {
+            tokenizer = StringTokenizer(input, ",")
+            val point = DataPoint(numAttributes)
+            var next: String
+            for (i in 0 until numAttributes) {
+                next = tokenizer.nextToken().trim { it <= ' ' }
+                if (attributeTypes[i] == AttributeType.Continuous) {
+                    if (next == "?" || next == "NaN") point.attributes[i] = getSymbolValue(i, "?") else {
                         try {
-                            point.attributes[i] = getSymbolValue(i, Double.parseDouble(next));
-                        }
-                        catch (Exception e){
-                            System.err.println( "Error reading continuous value in test data.");
-                            System.exit(1);
+                            point.attributes[i] = getSymbolValue(i, next.toDouble())
+                        } catch (e: Exception) {
+                            System.err.println("Error reading continuous value in test data.")
+                            System.exit(1)
                         }
                     }
-                }
-                else
-                if (attributeTypes[i] == AttributeType.Discrete) {
-                    point.attributes[i] = getSymbolValue(i, next);
-                }
-                else
-                if (attributeTypes[i] == AttributeType.Ignore){
-                    point.attributes[i]  = getSymbolValue(i, next);
+                } else if (attributeTypes[i] == AttributeType.Discrete) {
+                    point.attributes[i] = getSymbolValue(i, next)
+                } else if (attributeTypes[i] == AttributeType.Ignore) {
+                    point.attributes[i] = getSymbolValue(i, next)
                 }
             }
-            data.add(point);
+            data.add(point)
             //root.data.add(point);
             try {
-                input = bin.readLine();
-            }
-            catch (Exception e){
-                System.err.println( "Unable to read line from test file.");
-                System.exit(1);
+                input = bin.readLine()
+            } catch (e: Exception) {
+                System.err.println("Unable to read line from test file.")
+                System.exit(1)
             }
         }
-
         try {
-            bin.close();
+            bin.close()
+        } catch (e: Exception) {
+            System.err.println("Unable to close test file.")
+            System.exit(1)
         }
-        catch (Exception e){
-            System.err.println( "Unable to close test file.");
-            System.exit(1);
-        }
-        testData = data;
+        testData = data
 
         //Resize root.frequencyClasses in case new class values were found in test dataset
-        if(root.frequencyClasses.length < domainsIndexToValue.get(classAttribute).size()){
-            int[] newArray = new int[domainsIndexToValue.get(classAttribute).size()];
-            java.lang.System.arraycopy(root.frequencyClasses, 0, newArray, 0, root.frequencyClasses.length);
-            root.frequencyClasses = newArray;
+        if (root.frequencyClasses.size < domainsIndexToValue!![classAttribute].size) {
+            val newArray = IntArray(domainsIndexToValue!![classAttribute].size)
+            System.arraycopy(root.frequencyClasses, 0, newArray, 0, root.frequencyClasses.size)
+            root.frequencyClasses = newArray
         }
-
-        System.out.print("Read data: " + testData.size() + " cases for testing. ");
-        System.out.print("\n");
+        print("Read data: " + testData.size + " cases for testing. ")
+        print("\n")
     }
 
     /** Function to read the data file.
-     The first line of the data file should contain the names of all attributes.
-     The number of attributes is inferred from the number of words in this line.
-     The last word is taken as the name of the output attribute.
-     Each subsequent line contains the values of attributes for a data point.
-     If any line starts with // it is taken as a comment and ignored.
-     Blank lines are also ignored.
+     * The first line of the data file should contain the names of all attributes.
+     * The number of attributes is inferred from the number of words in this line.
+     * The last word is taken as the name of the output attribute.
+     * Each subsequent line contains the values of attributes for a data point.
+     * If any line starts with // it is taken as a comment and ignored.
+     * Blank lines are also ignored.
      */
-    public void readData(String filename) {
-
-        FileInputStream in = null;
-        ArrayList<DataPoint> data = new ArrayList<>();
-        int numTraining;
-
+    fun readData(filename: String) {
+        val `in`: FileInputStream?
+        val data = ArrayList<DataPoint?>()
+        val numTraining: Int
         try {
-            File inputFile = new File(filename);
-            in = new FileInputStream(inputFile);
-        } catch ( Exception e) {
-            System.err.println( "Unable to open data file: " + filename + "\n");
-            System.exit(1);
+            val inputFile = File(filename)
+            `in` = FileInputStream(inputFile)
+        } catch (e: Exception) {
+            System.err.println("Unable to open data file: $filename\n")
+            exitProcess(1)
         }
-
-        BufferedReader bin = new BufferedReader(new InputStreamReader(in) );
-        String input = null;
-        StringTokenizer tokenizer;
+        val bin = BufferedReader(InputStreamReader(`in`))
+        var input: String? = null
+        var tokenizer: StringTokenizer
 
         //Read names file
-        readNames(filename);
+        readNames(filename)
         try {
-            input = bin.readLine();
+            input = bin.readLine()
+        } catch (e: Exception) {
+            System.err.println("Unable to read line from data file.")
+            System.exit(1)
         }
-        catch (Exception e){
-            System.err.println( "Unable to read line from data file.");
-            System.exit(1);
-        }
-        while(input != null) {
-            if (input.trim().equals("")) break;
-            if (input.startsWith("//")) continue;
-            if (input.equals("")) continue;
-
-            tokenizer = new StringTokenizer(input, ",");
-            int numTokens = tokenizer.countTokens();
+        while (input != null) {
+            if (input.trim { it <= ' ' } == "") break
+            if (input.startsWith("//")) continue
+            if (input == "") continue
+            tokenizer = StringTokenizer(input, ",")
+            val numTokens = tokenizer.countTokens()
             if (numTokens != numAttributes) {
-                System.err.println( "Read " + data.size() + " data");
-                System.err.println( "Last line read: " + input);
-                System.err.println( "Expecting " + numAttributes  + " attributes");
-                System.exit(1);
+                System.err.println("Read " + data.size + " data")
+                System.err.println("Last line read: $input")
+                System.err.println("Expecting $numAttributes attributes")
+                System.exit(1)
             }
 
             //Insert missing value "?" into discrete attributes. This is needed for later accepting missing values.
@@ -1196,201 +1162,171 @@ public class cid3 implements Serializable{
                     getSymbolValue(i, "?");
                 }
             }*/
-
-            DataPoint point = new DataPoint(numAttributes);
-            String next;
-            for (int i=0; i < numAttributes; i++) {
-                next = tokenizer.nextToken().trim();
-                if(attributeTypes[i] == AttributeType.Continuous) {
-                    if (next.equals("?") || next.equals("NaN"))
-                        point.attributes[i] = getSymbolValue(i, "?");
-                    else
-                    {
+            val point = DataPoint(numAttributes)
+            var next: String
+            for (i in 0 until numAttributes) {
+                next = tokenizer.nextToken().trim { it <= ' ' }
+                if (attributeTypes[i] == AttributeType.Continuous) {
+                    if (next == "?" || next == "NaN") point.attributes[i] = getSymbolValue(i, "?") else {
                         try {
-                            point.attributes[i] = getSymbolValue(i, Double.parseDouble(next));
-                        }
-                        catch (Exception e){
-                            System.err.println( "Error reading continuous value in train data.");
-                            System.exit(1);
+                            point.attributes[i] = getSymbolValue(i, next.toDouble())
+                        } catch (e: Exception) {
+                            System.err.println("Error reading continuous value in train data.")
+                            System.exit(1)
                         }
                     }
-                }
-                else
-                if (attributeTypes[i] == AttributeType.Discrete) {
-                    point.attributes[i] = getSymbolValue(i, next);
-                }
-                else
-                if (attributeTypes[i] == AttributeType.Ignore){
-                    point.attributes[i]  = getSymbolValue(i, next);
+                } else if (attributeTypes[i] == AttributeType.Discrete) {
+                    point.attributes[i] = getSymbolValue(i, next)
+                } else if (attributeTypes[i] == AttributeType.Ignore) {
+                    point.attributes[i] = getSymbolValue(i, next)
                 }
             }
-            data.add(point);
+            data.add(point)
             try {
-                input = bin.readLine();
-            }
-            catch (Exception e){
-                System.err.println( "Unable to read line from data file.");
-                System.exit(1);
+                input = bin.readLine()
+            } catch (e: Exception) {
+                System.err.println("Unable to read line from data file.")
+                System.exit(1)
             }
         }
         try {
-            bin.close();
+            bin.close()
+        } catch (e: Exception) {
+            System.err.println("Unable to close data file.")
+            System.exit(1)
         }
-        catch (Exception e){
-            System.err.println( "Unable to close data file.");
-            System.exit(1);
-        }
-
-
-        int size = data.size();
-
-        root.frequencyClasses = new int[domainsIndexToValue.get(classAttribute).size()];
-        if (splitTrainData && !testDataExists && !isCrossValidation){
+        val size = data.size
+        root.frequencyClasses = IntArray(domainsIndexToValue!![classAttribute].size)
+        if (splitTrainData && !testDataExists && !isCrossValidation) {
             //Randomize the data
-            Collections.shuffle(data);
-            numTraining = size * 80/100;
-            for (int i = 0; i < size; i++){
-                if (i < numTraining){
-                    DataPoint point = data.get(i);
-                    root.data.add(point);
-                    root.frequencyClasses[point.attributes[classAttribute]]++;
-                }
-                else testData.add(data.get(i));
+            Collections.shuffle(data)
+            numTraining = size * 80 / 100
+            for (i in 0 until size) {
+                if (i < numTraining) {
+                    val point = data[i]
+                    root.data!!.add(point)
+                    root.frequencyClasses[point!!.attributes[classAttribute]]++
+                } else testData.add(data[i])
+            }
+        } else {
+            for (point in data) {
+                root.data!!.add(point)
+                root.frequencyClasses[point!!.attributes[classAttribute]]++
             }
         }
-        //here I need to loop through the data and add one by one while updating FrequencyClasses
-        else {
-            for (DataPoint point : data) {
-                root.data.add(point);
-                root.frequencyClasses[point.attributes[classAttribute]]++;
-            }
-        }
+        trainData = root.data
+        if (splitTrainData && !testDataExists) {
+            print("Read data: " + root.data!!.size + " cases for training.")
+            print("\n")
+            print("Read data: " + testData.size + " cases for testing.")
+        } else print("Read data: " + root.data!!.size + " cases for training. ")
+        print("\n")
+    } // End of function readData
 
-        trainData = root.data;
-        if (splitTrainData && !testDataExists){
-            System.out.print("Read data: " + root.data.size() + " cases for training.");
-            System.out.print("\n");
-            System.out.print("Read data: " + testData.size() + " cases for testing.");
-        }
-        else System.out.print("Read data: " + root.data.size() + " cases for training. ");
-        System.out.print("\n");
-    }	// End of function readData
-
-    public void readNames(String filename){
-        FileInputStream in = null;
-
-        String input = null;
-        ArrayList<Tuple<String, String>> attributes = new ArrayList<>();
+    fun readNames(filename: String) {
+        var `in`: FileInputStream? = null
+        var input: String? = null
+        val attributes = ArrayList<Tuple<String, String>>()
         //Read the names file
         try {
-            if (filename.contains(".")){
-                String[] split = filename.split("\\.");
-                File inputFile = new File(split[0] + ".names");
-                in = new FileInputStream(inputFile);
+            `in` = if (filename.contains(".")) {
+                val split = filename.split("\\.".toRegex()).toTypedArray()
+                val inputFile = File(split[0] + ".names")
+                FileInputStream(inputFile)
+            } else {
+                val inputFile = File("$fileName.names")
+                FileInputStream(inputFile)
             }
-            else {
-                File inputFile = new File(fileName + ".names");
-                in = new FileInputStream(inputFile);
-            }
-
-
-        } catch ( Exception e) {
-            System.err.println( "Unable to open names file.");
-            System.exit(1);
+        } catch (e: Exception) {
+            System.err.println("Unable to open names file.")
+            System.exit(1)
         }
-        BufferedReader bin = new BufferedReader(new InputStreamReader(in) );
+        val bin = BufferedReader(InputStreamReader(`in`))
 
         //Read first line containing class values.
         try {
-            input = bin.readLine();
-        }
-        catch (Exception e){
-            System.err.println( "Unable to read line in names file.");
-            System.exit(1);
+            input = bin.readLine()
+        } catch (e: Exception) {
+            System.err.println("Unable to read line in names file.")
+            System.exit(1)
         }
 
         //Save attribute names and types to a tuple array.
         try {
-            input = bin.readLine();
+            input = bin.readLine()
+        } catch (e: Exception) {
+            System.err.println("Unable to read line in names file.")
+            System.exit(1)
         }
-        catch (Exception e){
-            System.err.println( "Unable to read line in names file.");
-            System.exit(1);
-        }
-        while(input != null) {
+        while (input != null) {
             if (!input.startsWith("|")) {
-                String[] split = input.split(":");
-                if (split.length == 2) {
-                    Tuple<String, String> t = new Tuple<>(split[0].trim(), split[1].trim());
-                    attributes.add(t);
+                val split = input.split(":".toRegex()).toTypedArray()
+                if (split.size == 2) {
+                    val t = Tuple(split[0].trim { it <= ' ' }, split[1].trim { it <= ' ' })
+                    attributes.add(t)
                 }
             }
             try {
-                input = bin.readLine();
-            }
-            catch (Exception e){
-                System.err.println( "Unable to read line in names file.");
-                System.exit(1);
+                input = bin.readLine()
+            } catch (e: Exception) {
+                System.err.println("Unable to read line in names file.")
+                System.exit(1)
             }
         }
 
         //Set numAttributes. +1 for the class attribute
-        numAttributes = attributes.size() + 1;
+        numAttributes = attributes.size + 1
 
         //Set class attribute
-        classAttribute = numAttributes -1;
+        classAttribute = numAttributes - 1
 
         //Check for errors.
         if (numAttributes <= 1) {
             //System.err.println( "Read line: " + input);
             //System.err.println( "Could not obtain the names of attributes in the line");
-            System.err.println( "Expecting at least one input attribute and one output attribute");
-            System.exit(1);
+            System.err.println("Expecting at least one input attribute and one output attribute")
+            System.exit(1)
         }
 
         //Initialize domains
-        domainsIndexToValue = new ArrayList<>();
-        domainsValueToIndex = new ArrayList<>();
+        domainsIndexToValue = ArrayList()
+        domainsValueToIndex = ArrayList()
         //domains = new ArrayList[numAttributes];
-        for (int i=0; i < numAttributes; i++) {
-            domainsIndexToValue.add(new HashMap<>());
+        for (i in 0 until numAttributes) {
+            domainsIndexToValue!!.add(HashMap())
         }
-        for (int i=0; i < numAttributes; i++){
-            domainsValueToIndex.add(new HashMap<>());
+        for (i in 0 until numAttributes) {
+            domainsValueToIndex!!.add(HashMap())
         }
 
         //Set attributeNames. They should be in the same order as they appear in the data. +1 for the class
-        attributeNames = new String[numAttributes];
-        for (int i=0; i < numAttributes - 1; i++) {
-            Tuple<String,String> t = attributes.get(i);
-            attributeNames[i]  = t.x;
+        attributeNames = arrayOfNulls(numAttributes)
+        for (i in 0 until numAttributes - 1) {
+            val t = attributes[i]
+            attributeNames[i] = t.x
         }
 
         //Set the class. For now all class attribute names are the same: Class.
-        attributeNames[numAttributes - 1] = "Class";
+        attributeNames[numAttributes - 1] = "Class"
 
         //Initialize attributeTypes.
-        attributeTypes = new AttributeType[numAttributes];
+        attributeTypes = arrayOfNulls(numAttributes)
 
         //Set the attribute types.
-        for (int i=0; i< numAttributes - 1; i++){
-            Tuple<String,String> attribute = attributes.get(i);
-            switch (attribute.y.trim()){
-                case "continuous.": attributeTypes[i] = AttributeType.Continuous;
-                    break;
-                case "ignore.": attributeTypes[i] = AttributeType.Ignore;
-                    break;
-                default: attributeTypes[i] = AttributeType.Discrete;
-                    break;
+        for (i in 0 until numAttributes - 1) {
+            val attribute = attributes[i]
+            when (attribute.y.trim { it <= ' ' }) {
+                "continuous." -> attributeTypes[i] = AttributeType.Continuous
+                "ignore." -> attributeTypes[i] = AttributeType.Ignore
+                else -> attributeTypes[i] = AttributeType.Discrete
             }
         }
 
         //Set attribute type for the class.
-        attributeTypes[numAttributes - 1] = AttributeType.Discrete;
+        attributeTypes[numAttributes - 1] = AttributeType.Discrete
     }
 
     //-----------------------------------------------------------------------
-
     /*  This function prints the decision tree in the form of rules.
         The action part of the rule is of the form
             outputAttribute = "symbolicValue"
@@ -1398,10 +1334,10 @@ public class cid3 implements Serializable{
             outputAttribute = { "Value1", "Value2", ..  }
         The second form is printed if the node cannot be decomposed any further into an homogenous set
     */
-    public void printTree(TreeNode node, String tab) {
-        if (node.data != null && !node.data.isEmpty()) totalNodes++;
+    fun printTree(node: TreeNode, tab: String) {
+        if (node.data != null && !node.data!!.isEmpty()) totalNodes++
         if (node.children == null) {
-            if (node.data != null && !node.data.isEmpty()) totalRules++;
+            if (node.data != null && !node.data!!.isEmpty()) totalRules++
             //int []values = getAllValues(node.data, classAttribute );
             //if (values.length == 1) {
 //				System.out.println(tab + "\t" + attributeNames[classAttribute] + " = \"" + domainsIndexToValue[classAttribute].get(values[0]) + "\";");
@@ -1413,944 +1349,865 @@ public class cid3 implements Serializable{
 //				if ( i != values.length-1 ) System.out.print( " , " );
 //			}
 //			System.out.println( " };");
-            return;
+            return
         }
-
-        int numValues = node.children.size();
-        for (int i=0; i < numValues; i++) {
+        val numValues = node.children!!.size
+        for (i in 0 until numValues) {
             //String symbol;
 //                  if (attributeTypes[node.decompositionAttribute] == AttributeType.Continuous)
 //                      symbol = node.children[i].decompositionValueContinuous;
 //                  else symbol = " == " + domainsIndexToValue[node.decompositionAttribute].get(i);
 //                  System.out.println(tab + "if( " + attributeNames[node.decompositionAttribute] + symbol + "" +
 //                          ") {" );
-            printTree(node.children.get(i), tab + "\t");
-//                  if (i != numValues-1) System.out.print(tab +  "} else ");
+            printTree(node.children!![i], tab + "\t")
+            //                  if (i != numValues-1) System.out.print(tab +  "} else ");
 //                  else System.out.println(tab +  "}");
         }
     }
 
-    private void createFile(){
-        ObjectOutputStream oos;
-        FileOutputStream fOut;
-        String fName = fileName;
-        fName = fName.substring(0, fName.length() - 4);
-        fName = fName + "tree";
+    private fun createFile() {
+        val oos: ObjectOutputStream
+        val fOut: FileOutputStream
+        var fName = fileName
+        fName = fName!!.substring(0, fName.length - 4)
+        fName = fName + "tree"
         try {
             //Check if file exists...delete it
-            File inputFile = new File(fName);
+            val inputFile = File(fName)
             if (inputFile.exists()) {
-                boolean res = inputFile.delete();
-                if (!res){
-                    System.out.print("Error deleting previous tree file.");
-                    System.out.print("\n");
-                    System.exit(1);
+                val res = inputFile.delete()
+                if (!res) {
+                    print("Error deleting previous tree file.")
+                    print("\n")
+                    System.exit(1)
                 }
             }
 
             //Serialize and save to disk
-            fOut = new FileOutputStream(fName, false);
-            GZIPOutputStream gz = new GZIPOutputStream(fOut);
-            oos = new ObjectOutputStream(gz);
-            oos.writeObject(this);
-            oos.close();
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
+            fOut = FileOutputStream(fName, false)
+            val gz = GZIPOutputStream(fOut)
+            oos = ObjectOutputStream(gz)
+            oos.writeObject(this)
+            oos.close()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
         }
     }
 
-    private void createFileRF(){
-        ObjectOutputStream oos;
-        FileOutputStream fOut;
-        String fName = fileName;
-        fName = fName.substring(0, fName.length() - 4);
-        fName = fName + "forest";
-        try{
+    private fun createFileRF() {
+        val oos: ObjectOutputStream
+        val fOut: FileOutputStream
+        var fName = fileName
+        fName = fName!!.substring(0, fName.length - 4)
+        fName = fName + "forest"
+        try {
             //Check if file exists...delete it
-            File inputFile = new File(fName);
-            boolean res = inputFile.delete();
-            if (!res){
-                System.out.print("Error deleting previous random forest file.");
-                System.out.print("\n");
-                System.exit(1);
+            val inputFile = File(fName)
+            val res = inputFile.delete()
+            if (!res) {
+                print("Error deleting previous random forest file.")
+                print("\n")
+                System.exit(1)
             }
 
             //Serialize and save to disk
-            fOut = new FileOutputStream(fName, false);
-            GZIPOutputStream gz = new GZIPOutputStream(fOut);
-            oos = new ObjectOutputStream(gz);
-            oos.writeObject(this);
-            oos.close();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            fOut = FileOutputStream(fName, false)
+            val gz = GZIPOutputStream(fOut)
+            oos = ObjectOutputStream(gz)
+            oos.writeObject(this)
+            oos.close()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
         }
     }
 
-    private cid3 deserializeFile(String file){
-        cid3 ret = null;
-        ObjectInputStream objectinputstream;
+    private fun deserializeFile(file: String): cid3? {
+        var ret: cid3? = null
+        val objectinputstream: ObjectInputStream
         try {
             //FileInputStream streamIn = new FileInputStream(file);
-            GZIPInputStream is = new GZIPInputStream(new FileInputStream(file));
-            objectinputstream = new ObjectInputStream(is);
-            ret = (cid3) objectinputstream.readObject();
-            objectinputstream.close();
+            val `is` = GZIPInputStream(FileInputStream(file))
+            objectinputstream = ObjectInputStream(`is`)
+            ret = objectinputstream.readObject() as cid3
+            objectinputstream.close()
+        } catch (e: Exception) {
+            print("Error deserializing file.")
+            print("\n")
+            System.exit(1)
         }
-        catch (Exception e) {
-            System.out.print("Error deserializing file.");
-            System.out.print("\n");
-            System.exit(1);
-        }
-        return ret;
+        return ret
     }
 
-    public static String formatDuration(Duration duration) {
-        long seconds = duration.getSeconds();
-        long absSeconds = Math.abs(seconds);
-        String positive = String.format(
-                "%d:%02d:%02d",
-                absSeconds / 3600,
-                (absSeconds % 3600) / 60,
-                absSeconds % 60);
-        return seconds < 0 ? "-" + positive : positive;
-    }
-
-    public void createDecisionTree() {
-        Instant start = Instant.now();
-
-        ArrayList<Integer> selectedAttributes = new ArrayList<>();
+    fun createDecisionTree() {
+        val start = Instant.now()
+        val selectedAttributes = ArrayList<Int>()
         //Select ALL attributes
-        for (int i=0; i < numAttributes; i++){
-            if (attributeTypes[i] == AttributeType.Ignore) continue;
-            selectedAttributes.add(i);
+        for (i in 0 until numAttributes) {
+            if (attributeTypes[i] == AttributeType.Ignore) continue
+            selectedAttributes.add(i)
         }
-        decomposeNode(root,selectedAttributes, 0);
-        System.out.print("Decision tree created.");
-        System.out.print("\n");
-        printTree(root, "");
-        System.out.print("Rules:" + totalRules);
-        System.out.print("\n");
-        System.out.print("Nodes:" + totalNodes);
-        System.out.print("\n");
-        testDecisionTree();
-        System.out.print("\n");
-
-        Instant finish = Instant.now();
-        Duration timeElapsed = Duration.between(start, finish);
-        String timeElapsedString = formatDuration(timeElapsed);
-        System.out.print("Time: " + timeElapsedString);
-        System.out.print("\n");
+        decomposeNode(root, selectedAttributes, 0)
+        print("Decision tree created.")
+        print("\n")
+        printTree(root, "")
+        print("Rules:$totalRules")
+        print("\n")
+        print("Nodes:$totalNodes")
+        print("\n")
+        testDecisionTree()
+        print("\n")
+        val finish = Instant.now()
+        val timeElapsed = Duration.between(start, finish)
+        val timeElapsedString = formatDuration(timeElapsed)
+        print("Time: $timeElapsedString")
+        print("\n")
     }
 
-    public void createCrossValidation() {
-        Instant start = Instant.now();
-
-        if (testDataExists){
-            trainData.addAll(testData);
-            root.data = trainData;
+    fun createCrossValidation() {
+        val start = Instant.now()
+        if (testDataExists) {
+            trainData!!.addAll(testData)
+            root.data = trainData
         }
-
-        int chunk_size = root.data.size()/10;
-        int modulus = root.data.size()%10;
-        int counter = chunk_size;
-        int counter_chunks = 0;
+        val chunk_size = root.data!!.size / 10
+        val modulus = root.data!!.size % 10
+        var counter = chunk_size
+        var counter_chunks = 0
         //Randomize the data
-        Collections.shuffle(root.data);
+        Collections.shuffle(root.data)
 
         //Initialize chunks
-        for (int i = 0; i < 10; i++){
-            crossValidationChunks.add(new ArrayList<>());
+        for (i in 0..9) {
+            crossValidationChunks.add(ArrayList())
         }
 
         //First check if there is a remainder
-        if (modulus != 0){
-            for (int i = 0; i < root.data.size() - modulus; i++){
-                if (i < counter) {
-                    crossValidationChunks.get(counter_chunks).add(root.data.get(i));
-                }
-                else {
-                    counter+= chunk_size;
-                    counter_chunks++;
-                    i--;
+        if (modulus != 0) {
+            run {
+                var i = 0
+                while (i < root.data!!.size - modulus) {
+                    if (i < counter) {
+                        crossValidationChunks[counter_chunks].add(root.data!![i])
+                    } else {
+                        counter += chunk_size
+                        counter_chunks++
+                        i--
+                    }
+                    i++
                 }
             }
-            counter = 0;
-            for (int i = root.data.size() - modulus; i < root.data.size(); i++){
-                crossValidationChunks.get(counter).add(root.data.get(i));
-                counter++;
+            counter = 0
+            for (i in root.data!!.size - modulus until root.data!!.size) {
+                crossValidationChunks[counter].add(root.data!![i])
+                counter++
+            }
+        } else {
+            var i = 0
+            while (i < root.data!!.size) {
+                if (i < counter) {
+                    crossValidationChunks[counter_chunks].add(root.data!![i])
+                } else {
+                    counter += chunk_size
+                    counter_chunks++
+                    i--
+                }
+                i++
             }
         }
-        else {
-            for (int i = 0; i < root.data.size(); i++){
-                if (i < counter) {
-                    crossValidationChunks.get(counter_chunks).add(root.data.get(i));
-                }
-                else {
-                    counter+= chunk_size;
-                    counter_chunks++;
-                    i--;
-                }
+        val threads = ArrayList<Thread>()
+        for (i in 0..9) {
+            val newRoot = TreeNode()
+            val trainData = ArrayList<DataPoint?>()
+            for (k in 0..9) {
+                if (k != i) trainData.addAll(crossValidationChunks[k])
             }
-        }
-
-        ArrayList<Thread> threads = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            TreeNode newRoot = new TreeNode();
-            ArrayList<DataPoint> trainData = new ArrayList<>();
-            for (int k = 0; k < 10; k++){
-                if (k != i) trainData.addAll(crossValidationChunks.get(k));
-            }
-            newRoot.data = trainData;
-            newRoot.frequencyClasses =  getFrequencies(newRoot.data);
-            rootsCrossValidation.add(newRoot);
+            newRoot.data = trainData
+            newRoot.frequencyClasses = getFrequencies(newRoot.data)
+            rootsCrossValidation.add(newRoot)
 
             //Create the cross-validation in parallel
-            ArrayList<Integer> selectedAttributes = new ArrayList<>();
+            val selectedAttributes = ArrayList<Int>()
             //Select ALL attributes
-            for (int j=0; j < numAttributes - 1; j++){
-                if (attributeTypes[j] == AttributeType.Ignore) continue;
-                selectedAttributes.add(j);
+            for (j in 0 until numAttributes - 1) {
+                if (attributeTypes[j] == AttributeType.Ignore) continue
+                selectedAttributes.add(j)
             }
-            final int i2 = i;
-            Thread thread = new Thread(() -> decomposeNode(rootsCrossValidation.get(i2), selectedAttributes, 0));
-            threads.add(thread);
-            thread.start();
+            val thread = Thread { decomposeNode(rootsCrossValidation[i], selectedAttributes, 0) }
+            threads.add(thread)
+            thread.start()
         }
-
-        while (threads.size() > 0){
-            if (!threads.get(threads.size()-1).isAlive())
-                threads.remove(threads.size()-1);
+        while (threads.size > 0) {
+            if (!threads[threads.size - 1].isAlive) threads.removeAt(threads.size - 1)
         }
-
-        System.out.print("\n");
-        System.out.print("10-fold cross-validation created with " + root.data.size() + " cases.");
-        System.out.print("\n");
-
-        testCrossValidation();
-        Instant finish = Instant.now();
-        Duration timeElapsed = Duration.between(start, finish);
-        String timeElapsedString = formatDuration(timeElapsed);
-        System.out.print("\n");
-        System.out.print("Time: " + timeElapsedString);
-        System.out.print("\n");
+        print("\n")
+        print("10-fold cross-validation created with " + root.data!!.size + " cases.")
+        print("\n")
+        testCrossValidation()
+        val finish = Instant.now()
+        val timeElapsed = Duration.between(start, finish)
+        val timeElapsedString = formatDuration(timeElapsed)
+        print("\n")
+        print("Time: $timeElapsedString")
+        print("\n")
     }
 
-    public void createCrossValidationRF() {
-        Instant start = Instant.now();
+    fun createCrossValidationRF() {
+        val start = Instant.now()
 
         //Initialize array
-        for (int i = 0; i < 10; i++){
-            cvRandomForests.add(new ArrayList<>());
+        for (i in 0..9) {
+            cvRandomForests.add(ArrayList())
         }
-
-        if (testDataExists){
-            trainData.addAll(testData);
-            root.data = trainData;
+        if (testDataExists) {
+            trainData!!.addAll(testData)
+            root.data = trainData
         }
-
-        int chunk_size = root.data.size()/10;
-        int modulus = root.data.size()%10;
-        int counter = chunk_size;
-        int counter_chunks = 0;
+        val chunk_size = root.data!!.size / 10
+        val modulus = root.data!!.size % 10
+        var counter = chunk_size
+        var counter_chunks = 0
         //Randomize the data
-        Collections.shuffle(root.data);
+        Collections.shuffle(root.data)
 
         //Initialize chunks
-        for (int i = 0; i < 10; i++){
-            crossValidationChunks.add(new ArrayList<>());
+        for (i in 0..9) {
+            crossValidationChunks.add(ArrayList())
         }
         //First check if there is a remainder
-        if (modulus != 0){
-            for (int i = 0; i < root.data.size() - modulus; i++){
-                if (i < counter) {
-                    crossValidationChunks.get(counter_chunks).add(root.data.get(i));
-                }
-                else {
-                    counter+= chunk_size;
-                    counter_chunks++;
-                    i--;
+        if (modulus != 0) {
+            run {
+                var i = 0
+                while (i < root.data!!.size - modulus) {
+                    if (i < counter) {
+                        crossValidationChunks[counter_chunks].add(root.data!![i])
+                    } else {
+                        counter += chunk_size
+                        counter_chunks++
+                        i--
+                    }
+                    i++
                 }
             }
-            counter = 0;
-            for (int i = root.data.size() - modulus; i < root.data.size(); i++){
-                crossValidationChunks.get(counter).add(root.data.get(i));
-                counter++;
+            counter = 0
+            for (i in root.data!!.size - modulus until root.data!!.size) {
+                crossValidationChunks[counter].add(root.data!![i])
+                counter++
             }
-        }
-        else {
-            for (int i = 0; i < root.data.size(); i++){
+        } else {
+            var i = 0
+            while (i < root.data!!.size) {
                 if (i < counter) {
-                    crossValidationChunks.get(counter_chunks).add(root.data.get(i));
+                    crossValidationChunks[counter_chunks].add(root.data!![i])
+                } else {
+                    counter += chunk_size
+                    counter_chunks++
+                    i--
                 }
-                else {
-                    counter+= chunk_size;
-                    counter_chunks++;
-                    i--;
-                }
+                i++
             }
         }
 
         //Create the 10 Random Forests
-        for (int i = 0; i < 10; i++) {
-            ArrayList<DataPoint> trainData = new ArrayList<>();
-            for (int k = 0; k < 10; k++){
-                if (k != i) trainData.addAll(crossValidationChunks.get(k));
+        for (i in 0..9) {
+            val trainData = ArrayList<DataPoint?>()
+            for (k in 0..9) {
+                if (k != i) trainData.addAll(crossValidationChunks[k])
             }
-
-            createRandomForest(trainData, cvRandomForests.get(i),true);
+            createRandomForest(trainData, cvRandomForests[i], true)
         }
-
-        System.out.print("\n");
-        System.out.print("10-fold Random Forests cross-validation created with " + root.data.size() + " cases.");
-        System.out.print("\n");
+        print("\n")
+        print("10-fold Random Forests cross-validation created with " + root.data!!.size + " cases.")
+        print("\n")
 
         //Test the cross-validation
-        testCrossValidationRF();
-
-        Instant finish = Instant.now();
-        Duration timeElapsed = Duration.between(start, finish);
-        String timeElapsedString = formatDuration(timeElapsed);
-        System.out.print("\n");
-        System.out.print("Time: " + timeElapsedString);
-        System.out.print("\n");
+        testCrossValidationRF()
+        val finish = Instant.now()
+        val timeElapsed = Duration.between(start, finish)
+        val timeElapsedString = formatDuration(timeElapsed)
+        print("\n")
+        print("Time: $timeElapsedString")
+        print("\n")
     }
 
-    public void createRandomForest(ArrayList<DataPoint> data, ArrayList<TreeNode> roots, boolean cv) {
-        Instant start = Instant.now();
-        int numberOfAttributes = 0;
-        for (int i = 0; i < numAttributes - 1; i++){
-            if (attributeTypes[i] != AttributeType.Ignore) numberOfAttributes++;
+    fun createRandomForest(data: ArrayList<DataPoint?>?, roots: ArrayList<TreeNode>, cv: Boolean) {
+        val start = Instant.now()
+        var numberOfAttributes = 0
+        for (i in 0 until numAttributes - 1) {
+            if (attributeTypes[i] != AttributeType.Ignore) numberOfAttributes++
         }
-        double numAttributesForRandomForest = Math.log(numberOfAttributes + 1) / Math.log(2);
-
-        int numAttributesForRandomForestInt = (int) numAttributesForRandomForest;
-        int randomAttribute;
-        ArrayList<Integer> selectedAttributes;
-        ArrayList<Thread> threads = new ArrayList<>();
-        Random rand = new Random(seed);
-
-        for (int i = 0; i < numberOfTrees; i++) {
-            selectedAttributes = new ArrayList<>();
-            while (selectedAttributes.size() < numAttributesForRandomForestInt){
-                randomAttribute = rand.nextInt(numAttributes - 1);
-                if (!selectedAttributes.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributes.add(randomAttribute);
+        val numAttributesForRandomForest = Math.log(numberOfAttributes + 1.toDouble()) / Math.log(2.0)
+        val numAttributesForRandomForestInt = numAttributesForRandomForest.toInt()
+        var randomAttribute: Int
+        var selectedAttributes: ArrayList<Int>
+        val threads = ArrayList<Thread>()
+        val rand = Random(seed)
+        for (i in 0 until numberOfTrees) {
+            selectedAttributes = ArrayList()
+            while (selectedAttributes.size < numAttributesForRandomForestInt) {
+                randomAttribute = rand.nextInt(numAttributes - 1)
+                if (!selectedAttributes.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributes.add(randomAttribute)
             }
-
-            TreeNode cloneRoot = new TreeNode();
-            cloneRoot.data = data;
-            cloneRoot.frequencyClasses =  getFrequencies(data);
-            roots.add(cloneRoot);
+            val cloneRoot = TreeNode()
+            cloneRoot.data = data
+            cloneRoot.frequencyClasses = getFrequencies(data)
+            roots.add(cloneRoot)
 
             //Create the Random Forest in parallel
-            final int i2 = i;
-            final ArrayList<Integer> selectedAttributes2 =  selectedAttributes;
-            Thread thread = new Thread(() -> decomposeNode(roots.get(i2), selectedAttributes2, seed + 1 + i2));
-            threads.add(thread);
-            thread.start();
+            val selectedAttributes2 = selectedAttributes
+            val thread = Thread { decomposeNode(roots[i], selectedAttributes2, seed + 1 + i) }
+            threads.add(thread)
+            thread.start()
         }
-
-        while (threads.size() > 0){
-            if (!threads.get(threads.size()-1).isAlive())
-                threads.remove(threads.size()-1);
+        while (threads.size > 0) {
+            if (!threads[threads.size - 1].isAlive) threads.removeAt(threads.size - 1)
         }
-
         if (!cv) {
-            System.out.print("\n");
-            System.out.print("Random Forest of " + roots.size() + " trees created.");
-            System.out.print("\n");
-            System.out.print("\n");
-            testRandomForest();
-            Instant finish = Instant.now();
-            Duration timeElapsed = Duration.between(start, finish);
-            String timeElapsedString = formatDuration(timeElapsed);
-            System.out.print("\n");
-            System.out.print("\n");
-            System.out.print("Time: " + timeElapsedString);
-            System.out.print("\n");
+            print("\n")
+            print("Random Forest of " + roots.size + " trees created.")
+            print("\n")
+            print("\n")
+            testRandomForest()
+            val finish = Instant.now()
+            val timeElapsed = Duration.between(start, finish)
+            val timeElapsedString = formatDuration(timeElapsed)
+            print("\n")
+            print("\n")
+            print("Time: $timeElapsedString")
+            print("\n")
         }
     }
 
-    public TreeNode testExamplePoint(DataPoint example, TreeNode node){
-        int splitAttribute, attributeValue;
-        double attributeRealValue;
-        splitAttribute = node.decompositionAttribute;
-        attributeValue = example.attributes[splitAttribute];
-
-        if(node.children == null || node.children.isEmpty()) return node;
+    private fun testExamplePoint(example: DataPoint?, node: TreeNode): TreeNode {
+        var nodeLocal = node
+        val splitAttribute: Int
+        val attributeValue: Int
+        val attributeRealValue: Double
+        splitAttribute = nodeLocal.decompositionAttribute
+        attributeValue = example!!.attributes[splitAttribute]
+        if (nodeLocal.children == null || nodeLocal.children!!.isEmpty()) return nodeLocal
 
         //Check if attribute is discrete
         if (attributeTypes[splitAttribute] == AttributeType.Discrete) {
-            for (int i = 0; i < node.children.size(); i++) {
-                if ((node.children.get(i)).decompositionValue == attributeValue) {
-                    node = node.children.get(i);
-                    break;
+            for (i in nodeLocal.children!!.indices) {
+                if (nodeLocal.children!![i].decompositionValue == attributeValue) {
+                    nodeLocal = nodeLocal.children!![i]
+                    break
                 }
             }
         }
         //Check if attribute is continuous
-        if (attributeTypes[splitAttribute] == AttributeType.Continuous){
-            attributeRealValue = (double)domainsIndexToValue.get(splitAttribute).get(example.attributes[splitAttribute]);
-            if (attributeRealValue <= (node.children.get(0)).thresholdContinuous){
-                node = node.children.get(0);
-            }
-            else node = node.children.get(1);
+        if (attributeTypes[splitAttribute] == AttributeType.Continuous) {
+            attributeRealValue = domainsIndexToValue!![splitAttribute][example.attributes[splitAttribute]] as Double
+            nodeLocal = if (attributeRealValue <= nodeLocal.children!![0].thresholdContinuous) {
+                nodeLocal.children!![0]
+            } else nodeLocal.children!![1]
         }
-        return testExamplePoint(example,node);
+        return testExamplePoint(example, nodeLocal)
     }
 
-    public boolean testExample(DataPoint example){
-        TreeNode node;
-        node = testExamplePoint(example, root);
-        if (node.data == null || node.data.isEmpty()){
-            return example.attributes[classAttribute] == mostCommonFinal(node.parent);
-        }
-        else{
-            return example.attributes[classAttribute] == mostCommonFinal(node);
-        }
-    }
-
-    public boolean testExampleCV(DataPoint example, TreeNode tree){
-        TreeNode node;
-        node = testExamplePoint(example, tree);
-        if (node.data == null || node.data.isEmpty()){
-            return example.attributes[classAttribute] == mostCommonFinal(node.parent);
-        }
-        else{
-            return example.attributes[classAttribute] == mostCommonFinal(node);
+    fun testExample(example: DataPoint?): Boolean {
+        val node: TreeNode
+        node = testExamplePoint(example, root)
+        return if (node.data == null || node.data!!.isEmpty()) {
+            example!!.attributes[classAttribute] == mostCommonFinal(node.parent)
+        } else {
+            example!!.attributes[classAttribute] == mostCommonFinal(node)
         }
     }
 
-    public boolean testExampleRF(DataPoint example, ArrayList<TreeNode> roots){
-        TreeNode node;
-        int isTrue = 0;
-        int isFalse = 0;
+    fun testExampleCV(example: DataPoint?, tree: TreeNode): Boolean {
+        val node: TreeNode
+        node = testExamplePoint(example, tree)
+        return if (node.data == null || node.data!!.isEmpty()) {
+            example!!.attributes[classAttribute] == mostCommonFinal(node.parent)
+        } else {
+            example!!.attributes[classAttribute] == mostCommonFinal(node)
+        }
+    }
 
-        ArrayList<Boolean> results = new ArrayList<>();
-        for (TreeNode treeNode : roots) {
-            node = testExamplePoint(example, treeNode);
-            if (node.data == null || node.data.isEmpty()) {
-                if (example.attributes[classAttribute] == mostCommonFinal(node.parent)) results.add(true);
-                else results.add(false);
+    fun testExampleRF(example: DataPoint?, roots: ArrayList<TreeNode>): Boolean {
+        var node: TreeNode
+        var isTrue = 0
+        var isFalse = 0
+        val results = ArrayList<Boolean>()
+        for (treeNode in roots) {
+            node = testExamplePoint(example, treeNode)
+            if (node.data == null || node.data!!.isEmpty()) {
+                if (example!!.attributes[classAttribute] == mostCommonFinal(node.parent)) results.add(true) else results.add(false)
             } else {
-                if (example.attributes[classAttribute] == mostCommonFinal(node)) results.add(true);
-                else results.add(false);
+                if (example!!.attributes[classAttribute] == mostCommonFinal(node)) results.add(true) else results.add(false)
             }
         }
         //Voting now
-        for (Boolean result : results) {
-            if (result) isTrue++;
-            else isFalse++;
+        for (result in results) {
+            if (result) isTrue++ else isFalse++
         }
-        return isTrue > isFalse;
+        return isTrue > isFalse
     }
 
-    public void testDecisionTree(){
-        int test_errors = 0;
-        int test_corrects = 0;
+    fun testDecisionTree() {
+        var test_errors = 0
+        var test_corrects = 0
         //int test_size = testData.size();
-        for (DataPoint point : testData) {
-            if (testExample(point)) test_corrects++;
-            else test_errors++;
+        for (point in testData) {
+            if (testExample(point)) test_corrects++ else test_errors++
         }
-
-        int train_errors = 0;
-        int train_corrects = 0;
+        var train_errors = 0
+        var train_corrects = 0
         //int train_size = trainData.size();
-        for (DataPoint point : trainData) {
-            if (testExample(point)) train_corrects++;
-            else train_errors++;
+        for (point in trainData!!) {
+            if (testExample(point)) train_corrects++ else train_errors++
         }
-        System.out.print("\n");
-        System.out.print("TRAIN DATA: ");
-        System.out.print("\n");
-        System.out.print("=================================");
-        System.out.print("\n");
-        System.out.print("Correct guesses: " + train_corrects);
-        System.out.print("\n");
-        double rounded = Math.round((1.*train_errors*100/trainData.size()) * 10) / 10.0;
-        System.out.print("Incorrect guesses: " + train_errors + " (" + rounded + "%)");
-        System.out.print("\n");
-
-        if (!this.testData.isEmpty()) {
-            System.out.print("\n");
-            System.out.print("TEST DATA: ");
-            System.out.print("\n");
-            System.out.print("=================================");
-            System.out.print("\n");
-            System.out.print("Correct guesses: " + test_corrects);
-            System.out.print("\n");
-            double rounded1 = Math.round((1. * test_errors * 100 / testData.size()) * 10) / 10.0;
-            System.out.print("Incorrect guesses: " + test_errors + " (" + rounded1 + "%)");
+        print("\n")
+        print("TRAIN DATA: ")
+        print("\n")
+        print("=================================")
+        print("\n")
+        print("Correct guesses: $train_corrects")
+        print("\n")
+        val rounded = Math.round(1.0 * train_errors * 100 / trainData!!.size * 10) / 10.0
+        print("Incorrect guesses: $train_errors ($rounded%)")
+        print("\n")
+        if (!testData.isEmpty()) {
+            print("\n")
+            print("TEST DATA: ")
+            print("\n")
+            print("=================================")
+            print("\n")
+            print("Correct guesses: $test_corrects")
+            print("\n")
+            val rounded1 = Math.round(1.0 * test_errors * 100 / testData.size * 10) / 10.0
+            print("Incorrect guesses: $test_errors ($rounded1%)")
         }
-        System.out.print("\n");
-        System.out.print("\n");
-        System.out.print("Root: " + attributeNames[root.decompositionAttribute]);
-        System.out.print("\n");
+        print("\n")
+        print("\n")
+        print("Root: " + attributeNames[root.decompositionAttribute])
+        print("\n")
     }
 
-    public void testCrossValidation(){
-        int test_errors;
-        double meanErrors;
-        double percentageErrors = 0;
-        double[] errorsFoldK = new double[10];
-        for (int i = 0; i < 10; i ++){
-            test_errors = 0;
-            TreeNode currentTree = rootsCrossValidation.get(i);
-            ArrayList<DataPoint> currentTest = crossValidationChunks.get(i);
-            for (DataPoint point : currentTest) {
-                if (!testExampleCV(point, currentTree)) test_errors++;
+    fun testCrossValidation() {
+        var test_errors: Int
+        val meanErrors: Double
+        var percentageErrors = 0.0
+        val errorsFoldK = DoubleArray(10)
+        for (i in 0..9) {
+            test_errors = 0
+            val currentTree = rootsCrossValidation[i]
+            val currentTest = crossValidationChunks[i]
+            for (point in currentTest) {
+                if (!testExampleCV(point, currentTree)) test_errors++
             }
-            percentageErrors += (1.*test_errors/currentTest.size())*100;
-
-            double rounded1 = Math.round((1.*test_errors/currentTest.size())*100 * 10) / 10.0;
-            System.out.print("\n");
-            System.out.print("Fold #" + (i + 1) + " Errors: " + rounded1 + "%");
+            percentageErrors += 1.0 * test_errors / currentTest.size * 100
+            val rounded1 = Math.round(1.0 * test_errors / currentTest.size * 100 * 10) / 10.0
+            print("\n")
+            print("Fold #" + (i + 1) + " Errors: " + rounded1 + "%")
             //Save k errors for SE
-            errorsFoldK[i] = (1.*test_errors/currentTest.size())*100;
+            errorsFoldK[i] = 1.0 * test_errors / currentTest.size * 100
         }
-        meanErrors = percentageErrors/10;
-        double rounded1 = Math.round(meanErrors * 10) / 10.0;
-        System.out.print("\n");
-        System.out.print("\n");
-        System.out.print("Mean errors: " + rounded1 + "%");
+        meanErrors = percentageErrors / 10
+        val rounded1 = Math.round(meanErrors * 10) / 10.0
+        print("\n")
+        print("\n")
+        print("Mean errors: $rounded1%")
 
         //Calculate average
-        double meanFolds = 0;
-        for (int i = 0; i < 10 ; i++){
-            meanFolds+=errorsFoldK[i];
+        var meanFolds = 0.0
+        for (i in 0..9) {
+            meanFolds += errorsFoldK[i]
         }
-        meanFolds = 1.*meanFolds/10;
+        meanFolds = 1.0 * meanFolds / 10
 
         //Calculate SE (Standard Errors)
-        double sum_meanSE = 0;
-        for (int i = 0; i < 10; i++){
-            sum_meanSE += (1.*errorsFoldK[i] - meanFolds) * (1.*errorsFoldK[i] - meanFolds);
+        var sum_meanSE = 0.0
+        for (i in 0..9) {
+            sum_meanSE += (1.0 * errorsFoldK[i] - meanFolds) * (1.0 * errorsFoldK[i] - meanFolds)
         }
-        sum_meanSE = Math.sqrt(sum_meanSE/10);
-        double SE = sum_meanSE/Math.sqrt(10);
-
-        double roundedSE = Math.round(SE * 10) / 10.0;
-        System.out.print("\n");
-        System.out.print("SE: " + roundedSE + "%");
-        System.out.print("\n");
+        sum_meanSE = Math.sqrt(sum_meanSE / 10)
+        val SE = sum_meanSE / Math.sqrt(10.0)
+        val roundedSE = Math.round(SE * 10) / 10.0
+        print("\n")
+        print("SE: $roundedSE%")
+        print("\n")
     }
 
-    public void testCrossValidationRF(){
-        double sum = 0;
-        double[] errorsFoldK = new double[10];
-        double current;
+    fun testCrossValidationRF() {
+        var sum = 0.0
+        val errorsFoldK = DoubleArray(10)
+        var current: Double
         //For each Random Forest
-        for (int i = 0; i < 10; i ++) {
-            ArrayList<TreeNode> currentForest = cvRandomForests.get(i);
-            ArrayList<DataPoint> currentTestData = crossValidationChunks.get(i);
-            current = testRandomForest(currentTestData,currentForest,i+1);
-            sum += current;
+        for (i in 0..9) {
+            val currentForest = cvRandomForests[i]
+            val currentTestData = crossValidationChunks[i]
+            current = testRandomForest(currentTestData, currentForest, i + 1)
+            sum += current
             //Save k errors for SE
-            errorsFoldK[i] = current;
+            errorsFoldK[i] = current
         }
-
-        double meanErrors = sum/10;
-        double rounded1 = Math.round(meanErrors * 10) / 10.0;
-        System.out.print("\n");
-        System.out.print("\n");
-        System.out.print("Mean errors: " + rounded1 + "%");
-        System.out.print("\n");
+        val meanErrors = sum / 10
+        val rounded1 = Math.round(meanErrors * 10) / 10.0
+        print("\n")
+        print("\n")
+        print("Mean errors: $rounded1%")
+        print("\n")
 
         //Calculate SE (Standard Errors)
-        double sum_meanSE = 0;
-        for (int i = 0; i < 10; i++){
-            sum_meanSE += (1.*errorsFoldK[i] - meanErrors) * (1.*errorsFoldK[i] - meanErrors);
+        var sum_meanSE = 0.0
+        for (i in 0..9) {
+            sum_meanSE += (1.0 * errorsFoldK[i] - meanErrors) * (1.0 * errorsFoldK[i] - meanErrors)
         }
-        sum_meanSE = Math.sqrt(sum_meanSE/10);
-        double SE = sum_meanSE/Math.sqrt(10);
-
-        double roundedSE = Math.round(SE * 10) / 10.0;
-        System.out.print("SE: " + roundedSE + "%");
-        System.out.print("\n");
+        sum_meanSE = Math.sqrt(sum_meanSE / 10)
+        val SE = sum_meanSE / Math.sqrt(10.0)
+        val roundedSE = Math.round(SE * 10) / 10.0
+        print("SE: $roundedSE%")
+        print("\n")
     }
 
     //This overload method is intended to be used when Random Forest cross-validation is selected.
-    public double testRandomForest(ArrayList<DataPoint> testD, ArrayList<TreeNode> roots, int index){
-        int test_errors = 0;
-        int test_size = testD.size();
-        for (DataPoint point : testD) {
-            if (!testExampleRF(point, roots)) test_errors++;
+    fun testRandomForest(testD: ArrayList<DataPoint?>, roots: ArrayList<TreeNode>, index: Int): Double {
+        var test_errors = 0
+        val test_size = testD.size
+        for (point in testD) {
+            if (!testExampleRF(point, roots)) test_errors++
         }
-        System.out.print("\n");
-        double rounded1 = Math.round((1.*test_errors*100/test_size) * 10) / 10.0;
-        System.out.print("Fold #" + index +" Errors: " + rounded1 + "%");
-        return rounded1;
+        print("\n")
+        val rounded1 = Math.round(1.0 * test_errors * 100 / test_size * 10) / 10.0
+        print("Fold #$index Errors: $rounded1%")
+        return rounded1
     }
 
-    public void testRandomForest(){
-        int test_errors = 0;
-        int test_corrects = 0;
-        for (DataPoint point : testData) {
-            if (testExampleRF(point, rootsRandomForest)) test_corrects++;
-            else test_errors++;
+    fun testRandomForest() {
+        var test_errors = 0
+        var test_corrects = 0
+        for (point in testData) {
+            if (testExampleRF(point, rootsRandomForest)) test_corrects++ else test_errors++
         }
-
-        int train_errors = 0;
-        int train_corrects = 0;
-        for (DataPoint point : trainData) {
-            if (testExampleRF(point, rootsRandomForest)) train_corrects++;
-            else train_errors++;
+        var train_errors = 0
+        var train_corrects = 0
+        for (point in trainData!!) {
+            if (testExampleRF(point, rootsRandomForest)) train_corrects++ else train_errors++
         }
-        System.out.print("TRAIN DATA: ");
-        System.out.print("\n");
-        System.out.print("=================================");
-        System.out.print("\n");
-        System.out.print("Correct guesses: " + train_corrects);
-        System.out.print("\n");
-        double rounded = Math.round((1.*train_errors*100/trainData.size()) * 10) / 10.0;
-        System.out.print("Incorrect guesses: " + train_errors + " (" + rounded + "%)");
-        System.out.print("\n");
-
-        if (!this.testData.isEmpty()) {
-            System.out.print("\n");
-            System.out.print("TEST DATA: ");
-            System.out.print("\n");
-            System.out.print("=================================");
-            System.out.print("\n");
-            System.out.print("Correct guesses: " + test_corrects);
-            System.out.print("\n");
-            double rounded1 = Math.round((1. * test_errors * 100 / testData.size()) * 10) / 10.0;
-            System.out.print("Incorrect guesses: " + test_errors + " (" + rounded1 + "%)");
+        print("TRAIN DATA: ")
+        print("\n")
+        print("=================================")
+        print("\n")
+        print("Correct guesses: $train_corrects")
+        print("\n")
+        val rounded = Math.round(1.0 * train_errors * 100 / trainData!!.size * 10) / 10.0
+        print("Incorrect guesses: $train_errors ($rounded%)")
+        print("\n")
+        if (!testData.isEmpty()) {
+            print("\n")
+            print("TEST DATA: ")
+            print("\n")
+            print("=================================")
+            print("\n")
+            print("Correct guesses: $test_corrects")
+            print("\n")
+            val rounded1 = Math.round(1.0 * test_errors * 100 / testData.size * 10) / 10.0
+            print("Incorrect guesses: $test_errors ($rounded1%)")
         }
     }
 
-    public void queryTree(String file) {
-        if (!file.endsWith(".tree")) file += ".tree";
-        File inputFile = new File(file);
-        cid3 id3;
+    fun queryTree(file: String) {
+        var fileLocal = file
+        if (!fileLocal.endsWith(".tree")) fileLocal += ".tree"
+        val inputFile = File(fileLocal)
+        val id3: cid3?
         if (inputFile.exists()) {
-            Scanner in = new Scanner(System.in);
-            id3 = deserializeFile(file);
-            System.out.print("\n");
-            System.out.print("Tree file deserialized.");
-            System.out.print("\n");
-            TreeNode currentNode = id3.root;
-            int attributeValue = 0;
-            while (!(currentNode.children == null || currentNode.children.isEmpty())) {
+            val `in` = Scanner(System.`in`)
+            id3 = deserializeFile(fileLocal)
+            print("\n")
+            print("Tree file deserialized.")
+            print("\n")
+            var currentNode = id3!!.root
+            var attributeValue = 0
+            while (!(currentNode.children == null || currentNode.children!!.isEmpty())) {
                 //If attribute is discrete, show all possible values for it
                 if (id3.attributeTypes[currentNode.decompositionAttribute] == AttributeType.Discrete) {
-                    System.out.print("Please enter attribute: " + id3.attributeNames[currentNode.decompositionAttribute]);
-                    System.out.print("\n");
-                    System.out.print("(possible values are: ");
-                    StringBuilder values = new StringBuilder();
-                    ArrayList<String> valuesArray = new ArrayList<>();
-                    for (int i = 0; i < id3.domainsIndexToValue.get(currentNode.decompositionAttribute).size(); i++) {
-                        valuesArray.add((String) id3.domainsIndexToValue.get(currentNode.decompositionAttribute).get(i));
+                    print("Please enter attribute: " + id3.attributeNames[currentNode.decompositionAttribute])
+                    print("\n")
+                    print("(possible values are: ")
+                    var values = StringBuilder()
+                    val valuesArray = ArrayList<String>()
+                    for (i in 0 until id3.domainsIndexToValue!![currentNode.decompositionAttribute].size) {
+                        valuesArray.add(id3.domainsIndexToValue!![currentNode.decompositionAttribute][i] as String)
                     }
-                    Collections.sort(valuesArray);
-                    for (String value : valuesArray) {
-                        values.append(value);
-                        values.append(", ");
+                    valuesArray.sort()
+                    for (value in valuesArray) {
+                        values.append(value)
+                        values.append(", ")
                     }
-                    values = new StringBuilder("?, " + values.substring(0, values.length() - 2));
-                    System.out.print(values + ")");
-                    System.out.print("\n");
-
-                    while(true) {
+                    values = StringBuilder("?, " + values.substring(0, values.length - 2))
+                    print("$values)")
+                    print("\n")
+                    while (true) {
                         try {
-                            String s = in.nextLine();
-                            if (s.equals("?")){
-                                attributeValue = id3.mostCommonValues[currentNode.decompositionAttribute];
-                                break;
-                            }
-                            else
-                                attributeValue = id3.domainsValueToIndex.get(currentNode.decompositionAttribute).get(s);
-                            break;
-                        }
-                        catch(Exception e){
-                            System.out.println("Please enter a valid value:");
+                            val s = `in`.nextLine()
+                            if (s == "?") {
+                                attributeValue = id3.mostCommonValues[currentNode.decompositionAttribute]
+                                break
+                            } else attributeValue = id3.domainsValueToIndex!![currentNode.decompositionAttribute][s]!!
+                            break
+                        } catch (e: Exception) {
+                            println("Please enter a valid value:")
                         }
                     }
                 }
-                for (int i = 0; i < currentNode.children.size(); i++){
+                for (i in currentNode.children!!.indices) {
                     //Check if attribute is continuous
-                    if(id3.attributeTypes[currentNode.decompositionAttribute] == AttributeType.Continuous){
-                        if ((currentNode.children.get(i)).decompositionValueContinuousSymbol.equals("<=")){
-                            System.out.print("Is attribute: " + id3.attributeNames[currentNode.decompositionAttribute] + " <= " + (currentNode.children.get(i)).thresholdContinuous + " ? (y/n/?)");
-                            System.out.print("\n");
-                            String s = in.nextLine();
-                            if(s.equals("y") || s.equals("Y")|| s.equals("yes") || s.equals("Yes") || s.equals("YES") || s.equals("n") || s.equals("N") || s.equals("no") || s.equals("No") || s.equals("NO") || s.equals("?"))  {
-                                if (s.equals("y") || s.equals("Y") || s.equals("yes") || s.equals("Yes") || s.equals("YES")) {
-                                    currentNode = currentNode.children.get(i);
-                                    break;
-                                }
-                                else
-                                if (s.equals("?")){
-                                    double mean = id3.meanValues[currentNode.decompositionAttribute];
-                                    if (mean <= (currentNode.children.get(i)).thresholdContinuous) {
-                                        currentNode = currentNode.children.get(i);
+                    if (id3.attributeTypes[currentNode.decompositionAttribute] == AttributeType.Continuous) {
+                        if (currentNode.children!![i].decompositionValueContinuousSymbol == "<=") {
+                            print("Is attribute: " + id3.attributeNames[currentNode.decompositionAttribute] + " <= " + currentNode.children!![i].thresholdContinuous + " ? (y/n/?)")
+                            print("\n")
+                            val s = `in`.nextLine()
+                            if (s == "y" || s == "Y" || s == "yes" || s == "Yes" || s == "YES" || s == "n" || s == "N" || s == "no" || s == "No" || s == "NO" || s == "?") {
+                                if (s == "y" || s == "Y" || s == "yes" || s == "Yes" || s == "YES") {
+                                    currentNode = currentNode.children!![i]
+                                    break
+                                } else if (s == "?") {
+                                    val mean = id3.meanValues[currentNode.decompositionAttribute]
+                                    currentNode = if (mean <= currentNode.children!![i].thresholdContinuous) {
+                                        currentNode.children!![i]
+                                    } else {
+                                        currentNode.children!![i + 1]
                                     }
-                                    else {
-                                        currentNode = currentNode.children.get(i + 1);
-                                    }
-                                    break;
+                                    break
+                                } else {
+                                    currentNode = currentNode.children!![i + 1]
+                                    break
                                 }
-                                else {
-                                    currentNode = currentNode.children.get(i + 1);
-                                    break;
-                                }
-                            }
-                            else{
-                                System.out.print("\n");
-                                System.out.print("Error: wrong input value");
-                                System.out.print("\n");
-                                System.exit(1);
+                            } else {
+                                print("\n")
+                                print("Error: wrong input value")
+                                print("\n")
+                                System.exit(1)
                             }
                         }
-                    }
-                    else
-                    if ((currentNode.children.get(i)).decompositionValue == attributeValue){
-                        currentNode = currentNode.children.get(i);
-                        break;
+                    } else if (currentNode.children!![i].decompositionValue == attributeValue) {
+                        currentNode = currentNode.children!![i]
+                        break
                     }
                 }
             }
             //Check if the node is empty, if so, return its parent most frequent class.
-            boolean isEmpty = true;
-            for (int i = 0; i < currentNode.frequencyClasses.length; i ++){
-                if (currentNode.frequencyClasses[i] != 0){
-                    isEmpty = false;
-                    break;
+            var isEmpty = true
+            for (i in currentNode.frequencyClasses.indices) {
+                if (currentNode.frequencyClasses[i] != 0) {
+                    isEmpty = false
+                    break
                 }
             }
-            int mostCommon;
-            if (isEmpty) mostCommon = id3.mostCommonFinal(currentNode.parent);
-            else mostCommon = id3.mostCommonFinal(currentNode);
-
-            String mostCommonStr = (String) id3.domainsIndexToValue.get(id3.classAttribute).get(mostCommon);
+            val mostCommon: Int
+            mostCommon = if (isEmpty) id3.mostCommonFinal(currentNode.parent) else id3.mostCommonFinal(currentNode)
+            val mostCommonStr = id3.domainsIndexToValue!![id3.classAttribute][mostCommon] as String?
             //Print class attribute value
-            System.out.println("Class attribute value is: " + mostCommonStr);
-
-        } else System.out.println("The file doesn't exist.");
+            println("Class attribute value is: $mostCommonStr")
+        } else println("The file doesn't exist.")
     }
 
-    public void queryTreeOutput(String treeFile, String casesFile) {
-        if (!treeFile.endsWith(".tree")) treeFile += ".tree";
-        String fileOutStr;
-        if (!casesFile.endsWith(".cases")) fileOutStr = casesFile + ".tmp";
-        else {
-            fileOutStr = casesFile.substring(0, casesFile.length() - 5) + "tmp";
+    fun queryTreeOutput(treeFile: String, casesFile: String) {
+        var treeFileLocal = treeFile
+        var casesFileLocal = casesFile
+        if (!treeFileLocal.endsWith(".tree")) treeFileLocal += ".tree"
+        val fileOutStr: String
+        fileOutStr = if (!casesFileLocal.endsWith(".cases")) "$casesFileLocal.tmp" else {
+            casesFileLocal.substring(0, casesFileLocal.length - 5) + "tmp"
         }
-
-        File inputTreeFile = new File(treeFile);
-        cid3 id3;
-
-        FileWriter fileOut = null;
+        val inputTreeFile = File(treeFileLocal)
+        val id3: cid3?
+        var fileOut: FileWriter? = null
         try {
-            fileOut = new FileWriter(fileOutStr, false);
+            fileOut = FileWriter(fileOutStr, false)
+        } catch (e: Exception) {
+            System.err.println("""
+    Error creating temporal file.
+    
+    """.trimIndent())
+            System.exit(1)
         }
-        catch (Exception e){
-            System.err.println( "Error creating temporal file." + "\n");
-            System.exit(1);
-        }
-        BufferedWriter fileBuf = new BufferedWriter(fileOut);
-        PrintWriter printOut = new PrintWriter(fileBuf);
-
+        val fileBuf = BufferedWriter(fileOut)
+        val printOut = PrintWriter(fileBuf)
         if (inputTreeFile.exists()) {
-            id3 = deserializeFile(treeFile);
-            System.out.print("\n");
-            System.out.print("Tree file deserialized.");
-            System.out.print("\n");
-
-            FileInputStream inCases = null;
-
+            id3 = deserializeFile(treeFileLocal)
+            print("\n")
+            print("Tree file deserialized.")
+            print("\n")
+            var inCases: FileInputStream? = null
             try {
-                if (!casesFile.endsWith(".cases")) casesFile += ".cases";
-                File inputFile = new File(casesFile);
-                inCases = new FileInputStream(inputFile);
-            } catch ( Exception e) {
-                System.err.println( "Unable to open cases file." + "\n");
-                System.exit(1);
+                if (!casesFileLocal.endsWith(".cases")) casesFileLocal += ".cases"
+                val inputFile = File(casesFileLocal)
+                inCases = FileInputStream(inputFile)
+            } catch (e: Exception) {
+                System.err.println("""
+    Unable to open cases file.
+    
+    """.trimIndent())
+                System.exit(1)
             }
-
-            BufferedReader bin = new BufferedReader(new InputStreamReader(inCases));
-            String input = null;
-            StringTokenizer tokenizer;
-
+            val bin = BufferedReader(InputStreamReader(inCases))
+            var input: String? = null
+            var tokenizer: StringTokenizer
             try {
-                input = bin.readLine();
+                input = bin.readLine()
+            } catch (e: Exception) {
+                System.err.println("""
+    Unable to read line: 
+    
+    """.trimIndent())
+                System.exit(1)
             }
-            catch (Exception e){
-                System.err.println( "Unable to read line: " + "\n");
-                System.exit(1);
-            }
-            while(input != null) {
-                if (input.trim().equals("")) continue;
-                if (input.startsWith("//")) continue;
-
-                tokenizer = new StringTokenizer(input, ",");
-                int numTokens = tokenizer.countTokens();
-                if (numTokens != id3.numAttributes - 1) {
-                    System.err.println( "Expecting " + (id3.numAttributes - 1)  + " attributes");
-                    System.exit(1);
+            while (input != null) {
+                if (input.trim { it <= ' ' } == "") continue
+                if (input.startsWith("//")) continue
+                tokenizer = StringTokenizer(input, ",")
+                val numTokens = tokenizer.countTokens()
+                if (numTokens != id3!!.numAttributes - 1) {
+                    System.err.println("Expecting " + (id3.numAttributes - 1) + " attributes")
+                    System.exit(1)
                 }
-
-                DataPoint point = new DataPoint(id3.numAttributes);
-                String next;
-                for (int i=0; i < id3.numAttributes - 1; i++) {
-                    next = tokenizer.nextToken().trim();
-                    if(id3.attributeTypes[i] == AttributeType.Continuous) {
-                        if (next.equals("?") || next.equals("NaN")) {
-                            double value;
-                            value = id3.meanValues[i];
-                            point.attributes[i] = id3.getSymbolValue(i,value);
-                        }
-
-                        else
-                        {
+                val point = DataPoint(id3.numAttributes)
+                var next: String
+                for (i in 0 until id3.numAttributes - 1) {
+                    next = tokenizer.nextToken().trim { it <= ' ' }
+                    if (id3.attributeTypes[i] == AttributeType.Continuous) {
+                        if (next == "?" || next == "NaN") {
+                            var value: Double
+                            value = id3.meanValues[i]
+                            point.attributes[i] = id3.getSymbolValue(i, value)
+                        } else {
                             try {
-                                point.attributes[i] = id3.getSymbolValue(i, Double.parseDouble(next));
-                            }
-                            catch (Exception e){
-                                System.err.println( "Error reading continuous value in train data.");
-                                System.exit(1);
+                                point.attributes[i] = id3.getSymbolValue(i, next.toDouble())
+                            } catch (e: Exception) {
+                                System.err.println("Error reading continuous value in train data.")
+                                System.exit(1)
                             }
                         }
-                    }
-                    else
-                    if (id3.attributeTypes[i] == AttributeType.Discrete) {
-                        if (next.equals("?") || next.equals("NaN")) {
-                            point.attributes[i] = id3.mostCommonValues[i];
-                        }
-                        else point.attributes[i] = id3.getSymbolValue(i, next);
+                    } else if (id3.attributeTypes[i] == AttributeType.Discrete) {
+                        if (next == "?" || next == "NaN") {
+                            point.attributes[i] = id3.mostCommonValues[i]
+                        } else point.attributes[i] = id3.getSymbolValue(i, next)
                     }
                 }
                 //Test the example point
-                TreeNode node;
-                node = id3.testExamplePoint(point, id3.root);
-                boolean isEmpty = true;
-                int caseClass;
+                var node: TreeNode
+                node = id3.testExamplePoint(point, id3.root)
+                var isEmpty = true
+                var caseClass: Int
                 //Check if the node is empty, if so, return its parent most frequent class.
-                for (int j = 0; j < node.frequencyClasses.length; j ++){
-                    if (node.frequencyClasses[j] != 0){
-                        isEmpty = false;
-                        break;
+                for (j in node.frequencyClasses.indices) {
+                    if (node.frequencyClasses[j] != 0) {
+                        isEmpty = false
+                        break
                     }
                 }
                 //If node is empty
-                if (isEmpty) caseClass =  id3.mostCommonFinal(node.parent);
-                else caseClass = id3.mostCommonFinal(node);
+                caseClass = if (isEmpty) id3.mostCommonFinal(node.parent) else id3.mostCommonFinal(node)
 
                 //Print line to output tmp file
-                String classValue = (String) id3.domainsIndexToValue.get(id3.classAttribute).get(caseClass);
-                String line = input + "," + classValue;
-                printOut.write(line);
-                printOut.println();
+                val classValue = id3.domainsIndexToValue!![id3.classAttribute][caseClass] as String?
+                val line = "$input,$classValue"
+                printOut.write(line)
+                printOut.println()
 
                 //continue the loop
                 try {
-                    input = bin.readLine();
-                }
-                catch (Exception e){
-                    System.err.println( "Unable to read line. " + "\n");
-                    System.exit(1);
+                    input = bin.readLine()
+                } catch (e: Exception) {
+                    System.err.println("""
+    Unable to read line. 
+    
+    """.trimIndent())
+                    System.exit(1)
                 }
             }
-            printOut.close();
-            System.out.print("\n");
-            System.out.print("Results saved to tmp file.");
-            System.out.print("\n");
-        }
-        else System.out.println("The tree file doesn't exist.");
+            printOut.close()
+            print("\n")
+            print("Results saved to tmp file.")
+            print("\n")
+        } else println("The tree file doesn't exist.")
     }
 
-    public void queryRandomForestOutput(String rfFile, String casesFile) {
-        if (!rfFile.endsWith(".forest")) rfFile += ".forest";
-        String fileOutStr;
-        if (!casesFile.endsWith(".cases")) fileOutStr = casesFile + ".tmp";
-        else {
-            fileOutStr = casesFile.substring(0, casesFile.length() - 5) + "tmp";
+    fun queryRandomForestOutput(rfFile: String, casesFile: String) {
+        var rfFileLocal = rfFile
+        var casesFileLocal = casesFile
+        if (!rfFileLocal.endsWith(".forest")) rfFileLocal += ".forest"
+        val fileOutStr: String
+        fileOutStr = if (!casesFileLocal.endsWith(".cases")) "$casesFileLocal.tmp" else {
+            casesFileLocal.substring(0, casesFileLocal.length - 5) + "tmp"
         }
-
-        File inputForestFile = new File(rfFile);
-        cid3 id3;
-
-        FileWriter fileOut = null;
+        val inputForestFile = File(rfFileLocal)
+        val id3: cid3?
+        var fileOut: FileWriter? = null
         try {
-            fileOut = new FileWriter(fileOutStr, false);
+            fileOut = FileWriter(fileOutStr, false)
+        } catch (e: Exception) {
+            System.err.println("""
+    Error creating temporal file.
+    
+    """.trimIndent())
+            System.exit(1)
         }
-        catch (Exception e){
-            System.err.println( "Error creating temporal file." + "\n");
-            System.exit(1);
-        }
-        BufferedWriter fileBuf = new BufferedWriter(fileOut);
-        PrintWriter printOut = new PrintWriter(fileBuf);
-
+        val fileBuf = BufferedWriter(fileOut)
+        val printOut = PrintWriter(fileBuf)
         if (inputForestFile.exists()) {
-            id3 = deserializeFile(rfFile);
-            System.out.print("\n");
-            System.out.print("Forest file deserialized.");
-            System.out.print("\n");
-
-            FileInputStream inCases = null;
-
+            id3 = deserializeFile(rfFileLocal)
+            print("\n")
+            print("Forest file deserialized.")
+            print("\n")
+            var inCases: FileInputStream? = null
             try {
-                if (!casesFile.endsWith(".cases")) casesFile += ".cases";
-                File inputFile = new File(casesFile);
-                inCases = new FileInputStream(inputFile);
-            } catch ( Exception e) {
-                System.err.println( "Unable to open cases file." + "\n");
-                System.exit(1);
+                if (!casesFileLocal.endsWith(".cases")) casesFileLocal += ".cases"
+                val inputFile = File(casesFileLocal)
+                inCases = FileInputStream(inputFile)
+            } catch (e: Exception) {
+                System.err.println("""
+    Unable to open cases file.
+    
+    """.trimIndent())
+                System.exit(1)
             }
-
-            BufferedReader bin = new BufferedReader(new InputStreamReader(inCases));
-            String input = null;
-            StringTokenizer tokenizer;
-
+            val bin = BufferedReader(InputStreamReader(inCases))
+            var input: String? = null
+            var tokenizer: StringTokenizer
             try {
-                input = bin.readLine();
+                input = bin.readLine()
+            } catch (e: Exception) {
+                System.err.println("""
+    Unable to read line: 
+    
+    """.trimIndent())
+                System.exit(1)
             }
-            catch (Exception e){
-                System.err.println( "Unable to read line: " + "\n");
-                System.exit(1);
-            }
-            while(input != null) {
-                if (input.trim().equals("")) continue;
-                if (input.startsWith("//")) continue;
-
-                tokenizer = new StringTokenizer(input, ",");
-                int numTokens = tokenizer.countTokens();
-                if (numTokens != id3.numAttributes - 1) {
-                    System.err.println( "Expecting " + (id3.numAttributes - 1)  + " attributes");
-                    System.exit(1);
+            while (input != null) {
+                if (input.trim { it <= ' ' } == "") continue
+                if (input.startsWith("//")) continue
+                tokenizer = StringTokenizer(input, ",")
+                val numTokens = tokenizer.countTokens()
+                if (numTokens != id3!!.numAttributes - 1) {
+                    System.err.println("Expecting " + (id3.numAttributes - 1) + " attributes")
+                    System.exit(1)
                 }
-
-                DataPoint point = new DataPoint(id3.numAttributes);
-                String next;
-                for (int i=0; i < id3.numAttributes - 1; i++) {
-                    next = tokenizer.nextToken().trim();
-                    if(id3.attributeTypes[i] == AttributeType.Continuous) {
-                        if (next.equals("?") || next.equals("NaN")) {
-                            double value;
-                            value = id3.meanValues[i];
-                            point.attributes[i] = id3.getSymbolValue(i,value);
-                        }
-
-                        else
-                        {
+                val point = DataPoint(id3.numAttributes)
+                var next: String
+                for (i in 0 until id3.numAttributes - 1) {
+                    next = tokenizer.nextToken().trim { it <= ' ' }
+                    if (id3.attributeTypes[i] == AttributeType.Continuous) {
+                        if (next == "?" || next == "NaN") {
+                            var value: Double
+                            value = id3.meanValues[i]
+                            point.attributes[i] = id3.getSymbolValue(i, value)
+                        } else {
                             try {
-                                point.attributes[i] = id3.getSymbolValue(i, Double.parseDouble(next));
-                            }
-                            catch (Exception e){
-                                System.err.println( "Error reading continuous value in train data.");
-                                System.exit(1);
+                                point.attributes[i] = id3.getSymbolValue(i, next.toDouble())
+                            } catch (e: Exception) {
+                                System.err.println("Error reading continuous value in train data.")
+                                System.exit(1)
                             }
                         }
-                    }
-                    else
-                    if (id3.attributeTypes[i] == AttributeType.Discrete) {
-                        if (next.equals("?") || next.equals("NaN")) {
-                            point.attributes[i] = id3.mostCommonValues[i];
-                        }
-                        else point.attributes[i] = id3.getSymbolValue(i, next);
+                    } else if (id3.attributeTypes[i] == AttributeType.Discrete) {
+                        if (next == "?" || next == "NaN") {
+                            point.attributes[i] = id3.mostCommonValues[i]
+                        } else point.attributes[i] = id3.getSymbolValue(i, next)
                     }
                     //else
                     //if (id3.attributeTypes[i] == AttributeType.Ignore){
@@ -2358,365 +2215,331 @@ public class cid3 implements Serializable{
                     //}
                 }
                 //Check the created example against the random forest
-                int[] classAttrValues = new int[id3.domainsIndexToValue.get(id3.classAttribute).size()];
-                ArrayList<TreeNode> roots = id3.rootsRandomForest;
-                TreeNode node;
-                int resultClass = 0;
-
-                for (TreeNode treeNode : roots) {
-                    node = id3.testExamplePoint(point, treeNode);
+                val classAttrValues = IntArray(id3.domainsIndexToValue!![id3.classAttribute].size)
+                val roots = id3.rootsRandomForest
+                var node: TreeNode
+                var resultClass = 0
+                for (treeNode in roots) {
+                    node = id3.testExamplePoint(point, treeNode)
                     //Check if the node is empty, if so, return its parent most frequent class.
-                    boolean isEmpty = true;
-                    for (int j = 0; j < node.frequencyClasses.length; j++) {
+                    var isEmpty = true
+                    for (j in node.frequencyClasses.indices) {
                         if (node.frequencyClasses[j] != 0) {
-                            isEmpty = false;
-                            break;
+                            isEmpty = false
+                            break
                         }
                     }
                     //If node is empty
-                    if (isEmpty) classAttrValues[id3.mostCommonFinal(node.parent)]++;
-                    else classAttrValues[id3.mostCommonFinal(node)]++;
+                    if (isEmpty) classAttrValues[id3.mostCommonFinal(node.parent)]++ else classAttrValues[id3.mostCommonFinal(node)]++
                 }
                 //Voting now
-                for (int i = 1; i < classAttrValues.length; i++){
-                    if (classAttrValues[i] > resultClass)
-                        resultClass = i;
+                for (i in 1 until classAttrValues.size) {
+                    if (classAttrValues[i] > resultClass) resultClass = i
                 }
                 //Print line to output tmp file
-                String classValue = (String) id3.domainsIndexToValue.get(id3.classAttribute).get(resultClass);
-                String line = input + "," + classValue;
-                printOut.write(line);
-                printOut.println();
+                val classValue = id3.domainsIndexToValue!![id3.classAttribute][resultClass] as String?
+                val line = "$input,$classValue"
+                printOut.write(line)
+                printOut.println()
 
                 //continue the loop
                 try {
-                    input = bin.readLine();
-                }
-                catch (Exception e){
-                    System.err.println( "Unable to read line. " + "\n");
-                    System.exit(1);
+                    input = bin.readLine()
+                } catch (e: Exception) {
+                    System.err.println("""
+    Unable to read line. 
+    
+    """.trimIndent())
+                    System.exit(1)
                 }
             }
-            printOut.close();
-            System.out.print("\n");
-            System.out.print("Results saved to tmp file.");
-            System.out.print("\n");
-        }
-        else System.out.println("The forest file doesn't exist.");
+            printOut.close()
+            print("\n")
+            print("Results saved to tmp file.")
+            print("\n")
+        } else println("The forest file doesn't exist.")
     }
 
-
-    public void queryRandomForest(String file) {
-        if (!file.endsWith(".forest")) file += ".forest";
-
-        File inputFile = new File(file);
-        Scanner in = new Scanner(System.in);
-        cid3 id3;
+    fun queryRandomForest(file: String) {
+        var fileLocal = file
+        if (!fileLocal.endsWith(".forest")) fileLocal += ".forest"
+        val inputFile = File(fileLocal)
+        val `in` = Scanner(System.`in`)
+        val id3: cid3?
         if (inputFile.exists()) {
-            id3 = deserializeFile(file);
-            System.out.print("\n");
-            System.out.print("Random Forest file deserialized.");
-            System.out.print("\n");
-            DataPoint example = new DataPoint(id3.numAttributes);
+            id3 = deserializeFile(fileLocal)
+            print("\n")
+            print("Random Forest file deserialized.")
+            print("\n")
+            val example = DataPoint(id3!!.numAttributes)
             //Enter all attributes into an example except the class, that's why -1
-            for (int i = 0; i < id3.numAttributes - 1; i ++){
-                if (id3.attributeTypes[i] == AttributeType.Ignore) continue;
+            for (i in 0 until id3.numAttributes - 1) {
+                if (id3.attributeTypes[i] == AttributeType.Ignore) continue
                 if (id3.attributeTypes[i] == AttributeType.Discrete) {
-                    System.out.print("\n");
-                    System.out.print("Please enter attribute: " + id3.attributeNames[i]);
-                    System.out.print("\n");
-                    System.out.print("(possible values are: ");
-                    StringBuilder values = new StringBuilder();
-                    ArrayList<String> valuesArray = new ArrayList<>();
-                    for (int j = 0; j < id3.domainsIndexToValue.get(i).size(); j++) {
-                        valuesArray.add((String) id3.domainsIndexToValue.get(i).get(j));
+                    print("\n")
+                    print("Please enter attribute: " + id3.attributeNames[i])
+                    print("\n")
+                    print("(possible values are: ")
+                    var values = StringBuilder()
+                    val valuesArray = ArrayList<String>()
+                    for (j in 0 until id3.domainsIndexToValue!![i].size) {
+                        valuesArray.add(id3.domainsIndexToValue!![i][j] as String)
                     }
-                    Collections.sort(valuesArray);
-                    for (String item : valuesArray) {
-                        values.append(item);
-                        values.append(", ");
+                    valuesArray.sort()
+                    for (item in valuesArray) {
+                        values.append(item)
+                        values.append(", ")
                     }
-
-                    values = new StringBuilder("?, " + values.substring(0, values.length() - 2));
-                    System.out.print(values + ")");
-                    System.out.print("\n");
-
-                    while(true) {
-                        int value;
-                        String s = in.nextLine();
-                        if (s.equals("?")) {
-                            value = id3.mostCommonValues[i];
-                            example.attributes[i] = value;
-                            break;
-                        }
-                        else
-                        if (id3.domainsIndexToValue.get(i).containsValue(s)){
-                            example.attributes[i] = id3.getSymbolValue(i,s);
-                            break;
-                        }
-                        else
-                            System.out.println("Please enter a valid value:");
-                    }
-                }
-                else {
-                    System.out.print("\n");
-                    System.out.print("Please enter attribute: " + id3.attributeNames[i]);
-                    System.out.print("\n");
+                    values = StringBuilder("?, " + values.substring(0, values.length - 2))
+                    print("$values)")
+                    print("\n")
                     while (true) {
-                        String s = in.nextLine();
+                        var value: Int
+                        val s = `in`.nextLine()
+                        if (s == "?") {
+                            value = id3.mostCommonValues[i]
+                            example.attributes[i] = value
+                            break
+                        } else if (id3.domainsIndexToValue!![i].containsValue(s)) {
+                            example.attributes[i] = id3.getSymbolValue(i, s)
+                            break
+                        } else println("Please enter a valid value:")
+                    }
+                } else {
+                    print("\n")
+                    print("Please enter attribute: " + id3.attributeNames[i])
+                    print("\n")
+                    while (true) {
+                        val s = `in`.nextLine()
                         try {
-                            double value;
-                            if (s.equals("?")) value = id3.meanValues[i];
-                            else value = Double.parseDouble(s);
-                            example.attributes[i] = id3.getSymbolValue(i,value);
-                            break;
-                        } catch (Exception e) {
-                            System.out.println("Please enter a valid value:");
+                            var value: Double
+                            value = if (s == "?") id3.meanValues[i] else s.toDouble()
+                            example.attributes[i] = id3.getSymbolValue(i, value)
+                            break
+                        } catch (e: Exception) {
+                            println("Please enter a valid value:")
                         }
                     }
                 }
             }
 
             //Check the created example against the random forest
-            int[] classAttrValues = new int[id3.domainsIndexToValue.get(id3.classAttribute).size()];
-            ArrayList<TreeNode> roots = id3.rootsRandomForest;
-            TreeNode node;
-            int resultClass = 0;
-
-            for (TreeNode treeNode : roots) {
-                node = id3.testExamplePoint(example, treeNode);
+            val classAttrValues = IntArray(id3.domainsIndexToValue!![id3.classAttribute].size)
+            val roots = id3.rootsRandomForest
+            var node: TreeNode
+            var resultClass = 0
+            for (treeNode in roots) {
+                node = id3.testExamplePoint(example, treeNode)
                 //Check if the node is empty, if so, return its parent most frequent class.
-                boolean isEmpty = true;
-                for (int j = 0; j < node.frequencyClasses.length; j++) {
+                var isEmpty = true
+                for (j in node.frequencyClasses.indices) {
                     if (node.frequencyClasses[j] != 0) {
-                        isEmpty = false;
-                        break;
+                        isEmpty = false
+                        break
                     }
                 }
                 //If node is empty
-                if (isEmpty) classAttrValues[id3.mostCommonFinal(node.parent)]++;
-                else classAttrValues[id3.mostCommonFinal(node)]++;
+                if (isEmpty) classAttrValues[id3.mostCommonFinal(node.parent)]++ else classAttrValues[id3.mostCommonFinal(node)]++
             }
             //Voting now
-            for (int i = 1; i < classAttrValues.length; i++){
-                if (classAttrValues[i] > resultClass)
-                    resultClass = i;
+            for (i in 1 until classAttrValues.size) {
+                if (classAttrValues[i] > resultClass) resultClass = i
             }
             //Print the answer
-            String mostCommonStr = (String) id3.domainsIndexToValue.get(id3.classAttribute).get(resultClass);
-            System.out.print("\n");
-            System.out.println("Class attribute value is: " + mostCommonStr);
-        }
-        else System.out.println("The file doesn't exist.");
+            val mostCommonStr = id3.domainsIndexToValue!![id3.classAttribute][resultClass] as String?
+            print("\n")
+            println("Class attribute value is: $mostCommonStr")
+        } else println("The file doesn't exist.")
     }
 
-    /* Here is the definition of the main function */
-    public static void main(String[] args) {
-
-        cid3 me = new cid3();
-
-        //Initialize values
-        me.isCrossValidation = false;
-        me.testDataExists = false;
-        me.isRandomForest = false;
-
-        Options options = new Options();
-
-        Option help = new Option("h", "help", false, "print this message");
-        help.setRequired(false);
-        options.addOption(help);
-
-        Option save = new Option("s", "save", false, "save tree/random forest");
-        save.setRequired(false);
-        options.addOption(save);
-
-        Option partition = new Option("p", "partition", false, "partition train/test data");
-        save.setRequired(false);
-        options.addOption(partition);
-
-        Option criteria = new Option("c", "criteria", true, "input criteria: c[Certainty], e[Entropy], g[Gini]");
-        criteria.setRequired(false);
-        options.addOption(criteria);
-
-        Option file = new Option("f", "file", true, "input file");
-        file.setRequired(true);
-        options.addOption(file);
-
-        Option crossValidation = new Option("v", "validation", false, "create 10-fold cross-validation");
-        crossValidation.setRequired(false);
-        options.addOption(crossValidation);
-
-        Option randomForest = new Option("r", "forest", true, "create random forest, enter # of trees");
-        randomForest.setRequired(false);
-        options.addOption(randomForest);
-
-        Option query = new Option("q", "query", true, "query model, enter: t[Tree] or r[Random forest]");
-        query.setRequired(false);
-        options.addOption(query);
-
-        Option output = new Option("o", "output", true, "output file");
-        query.setRequired(false);
-        options.addOption(output);
-
-        //Declare parser and formatter
-        CommandLineParser parser = new DefaultParser();
-        HelpFormatter formatter = new HelpFormatter();
-        CommandLine cmd = null;
-
-        try {
-            for (String arg : args) {
-                if (arg.contains(" -h ") || arg.contains(" --help ")) {
-                    //Print help message
-                    formatter.printHelp("java -jar cid3.jar", options);
-                    System.exit(1);
-                }
-            }
-            cmd = parser.parse(options, args);
-        }
-        catch (ParseException e) {
-            System.out.println(e.getMessage());
-            formatter.printHelp("java -jar cid3.jar", options);
-            System.exit(1);
+    companion object {
+        fun formatDuration(duration: Duration): String {
+            val seconds = duration.seconds
+            val absSeconds = Math.abs(seconds)
+            val positive = String.format(
+                    "%d:%02d:%02d",
+                    absSeconds / 3600,
+                    absSeconds % 3600 / 60,
+                    absSeconds % 60)
+            return if (seconds < 0) "-$positive" else positive
         }
 
-        //Set criteria
-        //me.criteria = Criteria.Certainty;
-        if (cmd.hasOption("criteria")) {
-            String strCriteria = cmd.getOptionValue("criteria");
-            switch (strCriteria) {
-                case "C":
-                case "c":
-                    me.criteria = Criteria.Certainty;
-                    break;
-                case "G":
-                case "g":
-                    me.criteria = Criteria.Gini;
-                    break;
-                case "E":
-                case "e":
-                    me.criteria = Criteria.Entropy;
-                    break;
-                default:
-                    formatter.printHelp("java -jar cid3.jar", options);
-                    System.exit(1);
-            }
-        }
+        /* Here is the definition of the main function */
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val me = cid3()
 
-        //Set file path
-        String inputFilePath = cmd.getOptionValue("file");
-        String originalInputFilePath = inputFilePath;
+            //Initialize values
+            me.isCrossValidation = false
+            me.testDataExists = false
+            me.isRandomForest = false
+            val options = Options()
+            val help = Option("h", "help", false, "print this message")
+            help.isRequired = false
+            options.addOption(help)
+            val save = Option("s", "save", false, "save tree/random forest")
+            save.isRequired = false
+            options.addOption(save)
+            val partition = Option("p", "partition", false, "partition train/test data")
+            save.isRequired = false
+            options.addOption(partition)
+            val criteria = Option("c", "criteria", true, "input criteria: c[Certainty], e[Entropy], g[Gini]")
+            criteria.isRequired = false
+            options.addOption(criteria)
+            val file = Option("f", "file", true, "input file")
+            file.isRequired = true
+            options.addOption(file)
+            val crossValidation = Option("v", "validation", false, "create 10-fold cross-validation")
+            crossValidation.isRequired = false
+            options.addOption(crossValidation)
+            val randomForest = Option("r", "forest", true, "create random forest, enter # of trees")
+            randomForest.isRequired = false
+            options.addOption(randomForest)
+            val query = Option("q", "query", true, "query model, enter: t[Tree] or r[Random forest]")
+            query.isRequired = false
+            options.addOption(query)
+            val output = Option("o", "output", true, "output file")
+            query.isRequired = false
+            options.addOption(output)
 
-        //Set validation
-        me.isCrossValidation = cmd.hasOption("validation");
-
-        //Set split data
-        me.splitTrainData = cmd.hasOption("partition");
-
-        //Set Random Forest
-        if (cmd.hasOption("forest")){
-            String numberOfTrees = cmd.getOptionValue("forest");
+            //Declare parser and formatter
+            val parser: CommandLineParser = DefaultParser()
+            val formatter = HelpFormatter()
+            var cmd: CommandLine? = null
             try {
-                me.numberOfTrees = Integer.parseInt(numberOfTrees);
-            }
-            catch (Exception e){
-                System.out.print("Error: Incorrect number of trees");
-                System.out.print("\n");
-                System.exit(1);
-            }
-            me.isRandomForest = true;
-        }
-        else me.isRandomForest = false;
-
-        //Print help message
-        if (cmd.hasOption("help")) {
-            formatter.printHelp("java -jar cid3.jar", options);
-            System.exit(1);
-        }
-
-        //Show application title
-        System.out.print("\n");
-        int dayInMonth = java.time.LocalDateTime.now().getDayOfMonth();
-        String day = java.time.LocalDateTime.now().getDayOfWeek().name().toLowerCase();
-        day = day.substring(0, 1).toUpperCase() + day.substring(1);
-        String month = java.time.LocalDateTime.now().getMonth().name().toLowerCase();
-        month = month.substring(0, 1).toUpperCase() + month.substring(1);
-
-        DateTimeFormatter time = DateTimeFormatter.ofPattern("hh:mm:ss a");
-        String timeString = java.time.LocalDateTime.now().format(time);
-
-        System.out.print("CID3 [Version 1.0]" + "              " + day + " " + month + " " + dayInMonth + " " + timeString);
-        System.out.print("\n");
-        System.out.print("------------------");
-        System.out.print("\n");
-
-        //if is a query, deserialize file and query model
-        String outputFilePath;
-        if (cmd.hasOption("query")) {
-            String model = cmd.getOptionValue("query");
-            if (model.equals("t")) {
-                if (cmd.hasOption("output")){
-                    outputFilePath = cmd.getOptionValue("output");
-                    me.queryTreeOutput(originalInputFilePath, outputFilePath);
+                for (arg in args) {
+                    if (arg.contains(" -h ") || arg.contains(" --help ")) {
+                        //Print help message
+                        formatter.printHelp("java -jar cid3.jar", options)
+                        System.exit(1)
+                    }
                 }
-                else me.queryTree(originalInputFilePath);
+                cmd = parser.parse(options, args)
+            } catch (e: ParseException) {
+                println(e.message)
+                formatter.printHelp("java -jar cid3.jar", options)
+                System.exit(1)
             }
-            else if (model.equals("r")) {
-                if (cmd.hasOption("output")){
-                    outputFilePath = cmd.getOptionValue("output");
-                    me.queryRandomForestOutput(originalInputFilePath, outputFilePath);
+
+            //Set criteria
+            //me.criteria = Criteria.Certainty;
+            if (cmd!!.hasOption("criteria")) {
+                val strCriteria = cmd.getOptionValue("criteria")
+                when (strCriteria) {
+                    "C", "c" -> me.criteria = Criteria.Certainty
+                    "G", "g" -> me.criteria = Criteria.Gini
+                    "E", "e" -> me.criteria = Criteria.Entropy
+                    else -> {
+                        formatter.printHelp("java -jar cid3.jar", options)
+                        System.exit(1)
+                    }
                 }
-                else me.queryRandomForest(originalInputFilePath);
             }
-        }
-        else {
-            //Check if test data exists
-            if (!inputFilePath.endsWith(".data")) inputFilePath += ".data";
-            String nameTestData = inputFilePath.substring(0, inputFilePath.length() - 4);
-            nameTestData = nameTestData + "test";
 
-            File inputFile = new File(nameTestData);
-            me.testDataExists = inputFile.exists();
+            //Set file path
+            var inputFilePath = cmd.getOptionValue("file")
+            val originalInputFilePath = inputFilePath
 
-            //Read data
-            me.readData(inputFilePath);
-            //Set global variable
-            me.fileName = inputFilePath;
-            //Read test data
-            if (me.testDataExists) me.readTestData(nameTestData);
+            //Set validation
+            me.isCrossValidation = cmd.hasOption("validation")
 
-            //Create a Tree or a Random Forest for saving to disk
-            if (cmd.hasOption("save")) {
-                me.trainData.addAll(me.testData);
-                me.root.data = me.trainData;
-                me.testData.clear();
-                me.setMeanValues();
-                me.setMostCommonValues();
-                me.imputeMissing();
-                if (me.isRandomForest) {
-                    me.createRandomForest(me.root.data, me.rootsRandomForest, false);
-                    System.out.print("\n");
-                    System.out.print("Saving random forest...");
-                    me.createFileRF();
-                    System.out.print("\n");
-                    System.out.print("Random forest saved to disk.");
-                } else {
-                    me.createDecisionTree();
-                    System.out.print("\n");
-                    System.out.print("Saving tree...");
-                    me.createFile();
-                    System.out.print("\n");
-                    System.out.print("Tree saved to disk.");
+            //Set split data
+            me.splitTrainData = cmd.hasOption("partition")
+
+            //Set Random Forest
+            if (cmd.hasOption("forest")) {
+                val numberOfTrees = cmd.getOptionValue("forest")
+                try {
+                    me.numberOfTrees = numberOfTrees.toInt()
+                } catch (e: Exception) {
+                    print("Error: Incorrect number of trees")
+                    print("\n")
+                    System.exit(1)
                 }
-                System.out.print("\n");
-            } //Create CV, RF, Tree without saving
-            else {
-                me.setMeanValues();
-                me.setMostCommonValues();
-                me.imputeMissing();
-                if (me.isCrossValidation && me.isRandomForest) me.createCrossValidationRF();
-                else if (me.isCrossValidation) me.createCrossValidation();
-                else if (me.isRandomForest) me.createRandomForest(me.root.data, me.rootsRandomForest, false);
-                else me.createDecisionTree();
+                me.isRandomForest = true
+            } else me.isRandomForest = false
+
+            //Print help message
+            if (cmd.hasOption("help")) {
+                formatter.printHelp("java -jar cid3.jar", options)
+                System.exit(1)
+            }
+
+            //Show application title
+            print("\n")
+            val dayInMonth = LocalDateTime.now().dayOfMonth
+            var day = LocalDateTime.now().dayOfWeek.name.toLowerCase()
+            day = day.substring(0, 1).toUpperCase() + day.substring(1)
+            var month = LocalDateTime.now().month.name.toLowerCase()
+            month = month.substring(0, 1).toUpperCase() + month.substring(1)
+            val time = DateTimeFormatter.ofPattern("hh:mm:ss a")
+            val timeString = LocalDateTime.now().format(time)
+            print("CID3 [Version 1.0]              $day $month $dayInMonth $timeString")
+            print("\n")
+            print("------------------")
+            print("\n")
+
+            //if is a query, deserialize file and query model
+            val outputFilePath: String
+            if (cmd.hasOption("query")) {
+                val model = cmd.getOptionValue("query")
+                if (model == "t") {
+                    if (cmd.hasOption("output")) {
+                        outputFilePath = cmd.getOptionValue("output")
+                        me.queryTreeOutput(originalInputFilePath, outputFilePath)
+                    } else me.queryTree(originalInputFilePath)
+                } else if (model == "r") {
+                    if (cmd.hasOption("output")) {
+                        outputFilePath = cmd.getOptionValue("output")
+                        me.queryRandomForestOutput(originalInputFilePath, outputFilePath)
+                    } else me.queryRandomForest(originalInputFilePath)
+                }
+            } else {
+                //Check if test data exists
+                if (!inputFilePath.endsWith(".data")) inputFilePath += ".data"
+                var nameTestData = inputFilePath.substring(0, inputFilePath.length - 4)
+                nameTestData = nameTestData + "test"
+                val inputFile = File(nameTestData)
+                me.testDataExists = inputFile.exists()
+
+                //Read data
+                me.readData(inputFilePath)
+                //Set global variable
+                me.fileName = inputFilePath
+                //Read test data
+                if (me.testDataExists) me.readTestData(nameTestData)
+
+                //Create a Tree or a Random Forest for saving to disk
+                if (cmd.hasOption("save")) {
+                    me.trainData!!.addAll(me.testData)
+                    me.root.data = me.trainData
+                    me.testData.clear()
+                    me.setMeanValues()
+                    me.setMostCommonValues()
+                    me.imputeMissing()
+                    if (me.isRandomForest) {
+                        me.createRandomForest(me.root.data, me.rootsRandomForest, false)
+                        print("\n")
+                        print("Saving random forest...")
+                        me.createFileRF()
+                        print("\n")
+                        print("Random forest saved to disk.")
+                    } else {
+                        me.createDecisionTree()
+                        print("\n")
+                        print("Saving tree...")
+                        me.createFile()
+                        print("\n")
+                        print("Tree saved to disk.")
+                    }
+                    print("\n")
+                } //Create CV, RF, Tree without saving
+                else {
+                    me.setMeanValues()
+                    me.setMostCommonValues()
+                    me.imputeMissing()
+                    if (me.isCrossValidation && me.isRandomForest) me.createCrossValidationRF() else if (me.isCrossValidation) me.createCrossValidation() else if (me.isRandomForest) me.createRandomForest(me.root.data, me.rootsRandomForest, false) else me.createDecisionTree()
+                }
             }
         }
     }
