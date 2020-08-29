@@ -134,17 +134,14 @@ class cid3 : Serializable {
         If the symbol does not exist in the domain, the symbol is added to the domain of the attribute
     */
     private fun getSymbolValue(attribute: Int, symbol: Any): Int {
-        return domainsValueToIndex[attribute][symbol]
-                ?: return if (domainsIndexToValue[attribute].isEmpty()) {
-                    domainsIndexToValue[attribute][0] = symbol
-                    domainsValueToIndex[attribute][symbol] = 0
-                    0
-                } else {
-                    val size = domainsIndexToValue[attribute].size
-                    domainsIndexToValue[attribute][size] = symbol
-                    domainsValueToIndex[attribute][symbol] = size
-                    size
-                }
+        return if (domainsValueToIndex[attribute][symbol] != null)
+            domainsValueToIndex[attribute][symbol]!!
+        else {
+            val size = domainsIndexToValue[attribute].size
+            domainsIndexToValue[attribute][size] = symbol
+            domainsValueToIndex[attribute][symbol] = size
+            size
+        }
     }
 
     // Returns the most common class for the specified node
