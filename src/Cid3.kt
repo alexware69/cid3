@@ -2273,7 +2273,7 @@ class Cid3 : Serializable {
             //Declare parser and formatter
             val parser: CommandLineParser = DefaultParser()
             val formatter = HelpFormatter()
-            val cmd: CommandLine?
+            val cmd: CommandLine
             try {
                 for (arg in args) {
                     if (arg.contains(" -h ") || arg.contains(" --help ")) {
@@ -2290,7 +2290,7 @@ class Cid3 : Serializable {
             }
 
             //Set criteria
-            if (cmd!!.hasOption("criteria")) {
+            if (cmd.hasOption("criteria")) {
                 when (cmd.getOptionValue("criteria")) {
                     "C", "c" -> me.criteria = Criteria.Certainty
                     "G", "g" -> me.criteria = Criteria.Gini
