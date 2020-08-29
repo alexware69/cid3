@@ -6,4 +6,4 @@ import java.util.*
  *
  * @author alex
  */
-class DataFrequencies(var data: ArrayList<DataPoint?>, var frequencyClasses: IntArray) : Serializable
+class DataFrequencies(var data: ArrayList<DataPoint>, var frequencyClasses: IntArray) : Serializable

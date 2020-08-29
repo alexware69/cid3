@@ -65,13 +65,13 @@ class cid3 : Serializable {
     class Certainty(var certainty: Double, var threshold: Double) : Serializable
 
     @Transient
-    var testData = ArrayList<DataPoint?>()
+    var testData = ArrayList<DataPoint>()
 
     @Transient
-    var trainData: ArrayList<DataPoint?> = ArrayList()
+    var trainData = ArrayList<DataPoint>()
 
     @Transient
-    var crossValidationChunks = ArrayList<ArrayList<DataPoint?>>()
+    var crossValidationChunks = ArrayList<ArrayList<DataPoint>>()
 
     @Transient
     var testDataExists = false
@@ -94,7 +94,7 @@ class cid3 : Serializable {
         var certaintyUsedToDecompose = 0.0
         // The set of data points if this is a leaf node
         @Transient
-        var data: ArrayList<DataPoint?> = ArrayList()
+        var data: ArrayList<DataPoint> = ArrayList()
         //This is for saving time when calculating most common class
         lateinit var frequencyClasses: IntArray
         // If this is not a leaf node, the attribute that is used to divide the set of data points
@@ -159,11 +159,11 @@ class cid3 : Serializable {
     }
 
     /*  Returns a subset of data, in which the value of the specified attribute of all data points is the specified value  */
-    private fun getSubset(data: ArrayList<DataPoint?>, attribute: Int, value: Int): DataFrequencies {
-        val subset = ArrayList<DataPoint?>()
+    private fun getSubset(data: ArrayList<DataPoint>, attribute: Int, value: Int): DataFrequencies {
+        val subset = ArrayList<DataPoint>()
         val frequencies = IntArray(domainsIndexToValue[classAttribute].size)
         for (point in data) {
-            if (point!!.attributes[attribute] == value) {
+            if (point.attributes[attribute] == value) {
                 subset.add(point)
                 frequencies[point.attributes[classAttribute]]++
             }
@@ -171,21 +171,21 @@ class cid3 : Serializable {
         return DataFrequencies(subset, frequencies)
     }
 
-    private fun getFrequencies(data: ArrayList<DataPoint?>?): IntArray {
+    private fun getFrequencies(data: ArrayList<DataPoint>): IntArray {
         val frequencies = IntArray(domainsIndexToValue[classAttribute].size)
-        for (point in data!!) {
-            frequencies[point!!.attributes[classAttribute]]++
+        for (point in data) {
+            frequencies[point.attributes[classAttribute]]++
         }
         return frequencies
     }
 
-    private fun getSubsetsBelowAndAbove(data: ArrayList<DataPoint?>?, attribute: Int, value: Double): Tuple<DataFrequencies, DataFrequencies> {
-        val subsetBelow = ArrayList<DataPoint?>()
-        val subsetAbove = ArrayList<DataPoint?>()
+    private fun getSubsetsBelowAndAbove(data: ArrayList<DataPoint>, attribute: Int, value: Double): Tuple<DataFrequencies, DataFrequencies> {
+        val subsetBelow = ArrayList<DataPoint>()
+        val subsetAbove = ArrayList<DataPoint>()
         val frequenciesBelow = IntArray(domainsIndexToValue[classAttribute].size)
         val frequenciesAbove = IntArray(domainsIndexToValue[classAttribute].size)
-        for (point in data!!) {
-            if (domainsIndexToValue[attribute][point!!.attributes[attribute]] as Double <= value) {
+        for (point in data) {
+            if (domainsIndexToValue[attribute][point.attributes[attribute]] as Double <= value) {
                 subsetBelow.add(point)
                 frequenciesBelow[point.attributes[classAttribute]]++
             } else {
@@ -197,8 +197,8 @@ class cid3 : Serializable {
     }
 
     //This is the final form of the certainty function.
-    private fun calculateCertainty(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
-        val numData = data!!.size
+    private fun calculateCertainty(data: ArrayList<DataPoint>, givenThatAttribute: Int): Certainty {
+        val numData = data.size
         if (numData == 0) return Certainty(0.0, 0.0)
         val numValuesClass = domainsIndexToValue[classAttribute].size
         val numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size
@@ -229,7 +229,7 @@ class cid3 : Serializable {
             val attributeValuesSet: SortedSet<Double> = TreeSet()
             val attributeToClass = HashMap<Double, Tuple<Int, Boolean>>()
             for (point in data) {
-                val attribute = domainsIndexToValue[givenThatAttribute][point!!.attributes[givenThatAttribute]] as Double
+                val attribute = domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double
                 val theClass = point.attributes[classAttribute]
                 attributeValuesSet.add(attribute)
                 val tuple = attributeToClass[attribute]
@@ -297,7 +297,7 @@ class cid3 : Serializable {
             for (datum in data) {
                 point = datum
                 //For each threshold count data to get prob and probC_And_A
-                val theClass1 = point!!.attributes[classAttribute]
+                val theClass1 = point.attributes[classAttribute]
                 for (iThreshold in thresholds) {
                     if (iThreshold.sumsClassesAndAttribute[theClass1] == null) iThreshold.sumsClassesAndAttribute[theClass1] = SumBelowAndAbove(0, 0)
                     if (domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double <= iThreshold.value) {
@@ -345,8 +345,8 @@ class cid3 : Serializable {
     }
 
     //This is Entropy.
-    private fun calculateEntropy(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
-        val numData = data!!.size
+    private fun calculateEntropy(data: ArrayList<DataPoint>, givenThatAttribute: Int): Certainty {
+        val numData = data.size
         if (numData == 0) return Certainty(0.0, 0.0)
         val numValuesClass = domainsIndexToValue[classAttribute].size
         val numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size
@@ -376,7 +376,7 @@ class cid3 : Serializable {
             val attributeValuesSet: SortedSet<Double> = TreeSet()
             val attributeToClass = HashMap<Double, Tuple<Int, Boolean>>()
             for (point in data) {
-                val attribute = domainsIndexToValue[givenThatAttribute][point!!.attributes[givenThatAttribute]] as Double
+                val attribute = domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double
                 val theClass = point.attributes[classAttribute]
                 attributeValuesSet.add(attribute)
                 val tuple = attributeToClass[attribute]
@@ -442,7 +442,7 @@ class cid3 : Serializable {
             //Loop through the data just one time
             for (point in data) {
                 //For each threshold count data to get prob and probC_And_A
-                val pointClass = point!!.attributes[classAttribute]
+                val pointClass = point.attributes[classAttribute]
                 for (iThreshold in thresholds) {
                     if (iThreshold.sumsClassesAndAttribute[pointClass] == null) iThreshold.sumsClassesAndAttribute[pointClass] = SumBelowAndAbove(0, 0)
                     if ((domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double)<iThreshold.value) {
@@ -494,8 +494,8 @@ class cid3 : Serializable {
     }
 
     //This is Gini.
-    private fun calculateGini(data: ArrayList<DataPoint?>?, givenThatAttribute: Int): Certainty {
-        val numData = data!!.size
+    private fun calculateGini(data: ArrayList<DataPoint>, givenThatAttribute: Int): Certainty {
+        val numData = data.size
         if (numData == 0) return Certainty(0.0, 0.0)
         val numValuesClass = domainsIndexToValue[classAttribute].size
         val numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size
@@ -527,7 +527,7 @@ class cid3 : Serializable {
             val attributeValuesSet: SortedSet<Double> = TreeSet()
             val attributeToClass = HashMap<Double, Tuple<Int, Boolean>>()
             for (point in data) {
-                val attribute = domainsIndexToValue[givenThatAttribute][point!!.attributes[givenThatAttribute]] as Double
+                val attribute = domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double
                 val theClass = point.attributes[classAttribute]
                 attributeValuesSet.add(attribute)
                 val tuple = attributeToClass[attribute]
@@ -593,7 +593,7 @@ class cid3 : Serializable {
             //Loop through the data just one time
             for (point in data) {
                 //For each threshold count data to get prob and probC_And_A
-                val pointClass = point!!.attributes[classAttribute]
+                val pointClass = point.attributes[classAttribute]
                 for (iThreshold in thresholds) {
                     if (iThreshold.sumsClassesAndAttribute[pointClass] == null) iThreshold.sumsClassesAndAttribute[pointClass] = SumBelowAndAbove(0, 0)
                     if ((domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double)<iThreshold.value) {
@@ -647,8 +647,8 @@ class cid3 : Serializable {
     }
 
     //This method calculates all probabilities in one run
-    private fun calculateAllProbabilities(data: ArrayList<DataPoint?>?): Array<Probabilities?> {
-        val numData = data!!.size
+    private fun calculateAllProbabilities(data: ArrayList<DataPoint>): Array<Probabilities?> {
+        val numData = data.size
         val probabilities = arrayOfNulls<Probabilities>(numAttributes - 1)
 
         //Initialize the array
@@ -659,7 +659,7 @@ class cid3 : Serializable {
         }
         //Count occurrences
         for (point in data) {
-            for (j in 0 until point!!.attributes.size - 1) {
+            for (j in 0 until point.attributes.size - 1) {
                 if (attributeTypes[j] == AttributeType.Ignore) continue
                 probabilities[j]!!.prob[point.attributes[j]] = probabilities[j]!!.prob[point.attributes[j]] + 1
                 probabilities[j]!!.probCAndA[point.attributes[j]][point.attributes[classAttribute]] = probabilities[j]!!.probCAndA[point.attributes[j]][point.attributes[classAttribute]] + 1
@@ -922,7 +922,7 @@ class cid3 : Serializable {
         var counter = 0
         for (point in trainData) {
             try {
-                val attValue = domainsIndexToValue[attribute][point!!.attributes[attribute]] as Double
+                val attValue = domainsIndexToValue[attribute][point.attributes[attribute]] as Double
                 sum += attValue
                 counter++
             } catch (e: Exception) {
@@ -946,7 +946,7 @@ class cid3 : Serializable {
     private fun mostCommonValue(attribute: Int): Int {
         val frequencies = IntArray(domainsIndexToValue[attribute].size)
         for (point in trainData) {
-            frequencies[point!!.attributes[attribute]]++
+            frequencies[point.attributes[attribute]]++
         }
         var mostFrequent = 0
         var index = 0
@@ -972,7 +972,7 @@ class cid3 : Serializable {
     fun readTestData(filename: String) {
         //Read the test file
         val `in`: FileInputStream?
-        val data = ArrayList<DataPoint?>()
+        val data = ArrayList<DataPoint>()
         try {
             val inputFile = File(filename)
             `in` = FileInputStream(inputFile)
@@ -1055,7 +1055,7 @@ class cid3 : Serializable {
      */
     fun readData(filename: String) {
         val `in`: FileInputStream?
-        val data = ArrayList<DataPoint?>()
+        val data = ArrayList<DataPoint>()
         val numTraining: Int
         try {
             val inputFile = File(filename)
@@ -1132,13 +1132,13 @@ class cid3 : Serializable {
                 if (i < numTraining) {
                     val point = data[i]
                     root.data.add(point)
-                    root.frequencyClasses[point!!.attributes[classAttribute]]++
+                    root.frequencyClasses[point.attributes[classAttribute]]++
                 } else testData.add(data[i])
             }
         } else {
             for (point in data) {
                 root.data.add(point)
-                root.frequencyClasses[point!!.attributes[classAttribute]]++
+                root.frequencyClasses[point.attributes[classAttribute]]++
             }
         }
         trainData = root.data
@@ -1441,7 +1441,7 @@ class cid3 : Serializable {
         val threads = ArrayList<Thread>()
         for (i in 0..9) {
             val newRoot = TreeNode()
-            val trainData = ArrayList<DataPoint?>()
+            val trainData = ArrayList<DataPoint>()
             for (k in 0..9) {
                 if (k != i) trainData.addAll(crossValidationChunks[k])
             }
@@ -1533,7 +1533,7 @@ class cid3 : Serializable {
 
         //Create the 10 Random Forests
         for (i in 0..9) {
-            val trainData = ArrayList<DataPoint?>()
+            val trainData = ArrayList<DataPoint>()
             for (k in 0..9) {
                 if (k != i) trainData.addAll(crossValidationChunks[k])
             }
@@ -1553,7 +1553,7 @@ class cid3 : Serializable {
         print("\n")
     }
 
-    fun createRandomForest(data: ArrayList<DataPoint?>, roots: ArrayList<TreeNode>, cv: Boolean) {
+    fun createRandomForest(data: ArrayList<DataPoint>, roots: ArrayList<TreeNode>, cv: Boolean) {
         val start = Instant.now()
         var numberOfAttributes = 0
         for (i in 0 until numAttributes - 1) {
@@ -1783,7 +1783,7 @@ class cid3 : Serializable {
     }
 
     //This overload method is intended to be used when Random Forest cross-validation is selected.
-    private fun testRandomForest(testD: ArrayList<DataPoint?>, roots: ArrayList<TreeNode>, index: Int): Double {
+    private fun testRandomForest(testD: ArrayList<DataPoint>, roots: ArrayList<TreeNode>, index: Int): Double {
         var testErrors = 0
         val testSize = testD.size
         for (point in testD) {
