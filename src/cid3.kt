@@ -303,11 +303,11 @@ class cid3 : Serializable {
                     if (domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double <= iThreshold.value) {
                         iThreshold.sumABelow++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[theClass1].below++
+                        iThreshold.sumsClassesAndAttribute[theClass1]!!.below++
                     } else {
                         iThreshold.sumAAbove++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[theClass1].above++
+                        iThreshold.sumsClassesAndAttribute[theClass1]!!.above++
                     }
                 }
             }
@@ -322,9 +322,9 @@ class cid3 : Serializable {
                 certaintyBelow = 0.0
                 certaintyAbove = 0.0
                 for (c in 0 until numValuesClass) {
-                    if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probCAndABelow = 1.0 * threshold.sumsClassesAndAttribute[c].below / numData
-                        probCAndAAbove = 1.0 * threshold.sumsClassesAndAttribute[c].above / numData
+                    if (threshold.sumsClassesAndAttribute[c] != null) {
+                        probCAndABelow = 1.0 * threshold.sumsClassesAndAttribute[c]!!.below / numData
+                        probCAndAAbove = 1.0 * threshold.sumsClassesAndAttribute[c]!!.above / numData
                     } else {
                         probCAndABelow = 0.0
                         probCAndAAbove = 0.0
@@ -448,11 +448,11 @@ class cid3 : Serializable {
                     if ((domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double)<iThreshold.value) {
                         iThreshold.sumABelow++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[pointClass].below++
+                        iThreshold.sumsClassesAndAttribute[pointClass]!!.below++
                     } else {
                         iThreshold.sumAAbove++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[pointClass].above++
+                        iThreshold.sumsClassesAndAttribute[pointClass]!!.above++
                     }
                 }
             }
@@ -465,9 +465,9 @@ class cid3 : Serializable {
                 entropyBelow = 0.0
                 entropyAbove = 0.0
                 for (c in 0 until numValuesClass) {
-                    if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probCAndABelow = 1.0 * threshold.sumsClassesAndAttribute[c].below / numData
-                        probCAndAAbove = 1.0 * threshold.sumsClassesAndAttribute[c].above / numData
+                    if (threshold.sumsClassesAndAttribute[c] != null) {
+                        probCAndABelow = 1.0 * threshold.sumsClassesAndAttribute[c]!!.below / numData
+                        probCAndAAbove = 1.0 * threshold.sumsClassesAndAttribute[c]!!.above / numData
                     } else {
                         probCAndABelow = 0.0
                         probCAndAAbove = 0.0
@@ -599,11 +599,11 @@ class cid3 : Serializable {
                     if ((domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double)<iThreshold.value) {
                         iThreshold.sumABelow++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[pointClass].below++
+                        iThreshold.sumsClassesAndAttribute[pointClass]!!.below++
                     } else {
                         iThreshold.sumAAbove++
                         //Next calculate probability of c and a
-                        iThreshold.sumsClassesAndAttribute[pointClass].above++
+                        iThreshold.sumsClassesAndAttribute[pointClass]!!.above++
                     }
                 }
             }
@@ -616,9 +616,9 @@ class cid3 : Serializable {
                 giniBelow = 0.0
                 giniAbove = 0.0
                 for (c in 0 until numValuesClass) {
-                    if (threshold.sumsClassesAndAttribute != null && threshold.sumsClassesAndAttribute[c] != null) {
-                        probCAndABelow = 1.0 * threshold.sumsClassesAndAttribute[c].below / numData
-                        probCAndAAbove = 1.0 * threshold.sumsClassesAndAttribute[c].above / numData
+                    if (threshold.sumsClassesAndAttribute[c] != null) {
+                        probCAndABelow = 1.0 * threshold.sumsClassesAndAttribute[c]!!.below / numData
+                        probCAndAAbove = 1.0 * threshold.sumsClassesAndAttribute[c]!!.above / numData
                     } else {
                         probCAndABelow = 0.0
                         probCAndAAbove = 0.0
