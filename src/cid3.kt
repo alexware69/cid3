@@ -1259,34 +1259,15 @@ class cid3 : Serializable {
             outputAttribute = { "Value1", "Value2", ..  }
         The second form is printed if the node cannot be decomposed any further into an homogenous set
     */
-    private fun printTree(node: TreeNode, tab: String) {
+    private fun countNodes(node: TreeNode) {
         if (node.data.isNotEmpty()) totalNodes++
         if (node.children == null) {
             if (node.data.isNotEmpty()) totalRules++
-            //int []values = getAllValues(node.data, classAttribute );
-            //if (values.length == 1) {
-//				System.out.println(tab + "\t" + attributeNames[classAttribute] + " = \"" + domainsIndexToValue[classAttribute].get(values[0]) + "\";");
-            //   return;
-            //}
-//			System.out.print(tab + "\t" + attributeNames[classAttribute] + " = {");
-//			for (int i=0; i < values.length; i++) {
-//				System.out.print("\"" + domainsIndexToValue[classAttribute].get(values[i]) + "\" ");
-//				if ( i != values.length-1 ) System.out.print( " , " );
-//			}
-//			System.out.println( " };");
             return
         }
         val numValues = node.children!!.size
         for (i in 0 until numValues) {
-            //String symbol;
-//                  if (attributeTypes[node.decompositionAttribute] == AttributeType.Continuous)
-//                      symbol = node.children[i].decompositionValueContinuous;
-//                  else symbol = " == " + domainsIndexToValue[node.decompositionAttribute].get(i);
-//                  System.out.println(tab + "if( " + attributeNames[node.decompositionAttribute] + symbol + "" +
-//                          ") {" );
-            printTree(node.children!![i], tab + "\t")
-            //                  if (i != numValues-1) System.out.print(tab +  "} else ");
-//                  else System.out.println(tab +  "}");
+            countNodes(node.children!![i])
         }
     }
 
@@ -1373,7 +1354,7 @@ class cid3 : Serializable {
         decomposeNode(root, selectedAttributes, 0)
         print("Decision tree created.")
         print("\n")
-        printTree(root, "")
+        countNodes(root)
         print("Rules:$totalRules")
         print("\n")
         print("Nodes:$totalNodes")
