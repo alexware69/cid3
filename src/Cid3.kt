@@ -1324,7 +1324,7 @@ class Cid3 : Serializable {
         }
     }
 
-    private fun deserializeFile(file: String): Cid3? {
+    private fun deserializeFile(file: String): Cid3 {
         val ret: Cid3
         val objectInputStream: ObjectInputStream
         try {
@@ -1813,7 +1813,7 @@ class Cid3 : Serializable {
             print("\n")
             print("Tree file deserialized.")
             print("\n")
-            var currentNode = id3!!.root
+            var currentNode = id3.root
             var attributeValue = 0
             while (!(currentNode.children == null || currentNode.children!!.isEmpty())) {
                 //If attribute is discrete, show all possible values for it
@@ -1949,7 +1949,7 @@ class Cid3 : Serializable {
                 if (input.startsWith("//")) continue
                 tokenizer = StringTokenizer(input, ",")
                 val numTokens = tokenizer.countTokens()
-                if (numTokens != id3!!.numAttributes - 1) {
+                if (numTokens != id3.numAttributes - 1) {
                     System.err.println("Expecting " + (id3.numAttributes - 1) + " attributes")
                     exitProcess(1)
                 }
@@ -2060,7 +2060,7 @@ class Cid3 : Serializable {
                 if (input.startsWith("//")) continue
                 tokenizer = StringTokenizer(input, ",")
                 val numTokens = tokenizer.countTokens()
-                if (numTokens != id3!!.numAttributes - 1) {
+                if (numTokens != id3.numAttributes - 1) {
                     System.err.println("Expecting " + (id3.numAttributes - 1) + " attributes")
                     exitProcess(1)
                 }
@@ -2140,7 +2140,7 @@ class Cid3 : Serializable {
             print("\n")
             print("Random Forest file deserialized.")
             print("\n")
-            val example = DataPoint(id3!!.numAttributes)
+            val example = DataPoint(id3.numAttributes)
             //Enter all attributes into an example except the class, that's why -1
             for (i in 0 until id3.numAttributes - 1) {
                 if (id3.attributeTypes[i] == AttributeType.Ignore) continue
