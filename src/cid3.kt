@@ -68,7 +68,7 @@ class cid3 : Serializable {
     var testData = ArrayList<DataPoint?>()
 
     @Transient
-    var trainData: ArrayList<DataPoint?>? = ArrayList()
+    var trainData: ArrayList<DataPoint?> = ArrayList()
 
     @Transient
     var crossValidationChunks = ArrayList<ArrayList<DataPoint?>>()
@@ -94,7 +94,7 @@ class cid3 : Serializable {
         var certaintyUsedToDecompose = 0.0
         // The set of data points if this is a leaf node
         @Transient
-        var data: ArrayList<DataPoint?>? = ArrayList()
+        var data: ArrayList<DataPoint?> = ArrayList()
         //This is for saving time when calculating most common class
         lateinit var frequencyClasses: IntArray
         // If this is not a leaf node, the attribute that is used to divide the set of data points
@@ -159,10 +159,10 @@ class cid3 : Serializable {
     }
 
     /*  Returns a subset of data, in which the value of the specified attribute of all data points is the specified value  */
-    private fun getSubset(data: ArrayList<DataPoint?>?, attribute: Int, value: Int): DataFrequencies {
+    private fun getSubset(data: ArrayList<DataPoint?>, attribute: Int, value: Int): DataFrequencies {
         val subset = ArrayList<DataPoint?>()
         val frequencies = IntArray(domainsIndexToValue[classAttribute].size)
-        for (point in data!!) {
+        for (point in data) {
             if (point!!.attributes[attribute] == value) {
                 subset.add(point)
                 frequencies[point.attributes[classAttribute]]++
@@ -718,7 +718,7 @@ class cid3 : Serializable {
         var selected = false
         var selectedAttribute = 0
         if (criteria == Criteria.Certainty) {
-            if (node.data == null || node.data!!.size <= 1) return
+            if (node.data.size <= 1) return
             if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return
             var certainty: Certainty
             for (selectedAtt in selectedAttributesLocal) {
@@ -735,7 +735,7 @@ class cid3 : Serializable {
             }
             if (!selected || bestCertainty.certainty == 0.0) return
         } else if (criteria == Criteria.Entropy) {
-            if (node.data == null || node.data!!.size <= 1) return
+            if (node.data.size <= 1) return
             if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return
             /*  In the following two loops, the best attribute is located which
                         causes maximum increase in information*/
@@ -758,7 +758,7 @@ class cid3 : Serializable {
             }
             if (!selected) return
         } else if (criteria == Criteria.Gini) {
-            if (node.data == null || node.data!!.size <= 1) return
+            if (node.data.size <= 1) return
             if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return
             /*  In the following two loops, the best attribute is located which
                             causes maximum increase in information*/
@@ -856,7 +856,7 @@ class cid3 : Serializable {
             node.children!!.add(newNode)
 
             //Decompose children
-            if (node.children!![0].data!!.isEmpty() || node.children!![1].data!!.isEmpty()) return
+            if (node.children!![0].data.isEmpty() || node.children!![1].data.isEmpty()) return
             when {
                 isCrossValidation -> { //if is a Cross Validation, don't create more threads
                     decomposeNode(node.children!![0], selectedAttributesLocal, 0)
@@ -920,7 +920,7 @@ class cid3 : Serializable {
     private fun meanValue(attribute: Int): Double {
         var sum = 0.0
         var counter = 0
-        for (point in trainData!!) {
+        for (point in trainData) {
             try {
                 val attValue = domainsIndexToValue[attribute][point!!.attributes[attribute]] as Double
                 sum += attValue
@@ -945,7 +945,7 @@ class cid3 : Serializable {
     //Find the most common values of a discrete attribute. This is needed for imputation.
     private fun mostCommonValue(attribute: Int): Int {
         val frequencies = IntArray(domainsIndexToValue[attribute].size)
-        for (point in trainData!!) {
+        for (point in trainData) {
             frequencies[point!!.attributes[attribute]]++
         }
         var mostFrequent = 0
@@ -1131,22 +1131,22 @@ class cid3 : Serializable {
             for (i in 0 until size) {
                 if (i < numTraining) {
                     val point = data[i]
-                    root.data!!.add(point)
+                    root.data.add(point)
                     root.frequencyClasses[point!!.attributes[classAttribute]]++
                 } else testData.add(data[i])
             }
         } else {
             for (point in data) {
-                root.data!!.add(point)
+                root.data.add(point)
                 root.frequencyClasses[point!!.attributes[classAttribute]]++
             }
         }
         trainData = root.data
         if (splitTrainData && !testDataExists) {
-            print("Read data: " + root.data!!.size + " cases for training.")
+            print("Read data: " + root.data.size + " cases for training.")
             print("\n")
             print("Read data: " + testData.size + " cases for testing.")
-        } else print("Read data: " + root.data!!.size + " cases for training. ")
+        } else print("Read data: " + root.data.size + " cases for training. ")
         print("\n")
     } // End of function readData
 
@@ -1260,9 +1260,9 @@ class cid3 : Serializable {
         The second form is printed if the node cannot be decomposed any further into an homogenous set
     */
     private fun printTree(node: TreeNode, tab: String) {
-        if (node.data != null && node.data!!.isNotEmpty()) totalNodes++
+        if (node.data.isNotEmpty()) totalNodes++
         if (node.children == null) {
-            if (node.data != null && node.data!!.isNotEmpty()) totalRules++
+            if (node.data.isNotEmpty()) totalRules++
             //int []values = getAllValues(node.data, classAttribute );
             //if (values.length == 1) {
 //				System.out.println(tab + "\t" + attributeNames[classAttribute] + " = \"" + domainsIndexToValue[classAttribute].get(values[0]) + "\";");
@@ -1390,15 +1390,15 @@ class cid3 : Serializable {
     fun createCrossValidation() {
         val start = Instant.now()
         if (testDataExists) {
-            trainData!!.addAll(testData)
+            trainData.addAll(testData)
             root.data = trainData
         }
-        val chunkSize = root.data!!.size / 10
-        val modulus = root.data!!.size % 10
+        val chunkSize = root.data.size / 10
+        val modulus = root.data.size % 10
         var counter = chunkSize
         var counterChunks = 0
         //Randomize the data
-        root.data!!.shuffle()
+        root.data.shuffle()
 
         //Initialize chunks
         for (i in 0..9) {
@@ -1409,9 +1409,9 @@ class cid3 : Serializable {
         if (modulus != 0) {
             run {
                 var i = 0
-                while (i < root.data!!.size - modulus) {
+                while (i < root.data.size - modulus) {
                     if (i < counter) {
-                        crossValidationChunks[counterChunks].add(root.data!![i])
+                        crossValidationChunks[counterChunks].add(root.data[i])
                     } else {
                         counter += chunkSize
                         counterChunks++
@@ -1421,15 +1421,15 @@ class cid3 : Serializable {
                 }
             }
             counter = 0
-            for (i in root.data!!.size - modulus until root.data!!.size) {
-                crossValidationChunks[counter].add(root.data!![i])
+            for (i in root.data.size - modulus until root.data.size) {
+                crossValidationChunks[counter].add(root.data[i])
                 counter++
             }
         } else {
             var i = 0
-            while (i < root.data!!.size) {
+            while (i < root.data.size) {
                 if (i < counter) {
-                    crossValidationChunks[counterChunks].add(root.data!![i])
+                    crossValidationChunks[counterChunks].add(root.data[i])
                 } else {
                     counter += chunkSize
                     counterChunks++
@@ -1464,7 +1464,7 @@ class cid3 : Serializable {
             if (!threads[threads.size - 1].isAlive) threads.removeAt(threads.size - 1)
         }
         print("\n")
-        print("10-fold cross-validation created with " + root.data!!.size + " cases.")
+        print("10-fold cross-validation created with " + root.data.size + " cases.")
         print("\n")
         testCrossValidation()
         val finish = Instant.now()
@@ -1483,15 +1483,15 @@ class cid3 : Serializable {
             cvRandomForests.add(ArrayList())
         }
         if (testDataExists) {
-            trainData!!.addAll(testData)
+            trainData.addAll(testData)
             root.data = trainData
         }
-        val chunkSize = root.data!!.size / 10
-        val modulus = root.data!!.size % 10
+        val chunkSize = root.data.size / 10
+        val modulus = root.data.size % 10
         var counter = chunkSize
         var counterChunks = 0
         //Randomize the data
-        root.data!!.shuffle()
+        root.data.shuffle()
 
         //Initialize chunks
         for (i in 0..9) {
@@ -1501,9 +1501,9 @@ class cid3 : Serializable {
         if (modulus != 0) {
             run {
                 var i = 0
-                while (i < root.data!!.size - modulus) {
+                while (i < root.data.size - modulus) {
                     if (i < counter) {
-                        crossValidationChunks[counterChunks].add(root.data!![i])
+                        crossValidationChunks[counterChunks].add(root.data[i])
                     } else {
                         counter += chunkSize
                         counterChunks++
@@ -1513,15 +1513,15 @@ class cid3 : Serializable {
                 }
             }
             counter = 0
-            for (i in root.data!!.size - modulus until root.data!!.size) {
-                crossValidationChunks[counter].add(root.data!![i])
+            for (i in root.data.size - modulus until root.data.size) {
+                crossValidationChunks[counter].add(root.data[i])
                 counter++
             }
         } else {
             var i = 0
-            while (i < root.data!!.size) {
+            while (i < root.data.size) {
                 if (i < counter) {
-                    crossValidationChunks[counterChunks].add(root.data!![i])
+                    crossValidationChunks[counterChunks].add(root.data[i])
                 } else {
                     counter += chunkSize
                     counterChunks++
@@ -1540,7 +1540,7 @@ class cid3 : Serializable {
             createRandomForest(trainData, cvRandomForests[i], true)
         }
         print("\n")
-        print("10-fold Random Forests cross-validation created with " + root.data!!.size + " cases.")
+        print("10-fold Random Forests cross-validation created with " + root.data.size + " cases.")
         print("\n")
 
         //Test the cross-validation
@@ -1553,7 +1553,7 @@ class cid3 : Serializable {
         print("\n")
     }
 
-    fun createRandomForest(data: ArrayList<DataPoint?>?, roots: ArrayList<TreeNode>, cv: Boolean) {
+    fun createRandomForest(data: ArrayList<DataPoint?>, roots: ArrayList<TreeNode>, cv: Boolean) {
         val start = Instant.now()
         var numberOfAttributes = 0
         for (i in 0 until numAttributes - 1) {
@@ -1631,7 +1631,7 @@ class cid3 : Serializable {
 
     private fun testExample(example: DataPoint?): Boolean {
         val node: TreeNode = testExamplePoint(example, root)
-        return if (node.data == null || node.data!!.isEmpty()) {
+        return if (node.data.isEmpty()) {
             example!!.attributes[classAttribute] == mostCommonFinal(node.parent)
         } else {
             example!!.attributes[classAttribute] == mostCommonFinal(node)
@@ -1640,7 +1640,7 @@ class cid3 : Serializable {
 
     private fun testExampleCV(example: DataPoint?, tree: TreeNode): Boolean {
         val node: TreeNode = testExamplePoint(example, tree)
-        return if (node.data == null || node.data!!.isEmpty()) {
+        return if (node.data.isEmpty()) {
             example!!.attributes[classAttribute] == mostCommonFinal(node.parent)
         } else {
             example!!.attributes[classAttribute] == mostCommonFinal(node)
@@ -1654,7 +1654,7 @@ class cid3 : Serializable {
         val results = ArrayList<Boolean>()
         for (treeNode in roots) {
             node = testExamplePoint(example, treeNode)
-            if (node.data == null || node.data!!.isEmpty()) {
+            if (node.data.isEmpty()) {
                 if (example!!.attributes[classAttribute] == mostCommonFinal(node.parent)) results.add(true) else results.add(false)
             } else {
                 if (example!!.attributes[classAttribute] == mostCommonFinal(node)) results.add(true) else results.add(false)
@@ -1675,7 +1675,7 @@ class cid3 : Serializable {
         }
         var trainErrors = 0
         var trainCorrects = 0
-        for (point in trainData!!) {
+        for (point in trainData) {
             if (testExample(point)) trainCorrects++ else trainErrors++
         }
         print("\n")
@@ -1685,7 +1685,7 @@ class cid3 : Serializable {
         print("\n")
         print("Correct guesses: $trainCorrects")
         print("\n")
-        val rounded = (1.0 * trainErrors * 100 / trainData!!.size * 10).roundToInt() / 10.0
+        val rounded = (1.0 * trainErrors * 100 / trainData.size * 10).roundToInt() / 10.0
         print("Incorrect guesses: $trainErrors ($rounded%)")
         print("\n")
         if (testData.isNotEmpty()) {
@@ -1803,7 +1803,7 @@ class cid3 : Serializable {
         }
         var trainErrors = 0
         var trainCorrects = 0
-        for (point in trainData!!) {
+        for (point in trainData) {
             if (testExampleRF(point, rootsRandomForest)) trainCorrects++ else trainErrors++
         }
         print("TRAIN DATA: ")
@@ -1812,7 +1812,7 @@ class cid3 : Serializable {
         print("\n")
         print("Correct guesses: $trainCorrects")
         print("\n")
-        val rounded = (1.0 * trainErrors * 100 / trainData!!.size * 10).roundToInt() / 10.0
+        val rounded = (1.0 * trainErrors * 100 / trainData.size * 10).roundToInt() / 10.0
         print("Incorrect guesses: $trainErrors ($rounded%)")
         print("\n")
         if (testData.isNotEmpty()) {
@@ -2404,7 +2404,7 @@ class cid3 : Serializable {
 
                 //Create a Tree or a Random Forest for saving to disk
                 if (cmd.hasOption("save")) {
-                    me.trainData!!.addAll(me.testData)
+                    me.trainData.addAll(me.testData)
                     me.root.data = me.trainData
                     me.testData.clear()
                     me.setMeanValues()

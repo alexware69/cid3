@@ -19,14 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="removed the elvis operator from a method so it is shorter now">
-      <change afterPath="$PROJECT_DIR$/src/DataFrequencies.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/SumBelowAndAbove.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Threshold.kt" afterDir="false" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="converted the rest of the code to Kotlin">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataFrequencies.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/SumBelowAndAbove.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Threshold.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -101,13 +95,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00027" summary="added a comment to terminal output">
-      <created>1590214881981</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1590214881981</updated>
     </task>
     <task id="LOCAL-00028" summary="fixed a spelling error">
       <created>1590215093326</created>
@@ -445,7 +432,14 @@
       <option name="project" value="LOCAL" />
       <updated>1598662175329</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="converted the rest of the code to Kotlin">
+      <created>1598679695093</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1598679695093</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -471,7 +465,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="removed two unused methods" />
     <MESSAGE value="super big code sanitizing!" />
     <MESSAGE value="a little bit more sanitizing" />
     <MESSAGE value="more code sanitizing...almost done!" />
@@ -496,7 +489,8 @@
     <MESSAGE value="even some more sanitizing of Kotlin..." />
     <MESSAGE value="removed some comments" />
     <MESSAGE value="removed the elvis operator from a method so it is shorter now" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed the elvis operator from a method so it is shorter now" />
+    <MESSAGE value="converted the rest of the code to Kotlin" />
+    <option name="LAST_COMMIT_MESSAGE" value="converted the rest of the code to Kotlin" />
   </component>
   <component name="WindowStateProjectService">
     <state x="455" y="87" key="#Project_Structure" timestamp="1598595187080">
@@ -529,40 +523,40 @@
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state x="947" y="592" key="#xdebugger.evaluate/0.23.2560.1353@0.23.2560.1353" timestamp="1590211618966" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1598678738171">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1598679990430">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
     <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1591421682159" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1598678738171" />
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1598679990430" />
     <state width="448" height="466" key="DebuggerActiveHint" timestamp="1590462471949">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
     <state width="448" height="466" key="DebuggerActiveHint/0.23.2560.1353@0.23.2560.1353" timestamp="1590462471949" />
-    <state width="1358" height="262" key="GridCell.Tab.0.bottom" timestamp="1598679418274">
+    <state width="1358" height="262" key="GridCell.Tab.0.bottom" timestamp="1598680106363">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.bottom/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
     <state width="1627" height="330" key="GridCell.Tab.0.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088199" />
-    <state width="1358" height="262" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1598679418274" />
-    <state width="1358" height="262" key="GridCell.Tab.0.center" timestamp="1598679418273">
+    <state width="1358" height="262" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1598680106363" />
+    <state width="1358" height="262" key="GridCell.Tab.0.center" timestamp="1598680106362">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.center/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
     <state width="1627" height="330" key="GridCell.Tab.0.center/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088189" />
-    <state width="1358" height="262" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1598679418273" />
-    <state width="1358" height="262" key="GridCell.Tab.0.left" timestamp="1598679418272">
+    <state width="1358" height="262" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1598680106362" />
+    <state width="1358" height="262" key="GridCell.Tab.0.left" timestamp="1598680106362">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.left/0.23.1920.991@0.23.1920.991" timestamp="1596361527518" />
     <state width="1627" height="330" key="GridCell.Tab.0.left/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088189" />
-    <state width="1358" height="262" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1598679418272" />
-    <state width="1358" height="262" key="GridCell.Tab.0.right" timestamp="1598679418273">
+    <state width="1358" height="262" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1598680106362" />
+    <state width="1358" height="262" key="GridCell.Tab.0.right" timestamp="1598680106363">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.right/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
     <state width="1627" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088199" />
-    <state width="1358" height="262" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1598679418273" />
+    <state width="1358" height="262" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1598680106363" />
     <state width="1627" height="406" key="GridCell.Tab.1.bottom" timestamp="1590463334764">
       <screen x="0" y="23" width="2560" height="1353" />
     </state>
@@ -588,12 +582,12 @@
     </state>
     <state x="527" y="164" key="SettingsEditor/0.23.1920.991@0.23.1920.991" timestamp="1594012692651" />
     <state x="563" y="107" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1598233380702" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1598662183236">
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1598679706637">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1596361336239" />
     <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1591421688805" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1598662183236" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1598679706637" />
     <state x="754" y="381" key="classpath-attribute-editor" timestamp="1598584648447">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
