@@ -293,10 +293,8 @@ class Cid3 : Serializable {
             var probCAndAAbove: Double
             var certaintyBelow: Double
             var certaintyAbove: Double
-            var point: DataPoint?
             //Loop through the data just one time
-            for (datum in data) {
-                point = datum
+            for (point in data) {
                 //For each threshold count data to get prob and probC_And_A
                 val theClass1 = point.attributes[classAttribute]
                 for (iThreshold in thresholds) {
