@@ -1407,22 +1407,20 @@ class cid3 : Serializable {
 
         //First check if there is a remainder
         if (modulus != 0) {
-            run {
-                var i = 0
-                while (i < root.data.size - modulus) {
-                    if (i < counter) {
-                        crossValidationChunks[counterChunks].add(root.data[i])
-                    } else {
-                        counter += chunkSize
-                        counterChunks++
-                        i--
-                    }
-                    i++
+            var i = 0
+            while (i < root.data.size - modulus) {
+                if (i < counter) {
+                    crossValidationChunks[counterChunks].add(root.data[i])
+                } else {
+                    counter += chunkSize
+                    counterChunks++
+                    i--
                 }
+                i++
             }
             counter = 0
-            for (i in root.data.size - modulus until root.data.size) {
-                crossValidationChunks[counter].add(root.data[i])
+            for (j in root.data.size - modulus until root.data.size) {
+                crossValidationChunks[counter].add(root.data[j])
                 counter++
             }
         } else {
