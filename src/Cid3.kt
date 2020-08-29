@@ -10,7 +10,7 @@ import kotlin.math.*
 import kotlin.system.exitProcess
 import org.apache.commons.cli.*
 
-class cid3 : Serializable {
+class Cid3 : Serializable {
     enum class AttributeType {
         Discrete, Continuous, Ignore
     }
@@ -27,6 +27,7 @@ class cid3 : Serializable {
 
     //int maxThreads = 500;
     //transient ArrayList<Thread> globalThreads = new ArrayList<>();
+
     /* Possible values for each attribute is stored in a vector.  domains is an array of dimension numAttributes.
         Each element of this array is a vector that contains values for the corresponding attribute
         domains[0] is a vector containing the values of the 0-th attribute, etc..
@@ -61,7 +62,7 @@ class cid3 : Serializable {
 
     }
 
-    //This is an utility class to return the information and threshold of continuous attributes.
+    //This is a utility class to return the certainty and threshold of continuous attributes.
     class Certainty(var certainty: Double, var threshold: Double) : Serializable
 
     @Transient
@@ -1252,12 +1253,8 @@ class cid3 : Serializable {
     }
 
     //-----------------------------------------------------------------------
-    /*  This function prints the decision tree in the form of rules.
-        The action part of the rule is of the form
-            outputAttribute = "symbolicValue"
-        or
-            outputAttribute = { "Value1", "Value2", ..  }
-        The second form is printed if the node cannot be decomposed any further into an homogenous set
+    /*  This function counts the total nodes and the leaf nodes
+
     */
     private fun countNodes(node: TreeNode) {
         if (node.data.isNotEmpty()) totalNodes++
@@ -1327,13 +1324,13 @@ class cid3 : Serializable {
         }
     }
 
-    private fun deserializeFile(file: String): cid3? {
-        val ret: cid3?
+    private fun deserializeFile(file: String): Cid3? {
+        val ret: Cid3
         val objectInputStream: ObjectInputStream
         try {
             val `is` = GZIPInputStream(FileInputStream(file))
             objectInputStream = ObjectInputStream(`is`)
-            ret = objectInputStream.readObject() as cid3
+            ret = objectInputStream.readObject() as Cid3
             objectInputStream.close()
         } catch (e: Exception) {
             print("Error deserializing file.")
@@ -1809,7 +1806,7 @@ class cid3 : Serializable {
         var fileLocal = file
         if (!fileLocal.endsWith(".tree")) fileLocal += ".tree"
         val inputFile = File(fileLocal)
-        val id3: cid3?
+        val id3: Cid3?
         if (inputFile.exists()) {
             val `in` = Scanner(System.`in`)
             id3 = deserializeFile(fileLocal)
@@ -1911,7 +1908,7 @@ class cid3 : Serializable {
             casesFileLocal.substring(0, casesFileLocal.length - 5) + "tmp"
         }
         val inputTreeFile = File(treeFileLocal)
-        val id3: cid3?
+        val id3: Cid3?
         val fileOut: FileWriter?
         try {
             fileOut = FileWriter(fileOutStr, false)
@@ -2024,7 +2021,7 @@ class cid3 : Serializable {
             casesFileLocal.substring(0, casesFileLocal.length - 5) + "tmp"
         }
         val inputForestFile = File(rfFileLocal)
-        val id3: cid3?
+        val id3: Cid3?
         val fileOut: FileWriter?
         try {
             fileOut = FileWriter(fileOutStr, false)
@@ -2137,7 +2134,7 @@ class cid3 : Serializable {
         if (!fileLocal.endsWith(".forest")) fileLocal += ".forest"
         val inputFile = File(fileLocal)
         val `in` = Scanner(System.`in`)
-        val id3: cid3?
+        val id3: Cid3?
         if (inputFile.exists()) {
             id3 = deserializeFile(fileLocal)
             print("\n")
@@ -2238,7 +2235,7 @@ class cid3 : Serializable {
         /* Here is the definition of the main function */
         @JvmStatic
         fun main(args: Array<String>) {
-            val me = cid3()
+            val me = Cid3()
 
             //Initialize values
             me.isCrossValidation = false
