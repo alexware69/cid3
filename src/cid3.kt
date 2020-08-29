@@ -1054,7 +1054,7 @@ class cid3 : Serializable {
      * Blank lines are also ignored.
      */
     fun readData(filename: String) {
-        val `in`: FileInputStream?
+        val `in`: FileInputStream
         val data = ArrayList<DataPoint>()
         val numTraining: Int
         try {
@@ -1601,13 +1601,13 @@ class cid3 : Serializable {
         }
     }
 
-    private fun testExamplePoint(example: DataPoint?, node: TreeNode): TreeNode {
+    private fun testExamplePoint(example: DataPoint, node: TreeNode): TreeNode {
         var nodeLocal = node
         val splitAttribute: Int
         val attributeValue: Int
         val attributeRealValue: Double
         splitAttribute = nodeLocal.decompositionAttribute
-        attributeValue = example!!.attributes[splitAttribute]
+        attributeValue = example.attributes[splitAttribute]
         if (nodeLocal.children == null || nodeLocal.children!!.isEmpty()) return nodeLocal
 
         //Check if attribute is discrete
@@ -1629,25 +1629,25 @@ class cid3 : Serializable {
         return testExamplePoint(example, nodeLocal)
     }
 
-    private fun testExample(example: DataPoint?): Boolean {
+    private fun testExample(example: DataPoint): Boolean {
         val node: TreeNode = testExamplePoint(example, root)
         return if (node.data.isEmpty()) {
-            example!!.attributes[classAttribute] == mostCommonFinal(node.parent)
+            example.attributes[classAttribute] == mostCommonFinal(node.parent)
         } else {
-            example!!.attributes[classAttribute] == mostCommonFinal(node)
+            example.attributes[classAttribute] == mostCommonFinal(node)
         }
     }
 
-    private fun testExampleCV(example: DataPoint?, tree: TreeNode): Boolean {
+    private fun testExampleCV(example: DataPoint, tree: TreeNode): Boolean {
         val node: TreeNode = testExamplePoint(example, tree)
         return if (node.data.isEmpty()) {
-            example!!.attributes[classAttribute] == mostCommonFinal(node.parent)
+            example.attributes[classAttribute] == mostCommonFinal(node.parent)
         } else {
-            example!!.attributes[classAttribute] == mostCommonFinal(node)
+            example.attributes[classAttribute] == mostCommonFinal(node)
         }
     }
 
-    private fun testExampleRF(example: DataPoint?, roots: ArrayList<TreeNode>): Boolean {
+    private fun testExampleRF(example: DataPoint, roots: ArrayList<TreeNode>): Boolean {
         var node: TreeNode
         var isTrue = 0
         var isFalse = 0
@@ -1655,9 +1655,9 @@ class cid3 : Serializable {
         for (treeNode in roots) {
             node = testExamplePoint(example, treeNode)
             if (node.data.isEmpty()) {
-                if (example!!.attributes[classAttribute] == mostCommonFinal(node.parent)) results.add(true) else results.add(false)
+                if (example.attributes[classAttribute] == mostCommonFinal(node.parent)) results.add(true) else results.add(false)
             } else {
-                if (example!!.attributes[classAttribute] == mostCommonFinal(node)) results.add(true) else results.add(false)
+                if (example.attributes[classAttribute] == mostCommonFinal(node)) results.add(true) else results.add(false)
             }
         }
         //Voting now
