@@ -339,7 +339,6 @@ class Cid3 : Serializable {
                 }
             }
             Certainty(finalTotalCertainty, finalThreshold)
-            //*******************************************************************************************//
         }
     }
 
@@ -488,7 +487,6 @@ class Cid3 : Serializable {
                 }
             }
             Certainty(finalTotalEntropy, finalThreshold)
-            //*******************************************************************************************//
         }
     }
 
@@ -641,7 +639,6 @@ class Cid3 : Serializable {
                 }
             }
             Certainty(finalTotalGini, finalThreshold)
-            //*******************************************************************************************//
         }
     }
 
@@ -802,12 +799,12 @@ class Cid3 : Serializable {
             }
             // Recursively divides children nodes
             when {
-                isCrossValidation -> { // If is Cross Validation, don't create more threads
+                isCrossValidation -> {
                     for (j in node.children!!.indices) {
                         decomposeNode(node.children!![j], selectedAttributesLocal, 0)
                     }
                 }
-                isRandomForest -> { //if is Random Forest, don't create more threads
+                isRandomForest -> {
                     val rand = Random(mySeed)
                     var randomAttribute: Int
                     val numAtt = selectedAttributesLocal.size
@@ -821,7 +818,7 @@ class Cid3 : Serializable {
                     }
                 }
                 else -> {
-                    for (j in node.children!!.indices) { //For single trees now also don't create more threads
+                    for (j in node.children!!.indices) {
                         decomposeNode(node.children!![j], selectedAttributesLocal, mySeed + 1 + j)
                     }
                 }
@@ -857,7 +854,7 @@ class Cid3 : Serializable {
             //Decompose children
             if (node.children!![0].data.isEmpty() || node.children!![1].data.isEmpty()) return
             when {
-                isCrossValidation -> { //if is a Cross Validation, don't create more threads
+                isCrossValidation -> {
                     decomposeNode(node.children!![0], selectedAttributesLocal, 0)
                     decomposeNode(node.children!![1], selectedAttributesLocal, 0)
                 }  //if is a Random Forest, don't create more threads
@@ -878,7 +875,7 @@ class Cid3 : Serializable {
                     }
                     decomposeNode(node.children!![1], selectedAttributesLocal, mySeed + 2)
                 }
-                else -> { //also now for single trees don't create more threads
+                else -> {
                     decomposeNode(node.children!![0], selectedAttributesLocal, mySeed + 1)
                     decomposeNode(node.children!![1], selectedAttributesLocal, mySeed + 2)
                 }
