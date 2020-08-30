@@ -779,7 +779,6 @@ class Cid3 : Serializable {
         }
         node.certaintyUsedToDecompose = bestCertainty.certainty
 
-        //ArrayList<Thread> threads = new ArrayList<Thread>();
         //if attribute is discrete
         if (attributeTypes[selectedAttribute] == AttributeType.Discrete) {
             // Now divide the dataset using the selected attribute
@@ -812,7 +811,8 @@ class Cid3 : Serializable {
                         selectedAttributesLocal = ArrayList()
                         while (selectedAttributesLocal.size < numAtt) {
                             randomAttribute = rand.nextInt(numAttributes - 1)
-                            if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributesLocal.add(randomAttribute)
+                            if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore)
+                                selectedAttributesLocal.add(randomAttribute)
                         }
                         decomposeNode(node.children!![j], selectedAttributesLocal, mySeed + 1 + j)
                     }
@@ -824,7 +824,8 @@ class Cid3 : Serializable {
                 }
             }
         }
-        else { //If attribute is continuous
+        //If attribute is continuous
+        else {
             node.decompositionAttribute = selectedAttribute
             node.children = ArrayList()
             var df: DataFrequencies
@@ -857,7 +858,7 @@ class Cid3 : Serializable {
                 isCrossValidation -> {
                     decomposeNode(node.children!![0], selectedAttributesLocal, 0)
                     decomposeNode(node.children!![1], selectedAttributesLocal, 0)
-                }  //if is a Random Forest, don't create more threads
+                }
                 isRandomForest -> {
                     val rand = Random(mySeed)
                     var randomAttribute: Int
@@ -865,13 +866,15 @@ class Cid3 : Serializable {
                     selectedAttributesLocal = ArrayList()
                     while (selectedAttributesLocal.size < numAtt) {
                         randomAttribute = rand.nextInt(numAttributes - 1)
-                        if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributesLocal.add(randomAttribute)
+                        if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore)
+                            selectedAttributesLocal.add(randomAttribute)
                     }
                     decomposeNode(node.children!![0], selectedAttributesLocal, mySeed + 1)
                     selectedAttributesLocal = ArrayList()
                     while (selectedAttributesLocal.size < numAtt) {
                         randomAttribute = rand.nextInt(numAttributes - 1)
-                        if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore) selectedAttributesLocal.add(randomAttribute)
+                        if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore)
+                            selectedAttributesLocal.add(randomAttribute)
                     }
                     decomposeNode(node.children!![1], selectedAttributesLocal, mySeed + 2)
                 }
