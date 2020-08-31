@@ -146,7 +146,7 @@ class Cid3 : Serializable {
     }
 
     // Returns the most common class for the specified node
-    private fun getMostCommonFinal(n: TreeNode?): Int {
+    private fun getMostCommonClass(n: TreeNode?): Int {
         val numValuesClass = domainsIndexToValue[classAttribute].size
         var value = n!!.frequencyClasses[0]
         var result = 0
@@ -1604,18 +1604,18 @@ class Cid3 : Serializable {
     private fun testExample(example: DataPoint): Boolean {
         val node: TreeNode = testExamplePoint(example, root)
         return if (node.data.isEmpty()) {
-            example.attributes[classAttribute] == getMostCommonFinal(node.parent)
+            example.attributes[classAttribute] == getMostCommonClass(node.parent)
         } else {
-            example.attributes[classAttribute] == getMostCommonFinal(node)
+            example.attributes[classAttribute] == getMostCommonClass(node)
         }
     }
 
     private fun testExampleCV(example: DataPoint, tree: TreeNode): Boolean {
         val node: TreeNode = testExamplePoint(example, tree)
         return if (node.data.isEmpty()) {
-            example.attributes[classAttribute] == getMostCommonFinal(node.parent)
+            example.attributes[classAttribute] == getMostCommonClass(node.parent)
         } else {
-            example.attributes[classAttribute] == getMostCommonFinal(node)
+            example.attributes[classAttribute] == getMostCommonClass(node)
         }
     }
 
@@ -1627,9 +1627,9 @@ class Cid3 : Serializable {
         for (treeNode in roots) {
             node = testExamplePoint(example, treeNode)
             if (node.data.isEmpty()) {
-                if (example.attributes[classAttribute] == getMostCommonFinal(node.parent)) results.add(true) else results.add(false)
+                if (example.attributes[classAttribute] == getMostCommonClass(node.parent)) results.add(true) else results.add(false)
             } else {
-                if (example.attributes[classAttribute] == getMostCommonFinal(node)) results.add(true) else results.add(false)
+                if (example.attributes[classAttribute] == getMostCommonClass(node)) results.add(true) else results.add(false)
             }
         }
         //Voting now
@@ -1890,7 +1890,7 @@ class Cid3 : Serializable {
                 }
             }
             val mostCommon: Int
-            mostCommon = if (isEmpty) id3.getMostCommonFinal(currentNode.parent) else id3.getMostCommonFinal(currentNode)
+            mostCommon = if (isEmpty) id3.getMostCommonClass(currentNode.parent) else id3.getMostCommonClass(currentNode)
             val mostCommonStr = id3.domainsIndexToValue[id3.classAttribute][mostCommon] as String?
             //Print class attribute value
             println("Class attribute value is: $mostCommonStr")
@@ -1986,7 +1986,7 @@ class Cid3 : Serializable {
                     }
                 }
                 //If node is empty
-                caseClass = if (isEmpty) id3.getMostCommonFinal(node.parent) else id3.getMostCommonFinal(node)
+                caseClass = if (isEmpty) id3.getMostCommonClass(node.parent) else id3.getMostCommonClass(node)
 
                 //Print line to output tmp file
                 val classValue = id3.domainsIndexToValue[id3.classAttribute][caseClass] as String?
@@ -2100,7 +2100,7 @@ class Cid3 : Serializable {
                         }
                     }
                     //If node is empty
-                    if (isEmpty) classAttrValues[id3.getMostCommonFinal(node.parent)]++ else classAttrValues[id3.getMostCommonFinal(node)]++
+                    if (isEmpty) classAttrValues[id3.getMostCommonClass(node.parent)]++ else classAttrValues[id3.getMostCommonClass(node)]++
                 }
                 //Voting now
                 for (i in 1 until classAttrValues.size) {
@@ -2205,7 +2205,7 @@ class Cid3 : Serializable {
                     }
                 }
                 //If node is empty
-                if (isEmpty) classAttrValues[id3.getMostCommonFinal(node.parent)]++ else classAttrValues[id3.getMostCommonFinal(node)]++
+                if (isEmpty) classAttrValues[id3.getMostCommonClass(node.parent)]++ else classAttrValues[id3.getMostCommonClass(node)]++
             }
             //Voting now
             for (i in 1 until classAttrValues.size) {
