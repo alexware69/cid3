@@ -146,7 +146,7 @@ class Cid3 : Serializable {
     }
 
     // Returns the most common class for the specified node
-    private fun mostCommonFinal(n: TreeNode?): Int {
+    private fun getMostCommonFinal(n: TreeNode?): Int {
         val numValuesClass = domainsIndexToValue[classAttribute].size
         var value = n!!.frequencyClasses[0]
         var result = 0
@@ -695,7 +695,7 @@ class Cid3 : Serializable {
         return if (node.parent == null) false else alreadyUsedToDecompose(node.parent, attribute)
     }
 
-    private fun stopConditionAllClassesEqualEfficient(frequencyClasses: IntArray): Boolean {
+    private fun stopConditionAllClassesEqual(frequencyClasses: IntArray): Boolean {
         val numValuesClass = domainsIndexToValue[classAttribute].size
         var oneClassIsPresent = false
         for (i in 0 until numValuesClass) {
@@ -715,7 +715,7 @@ class Cid3 : Serializable {
         var selectedAttribute = 0
         if (criteria == Criteria.Certainty) {
             if (node.data.size <= 1) return
-            if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return
+            if (stopConditionAllClassesEqual(node.frequencyClasses)) return
             var certainty: Certainty
             for (selectedAtt in selectedAttributesLocal) {
                 if (classAttribute == selectedAtt) continue
@@ -732,7 +732,7 @@ class Cid3 : Serializable {
             if (!selected || bestCertainty.certainty == 0.0) return
         } else if (criteria == Criteria.Entropy) {
             if (node.data.size <= 1) return
-            if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return
+            if (stopConditionAllClassesEqual(node.frequencyClasses)) return
             /*  In the following two loops, the best attribute is located which
                         causes maximum increase in information*/
             var entropy: Certainty
@@ -755,7 +755,7 @@ class Cid3 : Serializable {
             if (!selected) return
         } else if (criteria == Criteria.Gini) {
             if (node.data.size <= 1) return
-            if (stopConditionAllClassesEqualEfficient(node.frequencyClasses)) return
+            if (stopConditionAllClassesEqual(node.frequencyClasses)) return
             /*  In the following two loops, the best attribute is located which
                             causes maximum increase in information*/
             var gini: Certainty
@@ -916,7 +916,7 @@ class Cid3 : Serializable {
     }
 
     //Find the mean value of a continuous attribute
-    private fun meanValue(attribute: Int): Double {
+    private fun getMeanValue(attribute: Int): Double {
         var sum = 0.0
         var counter = 0
         for (point in trainData) {
@@ -936,13 +936,13 @@ class Cid3 : Serializable {
         for (i in 0 until numAttributes - 1) {
             if (attributeTypes[i] == AttributeType.Ignore) continue
             if (attributeTypes[i] == AttributeType.Continuous) {
-                meanValues[i] = meanValue(i)
+                meanValues[i] = getMeanValue(i)
             } else meanValues[i] = 0.0
         }
     }
 
     //Find the most common values of a discrete attribute. This is needed for imputation.
-    private fun mostCommonValue(attribute: Int): Int {
+    private fun getMostCommonValue(attribute: Int): Int {
         val frequencies = IntArray(domainsIndexToValue[attribute].size)
         for (point in trainData) {
             frequencies[point.attributes[attribute]]++
@@ -963,7 +963,7 @@ class Cid3 : Serializable {
         for (i in 0 until numAttributes - 1) {
             if (attributeTypes[i] == AttributeType.Ignore) continue
             if (attributeTypes[i] == AttributeType.Discrete) {
-                mostCommonValues[i] = mostCommonValue(i)
+                mostCommonValues[i] = getMostCommonValue(i)
             } else mostCommonValues[i] = 0
         }
     }
@@ -1604,18 +1604,18 @@ class Cid3 : Serializable {
     private fun testExample(example: DataPoint): Boolean {
         val node: TreeNode = testExamplePoint(example, root)
         return if (node.data.isEmpty()) {
-            example.attributes[classAttribute] == mostCommonFinal(node.parent)
+            example.attributes[classAttribute] == getMostCommonFinal(node.parent)
         } else {
-            example.attributes[classAttribute] == mostCommonFinal(node)
+            example.attributes[classAttribute] == getMostCommonFinal(node)
         }
     }
 
     private fun testExampleCV(example: DataPoint, tree: TreeNode): Boolean {
         val node: TreeNode = testExamplePoint(example, tree)
         return if (node.data.isEmpty()) {
-            example.attributes[classAttribute] == mostCommonFinal(node.parent)
+            example.attributes[classAttribute] == getMostCommonFinal(node.parent)
         } else {
-            example.attributes[classAttribute] == mostCommonFinal(node)
+            example.attributes[classAttribute] == getMostCommonFinal(node)
         }
     }
 
@@ -1627,9 +1627,9 @@ class Cid3 : Serializable {
         for (treeNode in roots) {
             node = testExamplePoint(example, treeNode)
             if (node.data.isEmpty()) {
-                if (example.attributes[classAttribute] == mostCommonFinal(node.parent)) results.add(true) else results.add(false)
+                if (example.attributes[classAttribute] == getMostCommonFinal(node.parent)) results.add(true) else results.add(false)
             } else {
-                if (example.attributes[classAttribute] == mostCommonFinal(node)) results.add(true) else results.add(false)
+                if (example.attributes[classAttribute] == getMostCommonFinal(node)) results.add(true) else results.add(false)
             }
         }
         //Voting now
@@ -1890,7 +1890,7 @@ class Cid3 : Serializable {
                 }
             }
             val mostCommon: Int
-            mostCommon = if (isEmpty) id3.mostCommonFinal(currentNode.parent) else id3.mostCommonFinal(currentNode)
+            mostCommon = if (isEmpty) id3.getMostCommonFinal(currentNode.parent) else id3.getMostCommonFinal(currentNode)
             val mostCommonStr = id3.domainsIndexToValue[id3.classAttribute][mostCommon] as String?
             //Print class attribute value
             println("Class attribute value is: $mostCommonStr")
@@ -1986,7 +1986,7 @@ class Cid3 : Serializable {
                     }
                 }
                 //If node is empty
-                caseClass = if (isEmpty) id3.mostCommonFinal(node.parent) else id3.mostCommonFinal(node)
+                caseClass = if (isEmpty) id3.getMostCommonFinal(node.parent) else id3.getMostCommonFinal(node)
 
                 //Print line to output tmp file
                 val classValue = id3.domainsIndexToValue[id3.classAttribute][caseClass] as String?
@@ -2100,7 +2100,7 @@ class Cid3 : Serializable {
                         }
                     }
                     //If node is empty
-                    if (isEmpty) classAttrValues[id3.mostCommonFinal(node.parent)]++ else classAttrValues[id3.mostCommonFinal(node)]++
+                    if (isEmpty) classAttrValues[id3.getMostCommonFinal(node.parent)]++ else classAttrValues[id3.getMostCommonFinal(node)]++
                 }
                 //Voting now
                 for (i in 1 until classAttrValues.size) {
@@ -2205,7 +2205,7 @@ class Cid3 : Serializable {
                     }
                 }
                 //If node is empty
-                if (isEmpty) classAttrValues[id3.mostCommonFinal(node.parent)]++ else classAttrValues[id3.mostCommonFinal(node)]++
+                if (isEmpty) classAttrValues[id3.getMostCommonFinal(node.parent)]++ else classAttrValues[id3.getMostCommonFinal(node)]++
             }
             //Voting now
             for (i in 1 until classAttrValues.size) {
