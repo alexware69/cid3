@@ -657,8 +657,8 @@ class Cid3 : Serializable {
         for (point in data) {
             for (j in 0 until point.attributes.size - 1) {
                 if (attributeTypes[j] == AttributeType.Ignore) continue
-                probabilities[j]!!.prob[point.attributes[j]] = probabilities[j]!!.prob[point.attributes[j]] + 1
-                probabilities[j]!!.probCAndA[point.attributes[j]][point.attributes[classAttribute]] = probabilities[j]!!.probCAndA[point.attributes[j]][point.attributes[classAttribute]] + 1
+                probabilities[j]!!.prob[point.attributes[j]]++
+                probabilities[j]!!.probCAndA[point.attributes[j]][point.attributes[classAttribute]]++
             }
         }
         // Divide all values by total data size to get probabilities.
