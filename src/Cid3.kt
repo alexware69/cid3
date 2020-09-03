@@ -1692,7 +1692,12 @@ class Cid3 : Serializable {
             percentageErrors += 1.0 * testErrors / currentTest.size * 100
             val rounded1 = (1.0 * testErrors / currentTest.size * 100 * 10).roundToInt() / 10.0
             print("\n")
-            print("Fold #" + (i + 1) + " Errors: " + rounded1 + "%")
+            if (i != 9) {
+                print("Fold  #" + (i + 1) + " Errors: " + rounded1 + "%")
+            }
+            else{
+                print("Fold #" + (i + 1) + " Errors: " + rounded1 + "%")
+            }
             //Save k errors for SE
             errorsFoldK[i] = 1.0 * testErrors / currentTest.size * 100
         }
@@ -1763,7 +1768,9 @@ class Cid3 : Serializable {
         }
         print("\n")
         val rounded1 = (1.0 * testErrors * 100 / testSize * 10).roundToInt() / 10.0
-        print("Fold #$index Errors: $rounded1%")
+        if (index != 10)
+            print("Fold  #$index Errors: $rounded1%")
+        else print("Fold #$index Errors: $rounded1%")
         return rounded1
     }
 
