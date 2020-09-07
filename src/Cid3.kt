@@ -9,6 +9,7 @@ import java.util.zip.GZIPOutputStream
 import kotlin.math.*
 import kotlin.system.exitProcess
 import org.apache.commons.cli.*
+import kotlin.collections.ArrayList
 
 class Cid3 : Serializable {
     enum class AttributeType {
@@ -24,6 +25,7 @@ class Cid3 : Serializable {
     private lateinit var mostCommonValues: IntArray
     lateinit var fileName: String
     private var seed: Long = 13579
+    val attributeImportance = ArrayList<Tuple<Int,Double>>()
 
     //int maxThreads = 500;
     //transient ArrayList<Thread> globalThreads = new ArrayList<>();
@@ -722,6 +724,10 @@ class Cid3 : Serializable {
                 if (attributeTypes[selectedAtt] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtt)) continue
                 certainty = calculateCertainty(node.data, selectedAtt)
                 if (certainty.certainty == 0.0) continue
+                //Insert into attributeImportance
+                if(node.parent == null){
+                    attributeImportance.add(Tuple(selectedAtt, certainty.certainty))
+                }
                 //Select best attribute
                 if (certainty.certainty > bestCertainty.certainty) {
                     selected = true
@@ -741,6 +747,10 @@ class Cid3 : Serializable {
                 if (attributeTypes[selectedAtt] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtt)) continue
                 entropy = calculateEntropy(node.data, selectedAtt)
                 if (entropy.certainty == -1.0) continue
+                //Insert into attributeImportance
+                if(node.parent == null){
+                    attributeImportance.add(Tuple(selectedAtt, entropy.certainty))
+                }
                 if (!selected) {
                     selected = true
                     bestCertainty = entropy
@@ -764,6 +774,10 @@ class Cid3 : Serializable {
                 if (attributeTypes[selectedAtt] == AttributeType.Discrete && alreadyUsedToDecompose(node, selectedAtt)) continue
                 gini = calculateGini(node.data, selectedAtt)
                 if (gini.certainty == -1.0) continue
+                //Insert into attributeImportance
+                if(node.parent == null){
+                    attributeImportance.add(Tuple(selectedAtt, gini.certainty))
+                }
                 if (!selected) {
                     selected = true
                     bestCertainty = gini
@@ -1356,6 +1370,19 @@ class Cid3 : Serializable {
         print("\n")
         testDecisionTree()
         print("\n")
+
+        print("Attribute importance:")
+        print("\n")
+        val sortedList: List<Tuple<Int,Double>> = if (criteria == Criteria.Certainty)
+            attributeImportance.sortedWith(compareByDescending { it.y })
+        else attributeImportance.sortedWith(compareBy { it.y })
+        for ((i, element) in sortedList.withIndex()){
+            if (i > 9) break
+            print("${attributeNames[element.x]}: ${element.y}")
+            print("\n")
+        }
+        print("\n")
+
         val finish = Instant.now()
         val timeElapsed = Duration.between(start, finish)
         val timeElapsedString = formatDuration(timeElapsed)
