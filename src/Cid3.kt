@@ -1379,7 +1379,8 @@ class Cid3 : Serializable {
         //this is needed to format console output
         var longestString: String?
         longestString = ""
-        for (element in sortedList){
+        for ((i, element) in sortedList.withIndex()){
+            if (i > 9) break
             val attName: String? = attributeNames[element.x]
             if (attName != null && longestString != null)
                 if (attName.length > longestString.length) longestString = attName
