@@ -1713,9 +1713,6 @@ class Cid3 : Serializable {
             print("Incorrect guesses: $testErrors ($rounded1%)")
         }
         print("\n")
-        print("\n")
-        print("Root: " + attributeNames[root.decompositionAttribute])
-        print("\n")
     }
 
     private fun testCrossValidation() {

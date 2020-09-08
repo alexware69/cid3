@@ -96,13 +96,6 @@
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
     </task>
-    <task id="LOCAL-00046" summary="finished something I thought it was done">
-      <created>1598088066099</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1598088066099</updated>
-    </task>
     <task id="LOCAL-00047" summary="finished something I thought it was done...again">
       <created>1598088445968</created>
       <option name="number" value="00047" />
@@ -439,7 +432,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599525887103</updated>
     </task>
-    <option name="localTasksCounter" value="95" />
+    <task id="LOCAL-00095" summary="again formatted attribute importance for trees">
+      <created>1599527055324</created>
+      <option name="number" value="00095" />
+      <option name="presentableId" value="LOCAL-00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1599527055324</updated>
+    </task>
+    <option name="localTasksCounter" value="96" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -465,7 +465,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Now jar file with Kotling works!" />
     <MESSAGE value="removed the commons cli code from project..imported the jar instead" />
     <MESSAGE value="some more sanitizing of Kotlin" />
     <MESSAGE value="even some more sanitizing of Kotlin..removed some nulls" />
@@ -490,7 +489,8 @@
     <MESSAGE value="some more console output text formatting" />
     <MESSAGE value="implemented attribute importance for trees" />
     <MESSAGE value="formatted attribute importance for trees" />
-    <option name="LAST_COMMIT_MESSAGE" value="formatted attribute importance for trees" />
+    <MESSAGE value="again formatted attribute importance for trees" />
+    <option name="LAST_COMMIT_MESSAGE" value="again formatted attribute importance for trees" />
   </component>
   <component name="WindowStateProjectService">
     <state x="455" y="87" key="#Project_Structure" timestamp="1598595187080">
@@ -519,36 +519,36 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="705" y="267" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog/0.25.1920.984@0.25.1920.984" timestamp="1598588232238" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1599525886928">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1599527055212">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
     <state x="1288" y="255" key="CommitChangelistDialog2/0.23.2560.1353@0.23.2560.1353" timestamp="1591421682159" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1599525886928" />
-    <state width="1358" height="262" key="GridCell.Tab.0.bottom" timestamp="1599525831191">
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1599527055212" />
+    <state width="1358" height="262" key="GridCell.Tab.0.bottom" timestamp="1599527422785">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.bottom/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
     <state width="1627" height="330" key="GridCell.Tab.0.bottom/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088199" />
-    <state width="1358" height="262" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1599525831191" />
-    <state width="1358" height="262" key="GridCell.Tab.0.center" timestamp="1599525831190">
+    <state width="1358" height="262" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1599527422785" />
+    <state width="1358" height="262" key="GridCell.Tab.0.center" timestamp="1599527422784">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.center/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
     <state width="1627" height="330" key="GridCell.Tab.0.center/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088189" />
-    <state width="1358" height="262" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1599525831190" />
-    <state width="1358" height="262" key="GridCell.Tab.0.left" timestamp="1599525831188">
+    <state width="1358" height="262" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1599527422784" />
+    <state width="1358" height="262" key="GridCell.Tab.0.left" timestamp="1599527422784">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.left/0.23.1920.991@0.23.1920.991" timestamp="1596361527518" />
     <state width="1627" height="330" key="GridCell.Tab.0.left/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088189" />
-    <state width="1358" height="262" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1599525831188" />
-    <state width="1358" height="262" key="GridCell.Tab.0.right" timestamp="1599525831190">
+    <state width="1358" height="262" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1599527422784" />
+    <state width="1358" height="262" key="GridCell.Tab.0.right" timestamp="1599527422784">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.right/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
     <state width="1627" height="330" key="GridCell.Tab.0.right/0.23.2560.1353@0.23.2560.1353" timestamp="1591422088199" />
-    <state width="1358" height="262" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1599525831190" />
+    <state width="1358" height="262" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1599527422784" />
     <state x="1214" y="286" key="RollbackChangesDialog" timestamp="1598566559744">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -558,12 +558,12 @@
     </state>
     <state x="527" y="164" key="SettingsEditor/0.23.1920.991@0.23.1920.991" timestamp="1594012692651" />
     <state x="563" y="107" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1598832953327" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1599525895961">
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1599527063328">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1596361336239" />
     <state x="850" y="450" key="Vcs.Push.Dialog.v2/0.23.2560.1353@0.23.2560.1353" timestamp="1591421688805" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1599525895961" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1599527063328" />
     <state x="754" y="381" key="classpath-attribute-editor" timestamp="1598584648447">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
