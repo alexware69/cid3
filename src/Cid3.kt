@@ -1376,9 +1376,22 @@ class Cid3 : Serializable {
         val sortedList: List<Tuple<Int,Double>> = if (criteria == Criteria.Certainty)
             attributeImportance.sortedWith(compareByDescending { it.y })
         else attributeImportance.sortedWith(compareBy { it.y })
+        //this is needed to format console output
+        var longestString: String?
+        longestString = ""
+        for (element in sortedList){
+            val attName: String? = attributeNames[element.x]
+            if (attName != null && longestString != null)
+                if (attName.length > longestString.length) longestString = attName
+        }
+        //print the output
         for ((i, element) in sortedList.withIndex()){
             if (i > 9) break
-            print("${attributeNames[element.x]}: ${element.y}")
+            var spaces = ""
+            val numOfSpaces: Int = longestString!!.length - attributeNames[element.x]!!.length
+            for (space in 1..numOfSpaces)
+                spaces += " "
+            print("${attributeNames[element.x]}: $spaces ${element.y}")
             print("\n")
         }
         print("\n")
