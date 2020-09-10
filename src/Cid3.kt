@@ -1374,6 +1374,8 @@ class Cid3 : Serializable {
 
         print("Attribute importance:")
         print("\n")
+        print("---------------------")
+        print("\n")
         val sortedList: List<Tuple<Int,Double>> = if (criteria == Criteria.Certainty)
             attributeImportance.sortedWith(compareByDescending { it.y })
         else attributeImportance.sortedWith(compareBy { it.y })
