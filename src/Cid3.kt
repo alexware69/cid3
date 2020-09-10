@@ -1361,6 +1361,7 @@ class Cid3 : Serializable {
             selectedAttributes.add(i)
         }
         decomposeNode(root, selectedAttributes, 0)
+        print("\n")
         print("Decision tree created.")
         print("\n")
         countNodes(root)
