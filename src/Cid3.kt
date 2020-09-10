@@ -1156,10 +1156,10 @@ class Cid3 : Serializable {
         }
         trainData = root.data
         if (splitTrainData && !testDataExists) {
-            print("Read data: " + root.data.size + " cases for training.")
+            print("Read data: " + root.data.size + " cases for training. ($numAttributes attributes)")
             print("\n")
             print("Read data: " + testData.size + " cases for testing.")
-        } else print("Read data: " + root.data.size + " cases for training. ")
+        } else print("Read data: " + root.data.size + " cases for training. ($numAttributes attributes)")
         print("\n")
     } // End of function readData
 
