@@ -25,7 +25,7 @@ class Cid3 : Serializable {
     private lateinit var mostCommonValues: IntArray
     lateinit var fileName: String
     private var seed: Long = 13579
-    val attributeImportance = ArrayList<Tuple<Int,Double>>()
+    private val attributeImportance = ArrayList<Tuple<Int,Double>>()
 
     //int maxThreads = 500;
     //transient ArrayList<Thread> globalThreads = new ArrayList<>();
