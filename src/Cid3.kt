@@ -1396,7 +1396,8 @@ class Cid3 : Serializable {
             val numOfSpaces: Int = longestString!!.length - attributeNames[element.x]!!.length
             for (space in 1..numOfSpaces)
                 spaces += " "
-            print("${attributeNames[element.x]}: $spaces ${element.y}")
+            val rounded = (element.y * 100).roundToInt() / 100.0
+            print("${attributeNames[element.x]}: $spaces $rounded")
             print("\n")
         }
         print("\n")
