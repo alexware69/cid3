@@ -1,3 +1,4 @@
+import org.apache.commons.cli.*
 import java.io.*
 import java.time.Duration
 import java.time.Instant
@@ -6,10 +7,9 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
+import kotlin.collections.ArrayList
 import kotlin.math.*
 import kotlin.system.exitProcess
-import org.apache.commons.cli.*
-import kotlin.collections.ArrayList
 
 class Cid3 : Serializable {
     enum class AttributeType {
@@ -25,7 +25,7 @@ class Cid3 : Serializable {
     private lateinit var mostCommonValues: IntArray
     lateinit var fileName: String
     private var seed: Long = 13579
-    private val attributeImportance = ArrayList<Tuple<Int,Double>>()
+    private val attributeImportance = ArrayList<Tuple<Int, Double>>()
 
     //int maxThreads = 500;
     //transient ArrayList<Thread> globalThreads = new ArrayList<>();
@@ -1377,7 +1377,7 @@ class Cid3 : Serializable {
         print("\n")
         print("---------------------")
         print("\n")
-        val sortedList: List<Tuple<Int,Double>> = if (criteria == Criteria.Certainty)
+        val sortedList: List<Tuple<Int, Double>> = if (criteria == Criteria.Certainty)
             attributeImportance.sortedWith(compareByDescending { it.y })
         else attributeImportance.sortedWith(compareBy { it.y })
         //this is needed to format console output
@@ -1396,7 +1396,7 @@ class Cid3 : Serializable {
             val numOfSpaces: Int = longestString!!.length - attributeNames[element.x]!!.length
             for (space in 1..numOfSpaces)
                 spaces += " "
-            val rounded = (element.y * 100).roundToInt() / 100.0
+            val rounded = String.format("%.2f", element.y)
             print("${attributeNames[element.x]}: $spaces $rounded")
             print("\n")
         }
