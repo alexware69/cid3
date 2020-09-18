@@ -1701,22 +1701,22 @@ class Cid3 : Serializable {
             if (testExample(point)) trainCorrects++ else trainErrors++
         }
         print("\n")
-        print("\u001B[1m" + "[ Train data accuracy ] ")
+        print("[ Train data accuracy ] ")
         print("\n")
         print(" ---------------------")
         print("\n")
-        print("\u001B[0mCorrect guesses: $trainCorrects")
+        print("Correct guesses: $trainCorrects")
         print("\n")
         val rounded = (1.0 * trainErrors * 100 / trainData.size * 10).roundToInt() / 10.0
         print("Incorrect guesses: $trainErrors ($rounded%)")
         print("\n")
         if (testData.isNotEmpty()) {
             print("\n")
-            print("\u001B[1m" + "[ Test data accuracy ] ")
+            print("[ Test data accuracy ] ")
             print("\n")
             print(" --------------------")
             print("\n")
-            print("\u001B[0mCorrect guesses: $testCorrects")
+            print("Correct guesses: $testCorrects")
             print("\n")
             val rounded1 = (1.0 * testErrors * 100 / testData.size * 10).roundToInt() / 10.0
             print("Incorrect guesses: $testErrors ($rounded1%)")
@@ -1853,22 +1853,22 @@ class Cid3 : Serializable {
         for (point in trainData) {
             if (testExampleRF(point, rootsRandomForest)) trainCorrects++ else trainErrors++
         }
-        print("\u001B[1m" + "[ Train data accuracy ] ")
+        print("[ Train data accuracy ] ")
         print("\n")
         print(" ---------------------")
         print("\n")
-        print("\u001B[0mCorrect guesses: $trainCorrects")
+        print("Correct guesses: $trainCorrects")
         print("\n")
         val rounded = (1.0 * trainErrors * 100 / trainData.size * 10).roundToInt() / 10.0
         print("Incorrect guesses: $trainErrors ($rounded%)")
         print("\n")
         if (testData.isNotEmpty()) {
             print("\n")
-            print("\u001B[1m" + "[ Test data accuracy ] ")
+            print("[ Test data accuracy ] ")
             print("\n")
             print(" --------------------")
             print("\n")
-            print("\u001B[0mCorrect guesses: $testCorrects")
+            print("Correct guesses: $testCorrects")
             print("\n")
             val rounded1 = (1.0 * testErrors * 100 / testData.size * 10).roundToInt() / 10.0
             print("Incorrect guesses: $testErrors ($rounded1%)")

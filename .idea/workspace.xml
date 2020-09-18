@@ -99,13 +99,6 @@
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
     </task>
-    <task id="LOCAL-00067" summary="Almost done sanitizing Kotlin code! Zero warnings now!">
-      <created>1598582449656</created>
-      <option name="number" value="00067" />
-      <option name="presentableId" value="LOCAL-00067" />
-      <option name="project" value="LOCAL" />
-      <updated>1598582449656</updated>
-    </task>
     <task id="LOCAL-00068" summary="Almost done sanitizing Kotlin code! Only three soft warnings now!">
       <created>1598582832397</created>
       <option name="number" value="00068" />
@@ -442,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1600424534677</updated>
     </task>
-    <option name="localTasksCounter" value="116" />
+    <task id="LOCAL-00116" summary="more formatting, changed output for cross-validation">
+      <created>1600449098348</created>
+      <option name="number" value="00116" />
+      <option name="presentableId" value="LOCAL-00116" />
+      <option name="project" value="LOCAL" />
+      <updated>1600449098349</updated>
+    </task>
+    <option name="localTasksCounter" value="117" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -468,7 +468,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="some more console output text formatting" />
     <MESSAGE value="implemented attribute importance for trees" />
     <MESSAGE value="formatted attribute importance for trees" />
     <MESSAGE value="again formatted attribute importance for trees" />
@@ -493,7 +492,8 @@
     <MESSAGE value="more formatting" />
     <MESSAGE value="more formatting, now showing bold font" />
     <MESSAGE value="more formatting, now showing bold font on random forests" />
-    <option name="LAST_COMMIT_MESSAGE" value="more formatting, now showing bold font on random forests" />
+    <MESSAGE value="more formatting, changed output for cross-validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="more formatting, changed output for cross-validation" />
   </component>
   <component name="WindowStateProjectService">
     <state x="455" y="87" key="#Project_Structure" timestamp="1599801216676">
@@ -521,11 +521,11 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="705" y="267" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog/0.25.1920.984@0.25.1920.984" timestamp="1598588232238" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1600424534561">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1600449098174">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1600424534561" />
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1600449098174" />
     <state width="443" height="466" key="DebuggerActiveHint" timestamp="1600391722255">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -583,11 +583,11 @@
     </state>
     <state x="527" y="164" key="SettingsEditor/0.23.1920.991@0.23.1920.991" timestamp="1594012692651" />
     <state x="563" y="107" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1599801508041" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1600424540864">
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1600449106476">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1596361336239" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1600424540864" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1600449106476" />
     <state x="754" y="381" key="classpath-attribute-editor" timestamp="1598584648447">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
