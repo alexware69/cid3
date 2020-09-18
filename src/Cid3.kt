@@ -1397,6 +1397,7 @@ class Cid3 : Serializable {
                 console.format(fmt, "Importance", "Attribute Name")
                 console.format(fmt, "----------", "--------------")
                 for (i in sortedList.indices) {
+                    if (i > 9) break
                     val rounded = String.format("%.2f", sortedList[i].y)
                     console.format(fmt, rounded, attributeNames[sortedList[i].x])
                 }
