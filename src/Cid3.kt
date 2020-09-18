@@ -1742,12 +1742,18 @@ class Cid3 : Serializable {
 
         //Print console output
         print("\n")
-        val console: Console = System.console()
-        val fmt = "%1$4s %2$10s%n"
-        console.format(fmt, "Fold", "Errors")
-        console.format(fmt, "-----", "-------")
-        for (i in 0 until 10){
-            console.format(fmt,(i+1).toString(),roundedErrors[i].toString() + "%")
+        when (val console: Console? = System.console()) {
+            null -> {
+                println("Running from an IDE...")
+            }
+            else -> {
+                val fmt = "%1$4s %2$10s%n"
+                console.format(fmt, "Fold", "Errors")
+                console.format(fmt, "-----", "-------")
+                for (i in 0 until 10) {
+                    console.format(fmt, (i + 1).toString(), roundedErrors[i].toString() + "%")
+                }
+            }
         }
 
         //Print mean errors
@@ -1794,12 +1800,18 @@ class Cid3 : Serializable {
 
         //Print console output
         print("\n")
-        val console: Console = System.console()
-        val fmt = "%1$4s %2$10s%n"
-        console.format(fmt, "Fold", "Errors")
-        console.format(fmt, "-----", "-------")
-        for (i in 0 until 10){
-            console.format(fmt,(i+1).toString(),roundedErrors[i].toString() + "%")
+        when (val console: Console? = System.console()) {
+            null -> {
+                println("Running from an IDE...")
+            }
+            else -> {
+                val fmt = "%1$4s %2$10s%n"
+                console.format(fmt, "Fold", "Errors")
+                console.format(fmt, "-----", "-------")
+                for (i in 0 until 10) {
+                    console.format(fmt, (i + 1).toString(), roundedErrors[i].toString() + "%")
+                }
+            }
         }
 
         val meanErrors = sum / 10
