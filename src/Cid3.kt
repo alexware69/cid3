@@ -1747,19 +1747,19 @@ class Cid3 : Serializable {
         }
         //Get longest string
         var longest = 0
-        for(text in printOut){
+        for (text in printOut){
             if (text.length > longest) longest = text.length
         }
-        //Set all string with same length
+        //Set the same length for all strings
         for (i in 0 until printOut.size){
             if (printOut[i].length < longest){
-                for(j in 0 until longest - printOut[i].length) {
+                for (j in 0 until longest - printOut[i].length) {
                     printOut[i] = printOut[i].replace(":", ": ")
                 }
             }
         }
         //Print console output
-        for(text in printOut){
+        for (text in printOut){
             print(text)
             print("\n")
         }
