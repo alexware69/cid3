@@ -1370,8 +1370,6 @@ class Cid3 : Serializable {
         print("\n")
         print("Nodes:$totalNodes")
         print("\n")
-        testDecisionTree()
-        print("\n")
 
         val sortedList: List<Tuple<Int, Double>> = if (criteria == Criteria.Certainty)
             attributeImportance.sortedWith(compareByDescending { it.y })
@@ -1381,12 +1379,12 @@ class Cid3 : Serializable {
         var longestString: String?
         longestString = ""
         for ((i, element) in sortedList.withIndex()){
-            if (i > 9) break
+            if (i > 99) break
             val attName: String? = attributeNames[element.x]
             if (attName != null && longestString != null)
                 if (attName.length > longestString.length) longestString = attName
         }
-
+        print("\n")
         //Print console output
         when (val console: Console? = System.console()) {
             null -> {
@@ -1397,12 +1395,14 @@ class Cid3 : Serializable {
                 console.format(fmt, "Importance", "Attribute Name")
                 console.format(fmt, "----------", "--------------")
                 for (i in sortedList.indices) {
-                    if (i > 9) break
+                    if (i > 99) break
                     val rounded = String.format("%.2f", sortedList[i].y)
                     console.format(fmt, rounded, attributeNames[sortedList[i].x])
                 }
             }
         }
+        print("\n")
+        testDecisionTree()
         print("\n")
 
         val finish = Instant.now()
@@ -1700,9 +1700,9 @@ class Cid3 : Serializable {
             if (testExample(point)) trainCorrects++ else trainErrors++
         }
         print("\n")
-        print("TRAIN DATA: ")
+        print("[ Train data accuracy ] ")
         print("\n")
-        print("=================================")
+        print(" ---------------------")
         print("\n")
         print("Correct guesses: $trainCorrects")
         print("\n")
@@ -1711,9 +1711,9 @@ class Cid3 : Serializable {
         print("\n")
         if (testData.isNotEmpty()) {
             print("\n")
-            print("TEST DATA: ")
+            print("[ Test data accuracy ] ")
             print("\n")
-            print("=================================")
+            print(" --------------------")
             print("\n")
             print("Correct guesses: $testCorrects")
             print("\n")
