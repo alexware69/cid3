@@ -1745,10 +1745,11 @@ class Cid3 : Serializable {
         val console: Console = System.console()
         val fmt = "%1$4s %2$10s%n"
         console.format(fmt, "Fold", "Errors")
-        console.format(fmt, "-----", "-----")
+        console.format(fmt, "-----", "-------")
         for (i in 0 until 10){
             console.format(fmt,(i+1).toString(),roundedErrors[i].toString() + "%")
         }
+
         //Print mean errors
         meanErrors = percentageErrors / 10
         val rounded1 = (meanErrors * 10).roundToInt() / 10.0
@@ -1779,18 +1780,30 @@ class Cid3 : Serializable {
         var sum = 0.0
         val errorsFoldK = DoubleArray(10)
         var current: Double
+        val roundedErrors = ArrayList<Double>()
         //For each Random Forest
         for (i in 0..9) {
             val currentForest = cvRandomForests[i]
             val currentTestData = crossValidationChunks[i]
-            current = testRandomForest(currentTestData, currentForest, i + 1)
+            current = testRandomForest(currentTestData, currentForest)
+            roundedErrors.add(current)
             sum += current
             //Save k errors for SE
             errorsFoldK[i] = current
         }
+
+        //Print console output
+        print("\n")
+        val console: Console = System.console()
+        val fmt = "%1$4s %2$10s%n"
+        console.format(fmt, "Fold", "Errors")
+        console.format(fmt, "-----", "-------")
+        for (i in 0 until 10){
+            console.format(fmt,(i+1).toString(),roundedErrors[i].toString() + "%")
+        }
+
         val meanErrors = sum / 10
         val rounded1 = (meanErrors * 10).roundToInt() / 10.0
-        print("\n")
         print("\n")
         print("Mean errors: $rounded1%")
         print("\n")
@@ -1808,18 +1821,13 @@ class Cid3 : Serializable {
     }
 
     //This overload method is intended to be used when Random Forest cross-validation is selected.
-    private fun testRandomForest(testD: ArrayList<DataPoint>, roots: ArrayList<TreeNode>, index: Int): Double {
+    private fun testRandomForest(testD: ArrayList<DataPoint>, roots: ArrayList<TreeNode>): Double {
         var testErrors = 0
         val testSize = testD.size
         for (point in testD) {
             if (!testExampleRF(point, roots)) testErrors++
         }
-        print("\n")
-        val rounded1 = (1.0 * testErrors * 100 / testSize * 10).roundToInt() / 10.0
-        if (index != 10)
-            print("Fold#  $index Errors: $rounded1%")
-        else print("Fold# $index Errors: $rounded1%")
-        return rounded1
+        return (1.0 * testErrors * 100 / testSize * 10).roundToInt() / 10.0
     }
 
     private fun testRandomForest() {
