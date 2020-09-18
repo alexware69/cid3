@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="now rounding attribute importance">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="a different rounding of attribute importance">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -81,7 +81,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/adult" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/optdigits -v" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -500,11 +500,11 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="455" y="87" key="#Project_Structure/0.25.1920.984@0.25.1920.984" timestamp="1599801216676" />
-    <state x="536" y="279" width="1071" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600130783541">
+    <state x="536" y="279" width="1071" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600391393416">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="536" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1920.991@0.23.1920.991" timestamp="1593779542200" />
-    <state x="536" y="279" width="1071" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1920.984@0.25.1920.984" timestamp="1600130783541" />
+    <state x="536" y="279" width="1071" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1920.984@0.25.1920.984" timestamp="1600391393416" />
     <state x="712" y="426" key="#com.intellij.framework.addSupport.AddSupportForSingleFrameworkDialog" timestamp="1598586869716">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -521,35 +521,59 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="705" y="267" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog/0.25.1920.984@0.25.1920.984" timestamp="1598588232238" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1600132767481">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1600238022099">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1600132767481" />
-    <state width="1358" height="262" key="GridCell.Tab.0.bottom" timestamp="1600133065918">
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1600238022099" />
+    <state width="443" height="466" key="DebuggerActiveHint" timestamp="1600391722255">
+      <screen x="0" y="25" width="1920" height="984" />
+    </state>
+    <state width="443" height="466" key="DebuggerActiveHint/0.25.1920.984@0.25.1920.984" timestamp="1600391722255" />
+    <state width="1358" height="262" key="GridCell.Tab.0.bottom" timestamp="1600392436087">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.bottom/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
-    <state width="1358" height="262" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1600133065918" />
-    <state width="1358" height="262" key="GridCell.Tab.0.center" timestamp="1600133065917">
+    <state width="1358" height="262" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1600392436087" />
+    <state width="1358" height="262" key="GridCell.Tab.0.center" timestamp="1600392436086">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.center/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
-    <state width="1358" height="262" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1600133065917" />
-    <state width="1358" height="262" key="GridCell.Tab.0.left" timestamp="1600133065916">
+    <state width="1358" height="262" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1600392436086" />
+    <state width="1358" height="262" key="GridCell.Tab.0.left" timestamp="1600392436086">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.left/0.23.1920.991@0.23.1920.991" timestamp="1596361527518" />
-    <state width="1358" height="262" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1600133065916" />
-    <state width="1358" height="262" key="GridCell.Tab.0.right" timestamp="1600133065917">
+    <state width="1358" height="262" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1600392436086" />
+    <state width="1358" height="262" key="GridCell.Tab.0.right" timestamp="1600392436086">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.right/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
-    <state width="1358" height="262" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1600133065917" />
-    <state x="1214" y="286" key="RollbackChangesDialog" timestamp="1598566559744">
+    <state width="1358" height="262" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1600392436086" />
+    <state width="1358" height="310" key="GridCell.Tab.1.bottom" timestamp="1600392049410">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
-    <state x="1214" y="286" key="RollbackChangesDialog/0.25.1920.984@0.25.1920.984" timestamp="1598566559744" />
+    <state width="1358" height="310" key="GridCell.Tab.1.bottom/0.25.1920.984@0.25.1920.984" timestamp="1600392049410" />
+    <state width="1358" height="310" key="GridCell.Tab.1.center" timestamp="1600392049409">
+      <screen x="0" y="25" width="1920" height="984" />
+    </state>
+    <state width="1358" height="310" key="GridCell.Tab.1.center/0.25.1920.984@0.25.1920.984" timestamp="1600392049409" />
+    <state width="1358" height="310" key="GridCell.Tab.1.left" timestamp="1600392049408">
+      <screen x="0" y="25" width="1920" height="984" />
+    </state>
+    <state width="1358" height="310" key="GridCell.Tab.1.left/0.25.1920.984@0.25.1920.984" timestamp="1600392049408" />
+    <state width="1358" height="310" key="GridCell.Tab.1.right" timestamp="1600392049409">
+      <screen x="0" y="25" width="1920" height="984" />
+    </state>
+    <state width="1358" height="310" key="GridCell.Tab.1.right/0.25.1920.984@0.25.1920.984" timestamp="1600392049409" />
+    <state x="596" y="260" key="IDE.errors.dialog" timestamp="1600391128722">
+      <screen x="0" y="25" width="1920" height="984" />
+    </state>
+    <state x="596" y="260" key="IDE.errors.dialog/0.25.1920.984@0.25.1920.984" timestamp="1600391128722" />
+    <state x="1214" y="286" key="RollbackChangesDialog" timestamp="1600235464529">
+      <screen x="0" y="25" width="1920" height="984" />
+    </state>
+    <state x="1214" y="286" key="RollbackChangesDialog/0.25.1920.984@0.25.1920.984" timestamp="1600235464529" />
     <state x="563" y="107" key="SettingsEditor" timestamp="1599801508041">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -572,5 +596,9 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="608" y="132" width="847" height="761" key="new project wizard/0.25.1920.984@0.25.1920.984" timestamp="1599802038042" />
+    <state x="673" y="248" width="670" height="676" key="search.everywhere.popup" timestamp="1600390686612">
+      <screen x="0" y="25" width="1920" height="984" />
+    </state>
+    <state x="673" y="248" width="670" height="676" key="search.everywhere.popup/0.25.1920.984@0.25.1920.984" timestamp="1600390686612" />
   </component>
 </project>
