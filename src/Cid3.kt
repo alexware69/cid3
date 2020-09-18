@@ -1373,32 +1373,24 @@ class Cid3 : Serializable {
         testDecisionTree()
         print("\n")
 
-        print("Attribute importance:")
-        print("\n")
-        print("---------------------")
-        print("\n")
         val sortedList: List<Tuple<Int, Double>> = if (criteria == Criteria.Certainty)
             attributeImportance.sortedWith(compareByDescending { it.y })
         else attributeImportance.sortedWith(compareBy { it.y })
-        //this is needed to format console output
-        var longestString: String?
-        longestString = ""
-        for ((i, element) in sortedList.withIndex()){
-            if (i > 9) break
-            val attName: String? = attributeNames[element.x]
-            if (attName != null && longestString != null)
-                if (attName.length > longestString.length) longestString = attName
-        }
-        //print the output
-        for ((i, element) in sortedList.withIndex()){
-            if (i > 9) break
-            var spaces = ""
-            val numOfSpaces: Int = longestString!!.length - attributeNames[element.x]!!.length
-            for (space in 1..numOfSpaces)
-                spaces += " "
-            val rounded = String.format("%.2f", element.y)
-            print("${attributeNames[element.x]}: $spaces $rounded")
-            print("\n")
+
+        //Print console output
+        when (val console: Console? = System.console()) {
+            null -> {
+                println("Running from an IDE...")
+            }
+            else -> {
+                val fmt = "%1$10s %2$20s%n"
+                console.format(fmt, "Importance", "Attribute Name")
+                console.format(fmt, "----------", "--------------")
+                for (i in 0 until 10) {
+                    val rounded = String.format("%.2f", sortedList[i].y)
+                    console.format(fmt, rounded, attributeNames[sortedList[i].x])
+                }
+            }
         }
         print("\n")
 
