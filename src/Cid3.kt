@@ -1396,7 +1396,7 @@ class Cid3 : Serializable {
                 val fmt = "%1$10s %2$" + (longestString!!.length + 10).toString() + "s%n"
                 console.format(fmt, "Importance", "Attribute Name")
                 console.format(fmt, "----------", "--------------")
-                for (i in 0 until 10) {
+                for (i in sortedList.indices) {
                     val rounded = String.format("%.2f", sortedList[i].y)
                     console.format(fmt, rounded, attributeNames[sortedList[i].x])
                 }
