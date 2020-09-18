@@ -1365,6 +1365,7 @@ class Cid3 : Serializable {
         print("\n")
         print("Decision tree created.")
         print("\n")
+        print("\n")
         countNodes(root)
         print("Rules:$totalRules")
         print("\n")
