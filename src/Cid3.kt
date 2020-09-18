@@ -1757,33 +1757,31 @@ class Cid3 : Serializable {
                 for (i in 0 until 10) {
                     console.format(fmt, (i + 1).toString(), roundedErrors[i].toString() + "%")
                 }
+
+                //Print mean errors
+                meanErrors = percentageErrors / 10
+                val rounded1 = (meanErrors * 10).roundToInt() / 10.0
+                console.format(fmt, " ", " ")
+                console.format(fmt,"Mean", "$rounded1%")
+
+                //Calculate average
+                var meanFolds = 0.0
+                for (i in 0..9) {
+                    meanFolds += errorsFoldK[i]
+                }
+                meanFolds = 1.0 * meanFolds / 10
+
+                //Calculate SE (Standard Errors)
+                var sumMeanSE = 0.0
+                for (i in 0..9) {
+                    sumMeanSE += (1.0 * errorsFoldK[i] - meanFolds) * (1.0 * errorsFoldK[i] - meanFolds)
+                }
+                sumMeanSE = sqrt(sumMeanSE / 10)
+                val se = sumMeanSE / sqrt(10.0)
+                val roundedSE = (se * 10).roundToInt() / 10.0
+                console.format(fmt,"SE", "$roundedSE%")
             }
         }
-
-        //Print mean errors
-        meanErrors = percentageErrors / 10
-        val rounded1 = (meanErrors * 10).roundToInt() / 10.0
-        print("\n")
-        print("Mean errors: $rounded1%")
-
-        //Calculate average
-        var meanFolds = 0.0
-        for (i in 0..9) {
-            meanFolds += errorsFoldK[i]
-        }
-        meanFolds = 1.0 * meanFolds / 10
-
-        //Calculate SE (Standard Errors)
-        var sumMeanSE = 0.0
-        for (i in 0..9) {
-            sumMeanSE += (1.0 * errorsFoldK[i] - meanFolds) * (1.0 * errorsFoldK[i] - meanFolds)
-        }
-        sumMeanSE = sqrt(sumMeanSE / 10)
-        val se = sumMeanSE / sqrt(10.0)
-        val roundedSE = (se * 10).roundToInt() / 10.0
-        print("\n")
-        print("SE: $roundedSE%")
-        print("\n")
     }
 
     private fun testCrossValidationRF() {
@@ -1815,25 +1813,23 @@ class Cid3 : Serializable {
                 for (i in 0 until 10) {
                     console.format(fmt, (i + 1).toString(), roundedErrors[i].toString() + "%")
                 }
+
+                val meanErrors = sum / 10
+                val rounded1 = (meanErrors * 10).roundToInt() / 10.0
+                console.format(fmt, " ", " ")
+                console.format(fmt, "Mean", "$rounded1%")
+
+                //Calculate SE (Standard Errors)
+                var sumMeanSE = 0.0
+                for (i in 0..9) {
+                    sumMeanSE += (1.0 * errorsFoldK[i] - meanErrors) * (1.0 * errorsFoldK[i] - meanErrors)
+                }
+                sumMeanSE = sqrt(sumMeanSE / 10)
+                val se = sumMeanSE / sqrt(10.0)
+                val roundedSE = (se * 10).roundToInt() / 10.0
+                console.format(fmt, "SE", "$roundedSE%")
             }
         }
-
-        val meanErrors = sum / 10
-        val rounded1 = (meanErrors * 10).roundToInt() / 10.0
-        print("\n")
-        print("Mean errors: $rounded1%")
-        print("\n")
-
-        //Calculate SE (Standard Errors)
-        var sumMeanSE = 0.0
-        for (i in 0..9) {
-            sumMeanSE += (1.0 * errorsFoldK[i] - meanErrors) * (1.0 * errorsFoldK[i] - meanErrors)
-        }
-        sumMeanSE = sqrt(sumMeanSE / 10)
-        val se = sumMeanSE / sqrt(10.0)
-        val roundedSE = (se * 10).roundToInt() / 10.0
-        print("SE: $roundedSE%")
-        print("\n")
     }
 
     //This overload method is intended to be used when Random Forest cross-validation is selected.
