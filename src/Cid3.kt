@@ -1377,13 +1377,23 @@ class Cid3 : Serializable {
             attributeImportance.sortedWith(compareByDescending { it.y })
         else attributeImportance.sortedWith(compareBy { it.y })
 
+        //this is needed to format console output
+        var longestString: String?
+        longestString = ""
+        for ((i, element) in sortedList.withIndex()){
+            if (i > 9) break
+            val attName: String? = attributeNames[element.x]
+            if (attName != null && longestString != null)
+                if (attName.length > longestString.length) longestString = attName
+        }
+
         //Print console output
         when (val console: Console? = System.console()) {
             null -> {
                 println("Running from an IDE...")
             }
             else -> {
-                val fmt = "%1$10s %2$20s%n"
+                val fmt = "%1$10s %2$" + (longestString!!.length + 10).toString() + "s%n"
                 console.format(fmt, "Importance", "Attribute Name")
                 console.format(fmt, "----------", "--------------")
                 for (i in 0 until 10) {
