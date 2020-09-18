@@ -1725,7 +1725,7 @@ class Cid3 : Serializable {
         val meanErrors: Double
         var percentageErrors = 0.0
         val errorsFoldK = DoubleArray(10)
-        val printOut = ArrayList<String>()
+        val roundedErrors = ArrayList<Double>()
         for (i in 0..9) {
             testErrors = 0
             val currentTree = rootsCrossValidation[i]
@@ -1735,35 +1735,21 @@ class Cid3 : Serializable {
             }
             percentageErrors += 1.0 * testErrors / currentTest.size * 100
             val rounded1 = (1.0 * testErrors / currentTest.size * 100 * 10).roundToInt() / 10.0
-            //print("\n")
-            if (i != 9) {
-                printOut.add("Fold#  " + (i + 1) + " Errors: " + rounded1 + "%")
-            }
-            else{
-                printOut.add("Fold# " + (i + 1) + " Errors: " + rounded1 + "%")
-            }
+            roundedErrors.add(rounded1)
             //Save k errors for SE
             errorsFoldK[i] = 1.0 * testErrors / currentTest.size * 100
         }
-        //Get longest string
-        var longest = 0
-        for (text in printOut){
-            if (text.length > longest) longest = text.length
-        }
-        //Set the same length for all strings
-        for (i in 0 until printOut.size){
-            if (printOut[i].length < longest){
-                for (j in 0 until longest - printOut[i].length) {
-                    printOut[i] = printOut[i].replace(":", ": ")
-                }
-            }
-        }
-        //Print console output
-        for (text in printOut){
-            print(text)
-            print("\n")
-        }
 
+        //Print console output
+        print("\n")
+        val console: Console = System.console()
+        val fmt = "%1$4s %2$10s%n"
+        console.format(fmt, "Fold", "Errors")
+        console.format(fmt, "-----", "-----")
+        for (i in 0 until 10){
+            console.format(fmt,(i+1).toString(),roundedErrors[i].toString() + "%")
+        }
+        //Print mean errors
         meanErrors = percentageErrors / 10
         val rounded1 = (meanErrors * 10).roundToInt() / 10.0
         print("\n")
