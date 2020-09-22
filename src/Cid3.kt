@@ -1701,9 +1701,7 @@ class Cid3 : Serializable {
             if (testExample(point)) trainCorrects++ else trainErrors++
         }
         print("\n")
-        print("[ Train data accuracy ] ")
-        print("\n")
-        print(" ---------------------")
+        print("[ TRAIN DATA ] ")
         print("\n")
         print("Correct guesses: $trainCorrects")
         print("\n")
@@ -1712,9 +1710,7 @@ class Cid3 : Serializable {
         print("\n")
         if (testData.isNotEmpty()) {
             print("\n")
-            print("[ Test data accuracy ] ")
-            print("\n")
-            print(" --------------------")
+            print("[ TEST DATA ] ")
             print("\n")
             print("Correct guesses: $testCorrects")
             print("\n")
@@ -1853,9 +1849,7 @@ class Cid3 : Serializable {
         for (point in trainData) {
             if (testExampleRF(point, rootsRandomForest)) trainCorrects++ else trainErrors++
         }
-        print("[ Train data accuracy ] ")
-        print("\n")
-        print(" ---------------------")
+        print("[ TRAIN DATA ] ")
         print("\n")
         print("Correct guesses: $trainCorrects")
         print("\n")
@@ -1864,9 +1858,7 @@ class Cid3 : Serializable {
         print("\n")
         if (testData.isNotEmpty()) {
             print("\n")
-            print("[ Test data accuracy ] ")
-            print("\n")
-            print(" --------------------")
+            print("[ TEST DATA ] ")
             print("\n")
             print("Correct guesses: $testCorrects")
             print("\n")
