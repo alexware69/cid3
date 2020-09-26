@@ -38,8 +38,11 @@ class Cid3 : Serializable {
     private lateinit var domainsIndexToValue: ArrayList<HashMap<Int, Any>>
     private lateinit var domainsValueToIndex: ArrayList<HashMap<Any, Int>>
 
-    private lateinit var falsePositives: IntArray
-    private lateinit var falseNegatives: IntArray
+    private lateinit var falsePositivesTrain: IntArray
+    private lateinit var falseNegativesTrain: IntArray
+
+    private lateinit var falsePositivesTest: IntArray
+    private lateinit var falseNegativesTest: IntArray
 
 
     enum class Criteria {
@@ -1655,15 +1658,23 @@ class Cid3 : Serializable {
         return testExamplePoint(example, nodeLocal)
     }
 
-    private fun testExample(example: DataPoint): Boolean {
+    private fun testExample(example: DataPoint, train: Boolean): Boolean {
         val node: TreeNode = testExamplePoint(example, root)
         if (node.data.isEmpty()) {
             return if (example.attributes[classAttribute] == getMostCommonClass(node.parent)){
                 true
             } else {
                 val currentClass = getMostCommonClass(node.parent)
-                falsePositives[currentClass]++
-                falseNegatives[example.attributes[classAttribute]]++
+                when (train){
+                    true -> {
+                        falsePositivesTrain[currentClass]++
+                        falseNegativesTrain[example.attributes[classAttribute]]++
+                    }
+                    else ->{
+                        falsePositivesTest[currentClass]++
+                        falseNegativesTest[example.attributes[classAttribute]]++
+                    }
+                }
                 false
             }
         } 
@@ -1672,8 +1683,16 @@ class Cid3 : Serializable {
                 true
             } else {
                 val currentClass = getMostCommonClass(node)
-                falsePositives[currentClass]++
-                falseNegatives[example.attributes[classAttribute]]++
+                when (train){
+                    true -> {
+                        falsePositivesTrain[currentClass]++
+                        falseNegativesTrain[example.attributes[classAttribute]]++
+                    }
+                    else ->{
+                        falsePositivesTest[currentClass]++
+                        falseNegativesTest[example.attributes[classAttribute]]++
+                    }
+                }
                 false
             }
         }
@@ -1709,15 +1728,20 @@ class Cid3 : Serializable {
     }
 
     private fun testDecisionTree() {
-        var testErrors = 0
-        var testCorrects = 0
-        for (point in testData) {
-            if (testExample(point)) testCorrects++ else testErrors++
-        }
         var trainErrors = 0
         var trainCorrects = 0
+
+        //this is needed to format console output
+        var longestString: String?
+        longestString = ""
+        for (i in falsePositivesTrain.indices){
+            val classValue: String? = domainsIndexToValue[numAttributes - 1][i] as String
+            if (classValue != null && longestString != null)
+                if (classValue.length > longestString.length) longestString = classValue
+        }
+
         for (point in trainData) {
-            if (testExample(point)) trainCorrects++ else trainErrors++
+            if (testExample(point, true)) trainCorrects++ else trainErrors++
         }
         print("\n")
         print("[ TRAIN DATA ] ")
@@ -1727,28 +1751,10 @@ class Cid3 : Serializable {
         val rounded = (1.0 * trainErrors * 100 / trainData.size * 10).roundToInt() / 10.0
         print("Incorrect guesses: $trainErrors ($rounded%)")
         print("\n")
-        if (testData.isNotEmpty()) {
-            print("\n")
-            print("[ TEST DATA ] ")
-            print("\n")
-            print("Correct guesses: $testCorrects")
-            print("\n")
-            val rounded1 = (1.0 * testErrors * 100 / testData.size * 10).roundToInt() / 10.0
-            print("Incorrect guesses: $testErrors ($rounded1%)")
-        }
         print("\n")
-        //this is needed to format console output
-        var longestString: String?
-        longestString = ""
-        for (i in falsePositives.indices){
-            val classValue: String? = domainsIndexToValue[numAttributes - 1][i] as String
-            if (classValue != null && longestString != null)
-                if (classValue.length > longestString.length) longestString = classValue
-        }
 
-        print("\n")
         when (val console: Console? = System.console()) {
-             null -> {
+            null -> {
                 println("Running from an IDE...")
             }
             else -> {
@@ -1756,11 +1762,44 @@ class Cid3 : Serializable {
                 val fmt1 = "%1$4s %2$10s %3$" + (longestString.length + 10).toString() + "s%n"
                 console.format(fmt, "False Pos", "False Neg", "Class")
                 console.format(fmt, "---------", "---------", "-----")
-                for (i in falsePositives.indices){
-                  console.format(fmt1, falsePositives[i].toString(), falseNegatives[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                for (i in falsePositivesTrain.indices){
+                    console.format(fmt1, falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
-              }
             }
+        }
+
+        if (testData.isNotEmpty()) {
+            var testErrors = 0
+            var testCorrects = 0
+            for (point in testData) {
+                if (testExample(point, false)) testCorrects++ else testErrors++
+            }
+
+            print("\n")
+            print("[ TEST DATA ] ")
+            print("\n")
+            print("Correct guesses: $testCorrects")
+            print("\n")
+            val rounded1 = (1.0 * testErrors * 100 / testData.size * 10).roundToInt() / 10.0
+            print("Incorrect guesses: $testErrors ($rounded1%)")
+            print("\n")
+            print("\n")
+
+            when (val console: Console? = System.console()) {
+                null -> {
+                    println("Running from an IDE...")
+                }
+                else -> {
+                    val fmt = "%1$4s %2$10s %3$" + (longestString!!.length + 5).toString() + "s%n"
+                    val fmt1 = "%1$4s %2$10s %3$" + (longestString.length + 10).toString() + "s%n"
+                    console.format(fmt, "False Pos", "False Neg", "Class")
+                    console.format(fmt, "---------", "---------", "-----")
+                    for (i in falsePositivesTest.indices){
+                        console.format(fmt1, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    }
+                }
+            }
+        }
     }
 
     private fun testCrossValidation() {
@@ -2484,8 +2523,10 @@ class Cid3 : Serializable {
                 //Read test data
                 if (me.testDataExists) me.readTestData(nameTestData)
                 //Initialize falsePositives and falseNegatives
-                me.falsePositives = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
-                me.falseNegatives = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
+                me.falsePositivesTrain = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
+                me.falseNegativesTrain = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
+                me.falsePositivesTest = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
+                me.falseNegativesTest = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
 
                 //Create a Tree or a Random Forest for saving to disk
                 if (cmd.hasOption("save")) {
