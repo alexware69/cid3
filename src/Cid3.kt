@@ -1719,14 +1719,14 @@ class Cid3 : Serializable {
             node = testExamplePoint(example, treeNode)
             if (node.data.isEmpty()) {
                 currentClass = getMostCommonClass(node.parent)
-                if (example.attributes[classAttribute] == getMostCommonClass(node.parent)) results.add(true)
+                if (example.attributes[classAttribute] == currentClass) results.add(true)
                 else {
                     classifiedAs[currentClass]++
                     results.add(false)
                 }
             } else {
                 currentClass = getMostCommonClass(node)
-                if (example.attributes[classAttribute] == getMostCommonClass(node)) results.add(true)
+                if (example.attributes[classAttribute] == currentClass) results.add(true)
                 else {
                     classifiedAs[currentClass]++
                     results.add(false)
