@@ -1741,9 +1741,9 @@ class Cid3 : Serializable {
         var longestString: String?
         longestString = ""
         for (i in falsePositives.indices){
-            val attName: String? = domainsIndexToValue[numAttributes - 1][i] as String
-            if (attName != null && longestString != null)
-                if (attName.length > longestString.length) longestString = attName
+            val classValue: String? = domainsIndexToValue[numAttributes - 1][i] as String
+            if (classValue != null && longestString != null)
+                if (classValue.length > longestString.length) longestString = classValue
         }
 
         print("\n")
@@ -1752,7 +1752,7 @@ class Cid3 : Serializable {
                 println("Running from an IDE...")
             }
             else -> {
-                val fmt = "%1$4s %2$10s %3$10s%n"
+                val fmt = "%1$4s %2$10s %3$" + (longestString!!.length + 10).toString() + "s%n"
                 console.format(fmt, "False Neg", "False Pos", "Class")
                 console.format(fmt, "---------", "---------", "-----")
                 for (i in falsePositives.indices){
