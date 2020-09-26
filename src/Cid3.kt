@@ -1019,6 +1019,7 @@ class Cid3 : Serializable {
         }
         var tokenizer: StringTokenizer
         while (input != null) {
+            if (input.endsWith('.')) input = input.dropLast(1)
             tokenizer = StringTokenizer(input, ",")
             val point = DataPoint(numAttributes)
             var next: String
@@ -1100,6 +1101,7 @@ class Cid3 : Serializable {
             if (input.trim { it <= ' ' } == "") break
             if (input.startsWith("//")) continue
             if (input == "") continue
+            if (input.endsWith('.')) input = input.dropLast(1)
             tokenizer = StringTokenizer(input, ",")
             val numTokens = tokenizer.countTokens()
             if (numTokens != numAttributes) {
