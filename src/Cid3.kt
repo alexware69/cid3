@@ -1658,23 +1658,24 @@ class Cid3 : Serializable {
     private fun testExample(example: DataPoint): Boolean {
         val node: TreeNode = testExamplePoint(example, root)
         if (node.data.isEmpty()) {
-            if (example.attributes[classAttribute] == getMostCommonClass(node.parent)){
-              return true
-            }
-            else {
-              var currentClass = getMostCommonClass(node.parent)
-              falsePositives[currentClass]++
-              falseNegatives[example.attributes[classAttribute]]++
-              return false
+            return if (example.attributes[classAttribute] == getMostCommonClass(node.parent)){
+                true
+            } else {
+                val currentClass = getMostCommonClass(node.parent)
+                falsePositives[currentClass]++
+                falseNegatives[example.attributes[classAttribute]]++
+                false
             }
         } 
         else {
-           if(example.attributes[classAttribute] == getMostCommonClass(node)){
-              return true
-           }
-           else {
-             return false
-           }
+            return if(example.attributes[classAttribute] == getMostCommonClass(node)){
+                true
+            } else {
+                val currentClass = getMostCommonClass(node)
+                falsePositives[currentClass]++
+                falseNegatives[example.attributes[classAttribute]]++
+                false
+            }
         }
     }
 
@@ -1745,16 +1746,17 @@ class Cid3 : Serializable {
                 if (attName.length > longestString.length) longestString = attName
         }
 
+        print("\n")
         when (val console: Console? = System.console()) {
              null -> {
                 println("Running from an IDE...")
             }
             else -> {
-                val fmt = "%1$4s %2$10s%n"
-                console.format(fmt, "False Neg", "False Pos")
-                console.format(fmt, "---------", "---------")
+                val fmt = "%1$4s %2$10s %3$10s%n"
+                console.format(fmt, "False Neg", "False Pos", "Class")
+                console.format(fmt, "---------", "---------", "-----")
                 for (i in falsePositives.indices){
-                  console.format(fmt, falsePositives[i].toString(), falseNegatives[i].toString())
+                  console.format(fmt, falsePositives[i].toString(), falseNegatives[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
               }
             }
@@ -2481,8 +2483,8 @@ class Cid3 : Serializable {
                 //Read test data
                 if (me.testDataExists) me.readTestData(nameTestData)
                 //Initialize falsePositives and falseNegatives
-                me.falsePositives = IntArray(me.domainsIndexToValue.size)
-                me.falseNegatives = IntArray(me.domainsIndexToValue.size)
+                me.falsePositives = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
+                me.falseNegatives = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
 
                 //Create a Tree or a Random Forest for saving to disk
                 if (cmd.hasOption("save")) {
