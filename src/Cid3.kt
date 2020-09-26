@@ -1712,34 +1712,50 @@ class Cid3 : Serializable {
         var isTrue = 0
         var isFalse = 0
         val results = ArrayList<Boolean>()
-        var currentClass = 0
+        var currentClass: Int
+        val classifiedAs = IntArray(domainsIndexToValue[numAttributes - 1].size)
+
         for (treeNode in roots) {
             node = testExamplePoint(example, treeNode)
             if (node.data.isEmpty()) {
                 currentClass = getMostCommonClass(node.parent)
                 if (example.attributes[classAttribute] == getMostCommonClass(node.parent)) results.add(true)
-                else results.add(false)
+                else {
+                    classifiedAs[currentClass]++
+                    results.add(false)
+                }
             } else {
                 currentClass = getMostCommonClass(node)
                 if (example.attributes[classAttribute] == getMostCommonClass(node)) results.add(true)
-                else results.add(false)
+                else {
+                    classifiedAs[currentClass]++
+                    results.add(false)
+                }
             }
         }
         //Voting now
         for (result in results) {
             if (result) isTrue++ else isFalse++
         }
-        if (isTrue > isFalse){
+        if (isTrue > isFalse) {
             return true
         }
-        else{
-            when (train){
+        else {
+            var count = 0
+            var maxCountClass = 0
+            for (i in classifiedAs.indices){
+                if (classifiedAs[i] > count) {
+                    count = classifiedAs[i]
+                    maxCountClass = i
+                }
+            }
+            when (train) {
                 true -> {
-                    falsePositivesTrain[currentClass]++
+                    falsePositivesTrain[maxCountClass]++
                     falseNegativesTrain[example.attributes[classAttribute]]++
                 }
-                else ->{
-                    falsePositivesTest[currentClass]++
+                else -> {
+                    falsePositivesTest[maxCountClass]++
                     falseNegativesTest[example.attributes[classAttribute]]++
                 }
             }
@@ -1949,11 +1965,7 @@ class Cid3 : Serializable {
             if (classValue != null && longestString != null)
                 if (classValue.length > longestString.length) longestString = classValue
         }
-        var testErrors = 0
-        var testCorrects = 0
-        for (point in testData) {
-            if (testExampleRF(point, rootsRandomForest, false)) testCorrects++ else testErrors++
-        }
+
         var trainErrors = 0
         var trainCorrects = 0
         for (point in trainData) {
@@ -1983,6 +1995,11 @@ class Cid3 : Serializable {
             }
         }
         if (testData.isNotEmpty()) {
+            var testErrors = 0
+            var testCorrects = 0
+            for (point in testData) {
+                if (testExampleRF(point, rootsRandomForest, false)) testCorrects++ else testErrors++
+            }
             print("\n")
             print("[ TEST DATA ] ")
             print("\n")
