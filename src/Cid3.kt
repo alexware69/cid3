@@ -1794,8 +1794,8 @@ class Cid3 : Serializable {
                 println("Running from an IDE...")
             }
             else -> {
-                val fmt = "%1$4s %2$10s %3$" + (longestString!!.length + 5).toString() + "s%n"
-                val fmt1 = "%1$4s %2$10s %3$" + (longestString.length + 10).toString() + "s%n"
+                val fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
+                val fmt1 = "%1$10s %2$15s %3$" + (longestString.length + 10).toString() + "s%n"
                 console.format(fmt, "False Pos", "False Neg", "Class")
                 console.format(fmt, "---------", "---------", "-----")
                 for (i in falsePositivesTrain.indices){
@@ -1826,8 +1826,8 @@ class Cid3 : Serializable {
                     println("Running from an IDE...")
                 }
                 else -> {
-                    val fmt = "%1$4s %2$10s %3$" + (longestString!!.length + 5).toString() + "s%n"
-                    val fmt1 = "%1$4s %2$10s %3$" + (longestString.length + 10).toString() + "s%n"
+                    val fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
+                    val fmt1 = "%1$10s %2$15s %3$" + (longestString.length + 10).toString() + "s%n"
                     console.format(fmt, "False Pos", "False Neg", "Class")
                     console.format(fmt, "---------", "---------", "-----")
                     for (i in falsePositivesTest.indices){
@@ -1985,8 +1985,8 @@ class Cid3 : Serializable {
                 println("Running from an IDE...")
             }
             else -> {
-                val fmt = "%1$4s %2$10s %3$" + (longestString!!.length + 5).toString() + "s%n"
-                val fmt1 = "%1$4s %2$10s %3$" + (longestString.length + 10).toString() + "s%n"
+                val fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
+                val fmt1 = "%1$10s %2$15s %3$" + (longestString.length + 10).toString() + "s%n"
                 console.format(fmt, "False Pos", "False Neg", "Class")
                 console.format(fmt, "---------", "---------", "-----")
                 for (i in falsePositivesTrain.indices){
@@ -2015,8 +2015,8 @@ class Cid3 : Serializable {
                     println("Running from an IDE...")
                 }
                 else -> {
-                    val fmt = "%1$4s %2$10s %3$" + (longestString!!.length + 5).toString() + "s%n"
-                    val fmt1 = "%1$4s %2$10s %3$" + (longestString.length + 10).toString() + "s%n"
+                    val fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
+                    val fmt1 = "%1$10s %2$15s %3$" + (longestString.length + 10).toString() + "s%n"
                     console.format(fmt, "False Pos", "False Neg", "Class")
                     console.format(fmt, "---------", "---------", "-----")
                     for (i in falsePositivesTest.indices){
