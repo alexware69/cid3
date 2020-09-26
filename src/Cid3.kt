@@ -1752,11 +1752,12 @@ class Cid3 : Serializable {
                 println("Running from an IDE...")
             }
             else -> {
-                val fmt = "%1$4s %2$10s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                console.format(fmt, "False Neg", "False Pos", "Class")
+                val fmt = "%1$4s %2$10s %3$" + (longestString!!.length + 5).toString() + "s%n"
+                val fmt1 = "%1$4s %2$10s %3$" + (longestString.length + 10).toString() + "s%n"
+                console.format(fmt, "False Pos", "False Neg", "Class")
                 console.format(fmt, "---------", "---------", "-----")
                 for (i in falsePositives.indices){
-                  console.format(fmt, falsePositives[i].toString(), falseNegatives[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                  console.format(fmt1, falsePositives[i].toString(), falseNegatives[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
               }
             }
