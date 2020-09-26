@@ -99,13 +99,6 @@
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
     </task>
-    <task id="LOCAL-00073" summary="even some more sanitizing of Kotlin...">
-      <created>1598627966964</created>
-      <option name="number" value="00073" />
-      <option name="presentableId" value="LOCAL-00073" />
-      <option name="project" value="LOCAL" />
-      <updated>1598627966965</updated>
-    </task>
     <task id="LOCAL-00074" summary="removed some comments">
       <created>1598628423197</created>
       <option name="number" value="00074" />
@@ -442,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601083371037</updated>
     </task>
-    <option name="localTasksCounter" value="122" />
+    <task id="LOCAL-00122" summary="implemented False positives, False negatives, separated in test/train">
+      <created>1601087778668</created>
+      <option name="number" value="00122" />
+      <option name="presentableId" value="LOCAL-00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1601087778669</updated>
+    </task>
+    <option name="localTasksCounter" value="123" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -468,7 +468,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added a new line in output" />
     <MESSAGE value="some more output text formatting" />
     <MESSAGE value="now show number of attributes in console output" />
     <MESSAGE value="now show number of attributes - 1 in console output" />
@@ -493,7 +492,8 @@
     <MESSAGE value="almost done implementing False positives, False negatives" />
     <MESSAGE value="almost almost done implementing False positives, False negatives" />
     <MESSAGE value="done implementing False positives, False negatives, do same for RF" />
-    <option name="LAST_COMMIT_MESSAGE" value="done implementing False positives, False negatives, do same for RF" />
+    <MESSAGE value="implemented False positives, False negatives, separated in test/train" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented False positives, False negatives, separated in test/train" />
   </component>
   <component name="WindowStateProjectService">
     <state x="455" y="87" key="#Project_Structure" timestamp="1601046635146">
@@ -521,11 +521,11 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="705" y="267" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog/0.25.1920.984@0.25.1920.984" timestamp="1598588232238" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1601083370918">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1601087778469">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1601083370918" />
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1601087778469" />
     <state width="443" height="466" key="DebuggerActiveHint" timestamp="1600391722255">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -534,42 +534,42 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="408" y="141" width="1200" height="744" key="DiffContextDialog/0.25.1920.984@0.25.1920.984" timestamp="1601087429568" />
-    <state width="1358" height="310" key="GridCell.Tab.0.bottom" timestamp="1601087634613">
+    <state width="1358" height="310" key="GridCell.Tab.0.bottom" timestamp="1601088185077">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.bottom/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
-    <state width="1358" height="310" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1601087634613" />
-    <state width="1358" height="310" key="GridCell.Tab.0.center" timestamp="1601087634612">
+    <state width="1358" height="310" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1601088185077" />
+    <state width="1358" height="310" key="GridCell.Tab.0.center" timestamp="1601088185076">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.center/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
-    <state width="1358" height="310" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1601087634612" />
-    <state width="1358" height="310" key="GridCell.Tab.0.left" timestamp="1601087634612">
+    <state width="1358" height="310" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1601088185076" />
+    <state width="1358" height="310" key="GridCell.Tab.0.left" timestamp="1601088185075">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.left/0.23.1920.991@0.23.1920.991" timestamp="1596361527518" />
-    <state width="1358" height="310" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1601087634612" />
-    <state width="1358" height="310" key="GridCell.Tab.0.right" timestamp="1601087634613">
+    <state width="1358" height="310" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1601088185075" />
+    <state width="1358" height="310" key="GridCell.Tab.0.right" timestamp="1601088185077">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.right/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
-    <state width="1358" height="310" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1601087634613" />
-    <state width="1358" height="310" key="GridCell.Tab.1.bottom" timestamp="1601087634615">
+    <state width="1358" height="310" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1601088185077" />
+    <state width="1358" height="310" key="GridCell.Tab.1.bottom" timestamp="1601088185079">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
-    <state width="1358" height="310" key="GridCell.Tab.1.bottom/0.25.1920.984@0.25.1920.984" timestamp="1601087634615" />
-    <state width="1358" height="310" key="GridCell.Tab.1.center" timestamp="1601087634614">
+    <state width="1358" height="310" key="GridCell.Tab.1.bottom/0.25.1920.984@0.25.1920.984" timestamp="1601088185079" />
+    <state width="1358" height="310" key="GridCell.Tab.1.center" timestamp="1601088185078">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
-    <state width="1358" height="310" key="GridCell.Tab.1.center/0.25.1920.984@0.25.1920.984" timestamp="1601087634614" />
-    <state width="1358" height="310" key="GridCell.Tab.1.left" timestamp="1601087634614">
+    <state width="1358" height="310" key="GridCell.Tab.1.center/0.25.1920.984@0.25.1920.984" timestamp="1601088185078" />
+    <state width="1358" height="310" key="GridCell.Tab.1.left" timestamp="1601088185077">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
-    <state width="1358" height="310" key="GridCell.Tab.1.left/0.25.1920.984@0.25.1920.984" timestamp="1601087634614" />
-    <state width="1358" height="310" key="GridCell.Tab.1.right" timestamp="1601087634614">
+    <state width="1358" height="310" key="GridCell.Tab.1.left/0.25.1920.984@0.25.1920.984" timestamp="1601088185077" />
+    <state width="1358" height="310" key="GridCell.Tab.1.right" timestamp="1601088185079">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
-    <state width="1358" height="310" key="GridCell.Tab.1.right/0.25.1920.984@0.25.1920.984" timestamp="1601087634614" />
+    <state width="1358" height="310" key="GridCell.Tab.1.right/0.25.1920.984@0.25.1920.984" timestamp="1601088185079" />
     <state x="596" y="260" key="IDE.errors.dialog" timestamp="1600391128722">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -583,11 +583,11 @@
     </state>
     <state x="527" y="164" key="SettingsEditor/0.23.1920.991@0.23.1920.991" timestamp="1594012692651" />
     <state x="563" y="107" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1600984613494" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1601083379557">
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1601087785269">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1596361336239" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1601083379557" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1601087785269" />
     <state x="754" y="381" key="classpath-attribute-editor" timestamp="1598584648447">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
