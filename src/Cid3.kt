@@ -38,6 +38,10 @@ class Cid3 : Serializable {
     private lateinit var domainsIndexToValue: ArrayList<HashMap<Int, Any>>
     private lateinit var domainsValueToIndex: ArrayList<HashMap<Any, Int>>
 
+    private lateinit var falsePositives: IntArray
+    private lateinit var falseNegatives: IntArray
+
+
     enum class Criteria {
         Entropy, Certainty, Gini
     }
@@ -1653,10 +1657,24 @@ class Cid3 : Serializable {
 
     private fun testExample(example: DataPoint): Boolean {
         val node: TreeNode = testExamplePoint(example, root)
-        return if (node.data.isEmpty()) {
-            example.attributes[classAttribute] == getMostCommonClass(node.parent)
-        } else {
-            example.attributes[classAttribute] == getMostCommonClass(node)
+        if (node.data.isEmpty()) {
+            if (example.attributes[classAttribute] == getMostCommonClass(node.parent)){
+              return true
+            }
+            else {
+              var currentClass = getMostCommonClass(node.parent)
+              falsePositives[currentClass]++
+              falseNegatives[example.attributes[classAttribute]]++
+              return false
+            }
+        } 
+        else {
+           if(example.attributes[classAttribute] == getMostCommonClass(node)){
+              return true
+           }
+           else {
+             return false
+           }
         }
     }
 
@@ -1718,6 +1736,28 @@ class Cid3 : Serializable {
             print("Incorrect guesses: $testErrors ($rounded1%)")
         }
         print("\n")
+        //this is needed to format console output
+        var longestString: String?
+        longestString = ""
+        for (i in falsePositives.indices){
+            val attName: String? = domainsIndexToValue[numAttributes - 1][i] as String
+            if (attName != null && longestString != null)
+                if (attName.length > longestString.length) longestString = attName
+        }
+
+        when (val console: Console? = System.console()) {
+             null -> {
+                println("Running from an IDE...")
+            }
+            else -> {
+                val fmt = "%1$4s %2$10s%n"
+                console.format(fmt, "False Neg", "False Pos")
+                console.format(fmt, "---------", "---------")
+                for (i in falsePositives.indices){
+                  console.format(fmt, falsePositives[i].toString(), falseNegatives[i].toString())
+                }
+              }
+            }
     }
 
     private fun testCrossValidation() {
@@ -2440,6 +2480,9 @@ class Cid3 : Serializable {
                 me.fileName = inputFilePath
                 //Read test data
                 if (me.testDataExists) me.readTestData(nameTestData)
+                //Initialize falsePositives and falseNegatives
+                me.falsePositives = IntArray(me.domainsIndexToValue.size)
+                me.falseNegatives = IntArray(me.domainsIndexToValue.size)
 
                 //Create a Tree or a Random Forest for saving to disk
                 if (cmd.hasOption("save")) {
