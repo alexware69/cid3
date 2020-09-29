@@ -1957,7 +1957,7 @@ class Cid3 : Serializable {
                 println("Running from an IDE...")
             }
             else -> {
-                val fmt = "%1$4s %2$10s%n"
+                var fmt = "%1$4s %2$10s%n"
                 console.format(fmt, "Fold", "Errors")
                 console.format(fmt, "-----", "-------")
                 for (i in 0 until 10) {
@@ -1978,6 +1978,25 @@ class Cid3 : Serializable {
                 val se = sumMeanSE / sqrt(10.0)
                 val roundedSE = (se * 10).roundToInt() / 10.0
                 console.format(fmt, "SE", "$roundedSE%")
+
+                //Now print the False Positives/Negatives
+                //this is needed to format console output
+                var longestString: String?
+                longestString = ""
+                for (i in falsePositivesTrain.indices){
+                    val classValue: String? = domainsIndexToValue[numAttributes - 1][i] as String
+                    if (classValue != null && longestString != null)
+                        if (classValue.length > longestString.length) longestString = classValue
+                }
+                print("\n")
+                print("\n")
+                fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
+                val fmt1 = "%1$10s %2$15s %3$" + (longestString.length + 10).toString() + "s%n"
+                console.format(fmt, "False Pos", "False Neg", "Class")
+                console.format(fmt, "---------", "---------", "-----")
+                for (i in falsePositivesTest.indices){
+                    console.format(fmt1, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                }
             }
         }
     }
