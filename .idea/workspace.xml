@@ -99,13 +99,6 @@
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
     </task>
-    <task id="LOCAL-00081" summary="removed another unnecessary &quot;run&quot; command">
-      <created>1598694298784</created>
-      <option name="number" value="00081" />
-      <option name="presentableId" value="LOCAL-00081" />
-      <option name="project" value="LOCAL" />
-      <updated>1598694298784</updated>
-    </task>
     <task id="LOCAL-00082" summary="removed some comments and renamed a function">
       <created>1598704483542</created>
       <option name="number" value="00082" />
@@ -442,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601340849919</updated>
     </task>
-    <option name="localTasksCounter" value="130" />
+    <task id="LOCAL-00130" summary="some console text formatting">
+      <created>1601513259077</created>
+      <option name="number" value="00130" />
+      <option name="presentableId" value="LOCAL-00130" />
+      <option name="project" value="LOCAL" />
+      <updated>1601513259078</updated>
+    </task>
+    <option name="localTasksCounter" value="131" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -468,7 +468,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="re-formatted console output using System.console for RF" />
     <MESSAGE value="removed an unused parameter" />
     <MESSAGE value="checking that console is not null" />
     <MESSAGE value="did same formatting for attribute importance" />
@@ -493,7 +492,8 @@
     <MESSAGE value="removed dot at end of lines of data and test foles" />
     <MESSAGE value="implemented false pos/neg for crossvalidation" />
     <MESSAGE value="implemented false pos/neg for crossvalidationRF" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented false pos/neg for crossvalidationRF" />
+    <MESSAGE value="some console text formatting" />
+    <option name="LAST_COMMIT_MESSAGE" value="some console text formatting" />
   </component>
   <component name="WindowStateProjectService">
     <state x="455" y="87" key="#Project_Structure" timestamp="1601046635146">
@@ -521,11 +521,11 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="705" y="267" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog/0.25.1920.984@0.25.1920.984" timestamp="1598588232238" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1601340849794">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1601513258879">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1601340849794" />
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1601513258879" />
     <state width="530" height="466" key="DebuggerActiveHint" timestamp="1601354535470">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -583,11 +583,11 @@
     </state>
     <state x="527" y="164" key="SettingsEditor/0.23.1920.991@0.23.1920.991" timestamp="1594012692651" />
     <state x="563" y="107" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1600984613494" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1601340857565">
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1601513266419">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1596361336239" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1601340857565" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1601513266419" />
     <state x="754" y="381" key="classpath-attribute-editor" timestamp="1598584648447">
       <screen x="0" y="25" width="1920" height="984" />
     </state>

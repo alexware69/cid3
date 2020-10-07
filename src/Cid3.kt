@@ -1813,11 +1813,10 @@ class Cid3 : Serializable {
             }
             else -> {
                 val fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                val fmt1 = "%1$10s %2$15s %3$" + (longestString.length + 10).toString() + "s%n"
                 console.format(fmt, "False Pos", "False Neg", "Class")
                 console.format(fmt, "---------", "---------", "-----")
                 for (i in falsePositivesTrain.indices){
-                    console.format(fmt1, falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    console.format(fmt, falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
@@ -1846,11 +1845,10 @@ class Cid3 : Serializable {
                 }
                 else -> {
                     val fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                    val fmt1 = "%1$10s %2$15s %3$" + (longestString.length + 10).toString() + "s%n"
                     console.format(fmt, "False Pos", "False Neg", "Class")
                     console.format(fmt, "---------", "---------", "-----")
                     for (i in falsePositivesTest.indices){
-                        console.format(fmt1, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                        console.format(fmt, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                     }
                 }
             }
@@ -1926,11 +1924,10 @@ class Cid3 : Serializable {
                 print("\n")
                 print("\n")
                 fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                val fmt1 = "%1$10s %2$15s %3$" + (longestString.length + 10).toString() + "s%n"
                 console.format(fmt, "False Pos", "False Neg", "Class")
                 console.format(fmt, "---------", "---------", "-----")
                 for (i in falsePositivesTest.indices){
-                    console.format(fmt1, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    console.format(fmt, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
@@ -1993,11 +1990,10 @@ class Cid3 : Serializable {
                 print("\n")
                 print("\n")
                 fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                val fmt1 = "%1$10s %2$15s %3$" + (longestString.length + 10).toString() + "s%n"
                 console.format(fmt, "False Pos", "False Neg", "Class")
                 console.format(fmt, "---------", "---------", "-----")
                 for (i in falsePositivesTest.indices){
-                    console.format(fmt1, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    console.format(fmt, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
@@ -2044,11 +2040,10 @@ class Cid3 : Serializable {
             }
             else -> {
                 val fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                val fmt1 = "%1$10s %2$15s %3$" + (longestString.length + 10).toString() + "s%n"
                 console.format(fmt, "False Pos", "False Neg", "Class")
                 console.format(fmt, "---------", "---------", "-----")
                 for (i in falsePositivesTrain.indices){
-                    console.format(fmt1, falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    console.format(fmt, falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
@@ -2075,11 +2070,10 @@ class Cid3 : Serializable {
                 }
                 else -> {
                     val fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                    val fmt1 = "%1$10s %2$15s %3$" + (longestString.length + 10).toString() + "s%n"
                     console.format(fmt, "False Pos", "False Neg", "Class")
                     console.format(fmt, "---------", "---------", "-----")
                     for (i in falsePositivesTest.indices){
-                        console.format(fmt1, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                        console.format(fmt, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                     }
                 }
             }
