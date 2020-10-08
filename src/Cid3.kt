@@ -1179,8 +1179,8 @@ class Cid3 : Serializable {
         val attributes = ArrayList<Tuple<String, String>>()
         //Read the names file
         try {
-            `in` = if (filename.contains(".")) {
-                val split = filename.split("\\.".toRegex()).toTypedArray()
+            `in` = if (filename.endsWith(".data")) {
+                val split = filename.split("\\.data".toRegex()).toTypedArray()
                 val inputFile = File(split[0] + ".names")
                 FileInputStream(inputFile)
             } else {
