@@ -81,7 +81,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/audiology.standardized.data" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/audiology.standardized" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -98,13 +98,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00083" summary="some more cleanup and renaming">
-      <created>1598710416399</created>
-      <option name="number" value="00083" />
-      <option name="presentableId" value="LOCAL-00083" />
-      <option name="project" value="LOCAL" />
-      <updated>1598710416400</updated>
     </task>
     <task id="LOCAL-00084" summary="removed some unnecessary !!">
       <created>1598710609825</created>
@@ -442,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602078552403</updated>
     </task>
-    <option name="localTasksCounter" value="132" />
+    <task id="LOCAL-00132" summary="now accepting file names containing more than one &quot;.&quot;">
+      <created>1602129443230</created>
+      <option name="number" value="00132" />
+      <option name="presentableId" value="LOCAL-00132" />
+      <option name="project" value="LOCAL" />
+      <updated>1602129443231</updated>
+    </task>
+    <option name="localTasksCounter" value="133" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -468,7 +468,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="checking that console is not null" />
     <MESSAGE value="did same formatting for attribute importance" />
     <MESSAGE value="fixed formatting for attribute importance" />
     <MESSAGE value="fixed a small bug" />
@@ -493,18 +492,19 @@
     <MESSAGE value="implemented false pos/neg for crossvalidationRF" />
     <MESSAGE value="some console text formatting" />
     <MESSAGE value="removed redundant code" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed redundant code" />
+    <MESSAGE value="now accepting file names containing more than one &quot;.&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="now accepting file names containing more than one &quot;.&quot;" />
   </component>
   <component name="WindowStateProjectService">
     <state x="455" y="87" key="#Project_Structure" timestamp="1601046635146">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="455" y="87" key="#Project_Structure/0.25.1920.984@0.25.1920.984" timestamp="1601046635146" />
-    <state x="536" y="279" width="1071" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602129389477">
+    <state x="536" y="279" width="1071" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602394249569">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="536" y="279" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1920.991@0.23.1920.991" timestamp="1593779542200" />
-    <state x="536" y="279" width="1071" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1920.984@0.25.1920.984" timestamp="1602129389477" />
+    <state x="536" y="279" width="1071" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1920.984@0.25.1920.984" timestamp="1602394249569" />
     <state x="712" y="426" key="#com.intellij.framework.addSupport.AddSupportForSingleFrameworkDialog" timestamp="1598586869716">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -521,11 +521,11 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="705" y="267" key="#com.intellij.util.ui.classpath.ChooseLibrariesDialog/0.25.1920.984@0.25.1920.984" timestamp="1598588232238" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1602078552220">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1602129443015">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1602078552220" />
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1602129443015" />
     <state width="530" height="466" key="DebuggerActiveHint" timestamp="1601354535470">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -534,42 +534,42 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="408" y="141" width="1200" height="744" key="DiffContextDialog/0.25.1920.984@0.25.1920.984" timestamp="1601087429568" />
-    <state width="1358" height="262" key="GridCell.Tab.0.bottom" timestamp="1602129343361">
+    <state width="1358" height="310" key="GridCell.Tab.0.bottom" timestamp="1602394303567">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.bottom/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
-    <state width="1358" height="262" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1602129343361" />
-    <state width="1358" height="262" key="GridCell.Tab.0.center" timestamp="1602129343360">
+    <state width="1358" height="310" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1602394303567" />
+    <state width="1358" height="310" key="GridCell.Tab.0.center" timestamp="1602394303567">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.center/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
-    <state width="1358" height="262" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1602129343360" />
-    <state width="1358" height="262" key="GridCell.Tab.0.left" timestamp="1602129343359">
+    <state width="1358" height="310" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1602394303567" />
+    <state width="1358" height="310" key="GridCell.Tab.0.left" timestamp="1602394303566">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.left/0.23.1920.991@0.23.1920.991" timestamp="1596361527518" />
-    <state width="1358" height="262" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1602129343359" />
-    <state width="1358" height="262" key="GridCell.Tab.0.right" timestamp="1602129343360">
+    <state width="1358" height="310" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1602394303566" />
+    <state width="1358" height="310" key="GridCell.Tab.0.right" timestamp="1602394303567">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.right/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
-    <state width="1358" height="262" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1602129343360" />
-    <state width="1358" height="310" key="GridCell.Tab.1.bottom" timestamp="1601354925526">
+    <state width="1358" height="310" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1602394303567" />
+    <state width="1358" height="310" key="GridCell.Tab.1.bottom" timestamp="1602394303568">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
-    <state width="1358" height="310" key="GridCell.Tab.1.bottom/0.25.1920.984@0.25.1920.984" timestamp="1601354925526" />
-    <state width="1358" height="310" key="GridCell.Tab.1.center" timestamp="1601354925525">
+    <state width="1358" height="310" key="GridCell.Tab.1.bottom/0.25.1920.984@0.25.1920.984" timestamp="1602394303568" />
+    <state width="1358" height="310" key="GridCell.Tab.1.center" timestamp="1602394303568">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
-    <state width="1358" height="310" key="GridCell.Tab.1.center/0.25.1920.984@0.25.1920.984" timestamp="1601354925525" />
-    <state width="1358" height="310" key="GridCell.Tab.1.left" timestamp="1601354925525">
+    <state width="1358" height="310" key="GridCell.Tab.1.center/0.25.1920.984@0.25.1920.984" timestamp="1602394303568" />
+    <state width="1358" height="310" key="GridCell.Tab.1.left" timestamp="1602394303567">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
-    <state width="1358" height="310" key="GridCell.Tab.1.left/0.25.1920.984@0.25.1920.984" timestamp="1601354925525" />
-    <state width="1358" height="310" key="GridCell.Tab.1.right" timestamp="1601354925525">
+    <state width="1358" height="310" key="GridCell.Tab.1.left/0.25.1920.984@0.25.1920.984" timestamp="1602394303567" />
+    <state width="1358" height="310" key="GridCell.Tab.1.right" timestamp="1602394303568">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
-    <state width="1358" height="310" key="GridCell.Tab.1.right/0.25.1920.984@0.25.1920.984" timestamp="1601354925525" />
+    <state width="1358" height="310" key="GridCell.Tab.1.right/0.25.1920.984@0.25.1920.984" timestamp="1602394303568" />
     <state x="596" y="260" key="IDE.errors.dialog" timestamp="1600391128722">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -583,11 +583,11 @@
     </state>
     <state x="527" y="164" key="SettingsEditor/0.23.1920.991@0.23.1920.991" timestamp="1594012692651" />
     <state x="563" y="107" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1600984613494" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1602078561838">
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1602129449566">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1596361336239" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1602078561838" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1602129449566" />
     <state x="754" y="381" key="classpath-attribute-editor" timestamp="1598584648447">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -604,16 +604,5 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="673" y="248" width="670" height="676" key="search.everywhere.popup/0.25.1920.984@0.25.1920.984" timestamp="1600390686612" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1665</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
