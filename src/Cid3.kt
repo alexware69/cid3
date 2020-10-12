@@ -1243,9 +1243,11 @@ class Cid3 : Serializable {
         for (i in 0 until numAttributes) {
             domainsIndexToValue.add(HashMap())
         }
+        val comparator = NaturalOrderComparator()
         for (i in 0 until numAttributes) {
-            val comparator = NaturalOrderComparator()
-            domainsValueToIndex.add(TreeMap(comparator))
+            if (i < numAttributes - 1)
+                domainsValueToIndex.add(TreeMap())
+            else domainsValueToIndex.add(TreeMap(comparator))
         }
 
         //Set attributeNames. They should be in the same order as they appear in the data. +1 for the class
