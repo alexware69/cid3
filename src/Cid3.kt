@@ -44,6 +44,9 @@ class Cid3 : Serializable {
     private lateinit var falsePositivesTest: IntArray
     private lateinit var falseNegativesTest: IntArray
 
+    private lateinit var classNoOfCasesTrain: IntArray
+    private lateinit var classNoOfCasesTest: IntArray
+
 
     enum class Criteria {
         Entropy, Certainty, Gini
@@ -1041,6 +1044,7 @@ class Cid3 : Serializable {
                 }
             }
             data.add(point)
+
             try {
                 input = bin.readLine()
             } catch (e: Exception) {
@@ -1089,8 +1093,6 @@ class Cid3 : Serializable {
         var input: String?
         var tokenizer: StringTokenizer
 
-        //Read names file
-        readNames(filename)
         try {
             input = bin.readLine()
         } catch (e: Exception) {
@@ -1131,6 +1133,7 @@ class Cid3 : Serializable {
                 }
             }
             data.add(point)
+
             try {
                 input = bin.readLine()
             } catch (e: Exception) {
@@ -1290,6 +1293,19 @@ class Cid3 : Serializable {
         val numValues = node.children!!.size
         for (i in 0 until numValues) {
             countNodes(node.children!![i])
+        }
+    }
+
+    private fun countClasses() {
+        var currentClass : Int
+        for (point in trainData) {
+            currentClass = point.attributes[classAttribute]
+            classNoOfCasesTrain[currentClass]++
+        }
+        var currentClass2 : Int
+        for (point in testData) {
+            currentClass2 = point.attributes[classAttribute]
+            classNoOfCasesTest[currentClass2]++
         }
     }
 
@@ -1815,12 +1831,12 @@ class Cid3 : Serializable {
                 println("Running from an IDE...")
             }
             else -> {
-                val fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                console.format(fmt, "False Pos", "False Neg", "Class")
-                console.format(fmt, "---------", "---------", "-----")
+                val fmt = "%1$10s %2$10s %3$10s %4$" + (longestString!!.length + 10).toString() + "s%n"
+                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "Class")
+                console.format(fmt, "----------", "---------", "---------", "-----")
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    console.format(fmt, falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
@@ -1848,12 +1864,12 @@ class Cid3 : Serializable {
                     println("Running from an IDE...")
                 }
                 else -> {
-                    val fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                    console.format(fmt, "False Pos", "False Neg", "Class")
-                    console.format(fmt, "---------", "---------", "-----")
+                    val fmt = "%1$10s %2$10s %3$10s %4$" + (longestString!!.length + 10).toString() + "s%n"
+                    console.format(fmt, "# Of Cases", "False Pos", "False Neg", "Class")
+                    console.format(fmt, "----------", "---------", "---------", "-----")
                     for (value in domainsValueToIndex[numAttributes - 1].keys){
                         val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                        console.format(fmt, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                        console.format(fmt, classNoOfCasesTest[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                     }
                 }
             }
@@ -1928,12 +1944,12 @@ class Cid3 : Serializable {
                 }
                 print("\n")
                 print("\n")
-                fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                console.format(fmt, "False Pos", "False Neg", "Class")
-                console.format(fmt, "---------", "---------", "-----")
+                fmt = "%1$10s %2$10s %3$10s %4$" + (longestString!!.length + 10).toString() + "s%n"
+                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "Class")
+                console.format(fmt, "----------", "---------", "---------", "-----")
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    console.format(fmt, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    console.format(fmt, classNoOfCasesTest[i], falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
@@ -1995,12 +2011,12 @@ class Cid3 : Serializable {
                 }
                 print("\n")
                 print("\n")
-                fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                console.format(fmt, "False Pos", "False Neg", "Class")
-                console.format(fmt, "---------", "---------", "-----")
+                fmt = "%1$10s %2$10s %3$10s %4$" + (longestString!!.length + 10).toString() + "s%n"
+                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "Class")
+                console.format(fmt, "----------", "---------", "---------", "-----")
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    console.format(fmt, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    console.format(fmt,classNoOfCasesTest, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
@@ -2046,12 +2062,12 @@ class Cid3 : Serializable {
                 println("Running from an IDE...")
             }
             else -> {
-                val fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                console.format(fmt, "False Pos", "False Neg", "Class")
-                console.format(fmt, "---------", "---------", "-----")
+                val fmt = "%1$10s %2$10s %3$10s %4$" + (longestString!!.length + 10).toString() + "s%n"
+                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "Class")
+                console.format(fmt, "----------", "---------", "---------", "-----")
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    console.format(fmt, falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    console.format(fmt,classNoOfCasesTrain[i], falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
 
             }
@@ -2078,12 +2094,12 @@ class Cid3 : Serializable {
                     println("Running from an IDE...")
                 }
                 else -> {
-                    val fmt = "%1$10s %2$15s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                    console.format(fmt, "False Pos", "False Neg", "Class")
-                    console.format(fmt, "---------", "---------", "-----")
+                    val fmt = "%1$10s %2$10s %3$10s %4$" + (longestString!!.length + 10).toString() + "s%n"
+                    console.format(fmt, "# Of Cases", "False Pos", "False Neg", "Class")
+                    console.format(fmt, "----------", "---------", "---------", "-----")
                     for (value in domainsValueToIndex[numAttributes - 1].keys){
                         val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                        console.format(fmt, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                        console.format(fmt, classNoOfCasesTest[i], falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                     }
 
                 }
@@ -2658,6 +2674,9 @@ class Cid3 : Serializable {
                 val inputFile = File(nameTestData)
                 me.testDataExists = inputFile.exists()
 
+                //Read names file
+                me.readNames(inputFilePath)
+
                 //Read data
                 me.readData(inputFilePath)
                 //Set global variable
@@ -2669,6 +2688,11 @@ class Cid3 : Serializable {
                 me.falseNegativesTrain = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
                 me.falsePositivesTest = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
                 me.falseNegativesTest = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
+
+                //Initialize classes number of cases
+                me.classNoOfCasesTrain = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
+                me.classNoOfCasesTest = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
+                me.countClasses()
 
                 //Create a Tree or a Random Forest for saving to disk
                 if (cmd.hasOption("save")) {
