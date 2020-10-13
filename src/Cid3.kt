@@ -1297,6 +1297,13 @@ class Cid3 : Serializable {
     }
 
     private fun countClasses() {
+        //First cleanup
+        for (i in classNoOfCasesTrain.indices){
+            classNoOfCasesTrain[i] = 0
+        }
+        for (i in classNoOfCasesTest.indices){
+            classNoOfCasesTest[i] = 0
+        }
         var currentClass : Int
         for (point in trainData) {
             currentClass = point.attributes[classAttribute]
@@ -1446,6 +1453,7 @@ class Cid3 : Serializable {
         if (testDataExists) {
             trainData.addAll(testData)
             root.data = trainData
+            countClasses()
         }
         val chunkSize = root.data.size / 10
         val modulus = root.data.size % 10
@@ -1537,6 +1545,7 @@ class Cid3 : Serializable {
         if (testDataExists) {
             trainData.addAll(testData)
             root.data = trainData
+            countClasses()
         }
         val chunkSize = root.data.size / 10
         val modulus = root.data.size % 10
@@ -1949,7 +1958,7 @@ class Cid3 : Serializable {
                 console.format(fmt, "----------", "---------", "---------", "-----")
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    console.format(fmt, classNoOfCasesTest[i], falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
@@ -2016,7 +2025,7 @@ class Cid3 : Serializable {
                 console.format(fmt, "----------", "---------", "---------", "-----")
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    console.format(fmt,classNoOfCasesTest, falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    console.format(fmt,classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
