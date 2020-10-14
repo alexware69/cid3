@@ -35,8 +35,8 @@ class Cid3 : Serializable {
         domains[0] is a vector containing the values of the 0-th attribute, etc..
         The last attribute is the output attribute
     */
-    private lateinit var domainsIndexToValue: ArrayList<HashMap<Int, Any>>
-    private lateinit var domainsValueToIndex: ArrayList<SortedMap<Any, Int>>
+    private lateinit var domainsIndexToValue: ArrayList<HashMap<Int, String>>
+    private lateinit var domainsValueToIndex: ArrayList<SortedMap<String, Int>>
 
     private lateinit var falsePositivesTrain: IntArray
     private lateinit var falseNegativesTrain: IntArray
@@ -146,7 +146,7 @@ class Cid3 : Serializable {
     /*  This function returns an integer corresponding to the symbolic value of the attribute.
         If the symbol does not exist in the domain, the symbol is added to the domain of the attribute
     */
-    private fun getSymbolValue(attribute: Int, symbol: Any): Int {
+    private fun getSymbolValue(attribute: Int, symbol: String): Int {
         return if (domainsValueToIndex[attribute][symbol] != null)
             domainsValueToIndex[attribute][symbol]!!
         else {
@@ -198,7 +198,7 @@ class Cid3 : Serializable {
         val frequenciesBelow = IntArray(domainsIndexToValue[classAttribute].size)
         val frequenciesAbove = IntArray(domainsIndexToValue[classAttribute].size)
         for (point in data) {
-            if (domainsIndexToValue[attribute][point.attributes[attribute]] as Double <= value) {
+            if ((domainsIndexToValue[attribute][point.attributes[attribute]])?.toDouble()!! <= value) {
                 subsetBelow.add(point)
                 frequenciesBelow[point.attributes[classAttribute]]++
             } else {
@@ -240,9 +240,9 @@ class Cid3 : Serializable {
             /*---------------------------------------------------------------------------------------------------------*/
             //Implementation of thresholds using a sorted set
             val attributeValuesSet: SortedSet<Double> = TreeSet()
-            val attributeToClass = HashMap<Double, Tuple<Int, Boolean>>()
+            val attributeToClass = HashMap<Double?, Tuple<Int, Boolean>>()
             for (point in data) {
-                val attribute = domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double
+                val attribute = (domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]])?.toDouble()
                 val theClass = point.attributes[classAttribute]
                 attributeValuesSet.add(attribute)
                 val tuple = attributeToClass[attribute]
@@ -311,7 +311,7 @@ class Cid3 : Serializable {
                 val theClass1 = point.attributes[classAttribute]
                 for (iThreshold in thresholds) {
                     if (iThreshold.sumsClassesAndAttribute[theClass1] == null) iThreshold.sumsClassesAndAttribute[theClass1] = SumBelowAndAbove(0, 0)
-                    if (domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double <= iThreshold.value) {
+                    if ((domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]])?.toDouble()!! <= iThreshold.value) {
                         iThreshold.sumABelow++
                         //Next calculate probability of c and a
                         iThreshold.sumsClassesAndAttribute[theClass1]!!.below++
@@ -384,9 +384,9 @@ class Cid3 : Serializable {
             /*---------------------------------------------------------------------------------------------------------*/
             //Implementation of thresholds using a sorted set
             val attributeValuesSet: SortedSet<Double> = TreeSet()
-            val attributeToClass = HashMap<Double, Tuple<Int, Boolean>>()
+            val attributeToClass = HashMap<Double?, Tuple<Int, Boolean>>()
             for (point in data) {
-                val attribute = domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double
+                val attribute = (domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]])?.toDouble()
                 val theClass = point.attributes[classAttribute]
                 attributeValuesSet.add(attribute)
                 val tuple = attributeToClass[attribute]
@@ -455,7 +455,7 @@ class Cid3 : Serializable {
                 val pointClass = point.attributes[classAttribute]
                 for (iThreshold in thresholds) {
                     if (iThreshold.sumsClassesAndAttribute[pointClass] == null) iThreshold.sumsClassesAndAttribute[pointClass] = SumBelowAndAbove(0, 0)
-                    if ((domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double)<iThreshold.value) {
+                    if (((domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]])?.toDouble())!! < iThreshold.value) {
                         iThreshold.sumABelow++
                         //Next calculate probability of c and a
                         iThreshold.sumsClassesAndAttribute[pointClass]!!.below++
@@ -534,9 +534,9 @@ class Cid3 : Serializable {
             /*---------------------------------------------------------------------------------------------------------*/
             //Implementation of thresholds using a sorted set
             val attributeValuesSet: SortedSet<Double> = TreeSet()
-            val attributeToClass = HashMap<Double, Tuple<Int, Boolean>>()
+            val attributeToClass = HashMap<Double?, Tuple<Int, Boolean>>()
             for (point in data) {
-                val attribute = domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double
+                val attribute = (domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]])?.toDouble()
                 val theClass = point.attributes[classAttribute]
                 attributeValuesSet.add(attribute)
                 val tuple = attributeToClass[attribute]
@@ -605,7 +605,7 @@ class Cid3 : Serializable {
                 val pointClass = point.attributes[classAttribute]
                 for (iThreshold in thresholds) {
                     if (iThreshold.sumsClassesAndAttribute[pointClass] == null) iThreshold.sumsClassesAndAttribute[pointClass] = SumBelowAndAbove(0, 0)
-                    if ((domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]] as Double)<iThreshold.value) {
+                    if (((domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]])?.toDouble())!! < iThreshold.value) {
                         iThreshold.sumABelow++
                         //Next calculate probability of c and a
                         iThreshold.sumsClassesAndAttribute[pointClass]!!.below++
@@ -919,9 +919,9 @@ class Cid3 : Serializable {
                     //Get index
                     val index = domainsValueToIndex[attribute]["?"]!!
                     //Replace missing with mean
-                    domainsIndexToValue[attribute].replace(index, "?", mean)
+                    domainsIndexToValue[attribute].replace(index, "?", mean.toString())
                     domainsValueToIndex[attribute].remove("?")
-                    domainsValueToIndex[attribute][mean] = index
+                    domainsValueToIndex[attribute][mean.toString()] = index
                 }
             } else if (attributeTypes[attribute] == AttributeType.Discrete) {
                 if (domainsIndexToValue[attribute].containsValue("?")) {
@@ -945,8 +945,10 @@ class Cid3 : Serializable {
         var counter = 0
         for (point in trainData) {
             try {
-                val attValue = domainsIndexToValue[attribute][point.attributes[attribute]] as Double
-                sum += attValue
+                val attValue = (domainsIndexToValue[attribute][point.attributes[attribute]])?.toDouble()
+                if (attValue != null) {
+                    sum += attValue
+                }
                 counter++
             } catch (e: Exception) {
                 //continue;
@@ -1031,7 +1033,7 @@ class Cid3 : Serializable {
                 if (attributeTypes[i] == AttributeType.Continuous) {
                     if (next == "?" || next == "NaN") point.attributes[i] = getSymbolValue(i, "?") else {
                         try {
-                            point.attributes[i] = getSymbolValue(i, next.toDouble())
+                            point.attributes[i] = getSymbolValue(i, next)
                         } catch (e: Exception) {
                             System.err.println("Error reading continuous value in test data.")
                             exitProcess(1)
@@ -1120,7 +1122,7 @@ class Cid3 : Serializable {
                 if (attributeTypes[i] == AttributeType.Continuous) {
                     if (next == "?" || next == "NaN") point.attributes[i] = getSymbolValue(i, "?") else {
                         try {
-                            point.attributes[i] = getSymbolValue(i, next.toDouble())
+                            point.attributes[i] = getSymbolValue(i, next)
                         } catch (e: Exception) {
                             System.err.println("Error reading continuous value in train data.")
                             exitProcess(1)
@@ -1680,7 +1682,7 @@ class Cid3 : Serializable {
         }
         //Check if attribute is continuous
         if (attributeTypes[splitAttribute] == AttributeType.Continuous) {
-            attributeRealValue = domainsIndexToValue[splitAttribute][example.attributes[splitAttribute]] as Double
+            attributeRealValue = (domainsIndexToValue[splitAttribute][example.attributes[splitAttribute]])!!.toDouble()
             nodeLocal = if (attributeRealValue <= nodeLocal.children!![0].thresholdContinuous) {
                 nodeLocal.children!![0]
             } else nodeLocal.children!![1]
@@ -2207,7 +2209,7 @@ class Cid3 : Serializable {
             }
             val mostCommon: Int
             mostCommon = if (isEmpty) id3.getMostCommonClass(currentNode.parent) else id3.getMostCommonClass(currentNode)
-            val mostCommonStr = id3.domainsIndexToValue[id3.classAttribute][mostCommon] as String?
+            val mostCommonStr = id3.domainsIndexToValue[id3.classAttribute][mostCommon]
             //Print class attribute value
             println("Class attribute value is: $mostCommonStr")
         } else println("The file doesn't exist.")
@@ -2274,10 +2276,10 @@ class Cid3 : Serializable {
                     if (id3.attributeTypes[i] == AttributeType.Continuous) {
                         if (next == "?" || next == "NaN") {
                             val value: Double = id3.meanValues[i]
-                            point.attributes[i] = id3.getSymbolValue(i, value)
+                            point.attributes[i] = id3.getSymbolValue(i, value.toString())
                         } else {
                             try {
-                                point.attributes[i] = id3.getSymbolValue(i, next.toDouble())
+                                point.attributes[i] = id3.getSymbolValue(i, next)
                             } catch (e: Exception) {
                                 System.err.println("Error reading continuous value in train data.")
                                 exitProcess(1)
@@ -2305,7 +2307,7 @@ class Cid3 : Serializable {
                 caseClass = if (isEmpty) id3.getMostCommonClass(node.parent) else id3.getMostCommonClass(node)
 
                 //Print line to output tmp file
-                val classValue = id3.domainsIndexToValue[id3.classAttribute][caseClass] as String?
+                val classValue = id3.domainsIndexToValue[id3.classAttribute][caseClass]
                 val line = "$input,$classValue"
                 printOut.write(line)
                 printOut.println()
@@ -2385,10 +2387,10 @@ class Cid3 : Serializable {
                     if (id3.attributeTypes[i] == AttributeType.Continuous) {
                         if (next == "?" || next == "NaN") {
                             val value: Double = id3.meanValues[i]
-                            point.attributes[i] = id3.getSymbolValue(i, value)
+                            point.attributes[i] = id3.getSymbolValue(i, value.toString())
                         } else {
                             try {
-                                point.attributes[i] = id3.getSymbolValue(i, next.toDouble())
+                                point.attributes[i] = id3.getSymbolValue(i, next)
                             } catch (e: Exception) {
                                 System.err.println("Error reading continuous value in train data.")
                                 exitProcess(1)
@@ -2423,7 +2425,7 @@ class Cid3 : Serializable {
                     if (classAttrValues[i] > resultClass) resultClass = i
                 }
                 //Print line to output tmp file
-                val classValue = id3.domainsIndexToValue[id3.classAttribute][resultClass] as String?
+                val classValue = id3.domainsIndexToValue[id3.classAttribute][resultClass]
                 val line = "$input,$classValue"
                 printOut.write(line)
                 printOut.println()
@@ -2496,7 +2498,7 @@ class Cid3 : Serializable {
                         val s = `in`.nextLine()
                         try {
                             val value: Double = if (s == "?") id3.meanValues[i] else s.toDouble()
-                            example.attributes[i] = id3.getSymbolValue(i, value)
+                            example.attributes[i] = id3.getSymbolValue(i, value.toString())
                             break
                         } catch (e: Exception) {
                             println("Please enter a valid value:")
@@ -2528,7 +2530,7 @@ class Cid3 : Serializable {
                 if (classAttrValues[i] > resultClass) resultClass = i
             }
             //Print the answer
-            val mostCommonStr = id3.domainsIndexToValue[id3.classAttribute][resultClass] as String?
+            val mostCommonStr = id3.domainsIndexToValue[id3.classAttribute][resultClass]
             print("\n")
             println("Class attribute value is: $mostCommonStr")
         } else println("The file doesn't exist.")
