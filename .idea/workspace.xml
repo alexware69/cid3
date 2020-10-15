@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="in CV the # of cases  = train + test">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -98,13 +98,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00089" summary="simplified some code">
-      <created>1598842557934</created>
-      <option name="number" value="00089" />
-      <option name="presentableId" value="LOCAL-00089" />
-      <option name="project" value="LOCAL" />
-      <updated>1598842557934</updated>
     </task>
     <task id="LOCAL-00090" summary="renamed another function">
       <created>1598845504317</created>
@@ -442,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602569198724</updated>
     </task>
-    <option name="localTasksCounter" value="138" />
+    <task id="LOCAL-00138" summary="Fixed ugly bug with ugly hack. Not really, it works now again!">
+      <created>1602646737841</created>
+      <option name="number" value="00138" />
+      <option name="presentableId" value="LOCAL-00138" />
+      <option name="project" value="LOCAL" />
+      <updated>1602646737841</updated>
+    </task>
+    <option name="localTasksCounter" value="139" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -468,7 +468,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="more formatting" />
     <MESSAGE value="more formatting, now showing bold font" />
     <MESSAGE value="more formatting, now showing bold font on random forests" />
     <MESSAGE value="more formatting, changed output for cross-validation" />
@@ -493,7 +492,8 @@
     <MESSAGE value="optimized the natural ordering" />
     <MESSAGE value="added # of cases to false positives/negatives report" />
     <MESSAGE value="in CV the # of cases  = train + test" />
-    <option name="LAST_COMMIT_MESSAGE" value="in CV the # of cases  = train + test" />
+    <MESSAGE value="Fixed ugly bug with ugly hack. Not really, it works now again!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed ugly bug with ugly hack. Not really, it works now again!" />
   </component>
   <component name="WindowStateProjectService">
     <state x="455" y="87" key="#Project_Structure" timestamp="1601046635146">
@@ -524,11 +524,11 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="1336" y="236" key="#xdebugger.evaluate/0.25.1920.984@0.25.1920.984" timestamp="1602644643352" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1602644757641">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1602646737638">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1602644757641" />
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1602646737638" />
     <state width="530" height="466" key="DebuggerActiveHint" timestamp="1602644568512">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -537,26 +537,26 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="408" y="141" width="1200" height="744" key="DiffContextDialog/0.25.1920.984@0.25.1920.984" timestamp="1601087429568" />
-    <state width="1358" height="262" key="GridCell.Tab.0.bottom" timestamp="1602646312547">
+    <state width="1358" height="262" key="GridCell.Tab.0.bottom" timestamp="1602647271732">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.bottom/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
-    <state width="1358" height="262" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1602646312547" />
-    <state width="1358" height="262" key="GridCell.Tab.0.center" timestamp="1602646312546">
+    <state width="1358" height="262" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1602647271732" />
+    <state width="1358" height="262" key="GridCell.Tab.0.center" timestamp="1602647271732">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.center/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
-    <state width="1358" height="262" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1602646312546" />
-    <state width="1358" height="262" key="GridCell.Tab.0.left" timestamp="1602646312546">
+    <state width="1358" height="262" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1602647271732" />
+    <state width="1358" height="262" key="GridCell.Tab.0.left" timestamp="1602647271731">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.left/0.23.1920.991@0.23.1920.991" timestamp="1596361527518" />
-    <state width="1358" height="262" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1602646312546" />
-    <state width="1358" height="262" key="GridCell.Tab.0.right" timestamp="1602646312546">
+    <state width="1358" height="262" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1602647271731" />
+    <state width="1358" height="262" key="GridCell.Tab.0.right" timestamp="1602647271732">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state width="1358" height="255" key="GridCell.Tab.0.right/0.23.1920.991@0.23.1920.991" timestamp="1596361527519" />
-    <state width="1358" height="262" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1602646312546" />
+    <state width="1358" height="262" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1602647271732" />
     <state width="1358" height="310" key="GridCell.Tab.1.bottom" timestamp="1602644903548">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -586,11 +586,11 @@
     </state>
     <state x="527" y="164" key="SettingsEditor/0.23.1920.991@0.23.1920.991" timestamp="1594012692651" />
     <state x="563" y="107" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1600984613494" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1602569206437">
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1602646746189">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1596361336239" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1602569206437" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1602646746189" />
     <state x="754" y="381" key="classpath-attribute-editor" timestamp="1598584648447">
       <screen x="0" y="25" width="1920" height="984" />
     </state>

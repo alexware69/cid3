@@ -1007,11 +1007,13 @@ class Cid3 : Serializable {
         }
         val bin = BufferedReader(InputStreamReader(`in`))
         var input: String?
+        var currentLine = 0
         while (true) {
             try {
                 input = bin.readLine()
+                currentLine++
             } catch (e: Exception) {
-                System.err.println("Unable to read line from test file.")
+                System.err.println("Unable to read line #$currentLine from test file.")
                 exitProcess(1)
             }
             if (input == null) {
@@ -1028,14 +1030,16 @@ class Cid3 : Serializable {
             tokenizer = StringTokenizer(input, ",")
             val point = DataPoint(numAttributes)
             var next: String
+            var currentColumn: Int
             for (i in 0 until numAttributes) {
+                currentColumn = i + 1
                 next = tokenizer.nextToken().trim { it <= ' ' }
                 if (attributeTypes[i] == AttributeType.Continuous) {
                     if (next == "?" || next == "NaN") point.attributes[i] = getSymbolValue(i, "?") else {
                         try {
                             point.attributes[i] = getSymbolValue(i, next)
                         } catch (e: Exception) {
-                            System.err.println("Error reading continuous value in test data.")
+                            System.err.println("Error reading continuous value in test data at line #$currentLine, column #$currentColumn.")
                             exitProcess(1)
                         }
                     }
@@ -1049,8 +1053,9 @@ class Cid3 : Serializable {
 
             try {
                 input = bin.readLine()
+                currentLine++
             } catch (e: Exception) {
-                System.err.println("Unable to read line from test file.")
+                System.err.println("Unable to read line #$currentLine from test file.")
                 exitProcess(1)
             }
         }
@@ -1094,11 +1099,13 @@ class Cid3 : Serializable {
         val bin = BufferedReader(InputStreamReader(`in`))
         var input: String?
         var tokenizer: StringTokenizer
+        var currentLine = 0
 
         try {
             input = bin.readLine()
+            currentLine++
         } catch (e: Exception) {
-            System.err.println("Unable to read line from data file.")
+            System.err.println("Unable to read line #$currentLine from data file.")
             exitProcess(1)
         }
         while (input != null) {
@@ -1110,21 +1117,23 @@ class Cid3 : Serializable {
             val numTokens = tokenizer.countTokens()
             if (numTokens != numAttributes) {
                 System.err.println("Read " + data.size + " data")
-                System.err.println("Last line read: $input")
+                System.err.println("Last line read, #$currentLine: $input")
                 System.err.println("Expecting $numAttributes attributes")
                 exitProcess(1)
             }
 
             val point = DataPoint(numAttributes)
             var next: String
+            var currentColumn: Int
             for (i in 0 until numAttributes) {
+                currentColumn = i + 1
                 next = tokenizer.nextToken().trim { it <= ' ' }
                 if (attributeTypes[i] == AttributeType.Continuous) {
                     if (next == "?" || next == "NaN") point.attributes[i] = getSymbolValue(i, "?") else {
                         try {
                             point.attributes[i] = getSymbolValue(i, next)
                         } catch (e: Exception) {
-                            System.err.println("Error reading continuous value in train data.")
+                            System.err.println("Error reading continuous value in train data at line #$currentLine, column #$currentColumn.")
                             exitProcess(1)
                         }
                     }
@@ -1138,8 +1147,9 @@ class Cid3 : Serializable {
 
             try {
                 input = bin.readLine()
+                currentLine++
             } catch (e: Exception) {
-                System.err.println("Unable to read line from data file.")
+                System.err.println("Unable to read line #$currentLine from data file.")
                 exitProcess(1)
             }
         }
