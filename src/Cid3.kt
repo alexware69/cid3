@@ -1017,7 +1017,7 @@ class Cid3 : Serializable {
                 exitProcess(1)
             }
             if (input == null) {
-                System.err.println("No data found in the data file: $filename\n")
+                System.err.println("No data found in the test file: $filename\n")
                 exitProcess(1)
             }
             if (input.startsWith("//")) continue
@@ -1028,6 +1028,13 @@ class Cid3 : Serializable {
         while (input != null) {
             if (input.endsWith('.')) input = input.dropLast(1)
             tokenizer = StringTokenizer(input, ",")
+            val numTokens = tokenizer.countTokens()
+            if (numTokens != numAttributes) {
+                System.err.println("Read " + data.size + " data")
+                System.err.println("Last line read, #$currentLine: $input")
+                System.err.println("Expecting $numAttributes attributes")
+                exitProcess(1)
+            }
             val point = DataPoint(numAttributes)
             var next: String
             var currentColumn: Int
