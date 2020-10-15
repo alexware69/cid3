@@ -1044,6 +1044,7 @@ class Cid3 : Serializable {
                 if (attributeTypes[i] == AttributeType.Continuous) {
                     if (next == "?" || next == "NaN") point.attributes[i] = getSymbolValue(i, "?") else {
                         try {
+                            next.toDouble()
                             point.attributes[i] = getSymbolValue(i, next)
                         } catch (e: Exception) {
                             System.err.println("Error reading continuous value in test data at line #$currentLine, column #$currentColumn.")
@@ -1136,8 +1137,10 @@ class Cid3 : Serializable {
                 currentColumn = i + 1
                 next = tokenizer.nextToken().trim { it <= ' ' }
                 if (attributeTypes[i] == AttributeType.Continuous) {
-                    if (next == "?" || next == "NaN") point.attributes[i] = getSymbolValue(i, "?") else {
+                    if (next == "?" || next == "NaN") point.attributes[i] = getSymbolValue(i, "?")
+                    else {
                         try {
+                            next.toDouble()
                             point.attributes[i] = getSymbolValue(i, next)
                         } catch (e: Exception) {
                             System.err.println("Error reading continuous value in train data at line #$currentLine, column #$currentColumn.")
@@ -1942,7 +1945,7 @@ class Cid3 : Serializable {
                 meanErrors = percentageErrors / 10
                 val rounded1 = (meanErrors * 10).roundToInt() / 10.0
                 console.format(fmt, " ", " ")
-                console.format(fmt,"Mean", "$rounded1%")
+                console.format(fmt, "Mean", "$rounded1%")
 
                 //Calculate average
                 var meanFolds = 0.0
@@ -1959,7 +1962,7 @@ class Cid3 : Serializable {
                 sumMeanSE = sqrt(sumMeanSE / 10)
                 val se = sumMeanSE / sqrt(10.0)
                 val roundedSE = (se * 10).roundToInt() / 10.0
-                console.format(fmt,"SE", "$roundedSE%")
+                console.format(fmt, "SE", "$roundedSE%")
 
                 //Now print the False Positives/Negatives
                 //this is needed to format console output
@@ -2044,7 +2047,7 @@ class Cid3 : Serializable {
                 console.format(fmt, "----------", "---------", "---------", "-----")
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    console.format(fmt,classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
@@ -2095,7 +2098,7 @@ class Cid3 : Serializable {
                 console.format(fmt, "----------", "---------", "---------", "-----")
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    console.format(fmt,classNoOfCasesTrain[i], falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    console.format(fmt, classNoOfCasesTrain[i], falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
                 }
 
             }
