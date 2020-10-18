@@ -1219,18 +1219,23 @@ class Cid3 : Serializable {
         val bin = BufferedReader(InputStreamReader(`in`))
 
         //Read first line containing class values.
+        var lineNumber = 0
         try {
             bin.readLine()
+            lineNumber++
         } catch (e: Exception) {
-            System.err.println("Unable to read line in names file.")
+            val ln = lineNumber + 1
+            System.err.println("Unable to read line #$ln in names file.")
             exitProcess(1)
         }
 
         //Save attribute names and types to a tuple array.
         try {
             input = bin.readLine()
+            lineNumber++
         } catch (e: Exception) {
-            System.err.println("Unable to read line in names file.")
+            val ln = lineNumber + 1
+            System.err.println("Unable to read line #$ln in names file.")
             exitProcess(1)
         }
         while (input != null) {
@@ -1240,11 +1245,17 @@ class Cid3 : Serializable {
                     val t = Tuple(split[0].trim { it <= ' ' }, split[1].trim { it <= ' ' })
                     attributes.add(t)
                 }
+                else {
+                    System.err.println("Unable to read attribute type at line #$lineNumber in names file.")
+                    exitProcess(1)
+                }
             }
             try {
                 input = bin.readLine()
+                lineNumber++
             } catch (e: Exception) {
-                System.err.println("Unable to read line in names file.")
+                val ln = lineNumber + 1
+                System.err.println("Unable to read line #$ln in names file.")
                 exitProcess(1)
             }
         }
