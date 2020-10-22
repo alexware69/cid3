@@ -22,10 +22,11 @@
  3. This notice may not be removed or altered from any source distribution.
  */
 
+import java.io.Serializable;
 import java.util.*;
 
-public class NaturalOrderComparator implements Comparator
-{
+public class NaturalOrderComparator implements Comparator, Serializable
+        {
     int compareRight(String a, String b)
     {
         int bias = 0, ia = 0, ib = 0;
