@@ -2692,6 +2692,28 @@ class Cid3 : Serializable {
             print("------------------")
             print("\n")
 
+            //Check for incompatible options
+            if (cmd.hasOption("query")){
+                if (cmd.hasOption("validation") || cmd.hasOption("save")
+                        || cmd.hasOption("forest") || cmd.hasOption("criteria") || cmd.hasOption("partition")){
+                    System.err.println("Options -v, -s, -c, -r, -p are not compatible with -q.")
+                    exitProcess(1)
+                }
+            }
+            if (cmd.hasOption("save")){
+                if (cmd.hasOption("validation") || cmd.hasOption("partition")){
+                    System.err.println("Options -v and -p are not compatible with -s.")
+                    exitProcess(1)
+                }
+            }
+            if (cmd.hasOption("output")){
+                if (cmd.hasOption("validation") || cmd.hasOption("forest") || cmd.hasOption("criteria")
+                        || cmd.hasOption("partition")){
+                    System.err.println("Options -v, -r, -p and -c are not compatible with -o.")
+                    exitProcess(1)
+                }
+            }
+
             //if is a query, deserialize file and query model
             val outputFilePath: String
             if (cmd.hasOption("query")) {
