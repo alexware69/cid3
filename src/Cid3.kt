@@ -1239,7 +1239,7 @@ class Cid3 : Serializable {
             exitProcess(1)
         }
         while (input != null) {
-            if (!input.startsWith("|")) {
+            if (!input.startsWith("|") && input.trim() != "") {
                 val split = input.split(":".toRegex()).toTypedArray()
                 if (split.size == 2) {
                     val t = Tuple(split[0].trim { it <= ' ' }, split[1].trim { it <= ' ' })
