@@ -23,7 +23,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -98,13 +97,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00097" summary="very minor change">
-      <created>1599696856355</created>
-      <option name="number" value="00097" />
-      <option name="presentableId" value="LOCAL-00097" />
-      <option name="project" value="LOCAL" />
-      <updated>1599696856356</updated>
     </task>
     <task id="LOCAL-00098" summary="added a new line in output">
       <created>1599706527954</created>
@@ -442,7 +434,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603919135657</updated>
     </task>
-    <option name="localTasksCounter" value="146" />
+    <task id="LOCAL-00146" summary="better error handling while reading data files">
+      <created>1603957164382</created>
+      <option name="number" value="00146" />
+      <option name="presentableId" value="LOCAL-00146" />
+      <option name="project" value="LOCAL" />
+      <updated>1603957164383</updated>
+    </task>
+    <option name="localTasksCounter" value="147" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -468,7 +467,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="done implementing False positives, False negatives, do same for RF" />
     <MESSAGE value="implemented False positives, False negatives, separated in test/train" />
     <MESSAGE value="done implementing False positives, False negatives" />
     <MESSAGE value="fixed bug in implementation of False positives, False negatives" />
@@ -493,7 +491,8 @@
     <MESSAGE value="made comparator serializable" />
     <MESSAGE value="checking for incompatible options is command line call" />
     <MESSAGE value="now checking for empty lines with spaces in names files" />
-    <option name="LAST_COMMIT_MESSAGE" value="now checking for empty lines with spaces in names files" />
+    <MESSAGE value="better error handling while reading data files" />
+    <option name="LAST_COMMIT_MESSAGE" value="better error handling while reading data files" />
   </component>
   <component name="WindowStateProjectService">
     <state x="455" y="87" key="#Project_Structure" timestamp="1601046635146">
@@ -524,11 +523,11 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="1336" y="236" key="#xdebugger.evaluate/0.25.1920.984@0.25.1920.984" timestamp="1602644643352" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1603919135459">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1603957164187">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1603919135459" />
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1603957164187" />
     <state width="530" height="466" key="DebuggerActiveHint" timestamp="1602644568512">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -585,11 +584,11 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="563" y="107" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1600984613494" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1603919143387">
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1603957171859">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1596361336239" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1603919143387" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1603957171859" />
     <state x="754" y="381" key="classpath-attribute-editor" timestamp="1598584648447">
       <screen x="0" y="25" width="1920" height="984" />
     </state>

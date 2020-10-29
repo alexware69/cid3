@@ -1017,7 +1017,7 @@ class Cid3 : Serializable {
             exitProcess(1)
         }
         if (input == null) {
-            System.err.println("No data found in the test file: $filename\n")
+            System.err.println("No data found in test file: $filename\n")
             exitProcess(1)
         }
 
@@ -1115,7 +1115,10 @@ class Cid3 : Serializable {
             System.err.println("Unable to read line #$currentLine from data file.")
             exitProcess(1)
         }
-
+        if (input == null) {
+            System.err.println("No data found in data file: $filename\n")
+            exitProcess(1)
+        }
         while (input != null) {
             if (!input.startsWith("|") && !input.startsWith("//") && input.trim() != "") {
                 if (input.endsWith('.')) input = input.dropLast(1)
