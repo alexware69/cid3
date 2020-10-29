@@ -1008,63 +1008,62 @@ class Cid3 : Serializable {
         val bin = BufferedReader(InputStreamReader(`in`))
         var input: String?
         var currentLine = 0
-        while (true) {
-            try {
-                input = bin.readLine()
-                currentLine++
-            } catch (e: Exception) {
-                System.err.println("Unable to read line #$currentLine from test file.")
-                exitProcess(1)
-            }
-            if (input == null) {
-                System.err.println("No data found in the test file: $filename\n")
-                exitProcess(1)
-            }
-            if (input.startsWith("//")) continue
-            if (input == "") continue
-            break
+
+        try {
+            input = bin.readLine()
+            currentLine++
+        } catch (e: Exception) {
+            System.err.println("Unable to read line #$currentLine from test file.")
+            exitProcess(1)
         }
+        if (input == null) {
+            System.err.println("No data found in the test file: $filename\n")
+            exitProcess(1)
+        }
+
         var tokenizer: StringTokenizer
         while (input != null) {
-            if (input.endsWith('.')) input = input.dropLast(1)
-            tokenizer = StringTokenizer(input, ",")
-            val numTokens = tokenizer.countTokens()
-            if (numTokens != numAttributes) {
-                System.err.println("Read " + data.size + " data")
-                System.err.println("Last line read, #$currentLine: $input")
-                System.err.println("Expecting $numAttributes attributes")
-                exitProcess(1)
-            }
-            val point = DataPoint(numAttributes)
-            var next: String
-            var currentColumn: Int
-            for (i in 0 until numAttributes) {
-                currentColumn = i + 1
-                next = tokenizer.nextToken().trim { it <= ' ' }
-                if (attributeTypes[i] == AttributeType.Continuous) {
-                    if (next == "?" || next == "NaN") point.attributes[i] = getSymbolValue(i, "?") else {
-                        try {
-                            next.toDouble()
-                            point.attributes[i] = getSymbolValue(i, next)
-                        } catch (e: Exception) {
-                            System.err.println("Error reading continuous value in test data at line #$currentLine, column #$currentColumn.")
-                            exitProcess(1)
-                        }
-                    }
-                } else if (attributeTypes[i] == AttributeType.Discrete) {
-                    point.attributes[i] = getSymbolValue(i, next)
-                } else if (attributeTypes[i] == AttributeType.Ignore) {
-                    point.attributes[i] = getSymbolValue(i, next)
+            if (!input.startsWith("|") && !input.startsWith("//") && input.trim() != "") {
+                if (input.endsWith('.')) input = input.dropLast(1)
+                tokenizer = StringTokenizer(input, ",")
+                val numTokens = tokenizer.countTokens()
+                if (numTokens != numAttributes) {
+                    System.err.println("Read " + data.size + " data")
+                    System.err.println("Last line read, #$currentLine: $input")
+                    System.err.println("Expecting $numAttributes attributes")
+                    exitProcess(1)
                 }
-            }
-            data.add(point)
+                val point = DataPoint(numAttributes)
+                var next: String
+                var currentColumn: Int
+                for (i in 0 until numAttributes) {
+                    currentColumn = i + 1
+                    next = tokenizer.nextToken().trim { it <= ' ' }
+                    if (attributeTypes[i] == AttributeType.Continuous) {
+                        if (next == "?" || next == "NaN") point.attributes[i] = getSymbolValue(i, "?") else {
+                            try {
+                                next.toDouble()
+                                point.attributes[i] = getSymbolValue(i, next)
+                            } catch (e: Exception) {
+                                System.err.println("Error reading continuous value in test data at line #$currentLine, column #$currentColumn.")
+                                exitProcess(1)
+                            }
+                        }
+                    } else if (attributeTypes[i] == AttributeType.Discrete) {
+                        point.attributes[i] = getSymbolValue(i, next)
+                    } else if (attributeTypes[i] == AttributeType.Ignore) {
+                        point.attributes[i] = getSymbolValue(i, next)
+                    }
+                }
+                data.add(point)
 
-            try {
-                input = bin.readLine()
-                currentLine++
-            } catch (e: Exception) {
-                System.err.println("Unable to read line #$currentLine from test file.")
-                exitProcess(1)
+                try {
+                    input = bin.readLine()
+                    currentLine++
+                } catch (e: Exception) {
+                    System.err.println("Unable to read line #$currentLine from test file.")
+                    exitProcess(1)
+                }
             }
         }
         try {
@@ -1116,45 +1115,44 @@ class Cid3 : Serializable {
             System.err.println("Unable to read line #$currentLine from data file.")
             exitProcess(1)
         }
+
         while (input != null) {
-            if (input.trim { it <= ' ' } == "") break
-            if (input.startsWith("//")) continue
-            if (input == "") continue
-            if (input.endsWith('.')) input = input.dropLast(1)
-            tokenizer = StringTokenizer(input, ",")
-            val numTokens = tokenizer.countTokens()
-            if (numTokens != numAttributes) {
-                System.err.println("Read " + data.size + " data")
-                System.err.println("Last line read, #$currentLine: $input")
-                System.err.println("Expecting $numAttributes attributes")
-                exitProcess(1)
-            }
-
-            val point = DataPoint(numAttributes)
-            var next: String
-            var currentColumn: Int
-            for (i in 0 until numAttributes) {
-                currentColumn = i + 1
-                next = tokenizer.nextToken().trim { it <= ' ' }
-                if (attributeTypes[i] == AttributeType.Continuous) {
-                    if (next == "?" || next == "NaN") point.attributes[i] = getSymbolValue(i, "?")
-                    else {
-                        try {
-                            next.toDouble()
-                            point.attributes[i] = getSymbolValue(i, next)
-                        } catch (e: Exception) {
-                            System.err.println("Error reading continuous value in train data at line #$currentLine, column #$currentColumn.")
-                            exitProcess(1)
-                        }
-                    }
-                } else if (attributeTypes[i] == AttributeType.Discrete) {
-                    point.attributes[i] = getSymbolValue(i, next)
-                } else if (attributeTypes[i] == AttributeType.Ignore) {
-                    point.attributes[i] = getSymbolValue(i, next)
+            if (!input.startsWith("|") && !input.startsWith("//") && input.trim() != "") {
+                if (input.endsWith('.')) input = input.dropLast(1)
+                tokenizer = StringTokenizer(input, ",")
+                val numTokens = tokenizer.countTokens()
+                if (numTokens != numAttributes) {
+                    System.err.println("Read " + data.size + " data")
+                    System.err.println("Last line read, #$currentLine: $input")
+                    System.err.println("Expecting $numAttributes attributes")
+                    exitProcess(1)
                 }
-            }
-            data.add(point)
 
+                val point = DataPoint(numAttributes)
+                var next: String
+                var currentColumn: Int
+                for (i in 0 until numAttributes) {
+                    currentColumn = i + 1
+                    next = tokenizer.nextToken().trim { it <= ' ' }
+                    if (attributeTypes[i] == AttributeType.Continuous) {
+                        if (next == "?" || next == "NaN") point.attributes[i] = getSymbolValue(i, "?")
+                        else {
+                            try {
+                                next.toDouble()
+                                point.attributes[i] = getSymbolValue(i, next)
+                            } catch (e: Exception) {
+                                System.err.println("Error reading continuous value in train data at line #$currentLine, column #$currentColumn.")
+                                exitProcess(1)
+                            }
+                        }
+                    } else if (attributeTypes[i] == AttributeType.Discrete) {
+                        point.attributes[i] = getSymbolValue(i, next)
+                    } else if (attributeTypes[i] == AttributeType.Ignore) {
+                        point.attributes[i] = getSymbolValue(i, next)
+                    }
+                }
+                data.add(point)
+            }
             try {
                 input = bin.readLine()
                 currentLine++
@@ -1239,7 +1237,7 @@ class Cid3 : Serializable {
             exitProcess(1)
         }
         while (input != null) {
-            if (!input.startsWith("|") && input.trim() != "") {
+            if (!input.startsWith("|") && !input.startsWith("//") && input.trim() != "") {
                 val split = input.split(":".toRegex()).toTypedArray()
                 if (split.size == 2) {
                     val t = Tuple(split[0].trim { it <= ' ' }, split[1].trim { it <= ' ' })

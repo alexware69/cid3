@@ -99,13 +99,6 @@
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
     </task>
-    <task id="LOCAL-00096" summary="removed Root node from console output">
-      <created>1599571587522</created>
-      <option name="number" value="00096" />
-      <option name="presentableId" value="LOCAL-00096" />
-      <option name="project" value="LOCAL" />
-      <updated>1599571587522</updated>
-    </task>
     <task id="LOCAL-00097" summary="very minor change">
       <created>1599696856355</created>
       <option name="number" value="00097" />
@@ -442,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603413863043</updated>
     </task>
-    <option name="localTasksCounter" value="145" />
+    <task id="LOCAL-00145" summary="now checking for empty lines with spaces in names files">
+      <created>1603919135656</created>
+      <option name="number" value="00145" />
+      <option name="presentableId" value="LOCAL-00145" />
+      <option name="project" value="LOCAL" />
+      <updated>1603919135657</updated>
+    </task>
+    <option name="localTasksCounter" value="146" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -468,7 +468,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="almost almost done implementing False positives, False negatives" />
     <MESSAGE value="done implementing False positives, False negatives, do same for RF" />
     <MESSAGE value="implemented False positives, False negatives, separated in test/train" />
     <MESSAGE value="done implementing False positives, False negatives" />
@@ -493,7 +492,8 @@
     <MESSAGE value="now handling errors while reading names file better" />
     <MESSAGE value="made comparator serializable" />
     <MESSAGE value="checking for incompatible options is command line call" />
-    <option name="LAST_COMMIT_MESSAGE" value="checking for incompatible options is command line call" />
+    <MESSAGE value="now checking for empty lines with spaces in names files" />
+    <option name="LAST_COMMIT_MESSAGE" value="now checking for empty lines with spaces in names files" />
   </component>
   <component name="WindowStateProjectService">
     <state x="455" y="87" key="#Project_Structure" timestamp="1601046635146">
@@ -524,11 +524,11 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="1336" y="236" key="#xdebugger.evaluate/0.25.1920.984@0.25.1920.984" timestamp="1602644643352" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1603413862739">
+    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1603919135459">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="966" y="165" key="CommitChangelistDialog2/0.23.1920.991@0.23.1920.991" timestamp="1596361328239" />
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1603413862739" />
+    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1603919135459" />
     <state width="530" height="466" key="DebuggerActiveHint" timestamp="1602644568512">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
@@ -585,11 +585,11 @@
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="563" y="107" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1600984613494" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1603413869776">
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1603919143387">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
     <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.23.1920.991@0.23.1920.991" timestamp="1596361336239" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1603413869776" />
+    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1603919143387" />
     <state x="754" y="381" key="classpath-attribute-editor" timestamp="1598584648447">
       <screen x="0" y="25" width="1920" height="984" />
     </state>
