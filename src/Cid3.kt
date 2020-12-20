@@ -78,10 +78,10 @@ class Cid3 : Serializable {
     class Certainty(var certainty: Double, var threshold: Double) : Serializable
 
     @Transient
-    var testData = ArrayList<DataPoint>()
+    lateinit var testData : ArrayList<DataPoint>
 
     @Transient
-    var trainData = ArrayList<DataPoint>()
+    lateinit var trainData : ArrayList<DataPoint>
 
     @Transient
     var crossValidationChunks = ArrayList<ArrayList<DataPoint>>()

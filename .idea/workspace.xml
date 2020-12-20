@@ -99,13 +99,6 @@
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
     </task>
-    <task id="LOCAL-00099" summary="some more output text formatting">
-      <created>1599706810279</created>
-      <option name="number" value="00099" />
-      <option name="presentableId" value="LOCAL-00099" />
-      <option name="project" value="LOCAL" />
-      <updated>1599706810279</updated>
-    </task>
     <task id="LOCAL-00100" summary="now show number of attributes in console output">
       <created>1599707661908</created>
       <option name="number" value="00100" />
@@ -442,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1603957475994</updated>
     </task>
-    <option name="localTasksCounter" value="148" />
+    <task id="LOCAL-00148" summary="started optimizing RAM usage">
+      <created>1608438787830</created>
+      <option name="number" value="00148" />
+      <option name="presentableId" value="LOCAL-00148" />
+      <option name="project" value="LOCAL" />
+      <updated>1608438787831</updated>
+    </task>
+    <option name="localTasksCounter" value="149" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -468,7 +468,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="done implementing False positives, False negatives" />
     <MESSAGE value="fixed bug in implementation of False positives, False negatives" />
     <MESSAGE value="optimized implementation of False positives, False negatives" />
     <MESSAGE value="formatted console output" />
@@ -493,100 +492,7 @@
     <MESSAGE value="now checking for empty lines with spaces in names files" />
     <MESSAGE value="better error handling while reading data files" />
     <MESSAGE value="even better error handling while reading data files" />
-    <option name="LAST_COMMIT_MESSAGE" value="even better error handling while reading data files" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="455" y="87" key="#Project_Structure" timestamp="1601046635146">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="455" y="87" key="#Project_Structure/0.25.1920.984@0.25.1920.984" timestamp="1601046635146" />
-    <state x="536" y="279" width="1071" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602642941223">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="536" y="279" width="1071" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1920.984@0.25.1920.984" timestamp="1602642941223" />
-    <state x="681" y="257" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1608435747056">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="681" y="257" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.25.1920.984@0.25.1920.984" timestamp="1608435747056" />
-    <state x="1336" y="236" key="#xdebugger.evaluate" timestamp="1602644643352">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="1336" y="236" key="#xdebugger.evaluate/0.25.1920.984@0.25.1920.984" timestamp="1602644643352" />
-    <state x="966" y="154" key="CommitChangelistDialog2" timestamp="1603957475878">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="966" y="154" key="CommitChangelistDialog2/0.25.1920.984@0.25.1920.984" timestamp="1603957475878" />
-    <state width="530" height="466" key="DebuggerActiveHint" timestamp="1602644568512">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state width="530" height="466" key="DebuggerActiveHint/0.25.1920.984@0.25.1920.984" timestamp="1602644568512" />
-    <state x="408" y="141" width="1200" height="744" key="DiffContextDialog" timestamp="1601087429568">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="408" y="141" width="1200" height="744" key="DiffContextDialog/0.25.1920.984@0.25.1920.984" timestamp="1601087429568" />
-    <state width="1358" height="262" key="GridCell.Tab.0.bottom" timestamp="1602647271732">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state width="1358" height="262" key="GridCell.Tab.0.bottom/0.25.1920.984@0.25.1920.984" timestamp="1602647271732" />
-    <state width="1358" height="262" key="GridCell.Tab.0.center" timestamp="1602647271732">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state width="1358" height="262" key="GridCell.Tab.0.center/0.25.1920.984@0.25.1920.984" timestamp="1602647271732" />
-    <state width="1358" height="262" key="GridCell.Tab.0.left" timestamp="1602647271731">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state width="1358" height="262" key="GridCell.Tab.0.left/0.25.1920.984@0.25.1920.984" timestamp="1602647271731" />
-    <state width="1358" height="262" key="GridCell.Tab.0.right" timestamp="1602647271732">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state width="1358" height="262" key="GridCell.Tab.0.right/0.25.1920.984@0.25.1920.984" timestamp="1602647271732" />
-    <state width="1358" height="310" key="GridCell.Tab.1.bottom" timestamp="1602644903548">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state width="1358" height="310" key="GridCell.Tab.1.bottom/0.25.1920.984@0.25.1920.984" timestamp="1602644903548" />
-    <state width="1358" height="310" key="GridCell.Tab.1.center" timestamp="1602644903547">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state width="1358" height="310" key="GridCell.Tab.1.center/0.25.1920.984@0.25.1920.984" timestamp="1602644903547" />
-    <state width="1358" height="310" key="GridCell.Tab.1.left" timestamp="1602644903547">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state width="1358" height="310" key="GridCell.Tab.1.left/0.25.1920.984@0.25.1920.984" timestamp="1602644903547" />
-    <state width="1358" height="310" key="GridCell.Tab.1.right" timestamp="1602644903547">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state width="1358" height="310" key="GridCell.Tab.1.right/0.25.1920.984@0.25.1920.984" timestamp="1602644903547" />
-    <state x="596" y="260" key="IDE.errors.dialog" timestamp="1600391128722">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="596" y="260" key="IDE.errors.dialog/0.25.1920.984@0.25.1920.984" timestamp="1600391128722" />
-    <state x="1214" y="286" key="RollbackChangesDialog" timestamp="1600235464529">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="1214" y="286" key="RollbackChangesDialog/0.25.1920.984@0.25.1920.984" timestamp="1600235464529" />
-    <state x="563" y="107" key="SettingsEditor" timestamp="1600984613494">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="563" y="107" key="SettingsEditor/0.25.1920.984@0.25.1920.984" timestamp="1600984613494" />
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2" timestamp="1603957482824">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="638" y="336" key="Vcs.Push.Dialog.v2/0.25.1920.984@0.25.1920.984" timestamp="1603957482824" />
-    <state x="815" y="431" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1601078928155">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="815" y="431" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.25.1920.984@0.25.1920.984" timestamp="1601078928155" />
-    <state x="552" y="253" width="910" height="623" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1602607882972">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="552" y="253" width="910" height="623" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.25.1920.984@0.25.1920.984" timestamp="1602607882972" />
-    <state x="608" y="132" width="847" height="761" key="new project wizard" timestamp="1599802038042">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="608" y="132" width="847" height="761" key="new project wizard/0.25.1920.984@0.25.1920.984" timestamp="1599802038042" />
-    <state x="673" y="248" width="670" height="676" key="search.everywhere.popup" timestamp="1600390686612">
-      <screen x="0" y="25" width="1920" height="984" />
-    </state>
-    <state x="673" y="248" width="670" height="676" key="search.everywhere.popup/0.25.1920.984@0.25.1920.984" timestamp="1600390686612" />
+    <MESSAGE value="started optimizing RAM usage" />
+    <option name="LAST_COMMIT_MESSAGE" value="started optimizing RAM usage" />
   </component>
 </project>
