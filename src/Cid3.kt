@@ -107,7 +107,7 @@ class Cid3 : Serializable {
         var certaintyUsedToDecompose = 0.0
         // The set of data points if this is a leaf node
         @Transient
-        var data: ArrayList<DataPoint> = ArrayList()
+        lateinit var data: ArrayList<DataPoint>
         //This is for saving time when calculating most common class
         lateinit var frequencyClasses: IntArray
         // If this is not a leaf node, the attribute that is used to divide the set of data points
@@ -1172,6 +1172,8 @@ class Cid3 : Serializable {
         }
         val size = data.size
         root.frequencyClasses = IntArray(domainsIndexToValue[classAttribute].size)
+        //Initialize root
+        root.data = ArrayList()
         if (splitTrainData && !testDataExists && !isCrossValidation) {
             //Randomize the data
             data.shuffle()
@@ -1696,10 +1698,9 @@ class Cid3 : Serializable {
 
     private fun testExamplePoint(example: DataPoint, node: TreeNode): TreeNode {
         var nodeLocal = node
-        val splitAttribute: Int
         val attributeValue: Int
         val attributeRealValue: Double
-        splitAttribute = nodeLocal.decompositionAttribute
+        val splitAttribute: Int = nodeLocal.decompositionAttribute
         attributeValue = example.attributes[splitAttribute]
         if (nodeLocal.children == null || nodeLocal.children!!.isEmpty()) return nodeLocal
 
@@ -1850,8 +1851,8 @@ class Cid3 : Serializable {
         var longestString: String?
         longestString = ""
         for (i in falsePositivesTrain.indices){
-            val classValue: String? = domainsIndexToValue[numAttributes - 1][i] as String
-            if (classValue != null && longestString != null)
+            val classValue: String = domainsIndexToValue[numAttributes - 1][i] as String
+            if (longestString != null)
                 if (classValue.length > longestString.length) longestString = classValue
         }
 
@@ -1981,8 +1982,8 @@ class Cid3 : Serializable {
                 var longestString: String?
                 longestString = ""
                 for (i in falsePositivesTrain.indices){
-                    val classValue: String? = domainsIndexToValue[numAttributes - 1][i] as String
-                    if (classValue != null && longestString != null)
+                    val classValue: String = domainsIndexToValue[numAttributes - 1][i] as String
+                    if (longestString != null)
                         if (classValue.length > longestString.length) longestString = classValue
                 }
                 print("\n")
@@ -2048,8 +2049,8 @@ class Cid3 : Serializable {
                 var longestString: String?
                 longestString = ""
                 for (i in falsePositivesTrain.indices){
-                    val classValue: String? = domainsIndexToValue[numAttributes - 1][i] as String
-                    if (classValue != null && longestString != null)
+                    val classValue: String = domainsIndexToValue[numAttributes - 1][i] as String
+                    if (longestString != null)
                         if (classValue.length > longestString.length) longestString = classValue
                 }
                 print("\n")
@@ -2080,8 +2081,8 @@ class Cid3 : Serializable {
         var longestString: String?
         longestString = ""
         for (i in falsePositivesTrain.indices){
-            val classValue: String? = domainsIndexToValue[numAttributes - 1][i] as String
-            if (classValue != null && longestString != null)
+            val classValue: String = domainsIndexToValue[numAttributes - 1][i] as String
+            if (longestString != null)
                 if (classValue.length > longestString.length) longestString = classValue
         }
 
@@ -2239,8 +2240,7 @@ class Cid3 : Serializable {
                     break
                 }
             }
-            val mostCommon: Int
-            mostCommon = if (isEmpty) id3.getMostCommonClass(currentNode.parent) else id3.getMostCommonClass(currentNode)
+            val mostCommon: Int = if (isEmpty) id3.getMostCommonClass(currentNode.parent) else id3.getMostCommonClass(currentNode)
             val mostCommonStr = id3.domainsIndexToValue[id3.classAttribute][mostCommon]
             //Print class attribute value
             println("Class attribute value is: $mostCommonStr")
@@ -2251,8 +2251,7 @@ class Cid3 : Serializable {
         var treeFileLocal = treeFile
         var casesFileLocal = casesFile
         if (!treeFileLocal.endsWith(".tree")) treeFileLocal += ".tree"
-        val fileOutStr: String
-        fileOutStr = if (!casesFileLocal.endsWith(".cases")) "$casesFileLocal.tmp" else {
+        val fileOutStr: String = if (!casesFileLocal.endsWith(".cases")) "$casesFileLocal.tmp" else {
             casesFileLocal.substring(0, casesFileLocal.length - 5) + "tmp"
         }
         val inputTreeFile = File(treeFileLocal)
@@ -2324,10 +2323,8 @@ class Cid3 : Serializable {
                     }
                 }
                 //Test the example point
-                var node: TreeNode
-                node = id3.testExamplePoint(point, id3.root)
+                val node: TreeNode = id3.testExamplePoint(point, id3.root)
                 var isEmpty = true
-                var caseClass: Int
                 //Check if the node is empty, if so, return its parent most frequent class.
                 for (j in node.frequencyClasses.indices) {
                     if (node.frequencyClasses[j] != 0) {
@@ -2336,7 +2333,7 @@ class Cid3 : Serializable {
                     }
                 }
                 //If node is empty
-                caseClass = if (isEmpty) id3.getMostCommonClass(node.parent) else id3.getMostCommonClass(node)
+                val caseClass: Int = if (isEmpty) id3.getMostCommonClass(node.parent) else id3.getMostCommonClass(node)
 
                 //Print line to output tmp file
                 val classValue = id3.domainsIndexToValue[id3.classAttribute][caseClass]
@@ -2364,8 +2361,7 @@ class Cid3 : Serializable {
         var rfFileLocal = rfFile
         var casesFileLocal = casesFile
         if (!rfFileLocal.endsWith(".forest")) rfFileLocal += ".forest"
-        val fileOutStr: String
-        fileOutStr = if (!casesFileLocal.endsWith(".cases")) "$casesFileLocal.tmp" else {
+        val fileOutStr: String = if (!casesFileLocal.endsWith(".cases")) "$casesFileLocal.tmp" else {
             casesFileLocal.substring(0, casesFileLocal.length - 5) + "tmp"
         }
         val inputForestFile = File(rfFileLocal)
