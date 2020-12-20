@@ -78,10 +78,10 @@ class Cid3 : Serializable {
     class Certainty(var certainty: Double, var threshold: Double) : Serializable
 
     @Transient
-    lateinit var testData : ArrayList<DataPoint>
+    var testData = ArrayList<DataPoint>()
 
     @Transient
-    lateinit var trainData : ArrayList<DataPoint>
+    var trainData = ArrayList<DataPoint>()
 
     @Transient
     var crossValidationChunks = ArrayList<ArrayList<DataPoint>>()
@@ -107,7 +107,7 @@ class Cid3 : Serializable {
         var certaintyUsedToDecompose = 0.0
         // The set of data points if this is a leaf node
         @Transient
-        lateinit var data: ArrayList<DataPoint>
+        var data: ArrayList<DataPoint> = ArrayList()
         //This is for saving time when calculating most common class
         lateinit var frequencyClasses: IntArray
         // If this is not a leaf node, the attribute that is used to divide the set of data points
@@ -1172,8 +1172,6 @@ class Cid3 : Serializable {
         }
         val size = data.size
         root.frequencyClasses = IntArray(domainsIndexToValue[classAttribute].size)
-        //Initialize root
-        root.data = ArrayList()
         if (splitTrainData && !testDataExists && !isCrossValidation) {
             //Randomize the data
             data.shuffle()
@@ -1742,7 +1740,7 @@ class Cid3 : Serializable {
                 }
                 false
             }
-        } 
+        }
         else {
             return if(example.attributes[classAttribute] == getMostCommonClass(node)){
                 true
