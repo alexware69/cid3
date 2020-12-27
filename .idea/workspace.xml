@@ -22,10 +22,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="continued optimizing RAM usage">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="now creating threads for discrete attributes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cid3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/cid3.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -100,13 +98,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00100" summary="now show number of attributes in console output">
-      <created>1599707661908</created>
-      <option name="number" value="00100" />
-      <option name="presentableId" value="LOCAL-00100" />
-      <option name="project" value="LOCAL" />
-      <updated>1599707661908</updated>
     </task>
     <task id="LOCAL-00101" summary="now show number of attributes - 1 in console output">
       <created>1599735017681</created>
@@ -444,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608438787831</updated>
     </task>
-    <option name="localTasksCounter" value="149" />
+    <task id="LOCAL-00149" summary="now creating threads for discrete attributes">
+      <created>1609076244644</created>
+      <option name="number" value="00149" />
+      <option name="presentableId" value="LOCAL-00149" />
+      <option name="project" value="LOCAL" />
+      <updated>1609076244644</updated>
+    </task>
+    <option name="localTasksCounter" value="150" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -470,7 +468,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed bug in implementation of False positives, False negatives" />
     <MESSAGE value="optimized implementation of False positives, False negatives" />
     <MESSAGE value="formatted console output" />
     <MESSAGE value="removed dot at end of lines of data and test foles" />
@@ -495,6 +492,7 @@
     <MESSAGE value="better error handling while reading data files" />
     <MESSAGE value="even better error handling while reading data files" />
     <MESSAGE value="started optimizing RAM usage" />
-    <option name="LAST_COMMIT_MESSAGE" value="started optimizing RAM usage" />
+    <MESSAGE value="now creating threads for discrete attributes" />
+    <option name="LAST_COMMIT_MESSAGE" value="now creating threads for discrete attributes" />
   </component>
 </project>

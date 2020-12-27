@@ -914,6 +914,19 @@ class Cid3 : Serializable {
                     decomposeNode(node.children!![1], selectedAttributesLocal, mySeed + 2)
                 }
                 else -> {
+                    /*val selectedAttributesLocal2: ArrayList<Int> = selectedAttributesLocal
+                    if (globalThreads.size < maxThreads) {
+                        val thread = Thread {decomposeNode(node.children!![0], selectedAttributesLocal2, mySeed + 1)}
+                        globalThreads.add(thread)
+                        thread.start()
+                    } else decomposeNode(node.children!![0], selectedAttributesLocal2, mySeed + 1)
+
+                    if (globalThreads.size < maxThreads) {
+                        val thread = Thread {decomposeNode(node.children!![1], selectedAttributesLocal2, mySeed + 2)}
+                        globalThreads.add(thread)
+                        thread.start()
+                    } else decomposeNode(node.children!![1], selectedAttributesLocal2, mySeed + 2)*/
+
                     decomposeNode(node.children!![0], selectedAttributesLocal, mySeed + 1)
                     decomposeNode(node.children!![1], selectedAttributesLocal, mySeed + 2)
                 }
