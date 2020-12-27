@@ -7,9 +7,12 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
-import kotlin.collections.ArrayList
 import kotlin.math.*
 import kotlin.system.exitProcess
+import java.util.ArrayList
+
+
+
 
 class Cid3 : Serializable {
     enum class AttributeType {
@@ -25,6 +28,9 @@ class Cid3 : Serializable {
     private lateinit var mostCommonValues: IntArray
     lateinit var fileName: String
     private var seed: Long = 13579
+    private var maxThreads = 500
+    @Transient
+    var globalThreads = ArrayList<Thread>()
     private val attributeImportance = ArrayList<Tuple<Int, Double>>()
 
     //int maxThreads = 500;
@@ -842,8 +848,13 @@ class Cid3 : Serializable {
                     }
                 }
                 else -> {
-                    for (j in node.children!!.indices) {
-                        decomposeNode(node.children!![j], selectedAttributesLocal, mySeed + 1 + j)
+                    for (j in 0 until node.children!!.size) {
+                        val selectedAttributesLocal2: ArrayList<Int> = selectedAttributesLocal
+                        if (globalThreads.size < maxThreads) {
+                            val thread = Thread {decomposeNode(node.children!![j], selectedAttributesLocal2, mySeed + 1 + j) }
+                            globalThreads.add(thread)
+                            thread.start()
+                        } else decomposeNode(node.children!![j], selectedAttributesLocal2, mySeed + 1 + j)
                     }
                 }
             }
@@ -1431,6 +1442,12 @@ class Cid3 : Serializable {
             selectedAttributes.add(i)
         }
         decomposeNode(root, selectedAttributes, 0)
+        while (globalThreads.size > 0) {
+            val current: Thread = globalThreads[globalThreads.size - 1]
+            if (!current.isAlive) {
+                globalThreads.remove(current)
+            }
+        }
         print("\n")
         print("Decision tree created.")
         print("\n")
