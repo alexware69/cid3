@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="now creating threads for discrete attributes">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="started implementing threads for continuous attributes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -98,13 +98,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00101" summary="now show number of attributes - 1 in console output">
-      <created>1599735017681</created>
-      <option name="number" value="00101" />
-      <option name="presentableId" value="LOCAL-00101" />
-      <option name="project" value="LOCAL" />
-      <updated>1599735017681</updated>
     </task>
     <task id="LOCAL-00102" summary="now rounding attribute importance">
       <created>1600130947053</created>
@@ -442,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609076244644</updated>
     </task>
-    <option name="localTasksCounter" value="150" />
+    <task id="LOCAL-00150" summary="started implementing threads for continuous attributes">
+      <created>1609090195652</created>
+      <option name="number" value="00150" />
+      <option name="presentableId" value="LOCAL-00150" />
+      <option name="project" value="LOCAL" />
+      <updated>1609090195652</updated>
+    </task>
+    <option name="localTasksCounter" value="151" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -468,7 +468,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="optimized implementation of False positives, False negatives" />
     <MESSAGE value="formatted console output" />
     <MESSAGE value="removed dot at end of lines of data and test foles" />
     <MESSAGE value="implemented false pos/neg for crossvalidation" />
@@ -493,6 +492,7 @@
     <MESSAGE value="even better error handling while reading data files" />
     <MESSAGE value="started optimizing RAM usage" />
     <MESSAGE value="now creating threads for discrete attributes" />
-    <option name="LAST_COMMIT_MESSAGE" value="now creating threads for discrete attributes" />
+    <MESSAGE value="started implementing threads for continuous attributes" />
+    <option name="LAST_COMMIT_MESSAGE" value="started implementing threads for continuous attributes" />
   </component>
 </project>
