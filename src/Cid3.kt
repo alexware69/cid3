@@ -2641,6 +2641,9 @@ class Cid3 : Serializable {
             val output = Option("o", "output", true, "output file")
             query.isRequired = false
             options.addOption(output)
+            val threads = Option("t", "threads", true, "maximum number of threads (default is 500)")
+            query.isRequired = false
+            options.addOption(threads)
 
             //Declare parser and formatter
             val parser: CommandLineParser = DefaultParser()
@@ -2659,6 +2662,19 @@ class Cid3 : Serializable {
                 println(e.message)
                 formatter.printHelp("java -jar cid3.jar", options)
                 exitProcess(1)
+            }
+
+            //Set number of threads
+            if (cmd.hasOption("threads")) {
+                try {
+                    val intThreads = cmd.getOptionValue("threads").toInt()
+                    me.maxThreads = intThreads
+                }
+                catch (e:java.lang.Exception){
+                    print("Error: Incorrect number of threads format")
+                    print("\n")
+                    exitProcess(1)
+                }
             }
 
             //Set criteria
@@ -2725,6 +2741,13 @@ class Cid3 : Serializable {
                     exitProcess(1)
                 }
             }
+            if (cmd.hasOption("threads")){
+                if (cmd.hasOption("validation") || cmd.hasOption("forest")){
+                    System.err.println("Options -v and -r are not compatible with -t.")
+                    exitProcess(1)
+                }
+            }
+
             if (cmd.hasOption("save")){
                 if (cmd.hasOption("validation") || cmd.hasOption("partition")){
                     System.err.println("Options -v and -p are not compatible with -s.")
