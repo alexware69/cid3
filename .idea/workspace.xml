@@ -22,7 +22,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="continued implementing threads for continuous attributes">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="implemented max threads argument option">
+      <change afterPath="$PROJECT_DIR$/src/Triplet.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -35,6 +37,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -98,13 +101,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00103" summary="formatted text output for cross-validation a little bit more">
-      <created>1600392662765</created>
-      <option name="number" value="00103" />
-      <option name="presentableId" value="LOCAL-00103" />
-      <option name="project" value="LOCAL" />
-      <updated>1600392662766</updated>
     </task>
     <task id="LOCAL-00104" summary="formatted the code a little bit">
       <created>1600393069333</created>
@@ -442,7 +438,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609242869967</updated>
     </task>
-    <option name="localTasksCounter" value="152" />
+    <task id="LOCAL-00152" summary="implemented max threads argument option">
+      <created>1609330943626</created>
+      <option name="number" value="00152" />
+      <option name="presentableId" value="LOCAL-00152" />
+      <option name="project" value="LOCAL" />
+      <updated>1609330943626</updated>
+    </task>
+    <option name="localTasksCounter" value="153" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -468,7 +471,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="removed dot at end of lines of data and test foles" />
     <MESSAGE value="implemented false pos/neg for crossvalidation" />
     <MESSAGE value="implemented false pos/neg for crossvalidationRF" />
     <MESSAGE value="some console text formatting" />
@@ -493,6 +495,7 @@
     <MESSAGE value="now creating threads for discrete attributes" />
     <MESSAGE value="started implementing threads for continuous attributes" />
     <MESSAGE value="continued implementing threads for continuous attributes" />
-    <option name="LAST_COMMIT_MESSAGE" value="continued implementing threads for continuous attributes" />
+    <MESSAGE value="implemented max threads argument option" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented max threads argument option" />
   </component>
 </project>

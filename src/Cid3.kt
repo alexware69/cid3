@@ -81,7 +81,7 @@ class Cid3 : Serializable {
     }
 
     //This is a utility class to return the certainty and threshold of continuous attributes.
-    class Certainty(var certainty: Double, var threshold: Double) : Serializable
+    class Certainty(var certainty: Double, var threshold: Double, var certaintyClass: Double) : Serializable
 
     @Transient
     var testData = ArrayList<DataPoint>()
@@ -218,7 +218,7 @@ class Cid3 : Serializable {
     //This is the final form of the certainty function.
     private fun calculateCertainty(data: ArrayList<DataPoint>, givenThatAttribute: Int): Certainty {
         val numData = data.size
-        if (numData == 0) return Certainty(0.0, 0.0)
+        if (numData == 0) return Certainty(0.0, 0.0, 0.0)
         val numValuesClass = domainsIndexToValue[classAttribute].size
         val numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size
 
@@ -227,6 +227,7 @@ class Cid3 : Serializable {
             val probabilities = calculateAllProbabilities(data)
             var sum: Double
             var sum2 = 0.0
+            var sumClass = 0.0
             var probability: Double
             var probabilityCAndA: Double
             for (j in 0 until numValuesGivenAtt) {
@@ -238,7 +239,12 @@ class Cid3 : Serializable {
                 }
                 sum2 += sum
             }
-            Certainty(sum2, 0.0)
+            //Calculate class certainty
+            for (i in 0 until numValuesClass) {
+                probability = probabilities[classAttribute]!!.prob[i]
+                sumClass += abs(probability - 1.0 * 1 / numValuesClass)
+            }
+            Certainty(sum2, 0.0, sumClass)
         } else {
             var finalThreshold = 0.0
             var totalCertainty: Double
@@ -278,7 +284,7 @@ class Cid3 : Serializable {
 
             /*---------------------------------------------------------------------------------------------------------*/
             //If there are no thresholds return zero.
-            if (thresholds.isEmpty()) return Certainty(0.0, 0.0)
+            if (thresholds.isEmpty()) return Certainty(0.0, 0.0, 0.0)
 
             //This trick reduces the possible thresholds to just ONE 0r TWO, dramatically improving running times!
             //=========================================================
@@ -356,14 +362,14 @@ class Cid3 : Serializable {
                     finalThreshold = threshold.value
                 }
             }
-            Certainty(finalTotalCertainty, finalThreshold)
+            Certainty(finalTotalCertainty, finalThreshold, 0.0)
         }
     }
 
     //This is Entropy.
     private fun calculateEntropy(data: ArrayList<DataPoint>, givenThatAttribute: Int): Certainty {
         val numData = data.size
-        if (numData == 0) return Certainty(0.0, 0.0)
+        if (numData == 0) return Certainty(0.0, 0.0, 0.0)
         val numValuesClass = domainsIndexToValue[classAttribute].size
         val numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size
         //If attribute is discrete
@@ -382,7 +388,7 @@ class Cid3 : Serializable {
                 }
                 sum2 += probability * sum
             }
-            Certainty(sum2, 0.0)
+            Certainty(sum2, 0.0, 0.0)
         } else {
             var finalThreshold = 0.0
             var totalEntropy: Double
@@ -421,7 +427,7 @@ class Cid3 : Serializable {
             }
             /*---------------------------------------------------------------------------------------------------------*/
             //If there are no thresholds return -1.
-            if (thresholds.isEmpty()) return Certainty(-1.0, 0.0)
+            if (thresholds.isEmpty()) return Certainty(-1.0, 0.0, 0.0)
             //This trick reduces the possible thresholds to just ONE 0r TWO, dramatically improving running times!
             //=========================================================
             val centerThresholdIndex = thresholds.size / 2
@@ -504,14 +510,14 @@ class Cid3 : Serializable {
                     }
                 }
             }
-            Certainty(finalTotalEntropy, finalThreshold)
+            Certainty(finalTotalEntropy, finalThreshold, 0.0)
         }
     }
 
     //This is Gini.
     private fun calculateGini(data: ArrayList<DataPoint>, givenThatAttribute: Int): Certainty {
         val numData = data.size
-        if (numData == 0) return Certainty(0.0, 0.0)
+        if (numData == 0) return Certainty(0.0, 0.0, 0.0)
         val numValuesClass = domainsIndexToValue[classAttribute].size
         val numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size
         //If attribute is discrete
@@ -532,7 +538,7 @@ class Cid3 : Serializable {
                 gini = 1 - sum
                 sum2 += probability * gini
             }
-            Certainty(sum2, 0.0)
+            Certainty(sum2, 0.0, 0.0)
         } else {
             var finalThreshold = 0.0
             var totalGini: Double
@@ -571,7 +577,7 @@ class Cid3 : Serializable {
             }
             /*---------------------------------------------------------------------------------------------------------*/
             //If there are no thresholds return -1.
-            if (thresholds.isEmpty()) return Certainty(-1.0, 0.0)
+            if (thresholds.isEmpty()) return Certainty(-1.0, 0.0, 0.0)
             //This trick reduces the possible thresholds to just ONE 0r TWO, dramatically improving running times!
             //=========================================================
             val centerThresholdIndex = thresholds.size / 2
@@ -656,7 +662,7 @@ class Cid3 : Serializable {
                     }
                 }
             }
-            Certainty(finalTotalGini, finalThreshold)
+            Certainty(finalTotalGini, finalThreshold, 0.0)
         }
     }
 
@@ -728,7 +734,7 @@ class Cid3 : Serializable {
     Recursively divides all children nodes until it is not possible to divide any further  */
     private fun decomposeNode(node: TreeNode, selectedAttributes: ArrayList<Int>, mySeed: Long) {
         var selectedAttributesLocal = selectedAttributes
-        var bestCertainty = Certainty(0.0, 0.0)
+        var bestCertainty = Certainty(0.0, 0.0, 0.0)
         var selected = false
         var selectedAttribute = 0
         if (criteria == Criteria.Certainty) {
