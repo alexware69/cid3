@@ -1497,13 +1497,14 @@ class Cid3 : Serializable {
                 println("Running from an IDE...")
             }
             else -> {
-                val fmt = "%1$10s %2$" + (longestString!!.length + 10).toString() + "s%n"
-                console.format(fmt, "Importance", "Attribute Name")
-                console.format(fmt, "----------", "--------------")
+                val fmt = "%1$10s %2$5s %3$" + (longestString!!.length + 10).toString() + "s%n"
+                console.format(fmt, "Importance", "Cause", "Attribute Name")
+                console.format(fmt, "----------", "----", "--------------")
                 for (i in sortedList.indices) {
                     if (i > 99) break
                     val rounded = String.format("%.2f", sortedList[i].y)
-                    console.format(fmt, rounded, attributeNames[sortedList[i].x])
+                    val isCause = sortedList[i].z
+                    console.format(fmt, rounded, isCause, attributeNames[sortedList[i].x])
                 }
             }
         }
