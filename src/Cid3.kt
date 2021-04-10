@@ -241,7 +241,6 @@ class Cid3 : Serializable {
             }
             //Calculate class certainty
             for (i in 0 until numValuesClass) {
-                //if (probabilities[classAttribute - 1]!!.prob[i] != null)
                 probability = probabilities[classAttribute - 1]!!.prob[i]
                 sumClass += abs(probability - 1.0 * 1 / numValuesClass)
             }
@@ -250,6 +249,8 @@ class Cid3 : Serializable {
             var finalThreshold = 0.0
             var totalCertainty: Double
             var finalTotalCertainty = 0.0
+            var sumClass = 0.0
+            var probability: Double
             /*---------------------------------------------------------------------------------------------------------*/
             //Implementation of thresholds using a sorted set
             val attributeValuesSet: SortedSet<Double> = TreeSet()
@@ -363,7 +364,16 @@ class Cid3 : Serializable {
                     finalThreshold = threshold.value
                 }
             }
-            Certainty(finalTotalCertainty, finalThreshold, 0.0)
+            //Calculate class certainty
+            //Only do for root node
+            if (data.size == root.data.size) {
+                val probabilities = calculateAllProbabilities(data)
+                for (i in 0 until numValuesClass) {
+                    probability = probabilities[classAttribute - 1]!!.prob[i]
+                    sumClass += abs(probability - 1.0 * 1 / numValuesClass)
+                }
+            }
+            Certainty(finalTotalCertainty, finalThreshold, sumClass)
         }
     }
 

@@ -22,7 +22,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="fixed a bug in calculateProbabilities function">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="finished causes for discrete attributes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -98,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00109" summary="fixed formatting for attribute importance">
-      <created>1600403459304</created>
-      <option name="number" value="00109" />
-      <option name="presentableId" value="LOCAL-00109" />
-      <option name="project" value="LOCAL" />
-      <updated>1600403459304</updated>
     </task>
     <task id="LOCAL-00110" summary="fixed a small bug">
       <created>1600403736374</created>
@@ -442,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618020397042</updated>
     </task>
-    <option name="localTasksCounter" value="158" />
+    <task id="LOCAL-00158" summary="finished causes for discrete attributes">
+      <created>1618020780502</created>
+      <option name="number" value="00158" />
+      <option name="presentableId" value="LOCAL-00158" />
+      <option name="project" value="LOCAL" />
+      <updated>1618020780502</updated>
+    </task>
+    <option name="localTasksCounter" value="159" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -468,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="now sorting class values" />
     <MESSAGE value="imported NaturalOrderComparator.java" />
     <MESSAGE value="optimized the natural ordering" />
     <MESSAGE value="added # of cases to false positives/negatives report" />
@@ -493,6 +493,7 @@
     <MESSAGE value="almost finished implementing causality" />
     <MESSAGE value="finished implementing causality for discrete attributes" />
     <MESSAGE value="fixed a bug in calculateProbabilities function" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed a bug in calculateProbabilities function" />
+    <MESSAGE value="finished causes for discrete attributes" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished causes for discrete attributes" />
   </component>
 </project>
