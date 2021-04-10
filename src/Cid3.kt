@@ -1527,8 +1527,8 @@ class Cid3 : Serializable {
             else -> {
                 if (this.criteria == Criteria.Certainty) {
                     val fmt = "%1$10s %2$5s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                    console.format(fmt, "Importance", "Cause", "Attribute Name")
-                    console.format(fmt, "----------", "----", "--------------")
+                    console.format(fmt, "Importance", "Key", "Attribute Name")
+                    console.format(fmt, "----------", "---", "--------------")
                     for (i in sortedList.indices) {
                         if (i > 99) break
                         val rounded = String.format("%.2f", sortedList[i].y)

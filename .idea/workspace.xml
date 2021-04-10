@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="finished causes...need to optimize for continuous atts">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="finished optimizind causes for continuous atts">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00112" summary="changed format for console output for attribute importance">
-      <created>1600421979787</created>
-      <option name="number" value="00112" />
-      <option name="presentableId" value="LOCAL-00112" />
-      <option name="project" value="LOCAL" />
-      <updated>1600421979787</updated>
     </task>
     <task id="LOCAL-00113" summary="more formatting">
       <created>1600422194636</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618027244638</updated>
     </task>
-    <option name="localTasksCounter" value="161" />
+    <task id="LOCAL-00161" summary="finished optimizind causes for continuous atts">
+      <created>1618049285695</created>
+      <option name="number" value="00161" />
+      <option name="presentableId" value="LOCAL-00161" />
+      <option name="project" value="LOCAL" />
+      <updated>1618049285695</updated>
+    </task>
+    <option name="localTasksCounter" value="162" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added # of cases to false positives/negatives report" />
     <MESSAGE value="in CV the # of cases  = train + test" />
     <MESSAGE value="Fixed ugly bug with ugly hack. Not really, it works now again!" />
     <MESSAGE value="added some information to error checking when reading files" />
@@ -494,7 +493,8 @@
     <MESSAGE value="finished causes for discrete attributes" />
     <MESSAGE value="finished causes for continuous attributes" />
     <MESSAGE value="finished causes...need to optimize for continuous atts" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished causes...need to optimize for continuous atts" />
+    <MESSAGE value="finished optimizind causes for continuous atts" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished optimizind causes for continuous atts" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
