@@ -241,7 +241,7 @@ class Cid3 : Serializable {
             }
             //Calculate class certainty
             for (i in 0 until numValuesClass) {
-                probability = probabilities[classAttribute]!!.prob[i]
+                probability = probabilities[classAttribute - 1]!!.prob[i]
                 sumClass += abs(probability - 1.0 * 1 / numValuesClass)
             }
             Certainty(sum2, 0.0, sumClass)
@@ -1503,7 +1503,8 @@ class Cid3 : Serializable {
                 for (i in sortedList.indices) {
                     if (i > 99) break
                     val rounded = String.format("%.2f", sortedList[i].y)
-                    val isCause = sortedList[i].z
+                    val isCause =  if (sortedList[i].y - sortedList[i].z > 0 ) "yes"
+                                    else "no"
                     console.format(fmt, rounded, isCause, attributeNames[sortedList[i].x])
                 }
             }
