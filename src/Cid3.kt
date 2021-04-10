@@ -241,6 +241,7 @@ class Cid3 : Serializable {
             }
             //Calculate class certainty
             for (i in 0 until numValuesClass) {
+                //if (probabilities[classAttribute - 1]!!.prob[i] != null)
                 probability = probabilities[classAttribute - 1]!!.prob[i]
                 sumClass += abs(probability - 1.0 * 1 / numValuesClass)
             }
@@ -673,7 +674,7 @@ class Cid3 : Serializable {
 
         //Initialize the array
         for (j in 0 until numAttributes - 1) {
-            if (attributeTypes[j] == AttributeType.Ignore) continue
+            //if (attributeTypes[j] == AttributeType.Ignore) continue
             val p = Probabilities(j)
             probabilities[j] = p
         }

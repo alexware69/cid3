@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="almost finished implementing causality">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="finished implementing causality for discrete attributes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -82,7 +82,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/monks-1 -c c" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/audiology.standardized -c c" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00107" summary="checking that console is not null">
-      <created>1600400386531</created>
-      <option name="number" value="00107" />
-      <option name="presentableId" value="LOCAL-00107" />
-      <option name="project" value="LOCAL" />
-      <updated>1600400386532</updated>
     </task>
     <task id="LOCAL-00108" summary="did same formatting for attribute importance">
       <created>1600402117229</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618016409529</updated>
     </task>
-    <option name="localTasksCounter" value="156" />
+    <task id="LOCAL-00156" summary="finished implementing causality for discrete attributes">
+      <created>1618017645455</created>
+      <option name="number" value="00156" />
+      <option name="presentableId" value="LOCAL-00156" />
+      <option name="project" value="LOCAL" />
+      <updated>1618017645455</updated>
+    </task>
+    <option name="localTasksCounter" value="157" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="removed redundant code" />
     <MESSAGE value="now accepting file names containing more than one &quot;.&quot;" />
     <MESSAGE value="now sorting class values" />
     <MESSAGE value="imported NaturalOrderComparator.java" />
@@ -494,6 +493,18 @@
     <MESSAGE value="started implementing causality" />
     <MESSAGE value="Continued implementing causality" />
     <MESSAGE value="almost finished implementing causality" />
-    <option name="LAST_COMMIT_MESSAGE" value="almost finished implementing causality" />
+    <MESSAGE value="finished implementing causality for discrete attributes" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished implementing causality for discrete attributes" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
+          <line>244</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
