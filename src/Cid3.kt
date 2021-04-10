@@ -31,7 +31,7 @@ class Cid3 : Serializable {
     private var maxThreads = 500
     @Transient
     var globalThreads = ArrayList<Thread>()
-    private val attributeImportance = ArrayList<Tuple<Int, Double>>()
+    private val attributeImportance = ArrayList<Triplet<Int, Double, Double>>()
 
     //int maxThreads = 500;
     //transient ArrayList<Thread> globalThreads = new ArrayList<>();
@@ -748,7 +748,7 @@ class Cid3 : Serializable {
                 if (certainty.certainty == 0.0) continue
                 //Insert into attributeImportance
                 if(node.parent == null){
-                    attributeImportance.add(Tuple(selectedAtt, certainty.certainty))
+                    attributeImportance.add(Triplet(selectedAtt, certainty.certainty, certainty.certaintyClass))
                 }
                 //Select best attribute
                 if (certainty.certainty > bestCertainty.certainty) {
@@ -771,7 +771,7 @@ class Cid3 : Serializable {
                 if (entropy.certainty == -1.0) continue
                 //Insert into attributeImportance
                 if(node.parent == null){
-                    attributeImportance.add(Tuple(selectedAtt, entropy.certainty))
+                    attributeImportance.add(Triplet(selectedAtt, entropy.certainty, 0.0))
                 }
                 if (!selected) {
                     selected = true
@@ -798,7 +798,7 @@ class Cid3 : Serializable {
                 if (gini.certainty == -1.0) continue
                 //Insert into attributeImportance
                 if(node.parent == null){
-                    attributeImportance.add(Tuple(selectedAtt, gini.certainty))
+                    attributeImportance.add(Triplet(selectedAtt, gini.certainty, 0.0))
                 }
                 if (!selected) {
                     selected = true
@@ -1477,7 +1477,7 @@ class Cid3 : Serializable {
         print("Nodes:$totalNodes")
         print("\n")
 
-        val sortedList: List<Tuple<Int, Double>> = if (criteria == Criteria.Certainty)
+        val sortedList: List<Triplet<Int, Double, Double>> = if (criteria == Criteria.Certainty)
             attributeImportance.sortedWith(compareByDescending { it.y })
         else attributeImportance.sortedWith(compareBy { it.y })
 
