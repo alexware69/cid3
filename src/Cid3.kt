@@ -241,7 +241,7 @@ class Cid3 : Serializable {
             }
             //Calculate class certainty
             for (i in 0 until numValuesClass) {
-                probability = probabilities[classAttribute - 1]!!.prob[i]
+                probability = probabilities[classAttribute]!!.prob[i]
                 sumClass += abs(probability - 1.0 * 1 / numValuesClass)
             }
             Certainty(sum2, 0.0, sumClass)
@@ -369,7 +369,7 @@ class Cid3 : Serializable {
             if (data.size == root.data.size) {
                 val probabilities = calculateAllProbabilities(data)
                 for (i in 0 until numValuesClass) {
-                    probability = probabilities[classAttribute - 1]!!.prob[i]
+                    probability = probabilities[classAttribute]!!.prob[i]
                     sumClass += abs(probability - 1.0 * 1 / numValuesClass)
                 }
             }
@@ -680,17 +680,17 @@ class Cid3 : Serializable {
     //This method calculates all probabilities in one run
     private fun calculateAllProbabilities(data: ArrayList<DataPoint>): Array<Probabilities?> {
         val numData = data.size
-        val probabilities = arrayOfNulls<Probabilities>(numAttributes - 1)
+        val probabilities = arrayOfNulls<Probabilities>(numAttributes)
 
         //Initialize the array
-        for (j in 0 until numAttributes - 1) {
+        for (j in 0 until numAttributes) {
             //if (attributeTypes[j] == AttributeType.Ignore) continue
             val p = Probabilities(j)
             probabilities[j] = p
         }
         //Count occurrences
         for (point in data) {
-            for (j in 0 until point.attributes.size - 1) {
+            for (j in point.attributes.indices) {
                 if (attributeTypes[j] == AttributeType.Ignore) continue
                 probabilities[j]!!.prob[point.attributes[j]]++
                 probabilities[j]!!.probCAndA[point.attributes[j]][point.attributes[classAttribute]]++
