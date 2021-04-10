@@ -32,6 +32,7 @@ class Cid3 : Serializable {
     @Transient
     var globalThreads = ArrayList<Thread>()
     private val attributeImportance = ArrayList<Triplet<Int, Double, Double>>()
+    private lateinit var classProbabilities : Probabilities
 
     //int maxThreads = 500;
     //transient ArrayList<Thread> globalThreads = new ArrayList<>();
@@ -367,9 +368,8 @@ class Cid3 : Serializable {
             //Calculate class certainty
             //Only do for root node
             if (data.size == root.data.size) {
-                val probabilities = calculateAllProbabilities(data)
                 for (i in 0 until numValuesClass) {
-                    probability = probabilities[classAttribute]!!.prob[i]
+                    probability = classProbabilities.prob[i]
                     sumClass += abs(probability - 1.0 * 1 / numValuesClass)
                 }
             }
@@ -717,6 +717,21 @@ class Cid3 : Serializable {
             }
         }
         return probabilities
+    }
+
+    //This method calculates class probabilities
+    private fun calculateClassProbabilities(data: ArrayList<DataPoint>): Probabilities {
+        val numData = data.size
+        val p = Probabilities(numAttributes - 1)
+        //Count occurrences
+        for (point in data) {
+            p.prob[point.attributes[numAttributes - 1]]++
+        }
+        // Divide all values by total data size to get probabilities.
+        for (j in p.prob.indices) {
+            p.prob[j] = p.prob[j] / numData
+        }
+        return p
     }
 
     /*  This function checks if the specified attribute is used to decompose the data set
@@ -1466,6 +1481,8 @@ class Cid3 : Serializable {
     fun createDecisionTree() {
         val start = Instant.now()
         val selectedAttributes = ArrayList<Int>()
+        //First calculate class probabilities
+        classProbabilities = calculateClassProbabilities(root.data)
         //Select ALL attributes
         for (i in 0 until numAttributes) {
             if (attributeTypes[i] == AttributeType.Ignore) continue

@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="finished causes for continuous attributes">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="finished causes...need to optimize for continuous atts">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -82,7 +82,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/monks-2 -c c" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/arcene -c c" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00111" summary="limited attribut importance to show only the first ten">
-      <created>1600404558868</created>
-      <option name="number" value="00111" />
-      <option name="presentableId" value="LOCAL-00111" />
-      <option name="project" value="LOCAL" />
-      <updated>1600404558868</updated>
     </task>
     <task id="LOCAL-00112" summary="changed format for console output for attribute importance">
       <created>1600421979787</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618021895163</updated>
     </task>
-    <option name="localTasksCounter" value="160" />
+    <task id="LOCAL-00160" summary="finished causes...need to optimize for continuous atts">
+      <created>1618027244638</created>
+      <option name="number" value="00160" />
+      <option name="presentableId" value="LOCAL-00160" />
+      <option name="project" value="LOCAL" />
+      <updated>1618027244638</updated>
+    </task>
+    <option name="localTasksCounter" value="161" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="optimized the natural ordering" />
     <MESSAGE value="added # of cases to false positives/negatives report" />
     <MESSAGE value="in CV the # of cases  = train + test" />
     <MESSAGE value="Fixed ugly bug with ugly hack. Not really, it works now again!" />
@@ -494,7 +493,8 @@
     <MESSAGE value="fixed a bug in calculateProbabilities function" />
     <MESSAGE value="finished causes for discrete attributes" />
     <MESSAGE value="finished causes for continuous attributes" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished causes for continuous attributes" />
+    <MESSAGE value="finished causes...need to optimize for continuous atts" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished causes...need to optimize for continuous atts" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -511,7 +511,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>246</line>
+          <line>247</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
