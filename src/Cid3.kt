@@ -31,7 +31,7 @@ class Cid3 : Serializable {
     private var maxThreads = 500
     @Transient
     var globalThreads = ArrayList<Thread>()
-    private val attributeImportance = ArrayList<Triplet<Int, Double, Double>>()
+    private val attributeImportance = ArrayList<Triple<Int, Double, Double>>()
     private lateinit var classProbabilities : Probabilities
 
     //int maxThreads = 500;
@@ -199,7 +199,7 @@ class Cid3 : Serializable {
         return frequencies
     }
 
-    private fun getSubsetsBelowAndAbove(data: ArrayList<DataPoint>, attribute: Int, value: Double): Tuple<DataFrequencies, DataFrequencies> {
+    private fun getSubsetsBelowAndAbove(data: ArrayList<DataPoint>, attribute: Int, value: Double): Pair<DataFrequencies, DataFrequencies> {
         val subsetBelow = ArrayList<DataPoint>()
         val subsetAbove = ArrayList<DataPoint>()
         val frequenciesBelow = IntArray(domainsIndexToValue[classAttribute].size)
@@ -213,7 +213,7 @@ class Cid3 : Serializable {
                 frequenciesAbove[point.attributes[classAttribute]]++
             }
         }
-        return Tuple(DataFrequencies(subsetBelow, frequenciesBelow), DataFrequencies(subsetAbove, frequenciesAbove))
+        return Pair(DataFrequencies(subsetBelow, frequenciesBelow), DataFrequencies(subsetAbove, frequenciesAbove))
     }
 
     //This is the final form of the certainty function.
@@ -255,26 +255,26 @@ class Cid3 : Serializable {
             /*---------------------------------------------------------------------------------------------------------*/
             //Implementation of thresholds using a sorted set
             val attributeValuesSet: SortedSet<Double> = TreeSet()
-            val attributeToClass = HashMap<Double?, Tuple<Int, Boolean>>()
+            val attributeToClass = HashMap<Double?, Pair<Int, Boolean>>()
             for (point in data) {
                 val attribute = (domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]])?.toDouble()
                 val theClass = point.attributes[classAttribute]
                 attributeValuesSet.add(attribute)
-                val tuple = attributeToClass[attribute]
-                if (tuple != null) {
-                    if (tuple.x != theClass && tuple.y) attributeToClass[attribute] = Tuple(theClass, false)
-                } else attributeToClass[attribute] = Tuple(theClass, true)
+                val pair = attributeToClass[attribute]
+                if (pair != null) {
+                    if (pair.first != theClass && pair.second) attributeToClass[attribute] = Pair(theClass, false)
+                } else attributeToClass[attribute] = Pair(theClass, true)
             }
             val it: Iterator<Double> = attributeValuesSet.iterator()
             var attributeValue = it.next()
             var attributeClass1 = attributeToClass[attributeValue]!!
-            var theClass = attributeClass1.x
+            var theClass = attributeClass1.first
             val thresholds = ArrayList<Threshold>()
             while (it.hasNext()) {
                 val attributeValue2 = it.next()
                 val attributeClass2 = attributeToClass[attributeValue2]!!
-                val theClass2 = attributeClass2.x
-                if (theClass2 != theClass || !attributeClass2.y || !attributeClass1.y) {
+                val theClass2 = attributeClass2.first
+                if (theClass2 != theClass || !attributeClass2.second || !attributeClass1.second) {
                     //Add threshold
                     val median = (attributeValue + attributeValue2) / 2
                     thresholds.add(Threshold(median, arrayOfNulls(numValuesClass)))
@@ -407,26 +407,26 @@ class Cid3 : Serializable {
             /*---------------------------------------------------------------------------------------------------------*/
             //Implementation of thresholds using a sorted set
             val attributeValuesSet: SortedSet<Double> = TreeSet()
-            val attributeToClass = HashMap<Double?, Tuple<Int, Boolean>>()
+            val attributeToClass = HashMap<Double?, Pair<Int, Boolean>>()
             for (point in data) {
                 val attribute = (domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]])?.toDouble()
                 val theClass = point.attributes[classAttribute]
                 attributeValuesSet.add(attribute)
-                val tuple = attributeToClass[attribute]
-                if (tuple != null) {
-                    if (tuple.x != theClass && tuple.y) attributeToClass[attribute] = Tuple(theClass, false)
-                } else attributeToClass[attribute] = Tuple(theClass, true)
+                val pair = attributeToClass[attribute]
+                if (pair != null) {
+                    if (pair.first != theClass && pair.second) attributeToClass[attribute] = Pair(theClass, false)
+                } else attributeToClass[attribute] = Pair(theClass, true)
             }
             val it: Iterator<Double> = attributeValuesSet.iterator()
             var attributeValue = it.next()
             var attributeClass1 = attributeToClass[attributeValue]!!
-            var theClass = attributeClass1.x
+            var theClass = attributeClass1.first
             val thresholds = ArrayList<Threshold>()
             while (it.hasNext()) {
                 val attributeValue2 = it.next()
                 val attributeClass2 = attributeToClass[attributeValue2]!!
-                val theClass2 = attributeClass2.x
-                if (theClass2 != theClass || !attributeClass2.y || !attributeClass1.y) {
+                val theClass2 = attributeClass2.first
+                if (theClass2 != theClass || !attributeClass2.second || !attributeClass1.second) {
                     //Add threshold
                     val median = (attributeValue + attributeValue2) / 2
                     thresholds.add(Threshold(median, arrayOfNulls(numValuesClass)))
@@ -557,26 +557,26 @@ class Cid3 : Serializable {
             /*---------------------------------------------------------------------------------------------------------*/
             //Implementation of thresholds using a sorted set
             val attributeValuesSet: SortedSet<Double> = TreeSet()
-            val attributeToClass = HashMap<Double?, Tuple<Int, Boolean>>()
+            val attributeToClass = HashMap<Double?, Pair<Int, Boolean>>()
             for (point in data) {
                 val attribute = (domainsIndexToValue[givenThatAttribute][point.attributes[givenThatAttribute]])?.toDouble()
                 val theClass = point.attributes[classAttribute]
                 attributeValuesSet.add(attribute)
-                val tuple = attributeToClass[attribute]
-                if (tuple != null) {
-                    if (tuple.x != theClass && tuple.y) attributeToClass[attribute] = Tuple(theClass, false)
-                } else attributeToClass[attribute] = Tuple(theClass, true)
+                val pair = attributeToClass[attribute]
+                if (pair != null) {
+                    if (pair.first != theClass && pair.second) attributeToClass[attribute] = Pair(theClass, false)
+                } else attributeToClass[attribute] = Pair(theClass, true)
             }
             val it: Iterator<Double> = attributeValuesSet.iterator()
             var attributeValue = it.next()
             var attributeClass1 = attributeToClass[attributeValue]!!
-            var theClass = attributeClass1.x
+            var theClass = attributeClass1.first
             val thresholds = ArrayList<Threshold>()
             while (it.hasNext()) {
                 val attributeValue2 = it.next()
                 val attributeClass2 = attributeToClass[attributeValue2]!!
-                val theClass2 = attributeClass2.x
-                if (theClass2 != theClass || !attributeClass2.y || !attributeClass1.y) {
+                val theClass2 = attributeClass2.first
+                if (theClass2 != theClass || !attributeClass2.second || !attributeClass1.second) {
                     //Add threshold
                     val median = (attributeValue + attributeValue2) / 2
                     thresholds.add(Threshold(median, arrayOfNulls(numValuesClass)))
@@ -774,7 +774,7 @@ class Cid3 : Serializable {
                 if (certainty.certainty == 0.0) continue
                 //Insert into attributeImportance
                 if(node.parent == null){
-                    attributeImportance.add(Triplet(selectedAtt, certainty.certainty, certainty.certaintyClass))
+                    attributeImportance.add(Triple(selectedAtt, certainty.certainty, certainty.certaintyClass))
                 }
                 //Select best attribute
                 if (certainty.certainty > bestCertainty.certainty) {
@@ -797,7 +797,7 @@ class Cid3 : Serializable {
                 if (entropy.certainty == -1.0) continue
                 //Insert into attributeImportance
                 if(node.parent == null){
-                    attributeImportance.add(Triplet(selectedAtt, entropy.certainty, 0.0))
+                    attributeImportance.add(Triple(selectedAtt, entropy.certainty, 0.0))
                 }
                 if (!selected) {
                     selected = true
@@ -824,7 +824,7 @@ class Cid3 : Serializable {
                 if (gini.certainty == -1.0) continue
                 //Insert into attributeImportance
                 if(node.parent == null){
-                    attributeImportance.add(Triplet(selectedAtt, gini.certainty, 0.0))
+                    attributeImportance.add(Triple(selectedAtt, gini.certainty, 0.0))
                 }
                 if (!selected) {
                     selected = true
@@ -900,7 +900,7 @@ class Cid3 : Serializable {
             var newNode = TreeNode()
             newNode.parent = node
             val subsets = getSubsetsBelowAndAbove(node.data, selectedAttribute, bestCertainty.threshold)
-            df = subsets.x
+            df = subsets.first
             newNode.data = df.data
             newNode.frequencyClasses = df.frequencyClasses
             newNode.decompositionValueContinuous = " <= " + bestCertainty.threshold
@@ -911,7 +911,7 @@ class Cid3 : Serializable {
             //Then over the threshold.
             newNode = TreeNode()
             newNode.parent = node
-            df = subsets.y
+            df = subsets.second
             newNode.data = df.data
             newNode.frequencyClasses = df.frequencyClasses
             newNode.decompositionValueContinuous = " > " + bestCertainty.threshold
@@ -1258,7 +1258,7 @@ class Cid3 : Serializable {
     private fun readNames(filename: String) {
         val `in`: FileInputStream?
         var input: String?
-        val attributes = ArrayList<Tuple<String, String>>()
+        val attributes = ArrayList<Pair<String, String>>()
         //Read the names file
         try {
             `in` = if (filename.endsWith(".data")) {
@@ -1286,7 +1286,7 @@ class Cid3 : Serializable {
             exitProcess(1)
         }
 
-        //Save attribute names and types to a tuple array.
+        //Save attribute names and types to a pair array.
         try {
             input = bin.readLine()
             lineNumber++
@@ -1299,7 +1299,7 @@ class Cid3 : Serializable {
             if (!input.startsWith("|") && !input.startsWith("//") && input.trim() != "") {
                 val split = input.split(":".toRegex()).toTypedArray()
                 if (split.size == 2) {
-                    val t = Tuple(split[0].trim { it <= ' ' }, split[1].trim { it <= ' ' })
+                    val t = Pair(split[0].trim { it <= ' ' }, split[1].trim { it <= ' ' })
                     attributes.add(t)
                 }
                 else {
@@ -1347,7 +1347,7 @@ class Cid3 : Serializable {
         attributeNames = arrayOfNulls(numAttributes)
         for (i in 0 until numAttributes - 1) {
             val t = attributes[i]
-            attributeNames[i] = t.x
+            attributeNames[i] = t.first
         }
 
         //Set the class. For now all class attribute names are the same: Class.
@@ -1359,7 +1359,7 @@ class Cid3 : Serializable {
         //Set the attribute types.
         for (i in 0 until numAttributes - 1) {
             val attribute = attributes[i]
-            when (attribute.y.trim { it <= ' ' }) {
+            when (attribute.second.trim { it <= ' ' }) {
                 "continuous." -> attributeTypes[i] = AttributeType.Continuous
                 "ignore." -> attributeTypes[i] = AttributeType.Ignore
                 else -> attributeTypes[i] = AttributeType.Discrete
@@ -1505,16 +1505,16 @@ class Cid3 : Serializable {
         print("Nodes:$totalNodes")
         print("\n")
 
-        val sortedList: List<Triplet<Int, Double, Double>> = if (criteria == Criteria.Certainty)
-            attributeImportance.sortedWith(compareByDescending { it.y })
-        else attributeImportance.sortedWith(compareBy { it.y })
+        val sortedList: List<Triple<Int, Double, Double>> = if (criteria == Criteria.Certainty)
+            attributeImportance.sortedWith(compareByDescending { it.second })
+        else attributeImportance.sortedWith(compareBy { it.second })
 
         //this is needed to format console output
         var longestString: String?
         longestString = ""
         for ((i, element) in sortedList.withIndex()){
             if (i > 99) break
-            val attName: String? = attributeNames[element.x]
+            val attName: String? = attributeNames[element.first]
             if (attName != null && longestString != null)
                 if (attName.length > longestString.length) longestString = attName
         }
@@ -1527,14 +1527,14 @@ class Cid3 : Serializable {
             else -> {
                 if (this.criteria == Criteria.Certainty) {
                     val fmt = "%1$10s %2$5s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                    console.format(fmt, "Importance", "Key", "Attribute Name")
-                    console.format(fmt, "----------", "---", "--------------")
+                    console.format(fmt, "Importance", "Main", "Attribute Name")
+                    console.format(fmt, "----------", "----", "--------------")
                     for (i in sortedList.indices) {
                         if (i > 99) break
-                        val rounded = String.format("%.2f", sortedList[i].y)
-                        val isCause = if (sortedList[i].y - sortedList[i].z > 0) "yes"
+                        val rounded = String.format("%.2f", sortedList[i].second)
+                        val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
                         else "no"
-                        console.format(fmt, rounded, isCause, attributeNames[sortedList[i].x])
+                        console.format(fmt, rounded, isCause, attributeNames[sortedList[i].first])
                     }
                 }
                 else {
@@ -1543,8 +1543,8 @@ class Cid3 : Serializable {
                     console.format(fmt, "----------", "--------------")
                     for (i in sortedList.indices) {
                         if (i > 99) break
-                        val rounded = String.format("%.2f", sortedList[i].y)
-                        console.format(fmt, rounded, attributeNames[sortedList[i].x])
+                        val rounded = String.format("%.2f", sortedList[i].second)
+                        console.format(fmt, rounded, attributeNames[sortedList[i].first])
                     }
                 }
             }
