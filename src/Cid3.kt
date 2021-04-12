@@ -1452,11 +1452,13 @@ class Cid3 : Serializable {
         try {
             //Check if file exists...delete it
             val inputFile = File(fName)
-            val res = inputFile.delete()
-            if (!res) {
-                print("Error deleting previous random forest file.")
-                print("\n")
-                exitProcess(1)
+            if (inputFile.exists()) {
+                val res = inputFile.delete()
+                if (!res) {
+                    print("Error deleting previous tree file.")
+                    print("\n")
+                    exitProcess(1)
+                }
             }
 
             //Serialize and save to disk
