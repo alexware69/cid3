@@ -719,11 +719,11 @@ class Cid3 : Serializable {
     }
 
     //This method calculates class probabilities
-    private fun calculateClassProbabilities(data: ArrayList<DataPoint>): Probabilities {
-        val numData = data.size
+    private fun calculateClassProbabilities(): Probabilities {
+        val numData = root.data.size
         val p = Probabilities(numAttributes - 1)
         //Count occurrences
-        for (point in data) {
+        for (point in root.data) {
             p.prob[point.attributes[numAttributes - 1]]++
         }
         // Divide all values by total data size to get probabilities.
@@ -731,6 +731,15 @@ class Cid3 : Serializable {
             p.prob[j] = p.prob[j] / numData
         }
         return p
+    }
+
+    private fun calculateImportanceCertainties(){
+        var certainty: Certainty
+        for (i in 0 until numAttributes - 1) {
+            certainty = calculateCertainty(root.data, i)
+            //Insert into attributeImportance
+            attributeImportance.add(Triple(i, certainty.certainty, certainty.certaintyClass))
+        }
     }
 
     /*  This function checks if the specified attribute is used to decompose the data set
@@ -772,7 +781,7 @@ class Cid3 : Serializable {
                 certainty = calculateCertainty(node.data, selectedAtt)
                 if (certainty.certainty == 0.0) continue
                 //Insert into attributeImportance
-                if(node.parent == null){
+                if(node.parent == null && !isRandomForest){
                     attributeImportance.add(Triple(selectedAtt, certainty.certainty, certainty.certaintyClass))
                 }
                 //Select best attribute
@@ -795,7 +804,7 @@ class Cid3 : Serializable {
                 entropy = calculateEntropy(node.data, selectedAtt)
                 if (entropy.certainty == -1.0) continue
                 //Insert into attributeImportance
-                if(node.parent == null){
+                if(node.parent == null && !isRandomForest){
                     attributeImportance.add(Triple(selectedAtt, entropy.certainty, 0.0))
                 }
                 if (!selected) {
@@ -822,7 +831,7 @@ class Cid3 : Serializable {
                 gini = calculateGini(node.data, selectedAtt)
                 if (gini.certainty == -1.0) continue
                 //Insert into attributeImportance
-                if(node.parent == null){
+                if(node.parent == null && !isRandomForest){
                     attributeImportance.add(Triple(selectedAtt, gini.certainty, 0.0))
                 }
                 if (!selected) {
@@ -1481,7 +1490,7 @@ class Cid3 : Serializable {
         val start = Instant.now()
         val selectedAttributes = ArrayList<Int>()
         //First calculate class probabilities
-        classProbabilities = calculateClassProbabilities(root.data)
+        classProbabilities = calculateClassProbabilities()
         //Select ALL attributes
         for (i in 0 until numAttributes) {
             if (attributeTypes[i] == AttributeType.Ignore) continue
@@ -1726,6 +1735,11 @@ class Cid3 : Serializable {
     fun createRandomForest(data: ArrayList<DataPoint>, roots: ArrayList<TreeNode>, cv: Boolean) {
         val start = Instant.now()
         var numberOfAttributes = 0
+        //First calculate class probabilities
+        classProbabilities = calculateClassProbabilities()
+        //Second calculate importance certainties
+        calculateImportanceCertainties()
+
         for (i in 0 until numAttributes - 1) {
             if (attributeTypes[i] != AttributeType.Ignore) numberOfAttributes++
         }
@@ -1759,6 +1773,50 @@ class Cid3 : Serializable {
             print("\n")
             print("Random Forest of " + roots.size + " trees created.")
             print("\n")
+            val sortedList: List<Triple<Int, Double, Double>> = if (criteria == Criteria.Certainty)
+                attributeImportance.sortedWith(compareByDescending { it.second })
+            else attributeImportance.sortedWith(compareBy { it.second })
+
+            //this is needed to format console output
+            var longestString: String?
+            longestString = ""
+            for ((i, element) in sortedList.withIndex()){
+                if (i > 99) break
+                val attName: String? = attributeNames[element.first]
+                if (attName != null && longestString != null)
+                    if (attName.length > longestString.length) longestString = attName
+            }
+            print("\n")
+            //Print console output...show attribute importance
+            when (val console: Console? = System.console()) {
+                null -> {
+                    println("Running from an IDE...")
+                }
+                else -> {
+                    if (this.criteria == Criteria.Certainty) {
+                        val fmt = "%1$10s %2$5s %3$" + (longestString!!.length + 10).toString() + "s%n"
+                        console.format(fmt, "Importance", "Main", "Attribute Name")
+                        console.format(fmt, "----------", "----", "--------------")
+                        for (i in sortedList.indices) {
+                            if (i > 99) break
+                            val rounded = String.format("%.2f", sortedList[i].second)
+                            val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
+                            else "no"
+                            console.format(fmt, rounded, isCause, attributeNames[sortedList[i].first])
+                        }
+                    }
+                    else {
+                        val fmt = "%1$10s %2$" + (longestString!!.length + 10).toString() + "s%n"
+                        console.format(fmt, "Importance", "Attribute Name")
+                        console.format(fmt, "----------", "--------------")
+                        for (i in sortedList.indices) {
+                            if (i > 99) break
+                            val rounded = String.format("%.2f", sortedList[i].second)
+                            console.format(fmt, rounded, attributeNames[sortedList[i].first])
+                        }
+                    }
+                }
+            }
             print("\n")
             testRandomForest()
             val finish = Instant.now()

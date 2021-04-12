@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="replaced Tuples and Triplets with Pairs and Triples">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="showing paramenters importance when querying trees">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -62,7 +62,7 @@
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.21401751" />
     <property name="project.structure.side.proportion" value="0.32484075" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="preferences.general" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00115" summary="more formatting, now showing bold font on random forests">
-      <created>1600424534676</created>
-      <option name="number" value="00115" />
-      <option name="presentableId" value="LOCAL-00115" />
-      <option name="project" value="LOCAL" />
-      <updated>1600424534677</updated>
     </task>
     <task id="LOCAL-00116" summary="more formatting, changed output for cross-validation">
       <created>1600449098348</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618120215365</updated>
     </task>
-    <option name="localTasksCounter" value="164" />
+    <task id="LOCAL-00164" summary="showing paramenters importance when querying trees">
+      <created>1618197986272</created>
+      <option name="number" value="00164" />
+      <option name="presentableId" value="LOCAL-00164" />
+      <option name="project" value="LOCAL" />
+      <updated>1618197986273</updated>
+    </task>
+    <option name="localTasksCounter" value="165" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added some information to error checking when reading files" />
     <MESSAGE value="added some more error checking when reading test files" />
     <MESSAGE value="fixed some continuous value reading errors" />
     <MESSAGE value="now handling errors while reading names file better" />
@@ -494,21 +493,12 @@
     <MESSAGE value="finished optimizind causes for continuous atts" />
     <MESSAGE value="renamed &quot;Cause&quot; with &quot;Key&quot;" />
     <MESSAGE value="replaced Tuples and Triplets with Pairs and Triples" />
-    <option name="LAST_COMMIT_MESSAGE" value="replaced Tuples and Triplets with Pairs and Triples" />
+    <MESSAGE value="showing paramenters importance when querying trees" />
+    <option name="LAST_COMMIT_MESSAGE" value="showing paramenters importance when querying trees" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>374</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>371</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
           <line>246</line>
@@ -516,5 +506,9 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
