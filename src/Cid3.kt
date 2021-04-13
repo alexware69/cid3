@@ -735,6 +735,7 @@ class Cid3 : Serializable {
     private fun calculateImportanceCertainties(){
         var certainty: Certainty
         for (i in 0 until numAttributes - 1) {
+            if (attributeTypes[i] == AttributeType.Ignore) continue
             certainty = calculateCertainty(root.data, i)
             //Insert into attributeImportance
             attributeImportance.add(Triple(i, certainty.certainty, certainty.certaintyClass))
