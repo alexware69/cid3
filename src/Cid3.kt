@@ -2667,6 +2667,53 @@ class Cid3 : Serializable {
             print("\n")
             print("Random Forest file deserialized.")
             print("\n")
+
+            //First display data statistics
+            val sortedList: List<Triple<Int, Double, Double>> = if (id3.criteria == Criteria.Certainty)
+                id3.attributeImportance.sortedWith(compareByDescending { it.second })
+            else id3.attributeImportance.sortedWith(compareBy { it.second })
+
+            //this is needed to format console output
+            var longestString: String?
+            longestString = ""
+            for ((i, element) in sortedList.withIndex()){
+                if (i > 99) break
+                val attName: String? = id3.attributeNames[element.first]
+                if (attName != null && longestString != null)
+                    if (attName.length > longestString.length) longestString = attName
+            }
+            print("\n")
+            //Print console output
+            when (val console: Console? = System.console()) {
+                null -> {
+                    println("Running from an IDE...")
+                }
+                else -> {
+                    if (id3.criteria == Criteria.Certainty) {
+                        val fmt = "%1$10s %2$5s %3$" + (longestString!!.length + 10).toString() + "s%n"
+                        console.format(fmt, "Importance", "Main", "Attribute Name")
+                        console.format(fmt, "----------", "----", "--------------")
+                        for (i in sortedList.indices) {
+                            if (i > 99) break
+                            val rounded = String.format("%.2f", sortedList[i].second)
+                            val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
+                            else "no"
+                            console.format(fmt, rounded, isCause, id3.attributeNames[sortedList[i].first])
+                        }
+                    }
+                    else {
+                        val fmt = "%1$10s %2$" + (longestString!!.length + 10).toString() + "s%n"
+                        console.format(fmt, "Importance", "Attribute Name")
+                        console.format(fmt, "----------", "--------------")
+                        for (i in sortedList.indices) {
+                            if (i > 99) break
+                            val rounded = String.format("%.2f", sortedList[i].second)
+                            console.format(fmt, rounded, id3.attributeNames[sortedList[i].first])
+                        }
+                    }
+                }
+            }
+
             val example = DataPoint(id3.numAttributes)
             //Enter all attributes into an example except the class, that's why -1
             for (i in 0 until id3.numAttributes - 1) {
