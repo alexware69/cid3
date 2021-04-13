@@ -105,7 +105,6 @@ class Cid3 : Serializable {
     @Transient
     var isCrossValidation = false
 
-    @Transient
     var numberOfTrees = 1
 
     /* The class to represent a node in the decomposition tree.
@@ -2665,7 +2664,7 @@ class Cid3 : Serializable {
         if (inputFile.exists()) {
             id3 = deserializeFile(fileLocal)
             print("\n")
-            print("Random Forest file deserialized.")
+            print("Random Forest file of ${id3.numberOfTrees} trees deserialized.")
             print("\n")
 
             //First display data statistics
