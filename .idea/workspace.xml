@@ -22,9 +22,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="replaced Main back to Cause">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="converted NaturalOrderComparator to Kotlin">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NaturalOrderComparator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/NaturalOrderComparator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NaturalOrderComparator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/NaturalOrderComparator.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00122" summary="implemented False positives, False negatives, separated in test/train">
-      <created>1601087778668</created>
-      <option name="number" value="00122" />
-      <option name="presentableId" value="LOCAL-00122" />
-      <option name="project" value="LOCAL" />
-      <updated>1601087778669</updated>
     </task>
     <task id="LOCAL-00123" summary="done implementing False positives, False negatives">
       <created>1601121267229</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619100339248</updated>
     </task>
-    <option name="localTasksCounter" value="171" />
+    <task id="LOCAL-00171" summary="converted NaturalOrderComparator to Kotlin">
+      <created>1619835758509</created>
+      <option name="number" value="00171" />
+      <option name="presentableId" value="LOCAL-00171" />
+      <option name="project" value="LOCAL" />
+      <updated>1619835758509</updated>
+    </task>
+    <option name="localTasksCounter" value="172" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="better error handling while reading data files" />
     <MESSAGE value="even better error handling while reading data files" />
     <MESSAGE value="started optimizing RAM usage" />
     <MESSAGE value="now creating threads for discrete attributes" />
@@ -494,7 +493,8 @@
     <MESSAGE value="showing number of trees when deserializing forest" />
     <MESSAGE value="fixed a bug with ignore attributes" />
     <MESSAGE value="replaced Main back to Cause" />
-    <option name="LAST_COMMIT_MESSAGE" value="replaced Main back to Cause" />
+    <MESSAGE value="converted NaturalOrderComparator to Kotlin" />
+    <option name="LAST_COMMIT_MESSAGE" value="converted NaturalOrderComparator to Kotlin" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

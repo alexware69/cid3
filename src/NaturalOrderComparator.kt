@@ -1,6 +1,5 @@
 import java.io.Serializable
 import java.util.*
-import kotlin.jvm.JvmStatic
 
 class NaturalOrderComparator : Comparator<Any?>, Serializable {
     private fun compareRight(a: String, b: String): Int {
@@ -110,47 +109,6 @@ class NaturalOrderComparator : Comparator<Any?>, Serializable {
         fun compareEqual(a: String, b: String, nza: Int, nzb: Int): Int {
             if (nza - nzb != 0) return nza - nzb
             return if (a.length == b.length) a.compareTo(b) else a.length - b.length
-        }
-
-        @JvmStatic
-        fun main(args: Array<String>) {
-            val strings = arrayOf("1-2", "1-02", "1-20", "10-20", "fred", "jane", "pic01",
-                    "pic2", "pic02", "pic02a", "pic3", "pic4", "pic 4 else", "pic 5", "pic05", "pic 5",
-                    "pic 5 something", "pic 6", "pic   7", "pic100", "pic100a", "pic120", "pic121",
-                    "pic02000", "tom", "x2-g8", "x2-y7", "x2-y08", "x8-y8")
-            val orig: List<*> = listOf(*strings)
-            println("Original: $orig")
-            val scrambled: List<*> = listOf(*strings)
-            Collections.shuffle(scrambled)
-            println("Scrambled: $scrambled")
-            Collections.sort(scrambled, NaturalOrderComparator())
-            println("Sorted: $scrambled")
-            shuffle3000(scrambled)
-            compareSymmetric()
-            floatsWithCommas()
-        }
-
-        private fun shuffle3000(scrambled: List<Any?>) {
-            Collections.shuffle(scrambled, Random(3000))
-            Collections.sort(scrambled, NaturalOrderComparator())
-            println("Sorted: $scrambled")
-        }
-
-        private fun compareSymmetric() {
-            val naturalOrderComparator = NaturalOrderComparator()
-            var compare1 = naturalOrderComparator.compare("1-2", "1-02")
-            var compare2 = naturalOrderComparator.compare("1-02", "1-2")
-            println("$compare1 == $compare2")
-            compare1 = naturalOrderComparator.compare("pic 5", "pic05")
-            compare2 = naturalOrderComparator.compare("pic05", "pic 5")
-            println("$compare1 == $compare2")
-        }
-
-        private fun floatsWithCommas() {
-            val unSorted = Arrays.asList("0.9", "1.0c", "1.2", "1.3", "0.6", "1.1", "0.7", "0.3", "1.0b", "1.0", "0.8")
-            println("Unsorted: $unSorted")
-            unSorted.sortWith(NaturalOrderComparator())
-            println("Sorted: $unSorted")
         }
     }
 }
