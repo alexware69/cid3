@@ -22,10 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="converted NaturalOrderComparator to Kotlin">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NaturalOrderComparator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/NaturalOrderComparator.kt" afterDir="false" />
-    </list>
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="cleaned up NaturalOrderComparator Kotlin" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -99,13 +96,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00123" summary="done implementing False positives, False negatives">
-      <created>1601121267229</created>
-      <option name="number" value="00123" />
-      <option name="presentableId" value="LOCAL-00123" />
-      <option name="project" value="LOCAL" />
-      <updated>1601121267229</updated>
     </task>
     <task id="LOCAL-00124" summary="fixed bug in implementation of False positives, False negatives">
       <created>1601125534903</created>
@@ -443,7 +433,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619835758509</updated>
     </task>
-    <option name="localTasksCounter" value="172" />
+    <task id="LOCAL-00172" summary="cleaned up NaturalOrderComparator Kotlin">
+      <created>1619836033153</created>
+      <option name="number" value="00172" />
+      <option name="presentableId" value="LOCAL-00172" />
+      <option name="project" value="LOCAL" />
+      <updated>1619836033153</updated>
+    </task>
+    <option name="localTasksCounter" value="173" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +466,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="even better error handling while reading data files" />
     <MESSAGE value="started optimizing RAM usage" />
     <MESSAGE value="now creating threads for discrete attributes" />
     <MESSAGE value="started implementing threads for continuous attributes" />
@@ -494,7 +490,8 @@
     <MESSAGE value="fixed a bug with ignore attributes" />
     <MESSAGE value="replaced Main back to Cause" />
     <MESSAGE value="converted NaturalOrderComparator to Kotlin" />
-    <option name="LAST_COMMIT_MESSAGE" value="converted NaturalOrderComparator to Kotlin" />
+    <MESSAGE value="cleaned up NaturalOrderComparator Kotlin" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleaned up NaturalOrderComparator Kotlin" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
