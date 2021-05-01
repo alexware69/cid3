@@ -121,18 +121,16 @@ class NaturalOrderComparator : Comparator<Any?>, Serializable {
         }
     }
 
-    companion object {
-        fun isDigit(c: Char): Boolean {
-            return Character.isDigit(c) || c == '.' || c == ','
-        }
+    private fun isDigit(c: Char): Boolean {
+        return Character.isDigit(c) || c == '.' || c == ','
+    }
 
-        fun charAt(s: String, i: Int): Char {
-            return if (i >= s.length) '\u0000' else s[i]
-        }
+    private fun charAt(s: String, i: Int): Char {
+        return if (i >= s.length) '\u0000' else s[i]
+    }
 
-        fun compareEqual(a: String, b: String, nza: Int, nzb: Int): Int {
-            if (nza - nzb != 0) return nza - nzb
-            return if (a.length == b.length) a.compareTo(b) else a.length - b.length
-        }
+    private fun compareEqual(a: String, b: String, nza: Int, nzb: Int): Int {
+        if (nza - nzb != 0) return nza - nzb
+        return if (a.length == b.length) a.compareTo(b) else a.length - b.length
     }
 }
