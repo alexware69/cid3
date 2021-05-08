@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="finished implementing filler whole application">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="fixed bug that displayed incorrect # of cases when saving">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00132" summary="now accepting file names containing more than one &quot;.&quot;">
-      <created>1602129443230</created>
-      <option name="number" value="00132" />
-      <option name="presentableId" value="LOCAL-00132" />
-      <option name="project" value="LOCAL" />
-      <updated>1602129443231</updated>
     </task>
     <task id="LOCAL-00133" summary="now sorting class values">
       <created>1602395637417</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620471959707</updated>
     </task>
-    <option name="localTasksCounter" value="181" />
+    <task id="LOCAL-00181" summary="fixed bug that displayed incorrect # of cases when saving">
+      <created>1620478796711</created>
+      <option name="number" value="00181" />
+      <option name="presentableId" value="LOCAL-00181" />
+      <option name="project" value="LOCAL" />
+      <updated>1620478796711</updated>
+    </task>
+    <option name="localTasksCounter" value="182" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="finished implementing causality for discrete attributes" />
     <MESSAGE value="fixed a bug in calculateProbabilities function" />
     <MESSAGE value="finished causes for discrete attributes" />
     <MESSAGE value="finished causes for continuous attributes" />
@@ -494,7 +493,8 @@
     <MESSAGE value="implemented filler in console output for single trees" />
     <MESSAGE value="enlarged filler in console output when too short" />
     <MESSAGE value="finished implementing filler whole application" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished implementing filler whole application" />
+    <MESSAGE value="fixed bug that displayed incorrect # of cases when saving" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bug that displayed incorrect # of cases when saving" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

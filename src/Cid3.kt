@@ -1549,7 +1549,7 @@ class Cid3 : Serializable {
                         val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
                         else "no"
                         val fillerSize = longestString.length - attributeNames[sortedList[i].first]!!.length + 1
-                        val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                        val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
                         fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + attributeNames[sortedList[i].first]!!.length.toString() + "s%n"
                         console.format(fmt, rounded, isCause, filler, attributeNames[sortedList[i].first])
                     }
@@ -1813,7 +1813,7 @@ class Cid3 : Serializable {
                             val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
                             else "no"
                             val fillerSize = longestString.length - attributeNames[sortedList[i].first]!!.length + 1
-                            val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                            val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
                             fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + attributeNames[sortedList[i].first]!!.length.toString() + "s%n"
                             console.format(fmt, rounded, isCause, filler, attributeNames[sortedList[i].first])
                         }
@@ -2029,7 +2029,7 @@ class Cid3 : Serializable {
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
                     val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
-                    val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                    val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
                     fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
                     val cases = if (save) (classNoOfCasesTrain[i] + classNoOfCasesTest[i]).toString()
                     else (classNoOfCasesTrain[i]).toString()
@@ -2067,7 +2067,7 @@ class Cid3 : Serializable {
                     for (value in domainsValueToIndex[numAttributes - 1].keys){
                         val i = domainsValueToIndex[numAttributes - 1][value] as Int
                         val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
-                        val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                        val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
                         fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
                         console.format(fmt, classNoOfCasesTest[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
                     }
@@ -2152,7 +2152,7 @@ class Cid3 : Serializable {
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
                     val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
-                    val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                    val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
                     fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
                     console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
                 }
@@ -2224,7 +2224,7 @@ class Cid3 : Serializable {
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
                     val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
-                    val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                    val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
                     fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
                     console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
                 }
@@ -2280,7 +2280,7 @@ class Cid3 : Serializable {
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
                     val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
-                    val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                    val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
                     fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
                     val cases = if (save) (classNoOfCasesTrain[i] + classNoOfCasesTest[i]).toString()
                     else (classNoOfCasesTrain[i]).toString()
@@ -2317,7 +2317,7 @@ class Cid3 : Serializable {
                     for (value in domainsValueToIndex[numAttributes - 1].keys){
                         val i = domainsValueToIndex[numAttributes - 1][value] as Int
                         val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
-                        val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                        val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
                         fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
                         console.format(fmt, classNoOfCasesTest[i], falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
                     }
