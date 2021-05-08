@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="cleaned up code for forNaturalOrderComparator Kotlin">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="formatted the code a little bit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -82,7 +82,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/arcene -c c" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/census-income" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00126" summary="formatted console output">
-      <created>1601138389197</created>
-      <option name="number" value="00126" />
-      <option name="presentableId" value="LOCAL-00126" />
-      <option name="project" value="LOCAL" />
-      <updated>1601138389197</updated>
     </task>
     <task id="LOCAL-00127" summary="removed dot at end of lines of data and test foles">
       <created>1601140166488</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619850251690</updated>
     </task>
-    <option name="localTasksCounter" value="175" />
+    <task id="LOCAL-00175" summary="formatted the code a little bit">
+      <created>1619947974078</created>
+      <option name="number" value="00175" />
+      <option name="presentableId" value="LOCAL-00175" />
+      <option name="project" value="LOCAL" />
+      <updated>1619947974079</updated>
+    </task>
+    <option name="localTasksCounter" value="176" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="started implementing threads for continuous attributes" />
     <MESSAGE value="continued implementing threads for continuous attributes" />
     <MESSAGE value="implemented max threads argument option" />
     <MESSAGE value="started implementing causality" />
@@ -494,18 +493,8 @@
     <MESSAGE value="cleaned up NaturalOrderComparator Kotlin" />
     <MESSAGE value="included credits forNaturalOrderComparator Kotlin" />
     <MESSAGE value="cleaned up code for forNaturalOrderComparator Kotlin" />
-    <option name="LAST_COMMIT_MESSAGE" value="cleaned up code for forNaturalOrderComparator Kotlin" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>245</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="formatted the code a little bit" />
+    <option name="LAST_COMMIT_MESSAGE" value="formatted the code a little bit" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
