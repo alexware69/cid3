@@ -1536,15 +1536,18 @@ class Cid3 : Serializable {
             }
             else -> {
                 if (this.criteria == Criteria.Certainty) {
-                    val fmt = "%1$10s %2$5s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                    console.format(fmt, "Importance", "Cause", "Attribute Name")
-                    console.format(fmt, "----------", "-----", "--------------")
+                    var fmt = "%1$10s %2$5s %3$1s %4$" + (longestString!!.length).toString() + "s%n"
+                    console.format(fmt, "Importance", "Cause","", "Attribute Name")
+                    console.format(fmt, "----------", "-----","", "--------------")
                     for (i in sortedList.indices) {
                         if (i > 99) break
                         val rounded = String.format("%.2f", sortedList[i].second)
                         val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
                         else "no"
-                        console.format(fmt, rounded, isCause, attributeNames[sortedList[i].first])
+                        val fillerSize = longestString.length - attributeNames[sortedList[i].first]!!.length + 1
+                        val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                        fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + attributeNames[sortedList[i].first]!!.length.toString() + "s%n"
+                        console.format(fmt, rounded, isCause, filler, attributeNames[sortedList[i].first])
                     }
                 }
                 else {
