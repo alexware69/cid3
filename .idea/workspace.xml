@@ -22,7 +22,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="changed filler in console output for random forests">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="implemented filler in console output for single trees">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -98,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00129" summary="implemented false pos/neg for crossvalidationRF">
-      <created>1601340849919</created>
-      <option name="number" value="00129" />
-      <option name="presentableId" value="LOCAL-00129" />
-      <option name="project" value="LOCAL" />
-      <updated>1601340849919</updated>
     </task>
     <task id="LOCAL-00130" summary="some console text formatting">
       <created>1601513259077</created>
@@ -442,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620453867092</updated>
     </task>
-    <option name="localTasksCounter" value="178" />
+    <task id="LOCAL-00178" summary="implemented filler in console output for single trees">
+      <created>1620454076125</created>
+      <option name="number" value="00178" />
+      <option name="presentableId" value="LOCAL-00178" />
+      <option name="project" value="LOCAL" />
+      <updated>1620454076125</updated>
+    </task>
+    <option name="localTasksCounter" value="179" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -468,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="started implementing causality" />
     <MESSAGE value="Continued implementing causality" />
     <MESSAGE value="almost finished implementing causality" />
     <MESSAGE value="finished implementing causality for discrete attributes" />
@@ -493,7 +493,8 @@
     <MESSAGE value="formatted the code a little bit" />
     <MESSAGE value="implemented filler in console output for random forests" />
     <MESSAGE value="changed filler in console output for random forests" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed filler in console output for random forests" />
+    <MESSAGE value="implemented filler in console output for single trees" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented filler in console output for single trees" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
