@@ -1999,6 +1999,8 @@ class Cid3 : Serializable {
                 if (classValue.length > longestString.length) longestString = classValue
         }
 
+        if (longestString!!.length < 5) longestString = "-----"
+
         for (point in trainData) {
             if (testExample(point, true)) trainCorrects++ else trainErrors++
         }
@@ -2018,12 +2020,15 @@ class Cid3 : Serializable {
                 println("Running from an IDE...")
             }
             else -> {
-                val fmt = "%1$10s %2$10s %3$10s %4$" + (longestString!!.length + 10).toString() + "s%n"
-                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "Class")
-                console.format(fmt, "----------", "---------", "---------", "-----")
+                var fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
+                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
+                console.format(fmt, "----------", "---------", "---------", "", "-----")
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
+                    val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                    fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
+                    console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
@@ -2051,12 +2056,15 @@ class Cid3 : Serializable {
                     println("Running from an IDE...")
                 }
                 else -> {
-                    val fmt = "%1$10s %2$10s %3$10s %4$" + (longestString!!.length + 10).toString() + "s%n"
-                    console.format(fmt, "# Of Cases", "False Pos", "False Neg", "Class")
-                    console.format(fmt, "----------", "---------", "---------", "-----")
+                    var fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
+                    console.format(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
+                    console.format(fmt, "----------", "---------", "---------", "", "-----")
                     for (value in domainsValueToIndex[numAttributes - 1].keys){
                         val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                        console.format(fmt, classNoOfCasesTest[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                        val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
+                        val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                        fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
+                        console.format(fmt, classNoOfCasesTest[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
                     }
                 }
             }
@@ -2129,14 +2137,19 @@ class Cid3 : Serializable {
                     if (longestString != null)
                         if (classValue.length > longestString.length) longestString = classValue
                 }
+                if (longestString!!.length < 5) longestString = "-----"
+
                 print("\n")
                 print("\n")
-                fmt = "%1$10s %2$10s %3$10s %4$" + (longestString!!.length + 10).toString() + "s%n"
-                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "Class")
-                console.format(fmt, "----------", "---------", "---------", "-----")
+                fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
+                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
+                console.format(fmt, "----------", "---------", "---------", "", "-----")
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
+                    val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                    fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
+                    console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
@@ -2196,14 +2209,19 @@ class Cid3 : Serializable {
                     if (longestString != null)
                         if (classValue.length > longestString.length) longestString = classValue
                 }
+                if (longestString!!.length < 5) longestString = "-----"
+
                 print("\n")
                 print("\n")
-                fmt = "%1$10s %2$10s %3$10s %4$" + (longestString!!.length + 10).toString() + "s%n"
-                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "Class")
-                console.format(fmt, "----------", "---------", "---------", "-----")
+                fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
+                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
+                console.format(fmt, "----------", "---------", "---------", "", "-----")
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
+                    val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                    fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
+                    console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
@@ -2229,6 +2247,8 @@ class Cid3 : Serializable {
                 if (classValue.length > longestString.length) longestString = classValue
         }
 
+        if (longestString!!.length < 5) longestString = "-----"
+
         var trainErrors = 0
         var trainCorrects = 0
         for (point in trainData) {
@@ -2249,12 +2269,15 @@ class Cid3 : Serializable {
                 println("Running from an IDE...")
             }
             else -> {
-                val fmt = "%1$10s %2$10s %3$10s %4$" + (longestString!!.length + 10).toString() + "s%n"
-                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "Class")
-                console.format(fmt, "----------", "---------", "---------", "-----")
+                var fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
+                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
+                console.format(fmt, "----------", "---------", "---------", "", "-----")
                 for (value in domainsValueToIndex[numAttributes - 1].keys){
                     val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    console.format(fmt, classNoOfCasesTrain[i], falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                    val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
+                    val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                    fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
+                    console.format(fmt, classNoOfCasesTrain[i], falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(),filler, domainsIndexToValue[numAttributes - 1][i] as String)
                 }
 
             }
@@ -2281,14 +2304,16 @@ class Cid3 : Serializable {
                     println("Running from an IDE...")
                 }
                 else -> {
-                    val fmt = "%1$10s %2$10s %3$10s %4$" + (longestString!!.length + 10).toString() + "s%n"
-                    console.format(fmt, "# Of Cases", "False Pos", "False Neg", "Class")
-                    console.format(fmt, "----------", "---------", "---------", "-----")
+                    var fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
+                    console.format(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
+                    console.format(fmt, "----------", "---------", "---------", "", "-----")
                     for (value in domainsValueToIndex[numAttributes - 1].keys){
                         val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                        console.format(fmt, classNoOfCasesTest[i], falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), domainsIndexToValue[numAttributes - 1][i] as String)
+                        val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
+                        val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
+                        fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
+                        console.format(fmt, classNoOfCasesTest[i], falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
                     }
-
                 }
             }
         }
