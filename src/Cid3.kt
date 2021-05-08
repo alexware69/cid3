@@ -1805,7 +1805,7 @@ class Cid3 : Serializable {
                             val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
                             else "no"
                             val fillerSize = longestString.length - attributeNames[sortedList[i].first]!!.length + 1
-                            val filler = String(CharArray(fillerSize)).replace('\u0000', '-')
+                            val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
                             fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + attributeNames[sortedList[i].first]!!.length.toString() + "s%n"
                             console.format(fmt, rounded, isCause, filler, attributeNames[sortedList[i].first])
                         }

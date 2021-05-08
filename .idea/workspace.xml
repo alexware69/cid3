@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="formatted the code a little bit">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="implemented filler in console output for random forests">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00127" summary="removed dot at end of lines of data and test foles">
-      <created>1601140166488</created>
-      <option name="number" value="00127" />
-      <option name="presentableId" value="LOCAL-00127" />
-      <option name="project" value="LOCAL" />
-      <updated>1601140166488</updated>
     </task>
     <task id="LOCAL-00128" summary="implemented false pos/neg for crossvalidation">
       <created>1601340381157</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1619947974079</updated>
     </task>
-    <option name="localTasksCounter" value="176" />
+    <task id="LOCAL-00176" summary="implemented filler in console output for random forests">
+      <created>1620453117728</created>
+      <option name="number" value="00176" />
+      <option name="presentableId" value="LOCAL-00176" />
+      <option name="project" value="LOCAL" />
+      <updated>1620453117728</updated>
+    </task>
+    <option name="localTasksCounter" value="177" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="continued implementing threads for continuous attributes" />
     <MESSAGE value="implemented max threads argument option" />
     <MESSAGE value="started implementing causality" />
     <MESSAGE value="Continued implementing causality" />
@@ -494,7 +493,8 @@
     <MESSAGE value="included credits forNaturalOrderComparator Kotlin" />
     <MESSAGE value="cleaned up code for forNaturalOrderComparator Kotlin" />
     <MESSAGE value="formatted the code a little bit" />
-    <option name="LAST_COMMIT_MESSAGE" value="formatted the code a little bit" />
+    <MESSAGE value="implemented filler in console output for random forests" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented filler in console output for random forests" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
