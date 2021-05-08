@@ -107,6 +107,9 @@ class Cid3 : Serializable {
 
     var numberOfTrees = 1
 
+    @Transient
+    var save = false
+
     /* The class to represent a node in the decomposition tree.
      */
     class TreeNode : Serializable {
@@ -2028,7 +2031,9 @@ class Cid3 : Serializable {
                     val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
                     val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
                     fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
-                    console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
+                    val cases = if (save) (classNoOfCasesTrain[i] + classNoOfCasesTest[i]).toString()
+                    else (classNoOfCasesTrain[i]).toString()
+                    console.format(fmt, cases, falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
                 }
             }
         }
@@ -2277,7 +2282,9 @@ class Cid3 : Serializable {
                     val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
                     val filler = String(CharArray(fillerSize)).replace('\u0000', '∙')
                     fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
-                    console.format(fmt, classNoOfCasesTrain[i], falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(),filler, domainsIndexToValue[numAttributes - 1][i] as String)
+                    val cases = if (save) (classNoOfCasesTrain[i] + classNoOfCasesTest[i]).toString()
+                    else (classNoOfCasesTrain[i]).toString()
+                    console.format(fmt, cases, falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(),filler, domainsIndexToValue[numAttributes - 1][i] as String)
                 }
 
             }
@@ -3043,6 +3050,7 @@ class Cid3 : Serializable {
 
                 //Create a Tree or a Random Forest for saving to disk
                 if (cmd.hasOption("save")) {
+                    me.save = true
                     me.trainData.addAll(me.testData)
                     me.root.data = me.trainData
                     me.testData.clear()

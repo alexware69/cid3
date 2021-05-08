@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="enlarged filler in console output when too short">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="finished implementing filler whole application">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00131" summary="removed redundant code">
-      <created>1602078552403</created>
-      <option name="number" value="00131" />
-      <option name="presentableId" value="LOCAL-00131" />
-      <option name="project" value="LOCAL" />
-      <updated>1602078552403</updated>
     </task>
     <task id="LOCAL-00132" summary="now accepting file names containing more than one &quot;.&quot;">
       <created>1602129443230</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620457304661</updated>
     </task>
-    <option name="localTasksCounter" value="180" />
+    <task id="LOCAL-00180" summary="finished implementing filler whole application">
+      <created>1620471959707</created>
+      <option name="number" value="00180" />
+      <option name="presentableId" value="LOCAL-00180" />
+      <option name="project" value="LOCAL" />
+      <updated>1620471959707</updated>
+    </task>
+    <option name="localTasksCounter" value="181" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="almost finished implementing causality" />
     <MESSAGE value="finished implementing causality for discrete attributes" />
     <MESSAGE value="fixed a bug in calculateProbabilities function" />
     <MESSAGE value="finished causes for discrete attributes" />
@@ -494,7 +493,19 @@
     <MESSAGE value="changed filler in console output for random forests" />
     <MESSAGE value="implemented filler in console output for single trees" />
     <MESSAGE value="enlarged filler in console output when too short" />
-    <option name="LAST_COMMIT_MESSAGE" value="enlarged filler in console output when too short" />
+    <MESSAGE value="finished implementing filler whole application" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished implementing filler whole application" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
+          <line>2035</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
