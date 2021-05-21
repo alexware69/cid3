@@ -2361,6 +2361,7 @@ class Cid3 : Serializable {
                 if (attName != null && longestString != null)
                     if (attName.length > longestString.length) longestString = attName
             }
+            if (longestString!!.length < 14) longestString = "--------------"
             print("\n")
             //Print console output
             when (val console: Console? = System.console()) {
@@ -2369,19 +2370,22 @@ class Cid3 : Serializable {
                 }
                 else -> {
                     if (id3.criteria == Criteria.Certainty) {
-                        val fmt = "%1$10s %2$5s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                        console.format(fmt, "Importance", "Cause", "Attribute Name")
-                        console.format(fmt, "----------", "-----", "--------------")
+                        var fmt = "%1$10s %2$5s %3$1s %4$" + (longestString.length).toString() + "s%n"
+                        console.format(fmt, "Importance", "Cause","", "Attribute Name")
+                        console.format(fmt, "----------", "-----","", "--------------")
                         for (i in sortedList.indices) {
                             if (i > 99) break
                             val rounded = String.format("%.2f", sortedList[i].second)
                             val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
                             else "no"
-                            console.format(fmt, rounded, isCause, id3.attributeNames[sortedList[i].first])
+                            val fillerSize = longestString.length - id3.attributeNames[sortedList[i].first]!!.length + 1
+                            val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
+                            fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + id3.attributeNames[sortedList[i].first]!!.length.toString() + "s%n"
+                            console.format(fmt, rounded, isCause, filler, id3.attributeNames[sortedList[i].first])
                         }
                     }
                     else {
-                        val fmt = "%1$10s %2$" + (longestString!!.length + 10).toString() + "s%n"
+                        val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
                         console.format(fmt, "Importance", "Attribute Name")
                         console.format(fmt, "----------", "--------------")
                         for (i in sortedList.indices) {
@@ -2731,6 +2735,7 @@ class Cid3 : Serializable {
                 if (attName != null && longestString != null)
                     if (attName.length > longestString.length) longestString = attName
             }
+            if (longestString!!.length < 14) longestString = "--------------"
             print("\n")
             //Print console output
             when (val console: Console? = System.console()) {
@@ -2739,19 +2744,22 @@ class Cid3 : Serializable {
                 }
                 else -> {
                     if (id3.criteria == Criteria.Certainty) {
-                        val fmt = "%1$10s %2$5s %3$" + (longestString!!.length + 10).toString() + "s%n"
-                        console.format(fmt, "Importance", "Cause", "Attribute Name")
-                        console.format(fmt, "----------", "-----", "--------------")
+                        var fmt = "%1$10s %2$5s %3$1s %4$" + (longestString.length).toString() + "s%n"
+                        console.format(fmt, "Importance", "Cause","", "Attribute Name")
+                        console.format(fmt, "----------", "-----","", "--------------")
                         for (i in sortedList.indices) {
                             if (i > 99) break
                             val rounded = String.format("%.2f", sortedList[i].second)
                             val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
                             else "no"
-                            console.format(fmt, rounded, isCause, id3.attributeNames[sortedList[i].first])
+                            val fillerSize = longestString.length - id3.attributeNames[sortedList[i].first]!!.length + 1
+                            val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
+                            fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + id3.attributeNames[sortedList[i].first]!!.length.toString() + "s%n"
+                            console.format(fmt, rounded, isCause, filler, id3.attributeNames[sortedList[i].first])
                         }
                     }
                     else {
-                        val fmt = "%1$10s %2$" + (longestString!!.length + 10).toString() + "s%n"
+                        val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
                         console.format(fmt, "Importance", "Attribute Name")
                         console.format(fmt, "----------", "--------------")
                         for (i in sortedList.indices) {
