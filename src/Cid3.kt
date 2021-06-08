@@ -1121,11 +1121,11 @@ class Cid3 : Serializable {
                             }
                         }
                     } else if (attributeTypes[i] == AttributeType.Discrete) {
-                        if (!inDomain(i, next)){
+                        /*if (!inDomain(i, next)){
                             val name = attributeNames[i]
                             System.err.println("Error found. Unknown value in test data for attribute: $name=\"$next\".")
                             exitProcess(1)
-                        }
+                        }*/
                         point.attributes[i] = getSymbolValue(i, next)
                     } else if (attributeTypes[i] == AttributeType.Ignore) {
                         point.attributes[i] = getSymbolValue(i, next)

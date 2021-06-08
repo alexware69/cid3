@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="halt when unseen attribute values present in test set">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="showing correct statistics when querying trees and RF">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00136" summary="added # of cases to false positives/negatives report">
-      <created>1602567171797</created>
-      <option name="number" value="00136" />
-      <option name="presentableId" value="LOCAL-00136" />
-      <option name="project" value="LOCAL" />
-      <updated>1602567171797</updated>
     </task>
     <task id="LOCAL-00137" summary="in CV the # of cases  = train + test">
       <created>1602569198724</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621336559617</updated>
     </task>
-    <option name="localTasksCounter" value="185" />
+    <task id="LOCAL-00185" summary="showing correct statistics when querying trees and RF">
+      <created>1621572561516</created>
+      <option name="number" value="00185" />
+      <option name="presentableId" value="LOCAL-00185" />
+      <option name="project" value="LOCAL" />
+      <updated>1621572561516</updated>
+    </task>
+    <option name="localTasksCounter" value="186" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="finished causes...need to optimize for continuous atts" />
     <MESSAGE value="finished optimizind causes for continuous atts" />
     <MESSAGE value="renamed &quot;Cause&quot; with &quot;Key&quot;" />
     <MESSAGE value="replaced Tuples and Triplets with Pairs and Triples" />
@@ -494,7 +493,8 @@
     <MESSAGE value="replaced the trailing dot with one smaller" />
     <MESSAGE value="included current year in console output" />
     <MESSAGE value="halt when unseen attribute values present in test set" />
-    <option name="LAST_COMMIT_MESSAGE" value="halt when unseen attribute values present in test set" />
+    <MESSAGE value="showing correct statistics when querying trees and RF" />
+    <option name="LAST_COMMIT_MESSAGE" value="showing correct statistics when querying trees and RF" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
