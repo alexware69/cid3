@@ -9,9 +9,6 @@ import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 import kotlin.math.*
 import kotlin.system.exitProcess
-import java.util.ArrayList
-
-
 
 
 class Cid3 : Serializable {
@@ -2910,7 +2907,7 @@ class Cid3 : Serializable {
             val cmd: CommandLine
             try {
                 for (arg in args) {
-                    if (arg.contains(" -h ") || arg.contains(" --help ")) {
+                    if (arg == "-h" || arg == "--help") {
                         //Print help message
                         formatter.printHelp("java -jar cid3.jar", options)
                         exitProcess(1)
@@ -2971,12 +2968,6 @@ class Cid3 : Serializable {
                 }
                 me.isRandomForest = true
             } else me.isRandomForest = false
-
-            //Print help message
-            if (cmd.hasOption("help")) {
-                formatter.printHelp("java -jar cid3.jar", options)
-                exitProcess(1)
-            }
 
             //Show application title
             print("\n")
