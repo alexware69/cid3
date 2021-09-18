@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
+import javax.sound.sampled.AudioSystem
 import kotlin.math.*
 import kotlin.system.exitProcess
 
@@ -2859,6 +2860,21 @@ class Cid3 : Serializable {
         return if (seconds < 0) "-$positive" else positive
     }
 
+    fun playSound() {
+        try {
+            val audioInputStream = AudioSystem.getAudioInputStream(
+                this.javaClass.getResource("carcrash.wav")
+            )
+            val clip = AudioSystem.getClip()
+            clip.open(audioInputStream)
+            clip.start()
+            // The next lines is needed for the program to play the whole sound, otherwise it plays just a bit and exits.
+            Thread.sleep(4000)
+        } catch (ex: java.lang.Exception) {
+            print(ex.toString())
+        }
+    }
+
     companion object {
         /* Here is the definition of the main function */
         @JvmStatic
@@ -3092,6 +3108,7 @@ class Cid3 : Serializable {
                     else if (me.isRandomForest) me.createRandomForest(me.root.data, me.rootsRandomForest, false)
                     else me.createDecisionTree()
                 }
+                me.playSound()
             }
         }
     }
