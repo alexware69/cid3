@@ -2863,13 +2863,13 @@ class Cid3 : Serializable {
     fun playSound() {
         try {
             val audioInputStream = AudioSystem.getAudioInputStream(
-                this.javaClass.getResource("carcrash.wav")
+                this.javaClass.getResource("winning.wav")
             )
             val clip = AudioSystem.getClip()
             clip.open(audioInputStream)
             clip.start()
             // The next lines is needed for the program to play the whole sound, otherwise it plays just a bit and exits.
-            Thread.sleep(4000)
+            Thread.sleep(2000)
         } catch (ex: java.lang.Exception) {
             print(ex.toString())
         }
