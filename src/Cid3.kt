@@ -2863,7 +2863,7 @@ class Cid3 : Serializable {
     fun playSound() {
         try {
             val audioInputStream = AudioSystem.getAudioInputStream(
-                this.javaClass.getResource("winning.wav")
+                this.javaClass.getResource("breaks.wav")
             )
             val clip = AudioSystem.getClip()
             clip.open(audioInputStream)

@@ -22,11 +22,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="added car crash sound again...it is cool!">
-      <change afterPath="$PROJECT_DIR$/src/winning.wav" afterDir="false" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="replaced car crash sound with funny... it is cool!">
+      <change afterPath="$PROJECT_DIR$/src/breaks.WAV" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/carcrash.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/winning.wav" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,13 +101,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00138" summary="Fixed ugly bug with ugly hack. Not really, it works now again!">
-      <created>1602646737841</created>
-      <option name="number" value="00138" />
-      <option name="presentableId" value="LOCAL-00138" />
-      <option name="project" value="LOCAL" />
-      <updated>1602646737841</updated>
     </task>
     <task id="LOCAL-00139" summary="added some information to error checking when reading files">
       <created>1602779664240</created>
@@ -445,7 +438,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631956180114</updated>
     </task>
-    <option name="localTasksCounter" value="187" />
+    <task id="LOCAL-00187" summary="replaced car crash sound with funny... it is cool!">
+      <created>1632018568684</created>
+      <option name="number" value="00187" />
+      <option name="presentableId" value="LOCAL-00187" />
+      <option name="project" value="LOCAL" />
+      <updated>1632018568685</updated>
+    </task>
+    <option name="localTasksCounter" value="188" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -471,7 +471,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="renamed &quot;Cause&quot; with &quot;Key&quot;" />
     <MESSAGE value="replaced Tuples and Triplets with Pairs and Triples" />
     <MESSAGE value="showing paramenters importance when querying trees" />
     <MESSAGE value="showing paramenters importance in random forests" />
@@ -496,7 +495,8 @@
     <MESSAGE value="halt when unseen attribute values present in test set" />
     <MESSAGE value="showing correct statistics when querying trees and RF" />
     <MESSAGE value="added car crash sound again...it is cool!" />
-    <option name="LAST_COMMIT_MESSAGE" value="added car crash sound again...it is cool!" />
+    <MESSAGE value="replaced car crash sound with funny... it is cool!" />
+    <option name="LAST_COMMIT_MESSAGE" value="replaced car crash sound with funny... it is cool!" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
