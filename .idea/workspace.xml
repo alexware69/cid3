@@ -22,11 +22,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="replaced car crash sound with funny... it is cool!">
-      <change afterPath="$PROJECT_DIR$/src/breaks.WAV" afterDir="false" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="added animation to console">
+      <change afterPath="$PROJECT_DIR$/src/ConsoleHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/winning.wav" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,8 +35,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Kotlin Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -471,7 +470,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="replaced Tuples and Triplets with Pairs and Triples" />
     <MESSAGE value="showing paramenters importance when querying trees" />
     <MESSAGE value="showing paramenters importance in random forests" />
     <MESSAGE value="fixed a bug when saving random forests" />
@@ -496,7 +494,8 @@
     <MESSAGE value="showing correct statistics when querying trees and RF" />
     <MESSAGE value="added car crash sound again...it is cool!" />
     <MESSAGE value="replaced car crash sound with funny... it is cool!" />
-    <option name="LAST_COMMIT_MESSAGE" value="replaced car crash sound with funny... it is cool!" />
+    <MESSAGE value="added animation to console" />
+    <option name="LAST_COMMIT_MESSAGE" value="added animation to console" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

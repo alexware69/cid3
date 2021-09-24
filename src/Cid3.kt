@@ -3062,6 +3062,18 @@ class Cid3 : Serializable {
                 me.fileName = inputFilePath
                 //Read test data
                 if (me.testDataExists) me.readTestData(nameTestData)
+
+                //Print animation
+                val consoleHelper = ConsoleHelper()
+                var runAnimation: Boolean = true
+                val thread = Thread {
+                    while(runAnimation) {
+                        consoleHelper.animate()
+                        Thread.sleep(500)
+                    }
+                }
+                thread.start()
+
                 //Initialize falsePositives and falseNegatives
                 me.falsePositivesTrain = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
                 me.falseNegativesTrain = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
@@ -3108,6 +3120,7 @@ class Cid3 : Serializable {
                     else if (me.isRandomForest) me.createRandomForest(me.root.data, me.rootsRandomForest, false)
                     else me.createDecisionTree()
                 }
+                runAnimation = false
                 me.playSound()
             }
         }
