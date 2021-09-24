@@ -3087,6 +3087,7 @@ class Cid3 : Serializable {
                 me.readData(inputFilePath)
                 //Stop the animation
                 me.runAnimationReading = false
+                //print("\r [ * ]")
 
 
                 //Set global variable
@@ -3107,7 +3108,7 @@ class Cid3 : Serializable {
                     me.readTestData(nameTestData)
                     //Stop the animation
                     me.runAnimationReadingTest = false
-                    //print("\r" + "[ * ]")
+                    //print("\r [ * ]")
                 }
 
                 val consoleHelperCalculating = ConsoleHelper()
