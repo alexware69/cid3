@@ -23,7 +23,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="added animation to console">
-      <change afterPath="$PROJECT_DIR$/src/ConsoleHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -100,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00139" summary="added some information to error checking when reading files">
-      <created>1602779664240</created>
-      <option name="number" value="00139" />
-      <option name="presentableId" value="LOCAL-00139" />
-      <option name="project" value="LOCAL" />
-      <updated>1602779664241</updated>
     </task>
     <task id="LOCAL-00140" summary="added some more error checking when reading test files">
       <created>1602780027693</created>
@@ -444,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632018568685</updated>
     </task>
-    <option name="localTasksCounter" value="188" />
+    <task id="LOCAL-00188" summary="added animation to console">
+      <created>1632470088863</created>
+      <option name="number" value="00188" />
+      <option name="presentableId" value="LOCAL-00188" />
+      <option name="project" value="LOCAL" />
+      <updated>1632470088865</updated>
+    </task>
+    <option name="localTasksCounter" value="189" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">

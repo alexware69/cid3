@@ -108,6 +108,15 @@ class Cid3 : Serializable {
     @Transient
     var save = false
 
+    @Transient
+    var runAnimationReading = true
+
+    @Transient
+    var runAnimationReadingTest = true
+
+    @Transient
+    var runAnimationCalculating = true
+
     /* The class to represent a node in the decomposition tree.
      */
     class TreeNode : Serializable {
@@ -1515,8 +1524,10 @@ class Cid3 : Serializable {
                 globalThreads.remove(current)
             }
         }
-        print("\n")
+        //print("\n")
         print("Decision tree created.")
+        //Stop the animation
+        runAnimationCalculating = false
         print("\n")
         print("\n")
         countNodes(root)
@@ -1659,8 +1670,10 @@ class Cid3 : Serializable {
         while (threads.size > 0) {
             if (!threads[threads.size - 1].isAlive) threads.removeAt(threads.size - 1)
         }
-        print("\n")
+        //print("\n")
         print("10-fold cross-validation created with " + root.data.size + " cases.")
+        //Stop the animation
+        runAnimationCalculating = false
         print("\n")
         testCrossValidation()
         val finish = Instant.now()
@@ -1734,8 +1747,10 @@ class Cid3 : Serializable {
             }
             createRandomForest(trainData, cvRandomForests[i], true)
         }
-        print("\n")
+        //print("\n")
         print("10-fold Random Forests cross-validation created with " + root.data.size + " cases.")
+        //Stop the animation
+        runAnimationCalculating = false
         print("\n")
 
         //Test the cross-validation
@@ -1786,8 +1801,10 @@ class Cid3 : Serializable {
             if (!threads[threads.size - 1].isAlive) threads.removeAt(threads.size - 1)
         }
         if (!cv) {
-            print("\n")
+            //print("\n")
             print("Random Forest of " + roots.size + " trees created.")
+            //Stop the animation
+            runAnimationCalculating = false
             print("\n")
             val sortedList: List<Triple<Int, Double, Double>> = if (criteria == Criteria.Certainty)
                 attributeImportance.sortedWith(compareByDescending { it.second })
@@ -3053,26 +3070,55 @@ class Cid3 : Serializable {
                 val inputFile = File(nameTestData)
                 me.testDataExists = inputFile.exists()
 
+                val consoleHelperReading = ConsoleHelper()
+                //Print animation for data reading
+                val threadReading = Thread {
+                    while(me.runAnimationReading) {
+                        consoleHelperReading.animate()
+                        Thread.sleep(500)
+                    }
+                }
+                threadReading.start()
+
                 //Read names file
                 me.readNames(inputFilePath)
 
                 //Read data
                 me.readData(inputFilePath)
+                //Stop the animation
+                me.runAnimationReading = false
+
+
                 //Set global variable
                 me.fileName = inputFilePath
-                //Read test data
-                if (me.testDataExists) me.readTestData(nameTestData)
 
-                //Print animation
-                val consoleHelper = ConsoleHelper()
-                var runAnimation: Boolean = true
-                val thread = Thread {
-                    while(runAnimation) {
-                        consoleHelper.animate()
+                val consoleHelperReadingTest = ConsoleHelper()
+                //Print animation for data reading
+                val threadReadingTest = Thread {
+                    while(me.runAnimationReadingTest) {
+                        consoleHelperReadingTest.animate()
                         Thread.sleep(500)
                     }
                 }
-                thread.start()
+
+                //Read test data
+                if (me.testDataExists) {
+                    threadReadingTest.start()
+                    me.readTestData(nameTestData)
+                    //Stop the animation
+                    me.runAnimationReadingTest = false
+                    //print("\r" + "[ * ]")
+                }
+
+                val consoleHelperCalculating = ConsoleHelper()
+                //Print animation for creation
+                val threadCalculating = Thread {
+                    while(me.runAnimationCalculating) {
+                        consoleHelperCalculating.animate()
+                        Thread.sleep(500)
+                    }
+                }
+                threadCalculating.start()
 
                 //Initialize falsePositives and falseNegatives
                 me.falsePositivesTrain = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
@@ -3120,7 +3166,6 @@ class Cid3 : Serializable {
                     else if (me.isRandomForest) me.createRandomForest(me.root.data, me.rootsRandomForest, false)
                     else me.createDecisionTree()
                 }
-                runAnimation = false
                 me.playSound()
             }
         }
