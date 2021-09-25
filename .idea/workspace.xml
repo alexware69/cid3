@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="changed a character on animation to console (3)">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="hide the cursor on animation to console">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00144" summary="checking for incompatible options is command line call">
-      <created>1603413863043</created>
-      <option name="number" value="00144" />
-      <option name="presentableId" value="LOCAL-00144" />
-      <option name="project" value="LOCAL" />
-      <updated>1603413863043</updated>
     </task>
     <task id="LOCAL-00145" summary="now checking for empty lines with spaces in names files">
       <created>1603919135656</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632566474509</updated>
     </task>
-    <option name="localTasksCounter" value="193" />
+    <task id="LOCAL-00193" summary="hide the cursor on animation to console">
+      <created>1632567598756</created>
+      <option name="number" value="00193" />
+      <option name="presentableId" value="LOCAL-00193" />
+      <option name="project" value="LOCAL" />
+      <updated>1632567598756</updated>
+    </task>
+    <option name="localTasksCounter" value="194" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="showing number of trees when deserializing forest" />
     <MESSAGE value="fixed a bug with ignore attributes" />
     <MESSAGE value="replaced Main back to Cause" />
     <MESSAGE value="converted NaturalOrderComparator to Kotlin" />
@@ -494,7 +493,8 @@
     <MESSAGE value="still working on animation to console (2)" />
     <MESSAGE value="fixed a bug on animation to console (3)" />
     <MESSAGE value="changed a character on animation to console (3)" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed a character on animation to console (3)" />
+    <MESSAGE value="hide the cursor on animation to console" />
+    <option name="LAST_COMMIT_MESSAGE" value="hide the cursor on animation to console" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

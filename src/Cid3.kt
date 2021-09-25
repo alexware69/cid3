@@ -3063,7 +3063,7 @@ class Cid3 : Serializable {
                 }
             }
             else {
-                print("\u001B[?25l")   // hide the cursor
+                //print("\u001B[?25l")   // hide the cursor
                 //Check if test data exists
                 if (!inputFilePath.endsWith(".data")) inputFilePath += ".data"
                 var nameTestData = inputFilePath.substring(0, inputFilePath.length - 4)
@@ -3169,7 +3169,7 @@ class Cid3 : Serializable {
                     else me.createDecisionTree()
                 }
                 me.playSound()
-                print("\u001B[?25h") // restore the cursor
+                //print("\u001B[?25h") // restore the cursor
             }
         }
     }
