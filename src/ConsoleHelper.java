@@ -30,7 +30,7 @@ public class ConsoleHelper {
                 break;
             default:
                 anim = 0;
-                print("[ - ] ");
+                print("[ ─ ] ");
         }
         anim++;
     }
