@@ -22,9 +22,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="fixed a bug on animation to console (3)">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="changed a character on animation to console (3)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ConsoleHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ConsoleHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00143" summary="made comparator serializable">
-      <created>1603369398866</created>
-      <option name="number" value="00143" />
-      <option name="presentableId" value="LOCAL-00143" />
-      <option name="project" value="LOCAL" />
-      <updated>1603369398866</updated>
     </task>
     <task id="LOCAL-00144" summary="checking for incompatible options is command line call">
       <created>1603413863043</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632505997782</updated>
     </task>
-    <option name="localTasksCounter" value="192" />
+    <task id="LOCAL-00192" summary="changed a character on animation to console (3)">
+      <created>1632566474508</created>
+      <option name="number" value="00192" />
+      <option name="presentableId" value="LOCAL-00192" />
+      <option name="project" value="LOCAL" />
+      <updated>1632566474509</updated>
+    </task>
+    <option name="localTasksCounter" value="193" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="showing parameter importance wheh querying random forests" />
     <MESSAGE value="showing number of trees when deserializing forest" />
     <MESSAGE value="fixed a bug with ignore attributes" />
     <MESSAGE value="replaced Main back to Cause" />
@@ -494,7 +493,8 @@
     <MESSAGE value="still working on animation to console" />
     <MESSAGE value="still working on animation to console (2)" />
     <MESSAGE value="fixed a bug on animation to console (3)" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed a bug on animation to console (3)" />
+    <MESSAGE value="changed a character on animation to console (3)" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed a character on animation to console (3)" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
