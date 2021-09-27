@@ -3080,6 +3080,7 @@ class Cid3 : Serializable {
                         Thread.sleep(500)
                     }
                 }
+                threadReading.priority = Thread.MAX_PRIORITY
                 threadReading.start()
 
                 //Read names file
@@ -3106,6 +3107,7 @@ class Cid3 : Serializable {
 
                 //Read test data
                 if (me.testDataExists) {
+                    threadReadingTest.priority = Thread.MAX_PRIORITY
                     threadReadingTest.start()
                     me.readTestData(nameTestData)
                     //Stop the animation
@@ -3121,6 +3123,7 @@ class Cid3 : Serializable {
                         Thread.sleep(500)
                     }
                 }
+                threadCalculating.priority = Thread.MAX_PRIORITY
                 threadCalculating.start()
 
                 //Initialize falsePositives and falseNegatives
