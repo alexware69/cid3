@@ -1780,6 +1780,7 @@ class Cid3 : Serializable {
         var selectedAttributes: ArrayList<Int>
         val threads = ArrayList<Thread>()
         val rand = Random(seed)
+        val freqClasses  = getFrequencies(data)
         for (i in 0 until numberOfTrees) {
             selectedAttributes = ArrayList()
             while (selectedAttributes.size < numAttributesForRandomForestInt) {
@@ -1788,7 +1789,7 @@ class Cid3 : Serializable {
             }
             val cloneRoot = TreeNode()
             cloneRoot.data = data
-            cloneRoot.frequencyClasses = getFrequencies(data)
+            cloneRoot.frequencyClasses = freqClasses
             roots.add(cloneRoot)
 
             //Create the Random Forest in parallel
