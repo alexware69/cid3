@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="set max priority to animation thread">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="showing version, date and time when deserializing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00148" summary="started optimizing RAM usage">
-      <created>1608438787830</created>
-      <option name="number" value="00148" />
-      <option name="presentableId" value="LOCAL-00148" />
-      <option name="project" value="LOCAL" />
-      <updated>1608438787831</updated>
     </task>
     <task id="LOCAL-00149" summary="now creating threads for discrete attributes">
       <created>1609076244644</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632741986831</updated>
     </task>
-    <option name="localTasksCounter" value="197" />
+    <task id="LOCAL-00197" summary="showing version, date and time when deserializing">
+      <created>1633046984874</created>
+      <option name="number" value="00197" />
+      <option name="presentableId" value="LOCAL-00197" />
+      <option name="project" value="LOCAL" />
+      <updated>1633046984874</updated>
+    </task>
+    <option name="localTasksCounter" value="198" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="cleaned up NaturalOrderComparator Kotlin" />
     <MESSAGE value="included credits forNaturalOrderComparator Kotlin" />
     <MESSAGE value="cleaned up code for forNaturalOrderComparator Kotlin" />
     <MESSAGE value="formatted the code a little bit" />
@@ -494,7 +493,8 @@
     <MESSAGE value="removed hidden cursor on animation to console" />
     <MESSAGE value="made an optimization" />
     <MESSAGE value="set max priority to animation thread" />
-    <option name="LAST_COMMIT_MESSAGE" value="set max priority to animation thread" />
+    <MESSAGE value="showing version, date and time when deserializing" />
+    <option name="LAST_COMMIT_MESSAGE" value="showing version, date and time when deserializing" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

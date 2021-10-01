@@ -2938,6 +2938,9 @@ class Cid3 : Serializable {
             val help = Option("h", "help", false, "print this message")
             help.isRequired = false
             options.addOption(help)
+            val version = Option("ver", "version", false, "version")
+            version.isRequired = false
+            options.addOption(version)
             val save = Option("s", "save", false, "save tree/random forest")
             save.isRequired = false
             options.addOption(save)
@@ -2971,6 +2974,14 @@ class Cid3 : Serializable {
             val formatter = HelpFormatter()
             val cmd: CommandLine
             try {
+                for (arg in args) {
+                    if (arg == "-ver" || arg == "--version") {
+                        //Print version
+                        print("CID3 version: ${me.version}")
+                        print("\n")
+                        exitProcess(1)
+                    }
+                }
                 for (arg in args) {
                     if (arg == "-h" || arg == "--help") {
                         //Print help message
