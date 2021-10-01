@@ -2925,6 +2925,7 @@ class Cid3 : Serializable {
     }
 
     companion object {
+        private const val serialVersionUID: Long = 42L
         /* Here is the definition of the main function */
         @JvmStatic
         fun main(args: Array<String>) {

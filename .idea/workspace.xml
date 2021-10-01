@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="showing version, date and time when deserializing">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="implemented show version option">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -82,7 +82,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/arcene" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/pacific -q t" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00149" summary="now creating threads for discrete attributes">
-      <created>1609076244644</created>
-      <option name="number" value="00149" />
-      <option name="presentableId" value="LOCAL-00149" />
-      <option name="project" value="LOCAL" />
-      <updated>1609076244644</updated>
     </task>
     <task id="LOCAL-00150" summary="started implementing threads for continuous attributes">
       <created>1609090195652</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1633046984874</updated>
     </task>
-    <option name="localTasksCounter" value="198" />
+    <task id="LOCAL-00198" summary="implemented show version option">
+      <created>1633047843378</created>
+      <option name="number" value="00198" />
+      <option name="presentableId" value="LOCAL-00198" />
+      <option name="project" value="LOCAL" />
+      <updated>1633047843378</updated>
+    </task>
+    <option name="localTasksCounter" value="199" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="included credits forNaturalOrderComparator Kotlin" />
     <MESSAGE value="cleaned up code for forNaturalOrderComparator Kotlin" />
     <MESSAGE value="formatted the code a little bit" />
     <MESSAGE value="implemented filler in console output for random forests" />
@@ -494,7 +493,8 @@
     <MESSAGE value="made an optimization" />
     <MESSAGE value="set max priority to animation thread" />
     <MESSAGE value="showing version, date and time when deserializing" />
-    <option name="LAST_COMMIT_MESSAGE" value="showing version, date and time when deserializing" />
+    <MESSAGE value="implemented show version option" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented show version option" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
