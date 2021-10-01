@@ -22,9 +22,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="implemented show version option">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="added serialVersionUID field to keep same version">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataFrequencies.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFrequencies.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/NaturalOrderComparator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/NaturalOrderComparator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SumBelowAndAbove.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/SumBelowAndAbove.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Threshold.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Threshold.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,13 +103,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00150" summary="started implementing threads for continuous attributes">
-      <created>1609090195652</created>
-      <option name="number" value="00150" />
-      <option name="presentableId" value="LOCAL-00150" />
-      <option name="project" value="LOCAL" />
-      <updated>1609090195652</updated>
     </task>
     <task id="LOCAL-00151" summary="continued implementing threads for continuous attributes">
       <created>1609242869967</created>
@@ -443,7 +440,14 @@
       <option name="project" value="LOCAL" />
       <updated>1633047843378</updated>
     </task>
-    <option name="localTasksCounter" value="199" />
+    <task id="LOCAL-00199" summary="added serialVersionUID field to keep same version">
+      <created>1633050708500</created>
+      <option name="number" value="00199" />
+      <option name="presentableId" value="LOCAL-00199" />
+      <option name="project" value="LOCAL" />
+      <updated>1633050708500</updated>
+    </task>
+    <option name="localTasksCounter" value="200" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +473,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="cleaned up code for forNaturalOrderComparator Kotlin" />
     <MESSAGE value="formatted the code a little bit" />
     <MESSAGE value="implemented filler in console output for random forests" />
     <MESSAGE value="changed filler in console output for random forests" />
@@ -494,7 +497,8 @@
     <MESSAGE value="set max priority to animation thread" />
     <MESSAGE value="showing version, date and time when deserializing" />
     <MESSAGE value="implemented show version option" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented show version option" />
+    <MESSAGE value="added serialVersionUID field to keep same version" />
+    <option name="LAST_COMMIT_MESSAGE" value="added serialVersionUID field to keep same version" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

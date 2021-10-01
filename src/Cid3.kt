@@ -39,7 +39,7 @@ class Cid3 : Serializable {
 
     /* Possible values for each attribute is stored in a vector.  domains is an array of dimension numAttributes.
         Each element of this array is a vector that contains values for the corresponding attribute
-        domains[0] is a vector containing the values of the 0-th attribute, etc..
+        domains[0] is a vector containing the values of the 0-th attribute, etc.
         The last attribute is the output attribute
     */
     private lateinit var domainsIndexToValue: ArrayList<HashMap<Int, String>>
@@ -137,7 +137,7 @@ class Cid3 : Serializable {
         var thresholdContinuous = 0.0
         // If this is not a leaf node, references to the children nodes
         var children: ArrayList<TreeNode>? = null
-        // The parent to this node.  The root has parent == null
+        // The parent to this node.  The root has its parent == null
         var parent: TreeNode? = null
 
     }
@@ -172,10 +172,6 @@ class Cid3 : Serializable {
             domainsValueToIndex[attribute][symbol] = size
             size
         }
-    }
-
-    private fun inDomain(attribute: Int, symbol: String): Boolean {
-        return domainsValueToIndex[attribute][symbol] != null
     }
 
     // Returns the most common class for the specified node

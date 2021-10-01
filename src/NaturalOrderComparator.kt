@@ -133,4 +133,8 @@ class NaturalOrderComparator : Comparator<Any?>, Serializable {
         if (nza - nzb != 0) return nza - nzb
         return if (a.length == b.length) a.compareTo(b) else a.length - b.length
     }
+
+    companion object {
+        private const val serialVersionUID: Long = 42L
+    }
 }
