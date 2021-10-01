@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="made an optimization">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="set max priority to animation thread">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00147" summary="even better error handling while reading data files">
-      <created>1603957475994</created>
-      <option name="number" value="00147" />
-      <option name="presentableId" value="LOCAL-00147" />
-      <option name="project" value="LOCAL" />
-      <updated>1603957475994</updated>
     </task>
     <task id="LOCAL-00148" summary="started optimizing RAM usage">
       <created>1608438787830</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1632717646934</updated>
     </task>
-    <option name="localTasksCounter" value="196" />
+    <task id="LOCAL-00196" summary="set max priority to animation thread">
+      <created>1632741986831</created>
+      <option name="number" value="00196" />
+      <option name="presentableId" value="LOCAL-00196" />
+      <option name="project" value="LOCAL" />
+      <updated>1632741986831</updated>
+    </task>
+    <option name="localTasksCounter" value="197" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="converted NaturalOrderComparator to Kotlin" />
     <MESSAGE value="cleaned up NaturalOrderComparator Kotlin" />
     <MESSAGE value="included credits forNaturalOrderComparator Kotlin" />
     <MESSAGE value="cleaned up code for forNaturalOrderComparator Kotlin" />
@@ -494,7 +493,8 @@
     <MESSAGE value="hide the cursor on animation to console" />
     <MESSAGE value="removed hidden cursor on animation to console" />
     <MESSAGE value="made an optimization" />
-    <option name="LAST_COMMIT_MESSAGE" value="made an optimization" />
+    <MESSAGE value="set max priority to animation thread" />
+    <option name="LAST_COMMIT_MESSAGE" value="set max priority to animation thread" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

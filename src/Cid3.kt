@@ -13,6 +13,8 @@ import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
+    private val version = "1.0"
+    private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
     }
@@ -1451,6 +1453,17 @@ class Cid3 : Serializable {
                 }
             }
 
+            // Set version, date and time
+            val dayInMonth = LocalDateTime.now().dayOfMonth
+            var day = LocalDateTime.now().dayOfWeek.name.toLowerCase()
+            day = day.substring(0, 1).toUpperCase() + day.substring(1)
+            var month = LocalDateTime.now().month.name.toLowerCase()
+            month = month.substring(0, 1).toUpperCase() + month.substring(1)
+            val time = DateTimeFormatter.ofPattern("hh:mm:ss a")
+            val timeString = LocalDateTime.now().format(time)
+            val year = LocalDateTime.now().year.toString()
+            createdWith = "Created with: CID3 [Version ${version}] on $day $month $dayInMonth, $year $timeString"
+
             //Serialize and save to disk
             fOut = FileOutputStream(fName, false)
             val gz = GZIPOutputStream(fOut)
@@ -1479,6 +1492,17 @@ class Cid3 : Serializable {
                     exitProcess(1)
                 }
             }
+
+            // Set version, date and time
+            val dayInMonth = LocalDateTime.now().dayOfMonth
+            var day = LocalDateTime.now().dayOfWeek.name.toLowerCase()
+            day = day.substring(0, 1).toUpperCase() + day.substring(1)
+            var month = LocalDateTime.now().month.name.toLowerCase()
+            month = month.substring(0, 1).toUpperCase() + month.substring(1)
+            val time = DateTimeFormatter.ofPattern("hh:mm:ss a")
+            val timeString = LocalDateTime.now().format(time)
+            val year = LocalDateTime.now().year.toString()
+            this.createdWith = "Created with: CID3 [Version ${this.version}] on $day $month $dayInMonth, $year $timeString"
 
             //Serialize and save to disk
             fOut = FileOutputStream(fName, false)
@@ -2362,6 +2386,9 @@ class Cid3 : Serializable {
             print("\n")
             print("Tree file deserialized.")
             print("\n")
+            //Show version and time
+            print(id3.createdWith)
+            print("\n")
 
             //First display data statistics
             val sortedList: List<Triple<Int, Double, Double>> = if (id3.criteria == Criteria.Certainty)
@@ -2737,6 +2764,10 @@ class Cid3 : Serializable {
             print("Random Forest file of ${id3.numberOfTrees} trees deserialized.")
             print("\n")
 
+            //Show version and time
+            print(id3.createdWith)
+            print("\n")
+
             //First display data statistics
             val sortedList: List<Triple<Int, Double, Double>> = if (id3.criteria == Criteria.Certainty)
                 id3.attributeImportance.sortedWith(compareByDescending { it.second })
@@ -3013,7 +3044,7 @@ class Cid3 : Serializable {
             val time = DateTimeFormatter.ofPattern("hh:mm:ss a")
             val timeString = LocalDateTime.now().format(time)
             val year = LocalDateTime.now().year.toString()
-            print("CID3 [Version 1.0]              $day $month $dayInMonth, $year $timeString")
+            print("CID3 [Version ${me.version}]              $day $month $dayInMonth, $year $timeString")
             print("\n")
             print("------------------")
             print("\n")
