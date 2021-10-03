@@ -71,6 +71,10 @@ class Cid3 : Serializable {
         */
         var attributes: IntArray = IntArray(numAttributes)
 
+        //This is needed for versioning
+        companion object {
+            private const val serialVersionUID: Long = 42L
+        }
     }
 
     //This class will be used to calculate all probabilities in one pass.
@@ -82,7 +86,12 @@ class Cid3 : Serializable {
     }
 
     //This is a utility class to return the certainty and threshold of continuous attributes.
-    class Certainty(var certainty: Double, var threshold: Double, var certaintyClass: Double) : Serializable
+    class Certainty(var certainty: Double, var threshold: Double, var certaintyClass: Double) : Serializable{
+        //This is needed for versioning
+        companion object {
+            private const val serialVersionUID: Long = 42L
+        }
+    }
 
     @Transient
     var testData = ArrayList<DataPoint>()
@@ -140,6 +149,10 @@ class Cid3 : Serializable {
         // The parent to this node.  The root has its parent == null
         var parent: TreeNode? = null
 
+        //This is needed for versioning
+        companion object {
+            private const val serialVersionUID: Long = 42L
+        }
     }
 
     /*  The root of the decomposition tree  */
