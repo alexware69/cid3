@@ -1165,11 +1165,7 @@ class Cid3 : Serializable {
         print("\n")
     }
 
-    /** Function to read the data file.
-     * The first line of the data file should contain the names of all attributes.
-     * The number of attributes is inferred from the number of words in this line.
-     * The last word is taken as the name of the output attribute.
-     * Each subsequent line contains the values of attributes for a data point.
+    /* Function to read the data file.
      * If any line starts with // it is taken as a comment and ignored.
      * Blank lines are also ignored.
      */
