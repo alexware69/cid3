@@ -77,14 +77,6 @@ class Cid3 : Serializable {
         }
     }
 
-    //This class will be used to calculate all probabilities in one pass.
-    inner class Probabilities(attribute: Int) : Serializable {
-        var prob: DoubleArray = DoubleArray(domainsIndexToValue[attribute].size)
-        var probCAndA: Array<DoubleArray> = Array(domainsIndexToValue[attribute].size) { DoubleArray(domainsIndexToValue[classAttribute].size) }
-        var probCGivenA: Array<DoubleArray> = Array(domainsIndexToValue[attribute].size) { DoubleArray(domainsIndexToValue[classAttribute].size) }
-
-    }
-
     //This is a utility class to return the certainty and threshold of continuous attributes.
     class Certainty(var certainty: Double, var threshold: Double, var certaintyClass: Double) : Serializable{
         //This is needed for versioning
@@ -708,7 +700,7 @@ class Cid3 : Serializable {
         //Initialize the array
         for (j in 0 until numAttributes) {
             //if (attributeTypes[j] == AttributeType.Ignore) continue
-            val p = Probabilities(j)
+            val p = Probabilities(j,domainsIndexToValue,classAttribute)
             probabilities[j] = p
         }
         //Count occurrences
@@ -745,7 +737,7 @@ class Cid3 : Serializable {
     //This method calculates class probabilities
     private fun calculateClassProbabilities(): Probabilities {
         val numData = root.data.size
-        val p = Probabilities(numAttributes - 1)
+        val p = Probabilities(numAttributes - 1, domainsIndexToValue, classAttribute)
         //Count occurrences
         for (point in root.data) {
             p.prob[point.attributes[numAttributes - 1]]++
