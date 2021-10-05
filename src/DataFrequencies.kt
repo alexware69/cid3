@@ -1,4 +1,3 @@
-import Cid3.DataPoint
 import java.io.Serializable
 import java.util.*
 

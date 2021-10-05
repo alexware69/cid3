@@ -59,32 +59,6 @@ class Cid3 : Serializable {
         Entropy, Certainty, Gini
     }
 
-    /*  The class to represent a data point consisting of numAttributes values of attributes  */
-    class DataPoint(numAttributes: Int) : Serializable {
-        /* The values of all attributes stored in this array.  i-th element in this array
-           is the index to the element in the vector domains representing the symbolic value of
-           the attribute.  For example, if attributes[2] is 1, then the actual value of the
-           2-nd attribute is obtained by domains[2].get(1).  This representation makes
-           comparing values of attributes easier - it involves only integer comparison and
-           no string comparison.
-           The last attribute is the output attribute
-        */
-        var attributes: IntArray = IntArray(numAttributes)
-
-        //This is needed for versioning
-        companion object {
-            private const val serialVersionUID: Long = 42L
-        }
-    }
-
-    //This is a utility class to return the certainty and threshold of continuous attributes.
-    class Certainty(var certainty: Double, var threshold: Double, var certaintyClass: Double) : Serializable{
-        //This is needed for versioning
-        companion object {
-            private const val serialVersionUID: Long = 42L
-        }
-    }
-
     @Transient
     var testData = ArrayList<DataPoint>()
 
@@ -119,33 +93,6 @@ class Cid3 : Serializable {
 
     @Transient
     var runAnimationCalculating = true
-
-    /* The class to represent a node in the decomposition tree.
-     */
-    class TreeNode : Serializable {
-        var certaintyUsedToDecompose = 0.0
-        // The set of data points if this is a leaf node
-        @Transient
-        var data: ArrayList<DataPoint> = ArrayList()
-        //This is for saving time when calculating most common class
-        lateinit var frequencyClasses: IntArray
-        // If this is not a leaf node, the attribute that is used to divide the set of data points
-        var decompositionAttribute = 0
-        // the attribute-value that is used to divide the parent node
-        var decompositionValue = 0
-        var decompositionValueContinuous = ""
-        var decompositionValueContinuousSymbol = ""
-        var thresholdContinuous = 0.0
-        // If this is not a leaf node, references to the children nodes
-        var children: ArrayList<TreeNode>? = null
-        // The parent to this node.  The root has its parent == null
-        var parent: TreeNode? = null
-
-        //This is needed for versioning
-        companion object {
-            private const val serialVersionUID: Long = 42L
-        }
-    }
 
     /*  The root of the decomposition tree  */
     var root = TreeNode()
