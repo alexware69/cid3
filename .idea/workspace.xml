@@ -22,13 +22,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="got rid of an inner class">
-      <change afterPath="$PROJECT_DIR$/src/Certainty.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DataPoint.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/TreeNode.kt" afterDir="false" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="organized the classes into separate files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataFrequencies.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFrequencies.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TreeNode.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/TreeNode.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,13 +100,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00155" summary="almost finished implementing causality">
-      <created>1618016409529</created>
-      <option name="number" value="00155" />
-      <option name="presentableId" value="LOCAL-00155" />
-      <option name="project" value="LOCAL" />
-      <updated>1618016409529</updated>
     </task>
     <task id="LOCAL-00156" summary="finished implementing causality for discrete attributes">
       <created>1618017645455</created>
@@ -447,7 +437,14 @@
       <option name="project" value="LOCAL" />
       <updated>1633416754563</updated>
     </task>
-    <option name="localTasksCounter" value="204" />
+    <task id="LOCAL-00204" summary="organized the classes into separate files">
+      <created>1633417164002</created>
+      <option name="number" value="00204" />
+      <option name="presentableId" value="LOCAL-00204" />
+      <option name="project" value="LOCAL" />
+      <updated>1633417164002</updated>
+    </task>
+    <option name="localTasksCounter" value="205" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -473,7 +470,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="enlarged filler in console output when too short" />
     <MESSAGE value="finished implementing filler whole application" />
     <MESSAGE value="fixed bug that displayed incorrect # of cases when saving" />
     <MESSAGE value="replaced the trailing dot with one smaller" />
@@ -498,7 +494,8 @@
     <MESSAGE value="cleaned up some comments" />
     <MESSAGE value="implemented serialVersionUID in subclasses" />
     <MESSAGE value="got rid of an inner class" />
-    <option name="LAST_COMMIT_MESSAGE" value="got rid of an inner class" />
+    <MESSAGE value="organized the classes into separate files" />
+    <option name="LAST_COMMIT_MESSAGE" value="organized the classes into separate files" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

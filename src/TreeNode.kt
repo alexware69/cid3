@@ -18,7 +18,7 @@ class TreeNode : Serializable {
     var decompositionValueContinuousSymbol = ""
     var thresholdContinuous = 0.0
     // If this is not a leaf node, references to the children nodes
-    var children: ArrayList<TreeNode>? = null
+    var children: ArrayList<TreeNode> = ArrayList()
     // The parent to this node.  The root has its parent == null
     var parent: TreeNode? = null
 

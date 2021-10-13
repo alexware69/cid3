@@ -711,7 +711,7 @@ class Cid3 : Serializable {
         Recursively checks the specified node as well as all parents
     */
     private fun alreadyUsedToDecompose(node: TreeNode?, attribute: Int): Boolean {
-        if (node!!.children != null) {
+        if (node!!.children.isNotEmpty()) {
             if (node.decompositionAttribute == attribute) return true
         }
         return if (node.parent == null) false else alreadyUsedToDecompose(node.parent, attribute)
@@ -828,37 +828,37 @@ class Cid3 : Serializable {
                 newNode.data = df.data
                 newNode.frequencyClasses = df.frequencyClasses
                 newNode.decompositionValue = j
-                node.children!!.add(newNode)
+                node.children.add(newNode)
             }
             // Recursively divides children nodes
             when {
                 isCrossValidation -> {
-                    for (j in node.children!!.indices) {
-                        decomposeNode(node.children!![j], selectedAttributesLocal, 0)
+                    for (j in node.children.indices) {
+                        decomposeNode(node.children[j], selectedAttributesLocal, 0)
                     }
                 }
                 isRandomForest -> {
                     val rand = Random(mySeed)
                     var randomAttribute: Int
                     val numAtt = selectedAttributesLocal.size
-                    for (j in node.children!!.indices) {
+                    for (j in node.children.indices) {
                         selectedAttributesLocal = ArrayList()
                         while (selectedAttributesLocal.size < numAtt) {
                             randomAttribute = rand.nextInt(numAttributes - 1)
                             if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore)
                                 selectedAttributesLocal.add(randomAttribute)
                         }
-                        decomposeNode(node.children!![j], selectedAttributesLocal, mySeed + 1 + j)
+                        decomposeNode(node.children[j], selectedAttributesLocal, mySeed + 1 + j)
                     }
                 }
                 else -> {
-                    for (j in 0 until node.children!!.size) {
+                    for (j in 0 until node.children.size) {
                         val selectedAttributesLocal2: ArrayList<Int> = selectedAttributesLocal
                         if (globalThreads.size < maxThreads) {
-                            val thread = Thread {decomposeNode(node.children!![j], selectedAttributesLocal2, mySeed + 1 + j) }
+                            val thread = Thread {decomposeNode(node.children[j], selectedAttributesLocal2, mySeed + 1 + j) }
                             thread.start()
                             globalThreads.add(thread)
-                        } else decomposeNode(node.children!![j], selectedAttributesLocal2, mySeed + 1 + j)
+                        } else decomposeNode(node.children[j], selectedAttributesLocal2, mySeed + 1 + j)
                     }
                 }
             }
@@ -866,7 +866,6 @@ class Cid3 : Serializable {
         //If attribute is continuous
         else {
             node.decompositionAttribute = selectedAttribute
-            node.children = ArrayList()
             var df: DataFrequencies
             //First less than threshold
             var newNode = TreeNode()
@@ -878,7 +877,7 @@ class Cid3 : Serializable {
             newNode.decompositionValueContinuous = " <= " + bestCertainty.threshold
             newNode.decompositionValueContinuousSymbol = "<="
             newNode.thresholdContinuous = bestCertainty.threshold
-            node.children!!.add(newNode)
+            node.children.add(newNode)
 
             //Then over the threshold.
             newNode = TreeNode()
@@ -889,14 +888,14 @@ class Cid3 : Serializable {
             newNode.decompositionValueContinuous = " > " + bestCertainty.threshold
             newNode.decompositionValueContinuousSymbol = ">"
             newNode.thresholdContinuous = bestCertainty.threshold
-            node.children!!.add(newNode)
+            node.children.add(newNode)
 
             //Decompose children
-            if (node.children!![0].data.isEmpty() || node.children!![1].data.isEmpty()) return
+            if (node.children[0].data.isEmpty() || node.children[1].data.isEmpty()) return
             when {
                 isCrossValidation -> {
-                    decomposeNode(node.children!![0], selectedAttributesLocal, 0)
-                    decomposeNode(node.children!![1], selectedAttributesLocal, 0)
+                    decomposeNode(node.children[0], selectedAttributesLocal, 0)
+                    decomposeNode(node.children[1], selectedAttributesLocal, 0)
                 }
                 isRandomForest -> {
                     val rand = Random(mySeed)
@@ -908,28 +907,28 @@ class Cid3 : Serializable {
                         if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore)
                             selectedAttributesLocal.add(randomAttribute)
                     }
-                    decomposeNode(node.children!![0], selectedAttributesLocal, mySeed + 1)
+                    decomposeNode(node.children[0], selectedAttributesLocal, mySeed + 1)
                     selectedAttributesLocal = ArrayList()
                     while (selectedAttributesLocal.size < numAtt) {
                         randomAttribute = rand.nextInt(numAttributes - 1)
                         if (!selectedAttributesLocal.contains(randomAttribute) && attributeTypes[randomAttribute] != AttributeType.Ignore)
                             selectedAttributesLocal.add(randomAttribute)
                     }
-                    decomposeNode(node.children!![1], selectedAttributesLocal, mySeed + 2)
+                    decomposeNode(node.children[1], selectedAttributesLocal, mySeed + 2)
                 }
                 else -> {
                     val selectedAttributesLocal2: ArrayList<Int> = selectedAttributesLocal
                     if (globalThreads.size < maxThreads) {
-                        val thread = Thread {decomposeNode(node.children!![0], selectedAttributesLocal2, mySeed + 1)}
+                        val thread = Thread {decomposeNode(node.children[0], selectedAttributesLocal2, mySeed + 1)}
                         thread.start()
                         globalThreads.add(thread)
-                    } else decomposeNode(node.children!![0], selectedAttributesLocal2, mySeed + 1)
+                    } else decomposeNode(node.children[0], selectedAttributesLocal2, mySeed + 1)
 
                     if (globalThreads.size < maxThreads) {
-                        val thread = Thread {decomposeNode(node.children!![1], selectedAttributesLocal2, mySeed + 2)}
+                        val thread = Thread {decomposeNode(node.children[1], selectedAttributesLocal2, mySeed + 2)}
                         thread.start()
                         globalThreads.add(thread)
-                    } else decomposeNode(node.children!![1], selectedAttributesLocal2, mySeed + 2)
+                    } else decomposeNode(node.children[1], selectedAttributesLocal2, mySeed + 2)
 
                     //decomposeNode(node.children!![0], selectedAttributesLocal, mySeed + 1)
                     //decomposeNode(node.children!![1], selectedAttributesLocal, mySeed + 2)
@@ -1349,13 +1348,13 @@ class Cid3 : Serializable {
     */
     private fun countNodes(node: TreeNode) {
         if (node.data.isNotEmpty()) totalNodes++
-        if (node.children == null) {
+        if (node.children.isEmpty()) {
             if (node.data.isNotEmpty()) totalRules++
             return
         }
-        val numValues = node.children!!.size
+        val numValues = node.children.size
         for (i in 0 until numValues) {
-            countNodes(node.children!![i])
+            countNodes(node.children[i])
         }
     }
 
@@ -1841,13 +1840,13 @@ class Cid3 : Serializable {
         val attributeRealValue: Double
         val splitAttribute: Int = nodeLocal.decompositionAttribute
         attributeValue = example.attributes[splitAttribute]
-        if (nodeLocal.children == null || nodeLocal.children!!.isEmpty()) return nodeLocal
+        if (nodeLocal.children.isEmpty()) return nodeLocal
 
         //Check if attribute is discrete
         if (attributeTypes[splitAttribute] == AttributeType.Discrete) {
-            for (i in nodeLocal.children!!.indices) {
-                if (nodeLocal.children!![i].decompositionValue == attributeValue) {
-                    nodeLocal = nodeLocal.children!![i]
+            for (i in nodeLocal.children.indices) {
+                if (nodeLocal.children[i].decompositionValue == attributeValue) {
+                    nodeLocal = nodeLocal.children[i]
                     break
                 }
             }
@@ -1855,9 +1854,9 @@ class Cid3 : Serializable {
         //Check if attribute is continuous
         if (attributeTypes[splitAttribute] == AttributeType.Continuous) {
             attributeRealValue = (domainsIndexToValue[splitAttribute][example.attributes[splitAttribute]])!!.toDouble()
-            nodeLocal = if (attributeRealValue <= nodeLocal.children!![0].thresholdContinuous) {
-                nodeLocal.children!![0]
-            } else nodeLocal.children!![1]
+            nodeLocal = if (attributeRealValue <= nodeLocal.children[0].thresholdContinuous) {
+                nodeLocal.children[0]
+            } else nodeLocal.children[1]
         }
         return testExamplePoint(example, nodeLocal)
     }
@@ -2387,7 +2386,7 @@ class Cid3 : Serializable {
 
             var currentNode = id3.root
             var attributeValue = 0
-            while (!(currentNode.children == null || currentNode.children!!.isEmpty())) {
+            while (currentNode.children.isNotEmpty()) {
                 //If attribute is discrete, show all possible values for it
                 if (id3.attributeTypes[currentNode.decompositionAttribute] == AttributeType.Discrete) {
                     print("Please enter attribute: " + id3.attributeNames[currentNode.decompositionAttribute])
@@ -2419,27 +2418,27 @@ class Cid3 : Serializable {
                         }
                     }
                 }
-                for (i in currentNode.children!!.indices) {
+                for (i in currentNode.children.indices) {
                     //Check if attribute is continuous
                     if (id3.attributeTypes[currentNode.decompositionAttribute] == AttributeType.Continuous) {
-                        if (currentNode.children!![i].decompositionValueContinuousSymbol == "<=") {
-                            print("Is attribute: " + id3.attributeNames[currentNode.decompositionAttribute] + " <= " + currentNode.children!![i].thresholdContinuous + " ? (y/n/?)")
+                        if (currentNode.children[i].decompositionValueContinuousSymbol == "<=") {
+                            print("Is attribute: " + id3.attributeNames[currentNode.decompositionAttribute] + " <= " + currentNode.children[i].thresholdContinuous + " ? (y/n/?)")
                             print("\n")
                             val s = `in`.nextLine()
                             if (s == "y" || s == "Y" || s == "yes" || s == "Yes" || s == "YES" || s == "n" || s == "N" || s == "no" || s == "No" || s == "NO" || s == "?") {
                                 if (s == "y" || s == "Y" || s == "yes" || s == "Yes" || s == "YES") {
-                                    currentNode = currentNode.children!![i]
+                                    currentNode = currentNode.children[i]
                                     break
                                 } else if (s == "?") {
                                     val mean = id3.meanValues[currentNode.decompositionAttribute]
-                                    currentNode = if (mean <= currentNode.children!![i].thresholdContinuous) {
-                                        currentNode.children!![i]
+                                    currentNode = if (mean <= currentNode.children[i].thresholdContinuous) {
+                                        currentNode.children[i]
                                     } else {
-                                        currentNode.children!![i + 1]
+                                        currentNode.children[i + 1]
                                     }
                                     break
                                 } else {
-                                    currentNode = currentNode.children!![i + 1]
+                                    currentNode = currentNode.children[i + 1]
                                     break
                                 }
                             } else {
@@ -2449,8 +2448,8 @@ class Cid3 : Serializable {
                                 exitProcess(1)
                             }
                         }
-                    } else if (currentNode.children!![i].decompositionValue == attributeValue) {
-                        currentNode = currentNode.children!![i]
+                    } else if (currentNode.children[i].decompositionValue == attributeValue) {
+                        currentNode = currentNode.children[i]
                         break
                     }
                 }
