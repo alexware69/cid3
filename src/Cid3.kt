@@ -8,6 +8,7 @@ import java.util.*
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 import javax.sound.sampled.AudioSystem
+import kotlin.collections.ArrayList
 import kotlin.math.*
 import kotlin.system.exitProcess
 
@@ -21,8 +22,8 @@ class Cid3 : Serializable {
     // The number of attributes including the output attribute
     private var numAttributes = 0
     // The names of all attributes.  It is an array of dimension numAttributes.  The last attribute is the output attribute
-    private lateinit var attributeNames: Array<String?>
-    private lateinit var attributeTypes: Array<AttributeType?>
+    private lateinit var attributeNames: ArrayList<String>
+    private lateinit var attributeTypes: ArrayList<AttributeType>
     private var classAttribute = 0
     private lateinit var meanValues: DoubleArray
     private lateinit var mostCommonValues: IntArray
@@ -194,17 +195,17 @@ class Cid3 : Serializable {
             var probability: Double
             var probabilityCAndA: Double
             for (j in 0 until numValuesGivenAtt) {
-                probability = probabilities[givenThatAttribute]!!.prob[j]
+                probability = probabilities[givenThatAttribute].prob[j]
                 sum = 0.0
                 for (i in 0 until numValuesClass) {
-                    probabilityCAndA = probabilities[givenThatAttribute]!!.probCAndA[j][i]
+                    probabilityCAndA = probabilities[givenThatAttribute].probCAndA[j][i]
                     sum += abs(probabilityCAndA - 1.0 * probability / numValuesClass)
                 }
                 sum2 += sum
             }
             //Calculate class certainty
             for (i in 0 until numValuesClass) {
-                probability = probabilities[classAttribute]!!.prob[i]
+                probability = probabilities[classAttribute].prob[i]
                 sumClass += abs(probability - 1.0 * 1 / numValuesClass)
             }
             Certainty(sum2, 0.0, sumClass)
@@ -353,10 +354,10 @@ class Cid3 : Serializable {
             var probability: Double
             var probabilityCGivenA: Double
             for (j in 0 until numValuesGivenAtt) {
-                probability = probabilities[givenThatAttribute]!!.prob[j]
+                probability = probabilities[givenThatAttribute].prob[j]
                 sum = 0.0
                 for (i in 0 until numValuesClass) {
-                    probabilityCGivenA = probabilities[givenThatAttribute]!!.probCGivenA[j][i]
+                    probabilityCGivenA = probabilities[givenThatAttribute].probCGivenA[j][i]
                     if (probabilityCGivenA != 0.0) sum += -probabilityCGivenA * ln(probabilityCGivenA)
                 }
                 sum2 += probability * sum
@@ -502,10 +503,10 @@ class Cid3 : Serializable {
             var probabilityCGivenA: Double
             var gini: Double
             for (j in 0 until numValuesGivenAtt) {
-                probability = probabilities[givenThatAttribute]!!.prob[j]
+                probability = probabilities[givenThatAttribute].prob[j]
                 sum = 0.0
                 for (i in 0 until numValuesClass) {
-                    probabilityCGivenA = probabilities[givenThatAttribute]!!.probCGivenA[j][i]
+                    probabilityCGivenA = probabilities[givenThatAttribute].probCGivenA[j][i]
                     sum += probabilityCGivenA.pow(2.0)
                 }
                 gini = 1 - sum
@@ -640,30 +641,30 @@ class Cid3 : Serializable {
     }
 
     //This method calculates all probabilities in one run
-    private fun calculateAllProbabilities(data: ArrayList<DataPoint>): Array<Probabilities?> {
+    private fun calculateAllProbabilities(data: ArrayList<DataPoint>): ArrayList<Probabilities> {
         val numData = data.size
-        val probabilities = arrayOfNulls<Probabilities>(numAttributes)
+        val probabilities = ArrayList<Probabilities>(numAttributes)
 
         //Initialize the array
         for (j in 0 until numAttributes) {
             //if (attributeTypes[j] == AttributeType.Ignore) continue
             val p = Probabilities(j,domainsIndexToValue,classAttribute)
-            probabilities[j] = p
+            probabilities.add(p)
         }
         //Count occurrences
         for (point in data) {
             for (j in point.attributes.indices) {
                 if (attributeTypes[j] == AttributeType.Ignore) continue
-                probabilities[j]!!.prob[point.attributes[j]]++
-                probabilities[j]!!.probCAndA[point.attributes[j]][point.attributes[classAttribute]]++
+                probabilities[j].prob[point.attributes[j]]++
+                probabilities[j].probCAndA[point.attributes[j]][point.attributes[classAttribute]]++
             }
         }
         // Divide all values by total data size to get probabilities.
-        var current: Probabilities?
+        var current: Probabilities
         for (i in probabilities.indices) {
             if (attributeTypes[i] == AttributeType.Ignore) continue
             current = probabilities[i]
-            for (j in current!!.prob.indices) {
+            for (j in current.prob.indices) {
                 current.prob[j] = current.prob[j] / numData
             }
             for (j in current.probCAndA.indices) {
@@ -1315,30 +1316,30 @@ class Cid3 : Serializable {
         }
 
         //Set attributeNames. They should be in the same order as they appear in the data. +1 for the class
-        attributeNames = arrayOfNulls(numAttributes)
+        attributeNames = ArrayList(numAttributes)
         for (i in 0 until numAttributes - 1) {
             val t = attributes[i]
-            attributeNames[i] = t.first
+            attributeNames.add(t.first)
         }
 
         //Set the class. For now all class attribute names are the same: Class.
-        attributeNames[numAttributes - 1] = "Class"
+        attributeNames.add(numAttributes - 1, "Class")
 
         //Initialize attributeTypes.
-        attributeTypes = arrayOfNulls(numAttributes)
+        attributeTypes = ArrayList(numAttributes)
 
         //Set the attribute types.
         for (i in 0 until numAttributes - 1) {
             val attribute = attributes[i]
             when (attribute.second.trim { it <= ' ' }) {
-                "continuous." -> attributeTypes[i] = AttributeType.Continuous
-                "ignore." -> attributeTypes[i] = AttributeType.Ignore
-                else -> attributeTypes[i] = AttributeType.Discrete
+                "continuous." -> attributeTypes.add(AttributeType.Continuous)
+                "ignore." -> attributeTypes.add(AttributeType.Ignore)
+                else -> attributeTypes.add(AttributeType.Discrete)
             }
         }
 
         //Set attribute type for the class.
-        attributeTypes[numAttributes - 1] = AttributeType.Discrete
+        attributeTypes.add(numAttributes - 1, AttributeType.Discrete)
     }
 
     //-----------------------------------------------------------------------
@@ -1511,8 +1512,8 @@ class Cid3 : Serializable {
         longestString = ""
         for ((i, element) in sortedList.withIndex()){
             if (i > 99) break
-            val attName: String? = attributeNames[element.first]
-            if (attName != null && longestString != null)
+            val attName: String = attributeNames[element.first]
+            if (longestString != null)
                 if (attName.length > longestString.length) longestString = attName
         }
         if (longestString!!.length < 14) longestString = "--------------"
@@ -1532,9 +1533,9 @@ class Cid3 : Serializable {
                         val rounded = String.format("%.2f", sortedList[i].second)
                         val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
                         else "no"
-                        val fillerSize = longestString.length - attributeNames[sortedList[i].first]!!.length + 1
+                        val fillerSize = longestString.length - attributeNames[sortedList[i].first].length + 1
                         val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                        fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + attributeNames[sortedList[i].first]!!.length.toString() + "s%n"
+                        fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + attributeNames[sortedList[i].first].length.toString() + "s%n"
                         console.format(fmt, rounded, isCause, filler, attributeNames[sortedList[i].first])
                     }
                 }
@@ -1782,8 +1783,8 @@ class Cid3 : Serializable {
             longestString = ""
             for ((i, element) in sortedList.withIndex()){
                 if (i > 99) break
-                val attName: String? = attributeNames[element.first]
-                if (attName != null && longestString != null)
+                val attName: String = attributeNames[element.first]
+                if (longestString != null)
                     if (attName.length > longestString.length) longestString = attName
             }
             if (longestString!!.length < 14) longestString = "--------------"
@@ -1803,9 +1804,9 @@ class Cid3 : Serializable {
                             val rounded = String.format("%.2f", sortedList[i].second)
                             val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
                             else "no"
-                            val fillerSize = longestString.length - attributeNames[sortedList[i].first]!!.length + 1
+                            val fillerSize = longestString.length - attributeNames[sortedList[i].first].length + 1
                             val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                            fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + attributeNames[sortedList[i].first]!!.length.toString() + "s%n"
+                            fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + attributeNames[sortedList[i].first].length.toString() + "s%n"
                             console.format(fmt, rounded, isCause, filler, attributeNames[sortedList[i].first])
                         }
                     }
@@ -2342,8 +2343,8 @@ class Cid3 : Serializable {
             longestString = ""
             for ((i, element) in sortedList.withIndex()){
                 if (i > 99) break
-                val attName: String? = id3.attributeNames[element.first]
-                if (attName != null && longestString != null)
+                val attName: String = id3.attributeNames[element.first]
+                if (longestString != null)
                     if (attName.length > longestString.length) longestString = attName
             }
             if (longestString!!.length < 14) longestString = "--------------"
@@ -2363,9 +2364,9 @@ class Cid3 : Serializable {
                             val rounded = String.format("%.2f", sortedList[i].second)
                             val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
                             else "no"
-                            val fillerSize = longestString.length - id3.attributeNames[sortedList[i].first]!!.length + 1
+                            val fillerSize = longestString.length - id3.attributeNames[sortedList[i].first].length + 1
                             val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                            fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + id3.attributeNames[sortedList[i].first]!!.length.toString() + "s%n"
+                            fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + id3.attributeNames[sortedList[i].first].length.toString() + "s%n"
                             console.format(fmt, rounded, isCause, filler, id3.attributeNames[sortedList[i].first])
                         }
                     }
@@ -2720,8 +2721,8 @@ class Cid3 : Serializable {
             longestString = ""
             for ((i, element) in sortedList.withIndex()){
                 if (i > 99) break
-                val attName: String? = id3.attributeNames[element.first]
-                if (attName != null && longestString != null)
+                val attName: String = id3.attributeNames[element.first]
+                if (longestString != null)
                     if (attName.length > longestString.length) longestString = attName
             }
             if (longestString!!.length < 14) longestString = "--------------"
@@ -2741,9 +2742,9 @@ class Cid3 : Serializable {
                             val rounded = String.format("%.2f", sortedList[i].second)
                             val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
                             else "no"
-                            val fillerSize = longestString.length - id3.attributeNames[sortedList[i].first]!!.length + 1
+                            val fillerSize = longestString.length - id3.attributeNames[sortedList[i].first].length + 1
                             val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                            fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + id3.attributeNames[sortedList[i].first]!!.length.toString() + "s%n"
+                            fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + id3.attributeNames[sortedList[i].first].length.toString() + "s%n"
                             console.format(fmt, rounded, isCause, filler, id3.attributeNames[sortedList[i].first])
                         }
                     }

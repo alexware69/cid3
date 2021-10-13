@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="thorough cleanup of unnecessary nulls">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="removed unnecessary code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -82,7 +82,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/pacific -q t" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/german -r 55" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00157" summary="fixed a bug in calculateProbabilities function">
-      <created>1618020397042</created>
-      <option name="number" value="00157" />
-      <option name="presentableId" value="LOCAL-00157" />
-      <option name="project" value="LOCAL" />
-      <updated>1618020397042</updated>
     </task>
     <task id="LOCAL-00158" summary="finished causes for discrete attributes">
       <created>1618020780502</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1634089676778</updated>
     </task>
-    <option name="localTasksCounter" value="206" />
+    <task id="LOCAL-00206" summary="removed unnecessary code">
+      <created>1634091746330</created>
+      <option name="number" value="00206" />
+      <option name="presentableId" value="LOCAL-00206" />
+      <option name="project" value="LOCAL" />
+      <updated>1634091746330</updated>
+    </task>
+    <option name="localTasksCounter" value="207" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed bug that displayed incorrect # of cases when saving" />
     <MESSAGE value="replaced the trailing dot with one smaller" />
     <MESSAGE value="included current year in console output" />
     <MESSAGE value="halt when unseen attribute values present in test set" />
@@ -494,7 +493,8 @@
     <MESSAGE value="got rid of an inner class" />
     <MESSAGE value="organized the classes into separate files" />
     <MESSAGE value="thorough cleanup of unnecessary nulls" />
-    <option name="LAST_COMMIT_MESSAGE" value="thorough cleanup of unnecessary nulls" />
+    <MESSAGE value="removed unnecessary code" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed unnecessary code" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
