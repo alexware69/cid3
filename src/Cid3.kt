@@ -818,7 +818,6 @@ class Cid3 : Serializable {
             // Now divide the dataset using the selected attribute
             val numValues = domainsIndexToValue[selectedAttribute].size
             node.decompositionAttribute = selectedAttribute
-            node.children = ArrayList()
             var df: DataFrequencies
             for (j in 0 until numValues) {
                 if (domainsIndexToValue[selectedAttribute][j] == null || domainsIndexToValue[selectedAttribute][j] == "?") continue
