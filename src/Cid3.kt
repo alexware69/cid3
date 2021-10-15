@@ -1119,7 +1119,7 @@ class Cid3 : Serializable {
             root.frequencyClasses = newArray
         }
         readTestDataMessage = "Read data: " + testData.size + " cases for testing. "
-        print(readTestDataMessage)
+        //print(readTestDataMessage)
         //print("\n")
     }
 
@@ -1232,7 +1232,7 @@ class Cid3 : Serializable {
             print("\r" + "[ * ] Read data: " + testData.size + " cases for testing.")
         } else {
             readDataMessage = "Read data: " + root.data.size + " cases for training. ($na attributes)"
-            print(readDataMessage)
+            //print(readDataMessage)
         }
         //print("\n")
     } // End of function readData

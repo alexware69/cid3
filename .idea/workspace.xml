@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="improved implementing Done (*) message">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="fixed a bug implementing Done (*) message">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00162" summary="renamed &quot;Cause&quot; with &quot;Key&quot;">
-      <created>1618075019864</created>
-      <option name="number" value="00162" />
-      <option name="presentableId" value="LOCAL-00162" />
-      <option name="project" value="LOCAL" />
-      <updated>1618075019865</updated>
     </task>
     <task id="LOCAL-00163" summary="replaced Tuples and Triplets with Pairs and Triples">
       <created>1618120215364</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1634267901547</updated>
     </task>
-    <option name="localTasksCounter" value="211" />
+    <task id="LOCAL-00211" summary="fixed a bug implementing Done (*) message">
+      <created>1634269999392</created>
+      <option name="number" value="00211" />
+      <option name="presentableId" value="LOCAL-00211" />
+      <option name="project" value="LOCAL" />
+      <updated>1634269999392</updated>
+    </task>
+    <option name="localTasksCounter" value="212" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="replaced car crash sound with funny... it is cool!" />
     <MESSAGE value="added animation to console" />
     <MESSAGE value="still working on animation to console" />
     <MESSAGE value="still working on animation to console (2)" />
@@ -494,7 +493,8 @@
     <MESSAGE value="started implementing Done (*) message" />
     <MESSAGE value="finished implementing Done (*) message" />
     <MESSAGE value="improved implementing Done (*) message" />
-    <option name="LAST_COMMIT_MESSAGE" value="improved implementing Done (*) message" />
+    <MESSAGE value="fixed a bug implementing Done (*) message" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed a bug implementing Done (*) message" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
