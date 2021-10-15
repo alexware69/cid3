@@ -113,12 +113,6 @@ class Cid3 : Serializable {
     @Transient
     var totalNodes = 0
 
-    @Transient
-    var readDataMessage = ""
-
-    @Transient
-    var readTestDataMessage = ""
-
     /*  This function returns an integer corresponding to the symbolic value of the attribute.
         If the symbol does not exist in the domain, the symbol is added to the domain of the attribute
     */
@@ -1118,9 +1112,9 @@ class Cid3 : Serializable {
             System.arraycopy(root.frequencyClasses, 0, newArray, 0, root.frequencyClasses.size)
             root.frequencyClasses = newArray
         }
-        readTestDataMessage = "Read data: " + testData.size + " cases for testing. "
-        //print(readTestDataMessage)
-        //print("\n")
+
+        print("\r" + "[ * ] " + "Read data: " + testData.size + " cases for testing. ")
+        print("\n")
     }
 
     /* Function to read the data file.
@@ -1227,14 +1221,13 @@ class Cid3 : Serializable {
         trainData = root.data
         val na = numAttributes - 1
         if (splitTrainData && !testDataExists) {
-            print("\r" + "[ * ] Read data: " + root.data.size + " cases for training. ($na attributes)")
+            print("\r" + "[ * ] " + "Read data: " + root.data.size + " cases for training. ($na attributes)")
             print("\n")
-            print("\r" + "[ * ] Read data: " + testData.size + " cases for testing.")
+            print("\r" + "[ * ] " + "Read data: " + testData.size + " cases for testing.")
         } else {
-            readDataMessage = "Read data: " + root.data.size + " cases for training. ($na attributes)"
-            //print(readDataMessage)
+            print("\r" + "[ * ] " + "Read data: " + root.data.size + " cases for training. ($na attributes)")
         }
-        //print("\n")
+        print("\n")
     } // End of function readData
 
     private fun readNames(filename: String) {
@@ -3060,7 +3053,6 @@ class Cid3 : Serializable {
                 }
             }
             else {
-                //print("\u001B[?25l")   // hide the cursor
                 //Check if test data exists
                 if (!inputFilePath.endsWith(".data")) inputFilePath += ".data"
                 var nameTestData = inputFilePath.substring(0, inputFilePath.length - 4)
@@ -3068,8 +3060,14 @@ class Cid3 : Serializable {
                 val inputFile = File(nameTestData)
                 me.testDataExists = inputFile.exists()
 
-                val consoleHelperReading = ConsoleHelper()
+                //Set global variable
+                me.fileName = inputFilePath
+
+                //Read names file
+                me.readNames(inputFilePath)
+
                 //Print animation for data reading
+                val consoleHelperReading = ConsoleHelper()
                 val threadReading = Thread {
                     while(me.runAnimationReading) {
                         consoleHelperReading.animate()
@@ -3078,30 +3076,19 @@ class Cid3 : Serializable {
                 }
                 threadReading.priority = Thread.MAX_PRIORITY
                 threadReading.start()
-
-                //Read names file
-                me.readNames(inputFilePath)
-
                 //Read data
                 me.readData(inputFilePath)
                 //Stop the animation
                 me.runAnimationReading = false
-                //Wait for the thread to finish
-                threadReading.join()
-                print("\r" + "[ * ] " + me.readDataMessage)
-                print("\n")
-                //Set global variable
-                me.fileName = inputFilePath
 
-                val consoleHelperReadingTest = ConsoleHelper()
                 //Print animation for data reading
+                val consoleHelperReadingTest = ConsoleHelper()
                 val threadReadingTest = Thread {
                     while(me.runAnimationReadingTest) {
                         consoleHelperReadingTest.animate()
                         Thread.sleep(500)
                     }
                 }
-
                 //Read test data
                 if (me.testDataExists) {
                     threadReadingTest.priority = Thread.MAX_PRIORITY
@@ -3109,14 +3096,10 @@ class Cid3 : Serializable {
                     me.readTestData(nameTestData)
                     //Stop the animation
                     me.runAnimationReadingTest = false
-                    //Wait for the thread to finish
-                    threadReadingTest.join()
-                    print("\r" + "[ * ] " + me.readTestDataMessage)
-                    print("\n")
                 }
 
+                //Print animation for creating calculations
                 val consoleHelperCalculating = ConsoleHelper()
-                //Print animation for creation
                 val threadCalculating = Thread {
                     while(me.runAnimationCalculating) {
                         consoleHelperCalculating.animate()
@@ -3173,7 +3156,6 @@ class Cid3 : Serializable {
                     else me.createDecisionTree()
                 }
                 me.playSound()
-                //print("\u001B[?25h") // restore the cursor
             }
         }
     }
