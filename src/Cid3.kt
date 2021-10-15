@@ -113,6 +113,15 @@ class Cid3 : Serializable {
     @Transient
     var totalNodes = 0
 
+    @Transient
+    var readDataMessage = ""
+
+    @Transient
+    var readTestDataMessage = ""
+
+    @Transient
+    var calculatingMessage = ""
+
     /*  This function returns an integer corresponding to the symbolic value of the attribute.
         If the symbol does not exist in the domain, the symbol is added to the domain of the attribute
     */
@@ -1112,8 +1121,9 @@ class Cid3 : Serializable {
             System.arraycopy(root.frequencyClasses, 0, newArray, 0, root.frequencyClasses.size)
             root.frequencyClasses = newArray
         }
-        print("Read data: " + testData.size + " cases for testing. ")
-        print("\n")
+        readTestDataMessage = "Read data: " + testData.size + " cases for testing. "
+        print(readTestDataMessage)
+        //print("\n")
     }
 
     /* Function to read the data file.
@@ -1223,8 +1233,11 @@ class Cid3 : Serializable {
             print("Read data: " + root.data.size + " cases for training. ($na attributes)")
             print("\n")
             print("[ - ] Read data: " + testData.size + " cases for testing.")
-        } else print("Read data: " + root.data.size + " cases for training. ($na attributes)")
-        print("\n")
+        } else {
+            readDataMessage = "Read data: " + root.data.size + " cases for training. ($na attributes)"
+            print(readDataMessage)
+        }
+        //print("\n")
     } // End of function readData
 
     private fun readNames(filename: String) {
@@ -1492,7 +1505,7 @@ class Cid3 : Serializable {
             }
         }
         //print("\n")
-        print("Decision tree created.")
+        print("\r" + "[ * ] " + "Decision tree created.")
         //Stop the animation
         runAnimationCalculating = false
         print("\n")
@@ -1638,7 +1651,7 @@ class Cid3 : Serializable {
             if (!threads[threads.size - 1].isAlive) threads.removeAt(threads.size - 1)
         }
         //print("\n")
-        print("10-fold cross-validation created with " + root.data.size + " cases.")
+        print("\r" + "[ * ] " + "10-fold cross-validation created with " + root.data.size + " cases.")
         //Stop the animation
         runAnimationCalculating = false
         print("\n")
@@ -1715,7 +1728,7 @@ class Cid3 : Serializable {
             createRandomForest(trainData, cvRandomForests[i], true)
         }
         //print("\n")
-        print("10-fold Random Forests cross-validation created with " + root.data.size + " cases.")
+        print("\r" + "[ * ] " + "10-fold Random Forests cross-validation created with " + root.data.size + " cases.")
         //Stop the animation
         runAnimationCalculating = false
         print("\n")
@@ -1770,7 +1783,7 @@ class Cid3 : Serializable {
         }
         if (!cv) {
             //print("\n")
-            print("Random Forest of " + roots.size + " trees created.")
+            print("\r" + "[ * ] " + "Random Forest of " + roots.size + " trees created.")
             //Stop the animation
             runAnimationCalculating = false
             print("\n")
@@ -3076,9 +3089,10 @@ class Cid3 : Serializable {
                 me.readData(inputFilePath)
                 //Stop the animation
                 me.runAnimationReading = false
-                //print("\r [ * ]")
-
-
+                while (threadReading.isAlive) {
+                }
+                print("\r" + "[ * ] " + me.readDataMessage)
+                print("\n")
                 //Set global variable
                 me.fileName = inputFilePath
 
@@ -3098,7 +3112,10 @@ class Cid3 : Serializable {
                     me.readTestData(nameTestData)
                     //Stop the animation
                     me.runAnimationReadingTest = false
-                    //print("\r [ * ]")
+                    while (threadReadingTest.isAlive) {
+                    }
+                    print("\r" + "[ * ] " + me.readTestDataMessage)
+                    print("\n")
                 }
 
                 val consoleHelperCalculating = ConsoleHelper()

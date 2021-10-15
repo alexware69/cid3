@@ -22,10 +22,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="converted Arrays to ArrayLists to eliminate nulls check">
-      <change afterPath="$PROJECT_DIR$/src/ConsoleHelper.kt" afterDir="false" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="started implementing Done (*) message">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ConsoleHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +82,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/german -r 55" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/arcene" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -100,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00159" summary="finished causes for continuous attributes">
-      <created>1618021895163</created>
-      <option name="number" value="00159" />
-      <option name="presentableId" value="LOCAL-00159" />
-      <option name="project" value="LOCAL" />
-      <updated>1618021895163</updated>
     </task>
     <task id="LOCAL-00160" summary="finished causes...need to optimize for continuous atts">
       <created>1618027244638</created>
@@ -444,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1634120722120</updated>
     </task>
-    <option name="localTasksCounter" value="208" />
+    <task id="LOCAL-00208" summary="converted java file to Kotlin">
+      <created>1634260815325</created>
+      <option name="number" value="00208" />
+      <option name="presentableId" value="LOCAL-00208" />
+      <option name="project" value="LOCAL" />
+      <updated>1634260815325</updated>
+    </task>
+    <option name="localTasksCounter" value="209" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -470,8 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="included current year in console output" />
-    <MESSAGE value="halt when unseen attribute values present in test set" />
     <MESSAGE value="showing correct statistics when querying trees and RF" />
     <MESSAGE value="added car crash sound again...it is cool!" />
     <MESSAGE value="replaced car crash sound with funny... it is cool!" />
@@ -495,7 +492,9 @@
     <MESSAGE value="thorough cleanup of unnecessary nulls" />
     <MESSAGE value="removed unnecessary code" />
     <MESSAGE value="converted Arrays to ArrayLists to eliminate nulls check" />
-    <option name="LAST_COMMIT_MESSAGE" value="converted Arrays to ArrayLists to eliminate nulls check" />
+    <MESSAGE value="converted java file to Kotlin" />
+    <MESSAGE value="started implementing Done (*) message" />
+    <option name="LAST_COMMIT_MESSAGE" value="started implementing Done (*) message" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
