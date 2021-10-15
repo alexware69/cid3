@@ -1,37 +1,29 @@
-public class ConsoleHelper {
-    private String lastLine = "";
-
-    public void print(String line) {
+class ConsoleHelper {
+    private var lastLine = ""
+    private fun print(line: String) {
         //clear the last line if longer
-        if (lastLine.length() > line.length()) {
-            String temp = "";
-            for (int i = 0; i < lastLine.length(); i++) {
-                temp += " ";
+        if (lastLine.length > line.length) {
+            var temp = ""
+            for (i in lastLine.indices) {
+                temp += " "
             }
-            if (temp.length() > 1)
-                System.out.print("\r" + temp);
+            if (temp.length > 1) kotlin.io.print("\r" + temp)
         }
-        System.out.print("\r" + line);
-        lastLine = line;
+        kotlin.io.print("\r" + line)
+        lastLine = line
     }
 
-    private byte anim;
-
-    public void animate() {
-        switch (anim) {
-            case 1:
-                print("[ \\ ] ");
-                break;
-            case 2:
-                print("[ | ] ");
-                break;
-            case 3:
-                print("[ / ] ");
-                break;
-            default:
-                anim = 0;
-                print("[ ─ ] ");
+    private var anim: Int = 0
+    fun animate() {
+        when (anim) {
+            1 -> print("[ \\ ] ")
+            2 -> print("[ | ] ")
+            3 -> print("[ / ] ")
+            else -> {
+                anim = 0
+                print("[ ─ ] ")
+            }
         }
-        anim++;
+        anim++
     }
 }

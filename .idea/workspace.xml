@@ -22,9 +22,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="removed unnecessary code">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="converted Arrays to ArrayLists to eliminate nulls check">
+      <change afterPath="$PROJECT_DIR$/src/ConsoleHelper.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ConsoleHelper.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,13 +100,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00158" summary="finished causes for discrete attributes">
-      <created>1618020780502</created>
-      <option name="number" value="00158" />
-      <option name="presentableId" value="LOCAL-00158" />
-      <option name="project" value="LOCAL" />
-      <updated>1618020780502</updated>
     </task>
     <task id="LOCAL-00159" summary="finished causes for continuous attributes">
       <created>1618021895163</created>
@@ -443,7 +437,14 @@
       <option name="project" value="LOCAL" />
       <updated>1634091746330</updated>
     </task>
-    <option name="localTasksCounter" value="207" />
+    <task id="LOCAL-00207" summary="converted Arrays to ArrayLists to eliminate nulls check">
+      <created>1634120722120</created>
+      <option name="number" value="00207" />
+      <option name="presentableId" value="LOCAL-00207" />
+      <option name="project" value="LOCAL" />
+      <updated>1634120722120</updated>
+    </task>
+    <option name="localTasksCounter" value="208" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +470,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="replaced the trailing dot with one smaller" />
     <MESSAGE value="included current year in console output" />
     <MESSAGE value="halt when unseen attribute values present in test set" />
     <MESSAGE value="showing correct statistics when querying trees and RF" />
@@ -494,7 +494,8 @@
     <MESSAGE value="organized the classes into separate files" />
     <MESSAGE value="thorough cleanup of unnecessary nulls" />
     <MESSAGE value="removed unnecessary code" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed unnecessary code" />
+    <MESSAGE value="converted Arrays to ArrayLists to eliminate nulls check" />
+    <option name="LAST_COMMIT_MESSAGE" value="converted Arrays to ArrayLists to eliminate nulls check" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
