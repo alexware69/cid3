@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="finished implementing Done (*) message">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="improved implementing Done (*) message">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00161" summary="finished optimizind causes for continuous atts">
-      <created>1618049285695</created>
-      <option name="number" value="00161" />
-      <option name="presentableId" value="LOCAL-00161" />
-      <option name="project" value="LOCAL" />
-      <updated>1618049285695</updated>
     </task>
     <task id="LOCAL-00162" summary="renamed &quot;Cause&quot; with &quot;Key&quot;">
       <created>1618075019864</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1634267411559</updated>
     </task>
-    <option name="localTasksCounter" value="210" />
+    <task id="LOCAL-00210" summary="improved implementing Done (*) message">
+      <created>1634267901547</created>
+      <option name="number" value="00210" />
+      <option name="presentableId" value="LOCAL-00210" />
+      <option name="project" value="LOCAL" />
+      <updated>1634267901547</updated>
+    </task>
+    <option name="localTasksCounter" value="211" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added car crash sound again...it is cool!" />
     <MESSAGE value="replaced car crash sound with funny... it is cool!" />
     <MESSAGE value="added animation to console" />
     <MESSAGE value="still working on animation to console" />
@@ -494,7 +493,8 @@
     <MESSAGE value="converted java file to Kotlin" />
     <MESSAGE value="started implementing Done (*) message" />
     <MESSAGE value="finished implementing Done (*) message" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished implementing Done (*) message" />
+    <MESSAGE value="improved implementing Done (*) message" />
+    <option name="LAST_COMMIT_MESSAGE" value="improved implementing Done (*) message" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

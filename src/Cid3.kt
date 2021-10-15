@@ -1227,9 +1227,9 @@ class Cid3 : Serializable {
         trainData = root.data
         val na = numAttributes - 1
         if (splitTrainData && !testDataExists) {
-            print("Read data: " + root.data.size + " cases for training. ($na attributes)")
+            print("\r" + "[ * ] Read data: " + root.data.size + " cases for training. ($na attributes)")
             print("\n")
-            print("[ - ] Read data: " + testData.size + " cases for testing.")
+            print("\r" + "[ * ] Read data: " + testData.size + " cases for testing.")
         } else {
             readDataMessage = "Read data: " + root.data.size + " cases for training. ($na attributes)"
             print(readDataMessage)
