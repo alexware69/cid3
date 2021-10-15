@@ -1113,6 +1113,9 @@ class Cid3 : Serializable {
             root.frequencyClasses = newArray
         }
 
+        //Stop the animation
+        runAnimationReadingTest = false
+
         print("\r" + "[ * ] " + "Read data: " + testData.size + " cases for testing. ")
         print("\n")
     }
@@ -1220,6 +1223,10 @@ class Cid3 : Serializable {
         }
         trainData = root.data
         val na = numAttributes - 1
+
+        //Stop the animation
+        runAnimationReading = false
+
         if (splitTrainData && !testDataExists) {
             print("\r" + "[ * ] " + "Read data: " + root.data.size + " cases for training. ($na attributes)")
             print("\n")
@@ -3078,8 +3085,6 @@ class Cid3 : Serializable {
                 threadReading.start()
                 //Read data
                 me.readData(inputFilePath)
-                //Stop the animation
-                me.runAnimationReading = false
 
                 //Print animation for data reading
                 val consoleHelperReadingTest = ConsoleHelper()
@@ -3094,8 +3099,6 @@ class Cid3 : Serializable {
                     threadReadingTest.priority = Thread.MAX_PRIORITY
                     threadReadingTest.start()
                     me.readTestData(nameTestData)
-                    //Stop the animation
-                    me.runAnimationReadingTest = false
                 }
 
                 //Print animation for creating calculations
