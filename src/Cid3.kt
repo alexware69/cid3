@@ -119,9 +119,6 @@ class Cid3 : Serializable {
     @Transient
     var readTestDataMessage = ""
 
-    @Transient
-    var calculatingMessage = ""
-
     /*  This function returns an integer corresponding to the symbolic value of the attribute.
         If the symbol does not exist in the domain, the symbol is added to the domain of the attribute
     */
@@ -3089,8 +3086,8 @@ class Cid3 : Serializable {
                 me.readData(inputFilePath)
                 //Stop the animation
                 me.runAnimationReading = false
-                while (threadReading.isAlive) {
-                }
+                //Wait for the thread to finish
+                threadReading.join()
                 print("\r" + "[ * ] " + me.readDataMessage)
                 print("\n")
                 //Set global variable
@@ -3112,8 +3109,8 @@ class Cid3 : Serializable {
                     me.readTestData(nameTestData)
                     //Stop the animation
                     me.runAnimationReadingTest = false
-                    while (threadReadingTest.isAlive) {
-                    }
+                    //Wait for the thread to finish
+                    threadReadingTest.join()
                     print("\r" + "[ * ] " + me.readTestDataMessage)
                     print("\n")
                 }
