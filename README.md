@@ -1,5 +1,4 @@
-# proyecto-id3
-Automatically exported from code.google.com/p/proyecto-id3
+# CID3
 
-This project modified an existing code repository that implemented the ID3 algorithm. The updated code ads new experimental criteria 
-for splitting and create a decision tree.
+This is a full-featured Decision Trees and Random Forests generator. It can save trees or forests to disk for later use. It is possible to query trees and Random Forests and to fill out an unlabeled file with the predicted classes. Documentation is not yet available, although the program options can be shown with command: 
+java -jar cid3.jar -h 
