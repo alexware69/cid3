@@ -1941,27 +1941,35 @@ class Cid3 : Serializable {
         var node: TreeNode
         var isTrue = 0
         var isFalse = 0
+        val threads = ArrayList<Thread>()
         val results = ArrayList<Boolean>()
         var currentClass: Int
         val classifiedAs = IntArray(domainsIndexToValue[numAttributes - 1].size)
 
         for (treeNode in roots) {
-            node = testExamplePoint(example, treeNode)
-            if (node.data.isEmpty()) {
-                currentClass = getMostCommonClass(node.parent)
-                if (example.attributes[classAttribute] == currentClass) results.add(true)
-                else {
-                    classifiedAs[currentClass]++
-                    results.add(false)
-                }
-            } else {
-                currentClass = getMostCommonClass(node)
-                if (example.attributes[classAttribute] == currentClass) results.add(true)
-                else {
-                    classifiedAs[currentClass]++
-                    results.add(false)
+            val thread = Thread {
+                node = testExamplePoint(example, treeNode)
+                if (node.data.isEmpty()) {
+                    currentClass = getMostCommonClass(node.parent)
+                    if (example.attributes[classAttribute] == currentClass) results.add(true)
+                    else {
+                        classifiedAs[currentClass]++
+                        results.add(false)
+                    }
+                } else {
+                    currentClass = getMostCommonClass(node)
+                    if (example.attributes[classAttribute] == currentClass) results.add(true)
+                    else {
+                        classifiedAs[currentClass]++
+                        results.add(false)
+                    }
                 }
             }
+            threads.add(thread)
+            thread.start()
+        }
+        while (threads.size > 0) {
+            if (!threads[threads.size - 1].isAlive) threads.removeAt(threads.size - 1)
         }
         //Voting now
         for (result in results) {
