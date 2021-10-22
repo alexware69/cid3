@@ -1943,11 +1943,11 @@ class Cid3 : Serializable {
         var isFalse = 0
         val threads = ArrayList<Thread>()
         val results = ArrayList<Boolean>()
-        var currentClass: Int
         val classifiedAs = IntArray(domainsIndexToValue[numAttributes - 1].size)
 
         for (treeNode in roots) {
             val thread = Thread {
+                var currentClass: Int
                 node = testExamplePoint(example, treeNode)
                 if (node.data.isEmpty()) {
                     currentClass = getMostCommonClass(node.parent)
