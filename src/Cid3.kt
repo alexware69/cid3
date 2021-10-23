@@ -14,7 +14,7 @@ import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.0.1"
+    private val version = "1.0.2"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
@@ -38,10 +38,7 @@ class Cid3 : Serializable {
     //int maxThreads = 500;
     //transient ArrayList<Thread> globalThreads = new ArrayList<>();
 
-    /* Possible values for each attribute is stored in a vector.  domains is an array of dimension numAttributes.
-        Each element of this array is a vector that contains values for the corresponding attribute
-        domains[0] is a vector containing the values of the 0-th attribute, etc.
-        The last attribute is the output attribute
+    /* Possible values for each attribute is stored in the domains Arrays.
     */
     private lateinit var domainsIndexToValue: ArrayList<HashMap<Int, String>>
     private lateinit var domainsValueToIndex: ArrayList<SortedMap<String, Int>>
@@ -1941,13 +1938,13 @@ class Cid3 : Serializable {
         var node: TreeNode
         var isTrue = 0
         var isFalse = 0
+        var currentClass: Int
         val threads = ArrayList<Thread>()
         val results = ArrayList<Boolean>()
         val classifiedAs = IntArray(domainsIndexToValue[numAttributes - 1].size)
 
         for (treeNode in roots) {
             val thread = Thread {
-                var currentClass: Int
                 node = testExamplePoint(example, treeNode)
                 if (node.data.isEmpty()) {
                     currentClass = getMostCommonClass(node.parent)
