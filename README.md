@@ -3,7 +3,20 @@
 This is a full-featured Decision Trees and Random Forests generator. It can save trees or forests to disk for later use. It is possible to query trees and Random Forests and to fill out an unlabeled file with the predicted classes. Documentation is not yet available, although the program options can be shown with command:   
 
 ```
-java -jar cid3.jar -h
+% java -jar cid3.jar -h
+
+usage: java -jar cid3.jar
+ -c,--criteria <arg>   input criteria: c[Certainty], e[Entropy], g[Gini]
+ -f,--file <arg>       input file
+ -h,--help             print this message
+ -o,--output <arg>     output file
+ -p,--partition        partition train/test data
+ -q,--query <arg>      query model, enter: t[Tree] or r[Random forest]
+ -r,--forest <arg>     create random forest, enter # of trees
+ -s,--save             save tree/random forest
+ -t,--threads <arg>    maximum number of threads (default is 500)
+ -v,--validation       create 10-fold cross-validation
+ -ver,--version        version
 ```
 **List of features:**
 
