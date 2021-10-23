@@ -18,6 +18,43 @@ usage: java -jar cid3.jar
  -v,--validation       create 10-fold cross-validation
  -ver,--version        version
 ```
+
+Example run with titanic dataset:
+```
+user@User-MBP datasets % java -jar cid3.jar -f titanic
+
+CID3 [Version 1.0.3]              Saturday October 23, 2021 12:09:35 PM
+------------------
+[ ✓ ] Read data: 891 cases for training. (10 attributes)
+[ ✓ ] Decision tree created.
+
+Rules:276
+Nodes:514
+
+Importance Cause   Attribute Name
+---------- -----   --------------
+      0.57   yes ············ Sex
+      0.36   yes ········· Pclass
+      0.30   yes ··········· Fare
+      0.28   yes ······· Embarked
+      0.27   yes ·········· SibSp
+      0.26   yes ·········· Parch
+      0.23    no ············ Age
+
+
+[==== TRAIN DATA ====] 
+
+Correct guesses: 875
+Incorrect guesses: 16 (1.8%)
+
+# Of Cases  False Pos  False Neg   Class
+----------  ---------  ---------   -----
+       549         14          2 ····· 0
+       342          2         14 ····· 1
+
+Time: 0:00:00
+```
+
 **List of features:**
 
 * It uses a new Certainty formula as splitting criteria.
