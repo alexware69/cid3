@@ -14,7 +14,7 @@ import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.0.2"
+    private val version = "1.0.3"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
@@ -1939,35 +1939,28 @@ class Cid3 : Serializable {
         var isTrue = 0
         var isFalse = 0
         var currentClass: Int
-        val threads = ArrayList<Thread>()
         val results = ArrayList<Boolean>()
         val classifiedAs = IntArray(domainsIndexToValue[numAttributes - 1].size)
 
         for (treeNode in roots) {
-            val thread = Thread {
-                node = testExamplePoint(example, treeNode)
-                if (node.data.isEmpty()) {
-                    currentClass = getMostCommonClass(node.parent)
-                    if (example.attributes[classAttribute] == currentClass) results.add(true)
-                    else {
-                        classifiedAs[currentClass]++
-                        results.add(false)
-                    }
-                } else {
-                    currentClass = getMostCommonClass(node)
-                    if (example.attributes[classAttribute] == currentClass) results.add(true)
-                    else {
-                        classifiedAs[currentClass]++
-                        results.add(false)
-                    }
+            node = testExamplePoint(example, treeNode)
+            if (node.data.isEmpty()) {
+                currentClass = getMostCommonClass(node.parent)
+                if (example.attributes[classAttribute] == currentClass) results.add(true)
+                else {
+                    classifiedAs[currentClass]++
+                    results.add(false)
+                }
+            } else {
+                currentClass = getMostCommonClass(node)
+                if (example.attributes[classAttribute] == currentClass) results.add(true)
+                else {
+                    classifiedAs[currentClass]++
+                    results.add(false)
                 }
             }
-            threads.add(thread)
-            thread.start()
         }
-        while (threads.size > 0) {
-            if (!threads[threads.size - 1].isAlive) threads.removeAt(threads.size - 1)
-        }
+
         //Voting now
         for (result in results) {
             if (result) isTrue++ else isFalse++
