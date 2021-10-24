@@ -19,6 +19,21 @@ usage: java -jar cid3.jar
  -ver,--version        version
 ```
 
+**List of features:**
+
+* It uses a new Certainty formula as splitting criteria.
+* Creates full trees, showing error rates for train and test data, attribute importance, causes and false positives/negatives.
+* If no test data is provided, it can split the train dataset in 80% for training and 20% for testing.
+* Creates random forests, showing error rates for train and test data, attribute importance, causes and false positives/negatives. Random forests are created in parallel, so it is very fast.
+* Creates 10 Fold Cross-Validation for trees and random forests, showing error rates, mean and Standard Error and false positives/negatives. Cross-Validation folds are created in parallel.
+* Saves trees and random forests to disk in a compressed file. (E.g. model.tree, model.forest)
+* Query trees and random forest from saved files. Queries can contain missing values, just enter the character: “?”.
+* Make predictions and fill out cases files with those predictions, either from single trees or random forests.
+* Missing values imputation for train and test data is implemented. Continuous attributes are imputed as the mean value. Discrete attributes are imputed as MODE, which selects the value that is most frequent.
+* Ignoring attributes is implemented. In the .names file just set the attribute type as: ignore.
+* Three different splitting criteria can be used: Certainty, Entropy and Gini. If no criteria is invoked then Certainty will be used.
+
+
 Example run with titanic dataset:
 ```
 user@User-MBP datasets % java -jar cid3.jar -f titanic
@@ -54,20 +69,6 @@ Incorrect guesses: 16 (1.8%)
 
 Time: 0:00:00
 ```
-
-**List of features:**
-
-* It uses a new Certainty formula as splitting criteria.
-* Creates full trees, showing error rates for train and test data, attribute importance, causes and false positives/negatives.
-* If no test data is provided, it can split the train dataset in 80% for training and 20% for testing.
-* Creates random forests, showing error rates for train and test data, attribute importance, causes and false positives/negatives. Random forests are created in parallel, so it is very fast.
-* Creates 10 Fold Cross-Validation for trees and random forests, showing error rates, mean and Standard Error and false positives/negatives. Cross-Validation folds are created in parallel.
-* Saves trees and random forests to disk in a compressed file. (E.g. model.tree, model.forest)
-* Query trees and random forest from saved files. Queries can contain missing values, just enter the character: “?”.
-* Make predictions and fill out cases files with those predictions, either from single trees or random forests.
-* Missing values imputation for train and test data is implemented. Continuous attributes are imputed as the mean value. Discrete attributes are imputed as MODE, which selects the value that is most frequent.
-* Ignoring attributes is implemented. In the .names file just set the attribute type as: ignore.
-* Three different splitting criteria can be used: Certainty, Entropy and Gini. If no criteria is invoked then Certainty will be used.
 
 CID3 requires JDK 15 or higher.
 
