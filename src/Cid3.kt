@@ -767,7 +767,7 @@ class Cid3 : Serializable {
                 if (entropy.certainty == -1.0) continue
                 //Insert into attributeImportance
                 if(node.parent == null && !isRandomForest){
-                    attributeImportance.add(Triple(selectedAtt, entropy.certainty, 0.0))
+                    attributeImportance.add(Triple(selectedAtt, entropy.certainty, entropy.certaintyClass))
                 }
                 if (!selected) {
                     selected = true
@@ -794,7 +794,7 @@ class Cid3 : Serializable {
                 if (gini.certainty == -1.0) continue
                 //Insert into attributeImportance
                 if(node.parent == null && !isRandomForest){
-                    attributeImportance.add(Triple(selectedAtt, gini.certainty, 0.0))
+                    attributeImportance.add(Triple(selectedAtt, gini.certainty, gini.certaintyClass))
                 }
                 if (!selected) {
                     selected = true
@@ -1549,7 +1549,7 @@ class Cid3 : Serializable {
                         console.format(fmt, rounded, isCause, filler, attributeNames[sortedList[i].first])
                     }
                 }
-                else {
+                /*else {
                     val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
                     console.format(fmt, "Importance", "Attribute Name")
                     console.format(fmt, "----------", "--------------")
@@ -1558,7 +1558,7 @@ class Cid3 : Serializable {
                         val rounded = String.format("%.2f", sortedList[i].second)
                         console.format(fmt, rounded, attributeNames[sortedList[i].first])
                     }
-                }
+                }*/
             }
         }
         print("\n")
@@ -1821,7 +1821,7 @@ class Cid3 : Serializable {
                             console.format(fmt, rounded, isCause, filler, attributeNames[sortedList[i].first])
                         }
                     }
-                    else {
+                    /*else {
                         val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
                         console.format(fmt, "Importance", "Attribute Name")
                         console.format(fmt, "----------", "--------------")
@@ -1830,7 +1830,7 @@ class Cid3 : Serializable {
                             val rounded = String.format("%.2f", sortedList[i].second)
                             console.format(fmt, rounded, attributeNames[sortedList[i].first])
                         }
-                    }
+                    }*/
                 }
             }
             print("\n")
@@ -2382,7 +2382,7 @@ class Cid3 : Serializable {
                             console.format(fmt, rounded, isCause, filler, id3.attributeNames[sortedList[i].first])
                         }
                     }
-                    else {
+                    /*else {
                         val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
                         console.format(fmt, "Importance", "Attribute Name")
                         console.format(fmt, "----------", "--------------")
@@ -2391,7 +2391,7 @@ class Cid3 : Serializable {
                             val rounded = String.format("%.2f", sortedList[i].second)
                             console.format(fmt, rounded, id3.attributeNames[sortedList[i].first])
                         }
-                    }
+                    }*/
                 }
             }
             print("\n")
@@ -2760,7 +2760,7 @@ class Cid3 : Serializable {
                             console.format(fmt, rounded, isCause, filler, id3.attributeNames[sortedList[i].first])
                         }
                     }
-                    else {
+                    /*else {
                         val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
                         console.format(fmt, "Importance", "Attribute Name")
                         console.format(fmt, "----------", "--------------")
@@ -2769,7 +2769,7 @@ class Cid3 : Serializable {
                             val rounded = String.format("%.2f", sortedList[i].second)
                             console.format(fmt, rounded, id3.attributeNames[sortedList[i].first])
                         }
-                    }
+                    }*/
                 }
             }
 

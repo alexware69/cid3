@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="added sample datasets">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="fixed bug of null arraylist elements">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -82,7 +82,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/arcene" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/audiology.standardized -c e" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00173" summary="included credits forNaturalOrderComparator Kotlin">
-      <created>1619837298903</created>
-      <option name="number" value="00173" />
-      <option name="presentableId" value="LOCAL-00173" />
-      <option name="project" value="LOCAL" />
-      <updated>1619837298903</updated>
     </task>
     <task id="LOCAL-00174" summary="cleaned up code for forNaturalOrderComparator Kotlin">
       <created>1619850251690</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635225982614</updated>
     </task>
-    <option name="localTasksCounter" value="222" />
+    <task id="LOCAL-00222" summary="fixed bug of null arraylist elements">
+      <created>1635294683647</created>
+      <option name="number" value="00222" />
+      <option name="presentableId" value="LOCAL-00222" />
+      <option name="project" value="LOCAL" />
+      <updated>1635294683648</updated>
+    </task>
+    <option name="localTasksCounter" value="223" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="showing version, date and time when deserializing" />
     <MESSAGE value="implemented show version option" />
     <MESSAGE value="added serialVersionUID field to keep same version" />
     <MESSAGE value="added serialVersionUID to each serializable class" />
@@ -494,7 +493,24 @@
     <MESSAGE value="Made variable local when testing R. Forests in parallel" />
     <MESSAGE value="Minor changes" />
     <MESSAGE value="added sample datasets" />
-    <option name="LAST_COMMIT_MESSAGE" value="added sample datasets" />
+    <MESSAGE value="fixed bug of null arraylist elements" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bug of null arraylist elements" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
+          <line>1552</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
+          <line>1522</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
