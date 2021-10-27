@@ -1405,10 +1405,10 @@ class Cid3 : Serializable {
 
             // Set version, date and time
             val dayInMonth = LocalDateTime.now().dayOfMonth
-            var day = LocalDateTime.now().dayOfWeek.name.toLowerCase()
-            day = day.substring(0, 1).toUpperCase() + day.substring(1)
-            var month = LocalDateTime.now().month.name.toLowerCase()
-            month = month.substring(0, 1).toUpperCase() + month.substring(1)
+            var day = LocalDateTime.now().dayOfWeek.name.lowercase(Locale.getDefault())
+            day = day.substring(0, 1).uppercase(Locale.getDefault()) + day.substring(1)
+            var month = LocalDateTime.now().month.name.lowercase(Locale.getDefault())
+            month = month.substring(0, 1).uppercase(Locale.getDefault()) + month.substring(1)
             val time = DateTimeFormatter.ofPattern("hh:mm:ss a")
             val timeString = LocalDateTime.now().format(time)
             val year = LocalDateTime.now().year.toString()
@@ -1445,10 +1445,10 @@ class Cid3 : Serializable {
 
             // Set version, date and time
             val dayInMonth = LocalDateTime.now().dayOfMonth
-            var day = LocalDateTime.now().dayOfWeek.name.toLowerCase()
-            day = day.substring(0, 1).toUpperCase() + day.substring(1)
-            var month = LocalDateTime.now().month.name.toLowerCase()
-            month = month.substring(0, 1).toUpperCase() + month.substring(1)
+            var day = LocalDateTime.now().dayOfWeek.name.lowercase(Locale.getDefault())
+            day = day.substring(0, 1).uppercase(Locale.getDefault()) + day.substring(1)
+            var month = LocalDateTime.now().month.name.lowercase(Locale.getDefault())
+            month = month.substring(0, 1).uppercase(Locale.getDefault()) + month.substring(1)
             val time = DateTimeFormatter.ofPattern("hh:mm:ss a")
             val timeString = LocalDateTime.now().format(time)
             val year = LocalDateTime.now().year.toString()
@@ -3004,10 +3004,10 @@ class Cid3 : Serializable {
             //Show application title
             print("\n")
             val dayInMonth = LocalDateTime.now().dayOfMonth
-            var day = LocalDateTime.now().dayOfWeek.name.toLowerCase()
-            day = day.substring(0, 1).toUpperCase() + day.substring(1)
-            var month = LocalDateTime.now().month.name.toLowerCase()
-            month = month.substring(0, 1).toUpperCase() + month.substring(1)
+            var day = LocalDateTime.now().dayOfWeek.name.lowercase(Locale.getDefault())
+            day = day.substring(0, 1).uppercase(Locale.getDefault()) + day.substring(1)
+            var month = LocalDateTime.now().month.name.lowercase(Locale.getDefault())
+            month = month.substring(0, 1).uppercase(Locale.getDefault()) + month.substring(1)
             val time = DateTimeFormatter.ofPattern("hh:mm:ss a")
             val timeString = LocalDateTime.now().format(time)
             val year = LocalDateTime.now().year.toString()
