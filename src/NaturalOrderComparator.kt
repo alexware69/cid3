@@ -47,7 +47,7 @@ class NaturalOrderComparator : Comparator<Any?>, Serializable {
             if (!isDigit(cb)) {
                 return +1
             }
-            if (ca.toInt() == 0 && cb.toInt() == 0) {
+            if (ca.code == 0 && cb.code == 0) {
                 return bias
             }
             if (bias == 0) {
@@ -105,7 +105,7 @@ class NaturalOrderComparator : Comparator<Any?>, Serializable {
                     return bias
                 }
             }
-            if (ca.toInt() == 0 && cb.toInt() == 0) {
+            if (ca.code == 0 && cb.code == 0) {
                 // The strings compare the same. Perhaps the caller
                 // will want to call strcmp to break the tie.
                 return compareEqual(a, b, nza, nzb)
