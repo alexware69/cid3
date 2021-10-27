@@ -22,8 +22,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="Rolled back the parallel test of Random Forests">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="added sample datasets">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00172" summary="cleaned up NaturalOrderComparator Kotlin">
-      <created>1619836033153</created>
-      <option name="number" value="00172" />
-      <option name="presentableId" value="LOCAL-00172" />
-      <option name="project" value="LOCAL" />
-      <updated>1619836033153</updated>
     </task>
     <task id="LOCAL-00173" summary="included credits forNaturalOrderComparator Kotlin">
       <created>1619837298903</created>
@@ -442,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1634959369532</updated>
     </task>
-    <option name="localTasksCounter" value="221" />
+    <task id="LOCAL-00221" summary="added sample datasets">
+      <created>1635225982614</created>
+      <option name="number" value="00221" />
+      <option name="presentableId" value="LOCAL-00221" />
+      <option name="project" value="LOCAL" />
+      <updated>1635225982614</updated>
+    </task>
+    <option name="localTasksCounter" value="222" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -468,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="set max priority to animation thread" />
     <MESSAGE value="showing version, date and time when deserializing" />
     <MESSAGE value="implemented show version option" />
     <MESSAGE value="added serialVersionUID field to keep same version" />
@@ -493,7 +493,8 @@
     <MESSAGE value="implemented testing Random Forests in parallel" />
     <MESSAGE value="Made variable local when testing R. Forests in parallel" />
     <MESSAGE value="Minor changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor changes" />
+    <MESSAGE value="added sample datasets" />
+    <option name="LAST_COMMIT_MESSAGE" value="added sample datasets" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

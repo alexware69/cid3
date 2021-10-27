@@ -31,7 +31,7 @@ class Cid3 : Serializable {
     private var seed: Long = 13579
     private var maxThreads = 500
     @Transient
-    var globalThreads = ArrayList<Thread>()
+    var globalThreads = ArrayList<Thread?>()
     private val attributeImportance = ArrayList<Triple<Int, Double, Double>>()
     private lateinit var classProbabilities : Probabilities
 
@@ -1492,10 +1492,12 @@ class Cid3 : Serializable {
             selectedAttributes.add(i)
         }
         decomposeNode(root, selectedAttributes, 0)
+        var current: Thread?
         while (globalThreads.size > 0) {
-            val current: Thread = globalThreads[globalThreads.size - 1]
-            if (!current.isAlive) {
-                globalThreads.remove(current)
+            globalThreads.removeAll(Collections.singleton(null))
+            current = globalThreads.last()
+            if (current!=null && !current.isAlive) {
+                globalThreads.removeLast()
             }
         }
 
