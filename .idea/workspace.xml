@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="fixed bug of null arraylist elements">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="removed attribute importance from Entropy and Gini">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00174" summary="cleaned up code for forNaturalOrderComparator Kotlin">
-      <created>1619850251690</created>
-      <option name="number" value="00174" />
-      <option name="presentableId" value="LOCAL-00174" />
-      <option name="project" value="LOCAL" />
-      <updated>1619850251690</updated>
     </task>
     <task id="LOCAL-00175" summary="formatted the code a little bit">
       <created>1619947974078</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635294683648</updated>
     </task>
-    <option name="localTasksCounter" value="223" />
+    <task id="LOCAL-00223" summary="removed attribute importance from Entropy and Gini">
+      <created>1635300256594</created>
+      <option name="number" value="00223" />
+      <option name="presentableId" value="LOCAL-00223" />
+      <option name="project" value="LOCAL" />
+      <updated>1635300256594</updated>
+    </task>
+    <option name="localTasksCounter" value="224" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="implemented show version option" />
     <MESSAGE value="added serialVersionUID field to keep same version" />
     <MESSAGE value="added serialVersionUID to each serializable class" />
     <MESSAGE value="cleaned up some comments" />
@@ -494,7 +493,8 @@
     <MESSAGE value="Minor changes" />
     <MESSAGE value="added sample datasets" />
     <MESSAGE value="fixed bug of null arraylist elements" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bug of null arraylist elements" />
+    <MESSAGE value="removed attribute importance from Entropy and Gini" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed attribute importance from Entropy and Gini" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
