@@ -100,13 +100,6 @@
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
     </task>
-    <task id="LOCAL-00180" summary="finished implementing filler whole application">
-      <created>1620471959707</created>
-      <option name="number" value="00180" />
-      <option name="presentableId" value="LOCAL-00180" />
-      <option name="project" value="LOCAL" />
-      <updated>1620471959707</updated>
-    </task>
     <task id="LOCAL-00181" summary="fixed bug that displayed incorrect # of cases when saving">
       <created>1620478796711</created>
       <option name="number" value="00181" />
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635335358369</updated>
     </task>
-    <option name="localTasksCounter" value="229" />
+    <task id="LOCAL-00229" summary="set console text alignment">
+      <created>1635389592187</created>
+      <option name="number" value="00229" />
+      <option name="presentableId" value="LOCAL-00229" />
+      <option name="project" value="LOCAL" />
+      <updated>1635389592188</updated>
+    </task>
+    <option name="localTasksCounter" value="230" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
