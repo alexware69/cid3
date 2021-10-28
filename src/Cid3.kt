@@ -2019,7 +2019,7 @@ class Cid3 : Serializable {
         var rounded1 = (1.0 * trainErrors * 100 / trainData.size * 10).roundToInt() / 10.0
         var format : String = "%" + (if (trainCorrects.toString().length - trainErrors.toString().length > 0) trainCorrects.toString().length
         else trainErrors.toString().length) + "d"
-        print( "  Correct guesses: ")
+        print( "Correct guesses:   ")
         print(String.format(format, trainCorrects))
         print("\n")
         print( "Incorrect guesses: ")
@@ -2064,7 +2064,7 @@ class Cid3 : Serializable {
             rounded1 = (1.0 * testErrors * 100 / testData.size * 10).roundToInt() / 10.0
             format = "%" + (if (testCorrects.toString().length - testErrors.toString().length > 0) testCorrects.toString().length
             else testErrors.toString().length) + "d"
-            print( "  Correct guesses: ")
+            print( "Correct guesses:   ")
             print(String.format(format, testCorrects))
             print("\n")
             print( "Incorrect guesses: ")
@@ -2284,7 +2284,7 @@ class Cid3 : Serializable {
         var rounded1 = (1.0 * trainErrors * 100 / trainData.size * 10).roundToInt() / 10.0
         var format : String = "%" + (if (trainCorrects.toString().length - trainErrors.toString().length > 0) trainCorrects.toString().length
         else trainErrors.toString().length) + "d"
-        print( "  Correct guesses: ")
+        print( "Correct guesses:   ")
         print(String.format(format, trainCorrects))
         print("\n")
         print( "Incorrect guesses: ")
@@ -2328,7 +2328,7 @@ class Cid3 : Serializable {
             rounded1 = (1.0 * testErrors * 100 / testData.size * 10).roundToInt() / 10.0
             format = "%" + (if (testCorrects.toString().length - testErrors.toString().length > 0) testCorrects.toString().length
             else testErrors.toString().length) + "d"
-            print( "  Correct guesses: ")
+            print( "Correct guesses:   ")
             print(String.format(format, testCorrects))
             print("\n")
             print( "Incorrect guesses: ")

@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="set console text alignment">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="prepared for release 1.0.6">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00181" summary="fixed bug that displayed incorrect # of cases when saving">
-      <created>1620478796711</created>
-      <option name="number" value="00181" />
-      <option name="presentableId" value="LOCAL-00181" />
-      <option name="project" value="LOCAL" />
-      <updated>1620478796711</updated>
     </task>
     <task id="LOCAL-00182" summary="replaced the trailing dot with one smaller">
       <created>1620482817366</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635389592188</updated>
     </task>
-    <option name="localTasksCounter" value="230" />
+    <task id="LOCAL-00230" summary="prepared for release 1.0.6">
+      <created>1635389956388</created>
+      <option name="number" value="00230" />
+      <option name="presentableId" value="LOCAL-00230" />
+      <option name="project" value="LOCAL" />
+      <updated>1635389956389</updated>
+    </task>
+    <option name="localTasksCounter" value="231" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="organized the classes into separate files" />
     <MESSAGE value="thorough cleanup of unnecessary nulls" />
     <MESSAGE value="removed unnecessary code" />
     <MESSAGE value="converted Arrays to ArrayLists to eliminate nulls check" />
@@ -494,7 +493,8 @@
     <MESSAGE value="updated Kotlin version" />
     <MESSAGE value="replaced deprecated methods" />
     <MESSAGE value="set console text alignment" />
-    <option name="LAST_COMMIT_MESSAGE" value="set console text alignment" />
+    <MESSAGE value="prepared for release 1.0.6" />
+    <option name="LAST_COMMIT_MESSAGE" value="prepared for release 1.0.6" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
