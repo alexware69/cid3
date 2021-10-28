@@ -1,6 +1,6 @@
 # CID3
 
-This is a full-featured Decision Trees and Random Forests classifier. It can save trees or forests to disk for later use. It is possible to query trees and Random Forests and to fill out an unlabeled file with the predicted classes. Documentation is not yet available, although the program options can be shown with command:   
+This is a full-featured Decision Trees and Random Forests learner. It can save trees or forests to disk for later use. It is possible to query trees and Random Forests and to fill out an unlabeled file with the predicted classes. Documentation is not yet available, although the program options can be shown with command:   
 
 ```
 % java -jar cid3.jar -h
@@ -39,7 +39,7 @@ Example run with titanic dataset:
 user@User-MBP datasets % java -jar cid3.jar -f titanic
 
 CID3 [Version 1.0.3]              Saturday October 23, 2021 12:09:35 PM
-------------------
+--------------------
 [ ✓ ] Read data: 891 cases for training. (10 attributes)
 [ ✓ ] Decision tree created.
 
@@ -59,7 +59,7 @@ Importance Cause   Attribute Name
 
 [==== TRAIN DATA ====] 
 
-Correct guesses: 875
+Correct guesses:  875
 Incorrect guesses: 16 (1.8%)
 
 # Of Cases  False Pos  False Neg   Class
