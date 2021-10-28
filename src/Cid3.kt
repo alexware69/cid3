@@ -1529,36 +1529,29 @@ class Cid3 : Serializable {
         if (longestString!!.length < 14) longestString = "--------------"
         print("\n")
         //Print console output
-        when (val console: Console? = System.console()) {
-            null -> {
-                println("Running from an IDE...")
+        if (this.criteria == Criteria.Certainty) {
+            var fmt = "%1$10s %2$5s %3$1s %4$" + (longestString.length).toString() + "s%n"
+            System.out.printf(fmt, "Importance", "Cause","", "Attribute Name")
+            System.out.printf(fmt, "----------", "-----","", "--------------")
+            for (i in sortedList.indices) {
+                if (i > 99) break
+                val rounded = String.format("%.2f", sortedList[i].second)
+                val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
+                else "no"
+                val fillerSize = longestString.length - attributeNames[sortedList[i].first].length + 1
+                val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
+                fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + attributeNames[sortedList[i].first].length.toString() + "s%n"
+                System.out.printf(fmt, rounded, isCause, filler, attributeNames[sortedList[i].first])
             }
-            else -> {
-                if (this.criteria == Criteria.Certainty) {
-                    var fmt = "%1$10s %2$5s %3$1s %4$" + (longestString.length).toString() + "s%n"
-                    console.format(fmt, "Importance", "Cause","", "Attribute Name")
-                    console.format(fmt, "----------", "-----","", "--------------")
-                    for (i in sortedList.indices) {
-                        if (i > 99) break
-                        val rounded = String.format("%.2f", sortedList[i].second)
-                        val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
-                        else "no"
-                        val fillerSize = longestString.length - attributeNames[sortedList[i].first].length + 1
-                        val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                        fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + attributeNames[sortedList[i].first].length.toString() + "s%n"
-                        console.format(fmt, rounded, isCause, filler, attributeNames[sortedList[i].first])
-                    }
-                }
-                else {
-                    val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
-                    console.format(fmt, "Importance", "Attribute Name")
-                    console.format(fmt, "----------", "--------------")
-                    for (i in sortedList.indices) {
-                        if (i > 99) break
-                        val rounded = String.format("%.2f", sortedList[i].second)
-                        console.format(fmt, rounded, attributeNames[sortedList[i].first])
-                    }
-                }
+        }
+        else {
+            val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
+            System.out.printf(fmt, "Importance", "Attribute Name")
+            System.out.printf(fmt, "----------", "--------------")
+            for (i in sortedList.indices) {
+                if (i > 99) break
+                val rounded = String.format("%.2f", sortedList[i].second)
+                System.out.printf(fmt, rounded, attributeNames[sortedList[i].first])
             }
         }
         print("\n")
@@ -1801,36 +1794,29 @@ class Cid3 : Serializable {
             if (longestString!!.length < 14) longestString = "--------------"
             print("\n")
             //Print console output...show attribute importance
-            when (val console: Console? = System.console()) {
-                null -> {
-                    println("Running from an IDE...")
+            if (this.criteria == Criteria.Certainty) {
+                var fmt = "%1$10s %2$5s %3$1s %4$" + (longestString.length).toString() + "s%n"
+                System.out.printf(fmt, "Importance", "Cause","", "Attribute Name")
+                System.out.printf(fmt, "----------", "-----","", "--------------")
+                for (i in sortedList.indices) {
+                    if (i > 99) break
+                    val rounded = String.format("%.2f", sortedList[i].second)
+                    val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
+                    else "no"
+                    val fillerSize = longestString.length - attributeNames[sortedList[i].first].length + 1
+                    val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
+                    fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + attributeNames[sortedList[i].first].length.toString() + "s%n"
+                    System.out.printf(fmt, rounded, isCause, filler, attributeNames[sortedList[i].first])
                 }
-                else -> {
-                    if (this.criteria == Criteria.Certainty) {
-                        var fmt = "%1$10s %2$5s %3$1s %4$" + (longestString.length).toString() + "s%n"
-                        console.format(fmt, "Importance", "Cause","", "Attribute Name")
-                        console.format(fmt, "----------", "-----","", "--------------")
-                        for (i in sortedList.indices) {
-                            if (i > 99) break
-                            val rounded = String.format("%.2f", sortedList[i].second)
-                            val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
-                            else "no"
-                            val fillerSize = longestString.length - attributeNames[sortedList[i].first].length + 1
-                            val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                            fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + attributeNames[sortedList[i].first].length.toString() + "s%n"
-                            console.format(fmt, rounded, isCause, filler, attributeNames[sortedList[i].first])
-                        }
-                    }
-                    else {
-                        val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
-                        console.format(fmt, "Importance", "Attribute Name")
-                        console.format(fmt, "----------", "--------------")
-                        for (i in sortedList.indices) {
-                            if (i > 99) break
-                            val rounded = String.format("%.2f", sortedList[i].second)
-                            console.format(fmt, rounded, attributeNames[sortedList[i].first])
-                        }
-                    }
+            }
+            else {
+                val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
+                System.out.printf(fmt, "Importance", "Attribute Name")
+                System.out.printf(fmt, "----------", "--------------")
+                for (i in sortedList.indices) {
+                    if (i > 99) break
+                    val rounded = String.format("%.2f", sortedList[i].second)
+                    System.out.printf(fmt, rounded, attributeNames[sortedList[i].first])
                 }
             }
             print("\n")
@@ -2029,24 +2015,17 @@ class Cid3 : Serializable {
         print("\n")
         print("\n")
 
-        when (val console: Console? = System.console()) {
-            null -> {
-                println("Running from an IDE...")
-            }
-            else -> {
-                var fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
-                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
-                console.format(fmt, "----------", "---------", "---------", "", "-----")
-                for (value in domainsValueToIndex[numAttributes - 1].keys){
-                    val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
-                    val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                    fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
-                    val cases = if (save) (classNoOfCasesTrain[i] + classNoOfCasesTest[i]).toString()
-                    else (classNoOfCasesTrain[i]).toString()
-                    console.format(fmt, cases, falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
-                }
-            }
+        var fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
+        System.out.printf(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
+        System.out.printf(fmt, "----------", "---------", "---------", "", "-----")
+        for (value in domainsValueToIndex[numAttributes - 1].keys){
+            val i = domainsValueToIndex[numAttributes - 1][value] as Int
+            val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
+            val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
+            fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
+            val cases = if (save) (classNoOfCasesTrain[i] + classNoOfCasesTest[i]).toString()
+            else (classNoOfCasesTrain[i]).toString()
+            System.out.printf(fmt, cases, falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
         }
 
         if (testData.isNotEmpty()) {
@@ -2074,22 +2053,15 @@ class Cid3 : Serializable {
             print("\n")
             print("\n")
 
-            when (val console: Console? = System.console()) {
-                null -> {
-                    println("Running from an IDE...")
-                }
-                else -> {
-                    var fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
-                    console.format(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
-                    console.format(fmt, "----------", "---------", "---------", "", "-----")
-                    for (value in domainsValueToIndex[numAttributes - 1].keys){
-                        val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                        val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
-                        val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                        fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
-                        console.format(fmt, classNoOfCasesTest[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
-                    }
-                }
+            fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
+            System.out.printf(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
+            System.out.printf(fmt, "----------", "---------", "---------", "", "-----")
+            for (value in domainsValueToIndex[numAttributes - 1].keys){
+                val i = domainsValueToIndex[numAttributes - 1][value] as Int
+                val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
+                val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
+                fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
+                System.out.printf(fmt, classNoOfCasesTest[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
             }
         }
     }
@@ -2116,65 +2088,58 @@ class Cid3 : Serializable {
 
         //Print console output
         print("\n")
-        when (val console: Console? = System.console()) {
-            null -> {
-                println("Running from an IDE...")
-            }
-            else -> {
-                var fmt = "%1$4s %2$10s%n"
-                console.format(fmt, "Fold", "Errors")
-                console.format(fmt, "-----", "-------")
-                for (i in 0 until 10) {
-                    console.format(fmt, (i + 1).toString(), roundedErrors[i].toString() + "%")
-                }
+        var fmt = "%1$4s %2$10s%n"
+        System.out.printf(fmt, "Fold", "Errors")
+        System.out.printf(fmt, "-----", "-------")
+        for (i in 0 until 10) {
+            System.out.printf(fmt, (i + 1).toString(), roundedErrors[i].toString() + "%")
+        }
 
-                //Print mean errors
-                meanErrors = percentageErrors / 10
-                val rounded1 = (meanErrors * 10).roundToInt() / 10.0
-                console.format(fmt, " ", " ")
-                console.format(fmt, "Mean", "$rounded1%")
+        //Print mean errors
+        meanErrors = percentageErrors / 10
+        val rounded1 = (meanErrors * 10).roundToInt() / 10.0
+        System.out.printf(fmt, " ", " ")
+        System.out.printf(fmt, "Mean", "$rounded1%")
 
-                //Calculate average
-                var meanFolds = 0.0
-                for (i in 0..9) {
-                    meanFolds += errorsFoldK[i]
-                }
-                meanFolds = 1.0 * meanFolds / 10
+        //Calculate average
+        var meanFolds = 0.0
+        for (i in 0..9) {
+            meanFolds += errorsFoldK[i]
+        }
+        meanFolds = 1.0 * meanFolds / 10
 
-                //Calculate SE (Standard Errors)
-                var sumMeanSE = 0.0
-                for (i in 0..9) {
-                    sumMeanSE += (1.0 * errorsFoldK[i] - meanFolds) * (1.0 * errorsFoldK[i] - meanFolds)
-                }
-                sumMeanSE = sqrt(sumMeanSE / 10)
-                val se = sumMeanSE / sqrt(10.0)
-                val roundedSE = (se * 10).roundToInt() / 10.0
-                console.format(fmt, "SE", "$roundedSE%")
+        //Calculate SE (Standard Errors)
+        var sumMeanSE = 0.0
+        for (i in 0..9) {
+            sumMeanSE += (1.0 * errorsFoldK[i] - meanFolds) * (1.0 * errorsFoldK[i] - meanFolds)
+        }
+        sumMeanSE = sqrt(sumMeanSE / 10)
+        val se = sumMeanSE / sqrt(10.0)
+        val roundedSE = (se * 10).roundToInt() / 10.0
+        System.out.printf(fmt, "SE", "$roundedSE%")
 
-                //Now print the False Positives/Negatives
-                //this is needed to format console output
-                var longestString: String?
-                longestString = ""
-                for (i in falsePositivesTrain.indices){
-                    val classValue: String = domainsIndexToValue[numAttributes - 1][i] as String
-                    if (longestString != null)
-                        if (classValue.length > longestString.length) longestString = classValue
-                }
-                if (longestString!!.length < 5) longestString = "-----"
+        //Now print the False Positives/Negatives
+        //this is needed to format console output
+        var longestString: String?
+        longestString = ""
+        for (i in falsePositivesTrain.indices){
+            val classValue: String = domainsIndexToValue[numAttributes - 1][i] as String
+            if (longestString != null)
+                if (classValue.length > longestString.length) longestString = classValue
+        }
+        if (longestString!!.length < 5) longestString = "-----"
 
-                print("\n")
-                print("\n")
-                fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
-                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
-                console.format(fmt, "----------", "---------", "---------", "", "-----")
-                for (value in domainsValueToIndex[numAttributes - 1].keys){
-                    val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
-                    val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                    fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
-                    console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
-                }
-            }
+        print("\n")
+        print("\n")
+        fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
+        System.out.printf(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
+        System.out.printf(fmt, "----------", "---------", "---------", "", "-----")
+        for (value in domainsValueToIndex[numAttributes - 1].keys){
+            val i = domainsValueToIndex[numAttributes - 1][value] as Int
+            val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
+            val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
+            fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
+            System.out.printf(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
         }
     }
 
@@ -2196,57 +2161,50 @@ class Cid3 : Serializable {
 
         //Print console output
         print("\n")
-        when (val console: Console? = System.console()) {
-            null -> {
-                println("Running from an IDE...")
-            }
-            else -> {
-                var fmt = "%1$4s %2$10s%n"
-                console.format(fmt, "Fold", "Errors")
-                console.format(fmt, "-----", "-------")
-                for (i in 0 until 10) {
-                    console.format(fmt, (i + 1).toString(), roundedErrors[i].toString() + "%")
-                }
+        var fmt = "%1$4s %2$10s%n"
+        System.out.printf(fmt, "Fold", "Errors")
+        System.out.printf(fmt, "-----", "-------")
+        for (i in 0 until 10) {
+            System.out.printf(fmt, (i + 1).toString(), roundedErrors[i].toString() + "%")
+        }
 
-                val meanErrors = sum / 10
-                val rounded1 = (meanErrors * 10).roundToInt() / 10.0
-                console.format(fmt, " ", " ")
-                console.format(fmt, "Mean", "$rounded1%")
+        val meanErrors = sum / 10
+        val rounded1 = (meanErrors * 10).roundToInt() / 10.0
+        System.out.printf(fmt, " ", " ")
+        System.out.printf(fmt, "Mean", "$rounded1%")
 
-                //Calculate SE (Standard Errors)
-                var sumMeanSE = 0.0
-                for (i in 0..9) {
-                    sumMeanSE += (1.0 * errorsFoldK[i] - meanErrors) * (1.0 * errorsFoldK[i] - meanErrors)
-                }
-                sumMeanSE = sqrt(sumMeanSE / 10)
-                val se = sumMeanSE / sqrt(10.0)
-                val roundedSE = (se * 10).roundToInt() / 10.0
-                console.format(fmt, "SE", "$roundedSE%")
+        //Calculate SE (Standard Errors)
+        var sumMeanSE = 0.0
+        for (i in 0..9) {
+            sumMeanSE += (1.0 * errorsFoldK[i] - meanErrors) * (1.0 * errorsFoldK[i] - meanErrors)
+        }
+        sumMeanSE = sqrt(sumMeanSE / 10)
+        val se = sumMeanSE / sqrt(10.0)
+        val roundedSE = (se * 10).roundToInt() / 10.0
+        System.out.printf(fmt, "SE", "$roundedSE%")
 
-                //Now print the False Positives/Negatives
-                //this is needed to format console output
-                var longestString: String?
-                longestString = ""
-                for (i in falsePositivesTrain.indices){
-                    val classValue: String = domainsIndexToValue[numAttributes - 1][i] as String
-                    if (longestString != null)
-                        if (classValue.length > longestString.length) longestString = classValue
-                }
-                if (longestString!!.length < 5) longestString = "-----"
+        //Now print the False Positives/Negatives
+        //this is needed to format console output
+        var longestString: String?
+        longestString = ""
+        for (i in falsePositivesTrain.indices){
+            val classValue: String = domainsIndexToValue[numAttributes - 1][i] as String
+            if (longestString != null)
+                if (classValue.length > longestString.length) longestString = classValue
+        }
+        if (longestString!!.length < 5) longestString = "-----"
 
-                print("\n")
-                print("\n")
-                fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
-                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
-                console.format(fmt, "----------", "---------", "---------", "", "-----")
-                for (value in domainsValueToIndex[numAttributes - 1].keys){
-                    val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
-                    val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                    fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
-                    console.format(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
-                }
-            }
+        print("\n")
+        print("\n")
+        fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
+        System.out.printf(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
+        System.out.printf(fmt, "----------", "---------", "---------", "", "-----")
+        for (value in domainsValueToIndex[numAttributes - 1].keys){
+            val i = domainsValueToIndex[numAttributes - 1][value] as Int
+            val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
+            val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
+            fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
+            System.out.printf(fmt, classNoOfCasesTrain[i].toString(), falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
         }
     }
 
@@ -2294,26 +2252,19 @@ class Cid3 : Serializable {
         print("\n")
         print("\n")
 
-        when (val console: Console? = System.console()) {
-            null -> {
-                println("Running from an IDE...")
-            }
-            else -> {
-                var fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
-                console.format(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
-                console.format(fmt, "----------", "---------", "---------", "", "-----")
-                for (value in domainsValueToIndex[numAttributes - 1].keys){
-                    val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                    val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
-                    val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                    fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
-                    val cases = if (save) (classNoOfCasesTrain[i] + classNoOfCasesTest[i]).toString()
-                    else (classNoOfCasesTrain[i]).toString()
-                    console.format(fmt, cases, falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(),filler, domainsIndexToValue[numAttributes - 1][i] as String)
-                }
-
-            }
+        var fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
+        System.out.printf(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
+        System.out.printf(fmt, "----------", "---------", "---------", "", "-----")
+        for (value in domainsValueToIndex[numAttributes - 1].keys){
+            val i = domainsValueToIndex[numAttributes - 1][value] as Int
+            val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
+            val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
+            fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
+            val cases = if (save) (classNoOfCasesTrain[i] + classNoOfCasesTest[i]).toString()
+            else (classNoOfCasesTrain[i]).toString()
+            System.out.printf(fmt, cases, falsePositivesTrain[i].toString(), falseNegativesTrain[i].toString(),filler, domainsIndexToValue[numAttributes - 1][i] as String)
         }
+
         if (testData.isNotEmpty()) {
             var testErrors = 0
             var testCorrects = 0
@@ -2338,22 +2289,15 @@ class Cid3 : Serializable {
             print("\n")
             print("\n")
 
-            when (val console: Console? = System.console()) {
-                null -> {
-                    println("Running from an IDE...")
-                }
-                else -> {
-                    var fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
-                    console.format(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
-                    console.format(fmt, "----------", "---------", "---------", "", "-----")
-                    for (value in domainsValueToIndex[numAttributes - 1].keys){
-                        val i = domainsValueToIndex[numAttributes - 1][value] as Int
-                        val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
-                        val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                        fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
-                        console.format(fmt, classNoOfCasesTest[i], falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
-                    }
-                }
+            fmt = "%1$10s %2$10s %3$10s %4$1s %5$" + (longestString.length).toString() + "s%n"
+            System.out.printf(fmt, "# Of Cases", "False Pos", "False Neg", "", "Class")
+            System.out.printf(fmt, "----------", "---------", "---------", "", "-----")
+            for (value in domainsValueToIndex[numAttributes - 1].keys){
+                val i = domainsValueToIndex[numAttributes - 1][value] as Int
+                val fillerSize = longestString.length - (domainsIndexToValue[numAttributes - 1][i] as String).length + 1
+                val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
+                fmt = "%1$10s %2$10s %3$10s %4$" + fillerSize.toString() + "s %5$" + ((domainsIndexToValue[numAttributes - 1][i] as String).length).toString() + "s%n"
+                System.out.printf(fmt, classNoOfCasesTest[i], falsePositivesTest[i].toString(), falseNegativesTest[i].toString(), filler, domainsIndexToValue[numAttributes - 1][i] as String)
             }
         }
     }
@@ -2390,36 +2334,29 @@ class Cid3 : Serializable {
             if (longestString!!.length < 14) longestString = "--------------"
             print("\n")
             //Print console output
-            when (val console: Console? = System.console()) {
-                null -> {
-                    println("Running from an IDE...")
+            if (id3.criteria == Criteria.Certainty) {
+                var fmt = "%1$10s %2$5s %3$1s %4$" + (longestString.length).toString() + "s%n"
+                System.out.printf(fmt, "Importance", "Cause","", "Attribute Name")
+                System.out.printf(fmt, "----------", "-----","", "--------------")
+                for (i in sortedList.indices) {
+                    if (i > 99) break
+                    val rounded = String.format("%.2f", sortedList[i].second)
+                    val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
+                    else "no"
+                    val fillerSize = longestString.length - id3.attributeNames[sortedList[i].first].length + 1
+                    val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
+                    fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + id3.attributeNames[sortedList[i].first].length.toString() + "s%n"
+                    System.out.printf(fmt, rounded, isCause, filler, id3.attributeNames[sortedList[i].first])
                 }
-                else -> {
-                    if (id3.criteria == Criteria.Certainty) {
-                        var fmt = "%1$10s %2$5s %3$1s %4$" + (longestString.length).toString() + "s%n"
-                        console.format(fmt, "Importance", "Cause","", "Attribute Name")
-                        console.format(fmt, "----------", "-----","", "--------------")
-                        for (i in sortedList.indices) {
-                            if (i > 99) break
-                            val rounded = String.format("%.2f", sortedList[i].second)
-                            val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
-                            else "no"
-                            val fillerSize = longestString.length - id3.attributeNames[sortedList[i].first].length + 1
-                            val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                            fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + id3.attributeNames[sortedList[i].first].length.toString() + "s%n"
-                            console.format(fmt, rounded, isCause, filler, id3.attributeNames[sortedList[i].first])
-                        }
-                    }
-                    else {
-                        val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
-                        console.format(fmt, "Importance", "Attribute Name")
-                        console.format(fmt, "----------", "--------------")
-                        for (i in sortedList.indices) {
-                            if (i > 99) break
-                            val rounded = String.format("%.2f", sortedList[i].second)
-                            console.format(fmt, rounded, id3.attributeNames[sortedList[i].first])
-                        }
-                    }
+            }
+            else {
+                val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
+                System.out.printf(fmt, "Importance", "Attribute Name")
+                System.out.printf(fmt, "----------", "--------------")
+                for (i in sortedList.indices) {
+                    if (i > 99) break
+                    val rounded = String.format("%.2f", sortedList[i].second)
+                    System.out.printf(fmt, rounded, id3.attributeNames[sortedList[i].first])
                 }
             }
             print("\n")
@@ -2768,36 +2705,29 @@ class Cid3 : Serializable {
             if (longestString!!.length < 14) longestString = "--------------"
             print("\n")
             //Print console output
-            when (val console: Console? = System.console()) {
-                null -> {
-                    println("Running from an IDE...")
+            if (id3.criteria == Criteria.Certainty) {
+                var fmt = "%1$10s %2$5s %3$1s %4$" + (longestString.length).toString() + "s%n"
+                System.out.printf(fmt, "Importance", "Cause","", "Attribute Name")
+                System.out.printf(fmt, "----------", "-----","", "--------------")
+                for (i in sortedList.indices) {
+                    if (i > 99) break
+                    val rounded = String.format("%.2f", sortedList[i].second)
+                    val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
+                    else "no"
+                    val fillerSize = longestString.length - id3.attributeNames[sortedList[i].first].length + 1
+                    val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
+                    fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + id3.attributeNames[sortedList[i].first].length.toString() + "s%n"
+                    System.out.printf(fmt, rounded, isCause, filler, id3.attributeNames[sortedList[i].first])
                 }
-                else -> {
-                    if (id3.criteria == Criteria.Certainty) {
-                        var fmt = "%1$10s %2$5s %3$1s %4$" + (longestString.length).toString() + "s%n"
-                        console.format(fmt, "Importance", "Cause","", "Attribute Name")
-                        console.format(fmt, "----------", "-----","", "--------------")
-                        for (i in sortedList.indices) {
-                            if (i > 99) break
-                            val rounded = String.format("%.2f", sortedList[i].second)
-                            val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
-                            else "no"
-                            val fillerSize = longestString.length - id3.attributeNames[sortedList[i].first].length + 1
-                            val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
-                            fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + id3.attributeNames[sortedList[i].first].length.toString() + "s%n"
-                            console.format(fmt, rounded, isCause, filler, id3.attributeNames[sortedList[i].first])
-                        }
-                    }
-                    else {
-                        val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
-                        console.format(fmt, "Importance", "Attribute Name")
-                        console.format(fmt, "----------", "--------------")
-                        for (i in sortedList.indices) {
-                            if (i > 99) break
-                            val rounded = String.format("%.2f", sortedList[i].second)
-                            console.format(fmt, rounded, id3.attributeNames[sortedList[i].first])
-                        }
-                    }
+            }
+            else {
+                val fmt = "%1$10s %2$" + (longestString.length + 10).toString() + "s%n"
+                System.out.printf(fmt, "Importance", "Attribute Name")
+                System.out.printf(fmt, "----------", "--------------")
+                for (i in sortedList.indices) {
+                    if (i > 99) break
+                    val rounded = String.format("%.2f", sortedList[i].second)
+                    System.out.printf(fmt, rounded, id3.attributeNames[sortedList[i].first])
                 }
             }
 

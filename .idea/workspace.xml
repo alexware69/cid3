@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="prepared for release 1.0.6">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="aligned some console text">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00182" summary="replaced the trailing dot with one smaller">
-      <created>1620482817366</created>
-      <option name="number" value="00182" />
-      <option name="presentableId" value="LOCAL-00182" />
-      <option name="project" value="LOCAL" />
-      <updated>1620482817367</updated>
     </task>
     <task id="LOCAL-00183" summary="included current year in console output">
       <created>1620524849434</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635389956389</updated>
     </task>
-    <option name="localTasksCounter" value="231" />
+    <task id="LOCAL-00231" summary="aligned some console text">
+      <created>1635424789497</created>
+      <option name="number" value="00231" />
+      <option name="presentableId" value="LOCAL-00231" />
+      <option name="project" value="LOCAL" />
+      <updated>1635424789499</updated>
+    </task>
+    <option name="localTasksCounter" value="232" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="thorough cleanup of unnecessary nulls" />
     <MESSAGE value="removed unnecessary code" />
     <MESSAGE value="converted Arrays to ArrayLists to eliminate nulls check" />
     <MESSAGE value="converted java file to Kotlin" />
@@ -494,18 +493,8 @@
     <MESSAGE value="replaced deprecated methods" />
     <MESSAGE value="set console text alignment" />
     <MESSAGE value="prepared for release 1.0.6" />
-    <option name="LAST_COMMIT_MESSAGE" value="prepared for release 1.0.6" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1552</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="aligned some console text" />
+    <option name="LAST_COMMIT_MESSAGE" value="aligned some console text" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
