@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="minor text formatting">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="now queryTree function won't exit on wrong user input">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00185" summary="showing correct statistics when querying trees and RF">
-      <created>1621572561516</created>
-      <option name="number" value="00185" />
-      <option name="presentableId" value="LOCAL-00185" />
-      <option name="project" value="LOCAL" />
-      <updated>1621572561516</updated>
     </task>
     <task id="LOCAL-00186" summary="added car crash sound again...it is cool!">
       <created>1631956180114</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635431243547</updated>
     </task>
-    <option name="localTasksCounter" value="234" />
+    <task id="LOCAL-00234" summary="now queryTree function won't exit on wrong user input">
+      <created>1635437217128</created>
+      <option name="number" value="00234" />
+      <option name="presentableId" value="LOCAL-00234" />
+      <option name="project" value="LOCAL" />
+      <updated>1635437217129</updated>
+    </task>
+    <option name="localTasksCounter" value="235" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="converted java file to Kotlin" />
     <MESSAGE value="started implementing Done (*) message" />
     <MESSAGE value="finished implementing Done (*) message" />
     <MESSAGE value="improved implementing Done (*) message" />
@@ -494,7 +493,8 @@
     <MESSAGE value="aligned some console text" />
     <MESSAGE value="replaced console.format with System.Out.printf" />
     <MESSAGE value="minor text formatting" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor text formatting" />
+    <MESSAGE value="now queryTree function won't exit on wrong user input" />
+    <option name="LAST_COMMIT_MESSAGE" value="now queryTree function won't exit on wrong user input" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

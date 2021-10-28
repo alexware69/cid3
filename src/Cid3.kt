@@ -14,14 +14,14 @@ import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.0.6"
+    private val version = "1.0.7"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
     }
-    // The number of attributes including the output attribute
+    //The number of attributes including the output attribute
     private var numAttributes = 0
-    // The names of all attributes.  It is an array of dimension numAttributes.  The last attribute is the output attribute
+    //The names of all attributes.  It is an array of dimension numAttributes.  The last attribute is the output attribute
     private lateinit var attributeNames: ArrayList<String>
     private lateinit var attributeTypes: ArrayList<AttributeType>
     private var classAttribute = 0
@@ -35,11 +35,7 @@ class Cid3 : Serializable {
     private val attributeImportance = ArrayList<Triple<Int, Double, Double>>()
     private lateinit var classProbabilities : Probabilities
 
-    //int maxThreads = 500;
-    //transient ArrayList<Thread> globalThreads = new ArrayList<>();
-
-    /* Possible values for each attribute is stored in the domains Arrays.
-    */
+    //Possible values for each attribute is stored in the domains Arrays.
     private lateinit var domainsIndexToValue: ArrayList<HashMap<Int, String>>
     private lateinit var domainsValueToIndex: ArrayList<SortedMap<String, Int>>
 
@@ -92,7 +88,7 @@ class Cid3 : Serializable {
     @Transient
     var runAnimationCalculating = true
 
-    /*  The root of the decomposition tree  */
+    //The root of the decomposition tree
     var root = TreeNode()
     var rootsRandomForest = ArrayList<TreeNode>()
 
@@ -110,9 +106,8 @@ class Cid3 : Serializable {
     @Transient
     var totalNodes = 0
 
-    /*  This function returns an integer corresponding to the symbolic value of the attribute.
-        If the symbol does not exist in the domain, the symbol is added to the domain of the attribute
-    */
+    //This function returns an integer corresponding to the symbolic value of the attribute.
+    //If the symbol does not exist in the domain, the symbol is added to the domain of the attribute
     private fun getSymbolValue(attribute: Int, symbol: String): Int {
         return if (domainsValueToIndex[attribute][symbol] != null)
             domainsValueToIndex[attribute][symbol]!!
@@ -124,7 +119,7 @@ class Cid3 : Serializable {
         }
     }
 
-    // Returns the most common class for the specified node
+    //Returns the most common class for the specified node
     private fun getMostCommonClass(n: TreeNode?): Int {
         val numValuesClass = domainsIndexToValue[classAttribute].size
         var value = n!!.frequencyClasses[0]
@@ -138,7 +133,7 @@ class Cid3 : Serializable {
         return result
     }
 
-    /*  Returns a subset of data, in which the value of the specified attribute of all data points is the specified value  */
+    //Returns a subset of data, in which the value of the specified attribute of all data points is the specified value
     private fun getSubset(data: ArrayList<DataPoint>, attribute: Int, value: Int): DataFrequencies {
         val subset = ArrayList<DataPoint>()
         val frequencies = IntArray(domainsIndexToValue[classAttribute].size)
@@ -249,7 +244,7 @@ class Cid3 : Serializable {
             //If there are no thresholds return zero.
             if (thresholds.isEmpty()) return Certainty(0.0, 0.0, 0.0)
 
-            //This trick reduces the possible thresholds to just ONE 0r TWO, dramatically improving running times!
+            //This trick reduces the possible thresholds to just ONE or TWO, dramatically improving running times!
             //=========================================================
             val centerThresholdIndex = thresholds.size / 2
             val centerThreshold: Threshold
@@ -399,7 +394,7 @@ class Cid3 : Serializable {
             /*---------------------------------------------------------------------------------------------------------*/
             //If there are no thresholds return -1.
             if (thresholds.isEmpty()) return Certainty(-1.0, 0.0, 0.0)
-            //This trick reduces the possible thresholds to just ONE 0r TWO, dramatically improving running times!
+            //This trick reduces the possible thresholds to just ONE or TWO, dramatically improving running times!
             //=========================================================
             val centerThresholdIndex = thresholds.size / 2
             val centerThreshold: Threshold
@@ -656,7 +651,7 @@ class Cid3 : Serializable {
                 probabilities[j].probCAndA[point.attributes[j]][point.attributes[classAttribute]]++
             }
         }
-        // Divide all values by total data size to get probabilities.
+        //Divide all values by total data size to get probabilities.
         var current: Probabilities
         for (i in probabilities.indices) {
             if (attributeTypes[i] == AttributeType.Ignore) continue
@@ -687,7 +682,7 @@ class Cid3 : Serializable {
         for (point in root.data) {
             p.prob[point.attributes[numAttributes - 1]]++
         }
-        // Divide all values by total data size to get probabilities.
+        //Divide all values by total data size to get probabilities.
         for (j in p.prob.indices) {
             p.prob[j] = p.prob[j] / numData
         }
@@ -813,7 +808,7 @@ class Cid3 : Serializable {
 
         //if attribute is discrete
         if (attributeTypes[selectedAttribute] == AttributeType.Discrete) {
-            // Now divide the dataset using the selected attribute
+            //Now divide the dataset using the selected attribute
             val numValues = domainsIndexToValue[selectedAttribute].size
             node.decompositionAttribute = selectedAttribute
             var df: DataFrequencies
@@ -827,7 +822,7 @@ class Cid3 : Serializable {
                 newNode.decompositionValue = j
                 node.children.add(newNode)
             }
-            // Recursively divides children nodes
+            //Recursively divides children nodes
             when {
                 isCrossValidation -> {
                     for (j in node.children.indices) {
@@ -1118,7 +1113,7 @@ class Cid3 : Serializable {
     }
 
     /* Function to read the data file.
-     * If any line starts with // it is taken as a comment and ignored.
+     * If any line starts with //it is taken as a comment and ignored.
      * Blank lines are also ignored.
      */
     fun readData(filename: String) {
@@ -1232,7 +1227,7 @@ class Cid3 : Serializable {
             print("\r" + "[ ✓ ] " + "Read data: " + root.data.size + " cases for training. ($na attributes)")
         }
         print("\n")
-    } // End of function readData
+    } //End of function readData
 
     private fun readNames(filename: String) {
         val `in`: FileInputStream?
@@ -1403,7 +1398,7 @@ class Cid3 : Serializable {
                 }
             }
 
-            // Set version, date and time
+            //Set version, date and time
             val dayInMonth = LocalDateTime.now().dayOfMonth
             var day = LocalDateTime.now().dayOfWeek.name.lowercase(Locale.getDefault())
             day = day.substring(0, 1).uppercase(Locale.getDefault()) + day.substring(1)
@@ -1443,7 +1438,7 @@ class Cid3 : Serializable {
                 }
             }
 
-            // Set version, date and time
+            //Set version, date and time
             val dayInMonth = LocalDateTime.now().dayOfMonth
             var day = LocalDateTime.now().dayOfWeek.name.lowercase(Locale.getDefault())
             day = day.substring(0, 1).uppercase(Locale.getDefault()) + day.substring(1)
@@ -2832,7 +2827,7 @@ class Cid3 : Serializable {
             val clip = AudioSystem.getClip()
             clip.open(audioInputStream)
             clip.start()
-            // The next lines is needed for the program to play the whole sound, otherwise it plays just a bit and exits.
+            //The next lines is needed for the program to play the whole sound, otherwise it plays just a bit and exits.
             Thread.sleep(2000)
         } catch (ex: java.lang.Exception) {
             print(ex.toString())
