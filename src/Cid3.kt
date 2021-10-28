@@ -1508,9 +1508,9 @@ class Cid3 : Serializable {
         print("\n")
         print("\n")
         countNodes(root)
-        print("Rules:$totalRules")
+        print("Rules: $totalRules")
         print("\n")
-        print("Nodes:$totalNodes")
+        print("Nodes: $totalNodes")
         print("\n")
 
         val sortedList: List<Triple<Int, Double, Double>> = if (criteria == Criteria.Certainty)
