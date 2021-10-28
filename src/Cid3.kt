@@ -2015,10 +2015,17 @@ class Cid3 : Serializable {
         print("[==== TRAIN DATA ====] ")
         print("\n")
         print("\n")
-        print("Correct guesses: $trainCorrects")
+
+        var rounded1 = (1.0 * trainErrors * 100 / trainData.size * 10).roundToInt() / 10.0
+        var format : String = "%" + (if (trainCorrects.toString().length - trainErrors.toString().length > 0) trainCorrects.toString().length
+        else trainErrors.toString().length) + "d"
+        print( "  Correct guesses: ")
+        print(String.format(format, trainCorrects))
         print("\n")
-        val rounded = (1.0 * trainErrors * 100 / trainData.size * 10).roundToInt() / 10.0
-        print("Incorrect guesses: $trainErrors ($rounded%)")
+        print( "Incorrect guesses: ")
+        print(String.format(format, trainErrors))
+        print( " ($rounded1%)")
+
         print("\n")
         print("\n")
 
@@ -2053,10 +2060,17 @@ class Cid3 : Serializable {
             print("[==== TEST DATA ====] ")
             print("\n")
             print("\n")
-            print("Correct guesses: $testCorrects")
+
+            rounded1 = (1.0 * testErrors * 100 / testData.size * 10).roundToInt() / 10.0
+            format = "%" + (if (testCorrects.toString().length - testErrors.toString().length > 0) testCorrects.toString().length
+            else testErrors.toString().length) + "d"
+            print( "  Correct guesses: ")
+            print(String.format(format, testCorrects))
             print("\n")
-            val rounded1 = (1.0 * testErrors * 100 / testData.size * 10).roundToInt() / 10.0
-            print("Incorrect guesses: $testErrors ($rounded1%)")
+            print( "Incorrect guesses: ")
+            print(String.format(format, testErrors))
+            print( " ($rounded1%)")
+
             print("\n")
             print("\n")
 
@@ -2266,10 +2280,17 @@ class Cid3 : Serializable {
         print("[==== TRAIN DATA ====] ")
         print("\n")
         print("\n")
-        print("Correct guesses: $trainCorrects")
+
+        var rounded1 = (1.0 * trainErrors * 100 / trainData.size * 10).roundToInt() / 10.0
+        var format : String = "%" + (if (trainCorrects.toString().length - trainErrors.toString().length > 0) trainCorrects.toString().length
+        else trainErrors.toString().length) + "d"
+        print( "  Correct guesses: ")
+        print(String.format(format, trainCorrects))
         print("\n")
-        val rounded = (1.0 * trainErrors * 100 / trainData.size * 10).roundToInt() / 10.0
-        print("Incorrect guesses: $trainErrors ($rounded%)")
+        print( "Incorrect guesses: ")
+        print(String.format(format, trainErrors))
+        print( " ($rounded1%)")
+
         print("\n")
         print("\n")
 
@@ -2303,10 +2324,17 @@ class Cid3 : Serializable {
             print("[==== TEST DATA ====] ")
             print("\n")
             print("\n")
-            print("Correct guesses: $testCorrects")
+
+            rounded1 = (1.0 * testErrors * 100 / testData.size * 10).roundToInt() / 10.0
+            format = "%" + (if (testCorrects.toString().length - testErrors.toString().length > 0) testCorrects.toString().length
+            else testErrors.toString().length) + "d"
+            print( "  Correct guesses: ")
+            print(String.format(format, testCorrects))
             print("\n")
-            val rounded1 = (1.0 * testErrors * 100 / testData.size * 10).roundToInt() / 10.0
-            print("Incorrect guesses: $testErrors ($rounded1%)")
+            print( "Incorrect guesses: ")
+            print(String.format(format, testErrors))
+            print( " ($rounded1%)")
+
             print("\n")
             print("\n")
 
@@ -3013,7 +3041,7 @@ class Cid3 : Serializable {
             val year = LocalDateTime.now().year.toString()
             print("CID3 [Version ${me.version}]              $day $month $dayInMonth, $year $timeString")
             print("\n")
-            print("------------------")
+            print("--------------------")
             print("\n")
 
             //Check for incompatible options

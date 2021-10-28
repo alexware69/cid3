@@ -22,9 +22,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="updated Kotlin version">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="set console text alignment">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/NaturalOrderComparator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/NaturalOrderComparator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +82,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/audiology.standardized -c e" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/adult" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00179" summary="enlarged filler in console output when too short">
-      <created>1620457304661</created>
-      <option name="number" value="00179" />
-      <option name="presentableId" value="LOCAL-00179" />
-      <option name="project" value="LOCAL" />
-      <updated>1620457304661</updated>
     </task>
     <task id="LOCAL-00180" summary="finished implementing filler whole application">
       <created>1620471959707</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635334285889</updated>
     </task>
-    <option name="localTasksCounter" value="228" />
+    <task id="LOCAL-00228" summary="replaced deprecated methods">
+      <created>1635335358369</created>
+      <option name="number" value="00228" />
+      <option name="presentableId" value="LOCAL-00228" />
+      <option name="project" value="LOCAL" />
+      <updated>1635335358369</updated>
+    </task>
+    <option name="localTasksCounter" value="229" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,8 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="implemented serialVersionUID in subclasses" />
-    <MESSAGE value="got rid of an inner class" />
     <MESSAGE value="organized the classes into separate files" />
     <MESSAGE value="thorough cleanup of unnecessary nulls" />
     <MESSAGE value="removed unnecessary code" />
@@ -494,7 +492,9 @@
     <MESSAGE value="updated version number" />
     <MESSAGE value="added attribute importance for Entropy and Gini" />
     <MESSAGE value="updated Kotlin version" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated Kotlin version" />
+    <MESSAGE value="replaced deprecated methods" />
+    <MESSAGE value="set console text alignment" />
+    <option name="LAST_COMMIT_MESSAGE" value="set console text alignment" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -503,11 +503,6 @@
           <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
           <line>1552</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1522</line>
-          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
