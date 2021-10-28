@@ -207,7 +207,7 @@ class Cid3 : Serializable {
             var finalTotalCertainty = 0.0
             var sumClass = 0.0
             var probability: Double
-            /*---------------------------------------------------------------------------------------------------------*/
+            //---------------------------------------------------------------------------------------------------------
             //Implementation of thresholds using a sorted set
             val attributeValuesSet: SortedSet<Double> = TreeSet()
             val attributeToClass = HashMap<Double?, Pair<Int, Boolean>>()
@@ -240,7 +240,7 @@ class Cid3 : Serializable {
                 attributeClass1 = attributeClass2
             }
 
-            /*---------------------------------------------------------------------------------------------------------*/
+            //---------------------------------------------------------------------------------------------------------
             //If there are no thresholds return zero.
             if (thresholds.isEmpty()) return Certainty(0.0, 0.0, 0.0)
 
@@ -359,7 +359,7 @@ class Cid3 : Serializable {
             var finalThreshold = 0.0
             var totalEntropy: Double
             var finalTotalEntropy = 0.0
-            /*---------------------------------------------------------------------------------------------------------*/
+            //---------------------------------------------------------------------------------------------------------
             //Implementation of thresholds using a sorted set
             val attributeValuesSet: SortedSet<Double> = TreeSet()
             val attributeToClass = HashMap<Double?, Pair<Int, Boolean>>()
@@ -391,7 +391,7 @@ class Cid3 : Serializable {
                 theClass = theClass2
                 attributeClass1 = attributeClass2
             }
-            /*---------------------------------------------------------------------------------------------------------*/
+            //---------------------------------------------------------------------------------------------------------
             //If there are no thresholds return -1.
             if (thresholds.isEmpty()) return Certainty(-1.0, 0.0, 0.0)
             //This trick reduces the possible thresholds to just ONE or TWO, dramatically improving running times!
@@ -509,7 +509,7 @@ class Cid3 : Serializable {
             var finalThreshold = 0.0
             var totalGini: Double
             var finalTotalGini = 0.0
-            /*---------------------------------------------------------------------------------------------------------*/
+            //---------------------------------------------------------------------------------------------------------
             //Implementation of thresholds using a sorted set
             val attributeValuesSet: SortedSet<Double> = TreeSet()
             val attributeToClass = HashMap<Double?, Pair<Int, Boolean>>()
@@ -541,7 +541,7 @@ class Cid3 : Serializable {
                 theClass = theClass2
                 attributeClass1 = attributeClass2
             }
-            /*---------------------------------------------------------------------------------------------------------*/
+            //---------------------------------------------------------------------------------------------------------
             //If there are no thresholds return -1.
             if (thresholds.isEmpty()) return Certainty(-1.0, 0.0, 0.0)
             //This trick reduces the possible thresholds to just ONE 0r TWO, dramatically improving running times!
@@ -699,10 +699,10 @@ class Cid3 : Serializable {
         }
     }
 
-    /*  This function checks if the specified attribute is used to decompose the data set
-        in any of the parents of the specified node in the decomposition tree.
-        Recursively checks the specified node as well as all parents
-    */
+    //This function checks if the specified attribute is used to decompose the data set
+    //in any of the parents of the specified node in the decomposition tree.
+    //Recursively checks the specified node as well as all parents
+
     private fun alreadyUsedToDecompose(node: TreeNode?, attribute: Int): Boolean {
         if (node!!.children.isNotEmpty()) {
             if (node.decompositionAttribute == attribute) return true
@@ -721,8 +721,8 @@ class Cid3 : Serializable {
         return true
     }
 
-    /*  This function decomposes the specified node according to the id3 algorithm.
-    Recursively divides all children nodes until it is not possible to divide any further  */
+    //This function decomposes the specified node according to the id3 algorithm.
+    //Recursively divides all children nodes until it is not possible to divide any further
     private fun decomposeNode(node: TreeNode, selectedAttributes: ArrayList<Int>, mySeed: Long) {
         var selectedAttributesLocal = selectedAttributes
         var bestCertainty = Certainty(0.0, 0.0, 0.0)
@@ -731,6 +731,7 @@ class Cid3 : Serializable {
         if (criteria == Criteria.Certainty) {
             if (node.data.size <= 1) return
             if (stopConditionAllClassesEqual(node.frequencyClasses)) return
+            //In the following loop, the best attribute is located
             var certainty: Certainty
             for (selectedAtt in selectedAttributesLocal) {
                 if (classAttribute == selectedAtt) continue
@@ -752,8 +753,7 @@ class Cid3 : Serializable {
         } else if (criteria == Criteria.Entropy) {
             if (node.data.size <= 1) return
             if (stopConditionAllClassesEqual(node.frequencyClasses)) return
-            /*  In the following two loops, the best attribute is located which
-                        causes maximum increase in information*/
+            //In the following loop, the best attribute is located
             var entropy: Certainty
             for (selectedAtt in selectedAttributesLocal) {
                 if (classAttribute == selectedAtt) continue
@@ -779,8 +779,7 @@ class Cid3 : Serializable {
         } else if (criteria == Criteria.Gini) {
             if (node.data.size <= 1) return
             if (stopConditionAllClassesEqual(node.frequencyClasses)) return
-            /*  In the following two loops, the best attribute is located which
-                            causes maximum increase in information*/
+            //In the following loop, the best attribute is located
             var gini: Certainty
             for (selectedAtt in selectedAttributesLocal) {
                 if (classAttribute == selectedAtt) continue
@@ -1069,11 +1068,6 @@ class Cid3 : Serializable {
                             }
                         }
                     } else if (attributeTypes[i] == AttributeType.Discrete) {
-                        /*if (!inDomain(i, next)){
-                            val name = attributeNames[i]
-                            System.err.println("Error found. Unknown value in test data for attribute: $name=\"$next\".")
-                            exitProcess(1)
-                        }*/
                         point.attributes[i] = getSymbolValue(i, next)
                     } else if (attributeTypes[i] == AttributeType.Ignore) {
                         point.attributes[i] = getSymbolValue(i, next)
@@ -1112,10 +1106,9 @@ class Cid3 : Serializable {
         print("\n")
     }
 
-    /* Function to read the data file.
-     * If any line starts with //it is taken as a comment and ignored.
-     * Blank lines are also ignored.
-     */
+    //Function to read the data file.
+    //If any line starts with // it is taken as a comment and ignored.
+    //Blank lines are also ignored.
     fun readData(filename: String) {
         val `in`: FileInputStream
         val data = ArrayList<DataPoint>()
@@ -1344,10 +1337,7 @@ class Cid3 : Serializable {
         attributeTypes.add(numAttributes - 1, AttributeType.Discrete)
     }
 
-    //-----------------------------------------------------------------------
-    /*  This function counts the total nodes and the leaf nodes
-
-    */
+    //  This function counts the total nodes and the leaf nodes
     private fun countNodes(node: TreeNode) {
         if (node.data.isNotEmpty()) totalNodes++
         if (node.children.isEmpty()) {
@@ -2836,7 +2826,7 @@ class Cid3 : Serializable {
 
     companion object {
         private const val serialVersionUID: Long = 42L
-        /* Here is the definition of the main function */
+        //Here is the definition of the main function
         @JvmStatic
         fun main(args: Array<String>) {
             val me = Cid3()
