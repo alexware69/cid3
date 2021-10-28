@@ -2401,29 +2401,31 @@ class Cid3 : Serializable {
                         if (currentNode.children[i].decompositionValueContinuousSymbol == "<=") {
                             print("Is attribute: " + id3.attributeNames[currentNode.decompositionAttribute] + " <= " + currentNode.children[i].thresholdContinuous + " ? (y/n/?)")
                             print("\n")
-                            val s = `in`.nextLine()
-                            if (s == "y" || s == "Y" || s == "yes" || s == "Yes" || s == "YES" || s == "n" || s == "N" || s == "no" || s == "No" || s == "NO" || s == "?") {
-                                if (s == "y" || s == "Y" || s == "yes" || s == "Yes" || s == "YES") {
-                                    currentNode = currentNode.children[i]
-                                    break
-                                } else if (s == "?") {
-                                    val mean = id3.meanValues[currentNode.decompositionAttribute]
-                                    currentNode = if (mean <= currentNode.children[i].thresholdContinuous) {
-                                        currentNode.children[i]
+                            while (true) {
+                                val s = `in`.nextLine()
+                                if (s == "y" || s == "Y" || s == "yes" || s == "Yes" || s == "YES" || s == "n" || s == "N" || s == "no" || s == "No" || s == "NO" || s == "?") {
+                                    if (s == "y" || s == "Y" || s == "yes" || s == "Yes" || s == "YES") {
+                                        currentNode = currentNode.children[i]
+                                        break
+                                    } else if (s == "?") {
+                                        val mean = id3.meanValues[currentNode.decompositionAttribute]
+                                        currentNode = if (mean <= currentNode.children[i].thresholdContinuous) {
+                                            currentNode.children[i]
+                                        } else {
+                                            currentNode.children[i + 1]
+                                        }
+                                        break
                                     } else {
-                                        currentNode.children[i + 1]
+                                        currentNode = currentNode.children[i + 1]
+                                        break
                                     }
-                                    break
-                                } else {
-                                    currentNode = currentNode.children[i + 1]
-                                    break
                                 }
-                            } else {
-                                print("\n")
-                                print("Error: wrong input value")
-                                print("\n")
-                                exitProcess(1)
+                                else {
+                                    print("Please enter a valid value:")
+                                    print("\n")
+                                }
                             }
+                            break
                         }
                     } else if (currentNode.children[i].decompositionValue == attributeValue) {
                         currentNode = currentNode.children[i]

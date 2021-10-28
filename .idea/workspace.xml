@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="replaced console.format with System.Out.printf">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="minor text formatting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00184" summary="halt when unseen attribute values present in test set">
-      <created>1621336559617</created>
-      <option name="number" value="00184" />
-      <option name="presentableId" value="LOCAL-00184" />
-      <option name="project" value="LOCAL" />
-      <updated>1621336559617</updated>
     </task>
     <task id="LOCAL-00185" summary="showing correct statistics when querying trees and RF">
       <created>1621572561516</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635430875058</updated>
     </task>
-    <option name="localTasksCounter" value="233" />
+    <task id="LOCAL-00233" summary="minor text formatting">
+      <created>1635431243547</created>
+      <option name="number" value="00233" />
+      <option name="presentableId" value="LOCAL-00233" />
+      <option name="project" value="LOCAL" />
+      <updated>1635431243547</updated>
+    </task>
+    <option name="localTasksCounter" value="234" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="converted Arrays to ArrayLists to eliminate nulls check" />
     <MESSAGE value="converted java file to Kotlin" />
     <MESSAGE value="started implementing Done (*) message" />
     <MESSAGE value="finished implementing Done (*) message" />
@@ -494,7 +493,8 @@
     <MESSAGE value="prepared for release 1.0.6" />
     <MESSAGE value="aligned some console text" />
     <MESSAGE value="replaced console.format with System.Out.printf" />
-    <option name="LAST_COMMIT_MESSAGE" value="replaced console.format with System.Out.printf" />
+    <MESSAGE value="minor text formatting" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor text formatting" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
