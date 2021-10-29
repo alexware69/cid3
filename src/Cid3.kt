@@ -941,18 +941,31 @@ class Cid3 : Serializable {
                     domainsValueToIndex[attribute].remove("?")
                     domainsValueToIndex[attribute][mean.toString()] = index
                 }
-            } else if (attributeTypes[attribute] == AttributeType.Discrete) {
-                if (domainsIndexToValue[attribute].containsValue("?")) {
-                    //Find most common value
-                    val mostCommonValue = mostCommonValues[attribute]
-                    val mostCommonValueStr = domainsIndexToValue[attribute][mostCommonValue] as String
-                    //Get index
-                    val index = domainsValueToIndex[attribute]["?"]!!
-                    //Replace missing with most common
-                    domainsIndexToValue[attribute].replace(index, "?", mostCommonValueStr)
-                    domainsValueToIndex[attribute].remove("?")
-                    domainsValueToIndex[attribute][mostCommonValueStr] = index
+            }
+        }
+        for (point in trainData){
+            for (i in 0 until point.attributes.size - 1){
+                if (point.attributes[i] == domainsValueToIndex[i]["?"]){
+                    if (attributeTypes[i] == AttributeType.Discrete)
+                        point.attributes[i] = getMostCommonValue(i)
                 }
+            }
+        }
+        if (testDataExists) {
+            for (point in trainData) {
+                for (i in 0 until point.attributes.size - 1) {
+                    if (point.attributes[i] == domainsValueToIndex[i]["?"]) {
+                        if (attributeTypes[i] == AttributeType.Discrete)
+                            point.attributes[i] = getMostCommonValue(i)
+                    }
+                }
+            }
+        }
+        for (attribute in 0 until numAttributes - 1) {
+            if (attributeTypes[attribute] == AttributeType.Discrete) {
+                val key = domainsValueToIndex[attribute]["?"]
+                domainsIndexToValue[attribute].remove(key)
+                domainsValueToIndex[attribute].remove("?")
             }
         }
     }
@@ -1549,6 +1562,7 @@ class Cid3 : Serializable {
                 print("\n")
                 for (j in 0 until domainsIndexToValue[sortedList[i].first].size){
                     if (attributeTypes[sortedList[i].first] ==  AttributeType.Discrete){
+                        print("  ")
                         print(domainsIndexToValue[sortedList[i].first][j])
                         print(" => ")
                         //Calculate causal certainties
