@@ -1473,11 +1473,11 @@ class Cid3 : Serializable {
         var greaterCausalCertainty = 0.0
         var causalCert: Double
 
-        val probability: Double = probabilities[attribute].prob[attributeValue]
-        var probabilityCAndA: Double
+        //val probability: Double = probabilities[attribute].prob[attributeValue]
+        var probabilityCGivenA: Double
         for (i in 0 until numValuesClass) {
-            probabilityCAndA = probabilities[attribute].probCAndA[attributeValue][i]
-            causalCert = abs(probabilityCAndA - 1.0 * probability / numValuesClass)
+            probabilityCGivenA = probabilities[attribute].probCGivenA[attributeValue][i]
+            causalCert = abs(probabilityCGivenA - 1 / numValuesClass)
             if (causalCert > greaterCausalCertainty){
                 greaterCausalCertainty = causalCert
                 selectedClassValue = i
