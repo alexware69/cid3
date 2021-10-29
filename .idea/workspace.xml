@@ -22,8 +22,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="almost done implementing causal certainties report">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="fixed bug when imputing missing values">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Certainty.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Certainty.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -99,13 +100,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00190" summary="still working on animation to console (2)">
-      <created>1632483132467</created>
-      <option name="number" value="00190" />
-      <option name="presentableId" value="LOCAL-00190" />
-      <option name="project" value="LOCAL" />
-      <updated>1632483132468</updated>
     </task>
     <task id="LOCAL-00191" summary="fixed a bug on animation to console (3)">
       <created>1632505997781</created>
@@ -443,7 +437,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635524331771</updated>
     </task>
-    <option name="localTasksCounter" value="239" />
+    <task id="LOCAL-00239" summary="fixed bug when imputing missing values">
+      <created>1635540780764</created>
+      <option name="number" value="00239" />
+      <option name="presentableId" value="LOCAL-00239" />
+      <option name="project" value="LOCAL" />
+      <updated>1635540780772</updated>
+    </task>
+    <option name="localTasksCounter" value="240" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +470,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="optimized implementing Done (*) message" />
     <MESSAGE value="simplified and cleaned implementing Done (*) message" />
     <MESSAGE value="reinforced implementing Done (*) message" />
     <MESSAGE value="reinforced more implementing Done (*) message" />
@@ -494,18 +494,8 @@
     <MESSAGE value="cleaned comments a bit more" />
     <MESSAGE value="started implementing causal certainties report" />
     <MESSAGE value="almost done implementing causal certainties report" />
-    <option name="LAST_COMMIT_MESSAGE" value="almost done implementing causal certainties report" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1565</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="fixed bug when imputing missing values" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bug when imputing missing values" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

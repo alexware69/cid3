@@ -174,7 +174,7 @@ class Cid3 : Serializable {
     //This is the final form of the certainty function.
     private fun calculateCertainty(data: ArrayList<DataPoint>, givenThatAttribute: Int): Certainty {
         val numData = data.size
-        if (numData == 0) return Certainty(0.0, 0.0, 0.0)
+        if (numData == 0) return Certainty(0.0, 0.0, null, 0.0)
         val numValuesClass = domainsIndexToValue[classAttribute].size
         val numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size
 
@@ -200,9 +200,10 @@ class Cid3 : Serializable {
                 probability = probabilities[classAttribute].prob[i]
                 sumClass += abs(probability - 1.0 * 1 / numValuesClass)
             }
-            Certainty(sum2, 0.0, sumClass)
+            Certainty(sum2, 0.0, null, sumClass)
         } else {
             var finalThreshold = 0.0
+            var finalThresholdObject: Threshold? = null
             var totalCertainty: Double
             var finalTotalCertainty = 0.0
             var sumClass = 0.0
@@ -242,7 +243,7 @@ class Cid3 : Serializable {
 
             //---------------------------------------------------------------------------------------------------------
             //If there are no thresholds return zero.
-            if (thresholds.isEmpty()) return Certainty(0.0, 0.0, 0.0)
+            if (thresholds.isEmpty()) return Certainty(0.0, 0.0, null, 0.0)
 
             //This trick reduces the possible thresholds to just ONE or TWO, dramatically improving running times!
             //=========================================================
@@ -318,6 +319,7 @@ class Cid3 : Serializable {
                 if (finalTotalCertainty < totalCertainty) {
                     finalTotalCertainty = totalCertainty
                     finalThreshold = threshold.value
+                    finalThresholdObject = threshold
                 }
             }
             //Calculate class certainty
@@ -328,14 +330,14 @@ class Cid3 : Serializable {
                     sumClass += abs(probability - 1.0 * 1 / numValuesClass)
                 }
             }
-            Certainty(finalTotalCertainty, finalThreshold, sumClass)
+            Certainty(finalTotalCertainty, finalThreshold, finalThresholdObject, sumClass)
         }
     }
 
     //This is Entropy.
     private fun calculateEntropy(data: ArrayList<DataPoint>, givenThatAttribute: Int): Certainty {
         val numData = data.size
-        if (numData == 0) return Certainty(0.0, 0.0, 0.0)
+        if (numData == 0) return Certainty(0.0, 0.0, null, 0.0)
         val numValuesClass = domainsIndexToValue[classAttribute].size
         val numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size
         //If attribute is discrete
@@ -354,7 +356,7 @@ class Cid3 : Serializable {
                 }
                 sum2 += probability * sum
             }
-            Certainty(sum2, 0.0, 0.0)
+            Certainty(sum2, 0.0, null, 0.0)
         } else {
             var finalThreshold = 0.0
             var totalEntropy: Double
@@ -393,7 +395,7 @@ class Cid3 : Serializable {
             }
             //---------------------------------------------------------------------------------------------------------
             //If there are no thresholds return -1.
-            if (thresholds.isEmpty()) return Certainty(-1.0, 0.0, 0.0)
+            if (thresholds.isEmpty()) return Certainty(-1.0, 0.0, null,0.0)
             //This trick reduces the possible thresholds to just ONE or TWO, dramatically improving running times!
             //=========================================================
             val centerThresholdIndex = thresholds.size / 2
@@ -476,14 +478,14 @@ class Cid3 : Serializable {
                     }
                 }
             }
-            Certainty(finalTotalEntropy, finalThreshold, 0.0)
+            Certainty(finalTotalEntropy, finalThreshold, null,0.0)
         }
     }
 
     //This is Gini.
     private fun calculateGini(data: ArrayList<DataPoint>, givenThatAttribute: Int): Certainty {
         val numData = data.size
-        if (numData == 0) return Certainty(0.0, 0.0, 0.0)
+        if (numData == 0) return Certainty(0.0, 0.0, null, 0.0)
         val numValuesClass = domainsIndexToValue[classAttribute].size
         val numValuesGivenAtt = domainsIndexToValue[givenThatAttribute].size
         //If attribute is discrete
@@ -504,7 +506,7 @@ class Cid3 : Serializable {
                 gini = 1 - sum
                 sum2 += probability * gini
             }
-            Certainty(sum2, 0.0, 0.0)
+            Certainty(sum2, 0.0, null, 0.0)
         } else {
             var finalThreshold = 0.0
             var totalGini: Double
@@ -543,7 +545,7 @@ class Cid3 : Serializable {
             }
             //---------------------------------------------------------------------------------------------------------
             //If there are no thresholds return -1.
-            if (thresholds.isEmpty()) return Certainty(-1.0, 0.0, 0.0)
+            if (thresholds.isEmpty()) return Certainty(-1.0, 0.0, null, 0.0)
             //This trick reduces the possible thresholds to just ONE 0r TWO, dramatically improving running times!
             //=========================================================
             val centerThresholdIndex = thresholds.size / 2
@@ -628,7 +630,7 @@ class Cid3 : Serializable {
                     }
                 }
             }
-            Certainty(finalTotalGini, finalThreshold, 0.0)
+            Certainty(finalTotalGini, finalThreshold, null, 0.0)
         }
     }
 
@@ -725,7 +727,7 @@ class Cid3 : Serializable {
     //Recursively divides all children nodes until it is not possible to divide any further
     private fun decomposeNode(node: TreeNode, selectedAttributes: ArrayList<Int>, mySeed: Long) {
         var selectedAttributesLocal = selectedAttributes
-        var bestCertainty = Certainty(0.0, 0.0, 0.0)
+        var bestCertainty = Certainty(0.0, 0.0, null, 0.0)
         var selected = false
         var selectedAttribute = 0
         if (criteria == Criteria.Certainty) {
@@ -1554,6 +1556,23 @@ class Cid3 : Serializable {
         print("----------------------------")
         print("\n")
         print("\n")
+
+        //Variable declarations
+        var probABelow: Double
+        var probAAbove: Double
+        var probCAndABelow: Double
+        var probCAndAAbove: Double
+        var causalCertaintyBelow: Double
+        var causalCertaintyAbove: Double
+        var causalCertaintyBelowGreater = 0.0
+        var causalCertaintyAboveGreater = 0.0
+        val numData = root.data.size
+        val numValuesClass = domainsIndexToValue[classAttribute].size
+        var selectedClassBelowValue = 0
+        var selectedClassAboveValue = 0
+        var threshold: Threshold?
+
+
         for (i in sortedList.indices){
             val isCause = sortedList[i].second - sortedList[i].third > 0
             if (isCause){
@@ -1564,7 +1583,7 @@ class Cid3 : Serializable {
                     if (attributeTypes[sortedList[i].first] ==  AttributeType.Discrete){
                         print("  ")
                         print(domainsIndexToValue[sortedList[i].first][j])
-                        print(" => ")
+                        print(" --> ")
                         //Calculate causal certainties
                         val selectedClassValue = calculateCausalCertainty(root.data, sortedList[i].first,j)
                         val selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassValue)
@@ -1573,6 +1592,56 @@ class Cid3 : Serializable {
                         print("\n")
                         print("\n")
                     }
+                }
+                if (attributeTypes[sortedList[i].first] ==  AttributeType.Continuous){
+                    val cert = calculateCertainty(root.data,sortedList[i].first)
+                    threshold = cert.thresholdObject
+                    //Now calculate probabilities
+                    probABelow = 1.0 * threshold!!.sumABelow / numData
+                    probAAbove = 1.0 * threshold.sumAAbove / numData
+
+                    //First below the threshold
+                    for (c in 0 until numValuesClass) {
+                        probCAndABelow = if (threshold.sumsClassesAndAttribute[c] != null) {
+                            1.0 * threshold.sumsClassesAndAttribute[c]!!.below / numData
+                        } else {
+                            0.0
+                        }
+
+                        causalCertaintyBelow = abs(probCAndABelow/probABelow - 1 / numValuesClass)
+                        if (causalCertaintyBelow > causalCertaintyBelowGreater){
+                            causalCertaintyBelowGreater = causalCertaintyBelow
+                            selectedClassBelowValue = c
+                        }
+                    }
+                    print(" <= " + threshold.value)
+                    print("  ")
+                    var selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassBelowValue)
+                    print("--> $selectedClassValueName")
+                    print("\n")
+                    print("\n")
+
+                    //And then above the threshold
+                    for (c in 0 until numValuesClass) {
+                        probCAndAAbove = if (threshold.sumsClassesAndAttribute[c] != null) {
+                            1.0 * threshold.sumsClassesAndAttribute[c]!!.above / numData
+                        } else {
+                            0.0
+                        }
+
+                        causalCertaintyAbove = abs(probCAndAAbove/probAAbove - 1 / numValuesClass)
+                        if (causalCertaintyAbove > causalCertaintyAboveGreater){
+                            causalCertaintyAboveGreater = causalCertaintyAbove
+                            selectedClassAboveValue = c
+                        }
+                    }
+
+                    print(" > " + threshold.value)
+                    print("  ")
+                    selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassAboveValue)
+                    print("--> $selectedClassValueName")
+                    print("\n")
+                    print("\n")
                 }
             }
         }
