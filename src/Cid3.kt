@@ -1466,6 +1466,104 @@ class Cid3 : Serializable {
         return ret
     }
 
+    private fun calculateCausalCertainty(data: ArrayList<DataPoint>, attribute: Int, attributeValue: Int):Int{
+        val probabilities = calculateAllProbabilities(data)
+        val numValuesClass = domainsIndexToValue[classAttribute].size
+        var selectedClassValue = 0
+        var greaterCausalCertainty = 0.0
+        var causalCert: Double
+
+        val probability: Double = probabilities[attribute].prob[attributeValue]
+        var probabilityCAndA: Double
+        for (i in 0 until numValuesClass) {
+            probabilityCAndA = probabilities[attribute].probCAndA[attributeValue][i]
+            causalCert = abs(probabilityCAndA - 1.0 * probability / numValuesClass)
+            if (causalCert > greaterCausalCertainty){
+                greaterCausalCertainty = causalCert
+                selectedClassValue = i
+            }
+        }
+        return selectedClassValue
+    }
+
+    fun createCausalAnalysisReport(){
+        val selectedAttributes = ArrayList<Int>()
+        //First calculate class probabilities
+        classProbabilities = calculateClassProbabilities()
+        //Select ALL attributes
+        for (i in 0 until numAttributes) {
+            if (attributeTypes[i] == AttributeType.Ignore) continue
+            selectedAttributes.add(i)
+        }
+        //In the following loop, the best attribute is located
+        var certainty: Certainty
+        for (selectedAtt in selectedAttributes) {
+            if (classAttribute == selectedAtt) continue
+            certainty = calculateCertainty(root.data, selectedAtt)
+            //Insert into attributeImportance
+            attributeImportance.add(Triple(selectedAtt, certainty.certainty, certainty.certaintyClass))
+        }
+
+        val sortedList: List<Triple<Int, Double, Double>> = if (criteria == Criteria.Certainty)
+            attributeImportance.sortedWith(compareByDescending { it.second })
+        else attributeImportance.sortedWith(compareBy { it.second })
+
+        //this is needed to format console output
+        var longestString: String?
+        longestString = ""
+        for ((i, element) in sortedList.withIndex()){
+            if (i > 99) break
+            val attName: String = attributeNames[element.first]
+            if (longestString != null)
+                if (attName.length > longestString.length) longestString = attName
+        }
+        if (longestString!!.length < 14) longestString = "--------------"
+        print("\n")
+        //Print console output
+        if (this.criteria == Criteria.Certainty) {
+            var fmt = "%1$10s %2$5s %3$1s %4$" + (longestString.length).toString() + "s%n"
+            System.out.printf(fmt, "Importance", "Cause","", "Attribute Name")
+            System.out.printf(fmt, "----------", "-----","", "--------------")
+            for (i in sortedList.indices) {
+                if (i > 99) break
+                val rounded = String.format("%.2f", sortedList[i].second)
+                val isCause = if (sortedList[i].second - sortedList[i].third > 0) "yes"
+                else "no"
+                val fillerSize = longestString.length - attributeNames[sortedList[i].first].length + 1
+                val filler = String(CharArray(fillerSize)).replace('\u0000', '·')
+                fmt = "%1$10s %2$5s %3$" + fillerSize.toString() + "s %4$" + attributeNames[sortedList[i].first].length.toString() + "s%n"
+                System.out.printf(fmt, rounded, isCause, filler, attributeNames[sortedList[i].first])
+            }
+        }
+        print("\n")
+        print("Report of causal certainties")
+        print("\n")
+        print("----------------------------")
+        print("\n")
+        print("\n")
+        for (i in sortedList.indices){
+            val isCause = sortedList[i].second - sortedList[i].third > 0
+            if (isCause){
+                print("Attribute: " + attributeNames[sortedList[i].first])
+                print("\n")
+                print("\n")
+                for (j in 0 until domainsIndexToValue[sortedList[i].first].size){
+                    if (attributeTypes[sortedList[i].first] ==  AttributeType.Discrete){
+                        print(domainsIndexToValue[sortedList[i].first][j])
+                        print(" => ")
+                        //Calculate causal certainties
+                        val selectedClassValue = calculateCausalCertainty(root.data, sortedList[i].first,j)
+                        val selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassValue)
+                        print(selectedClassValueName)
+
+                        print("\n")
+                        print("\n")
+                    }
+                }
+            }
+        }
+    }
+
     fun createDecisionTree() {
         val start = Instant.now()
         val selectedAttributes = ArrayList<Int>()
@@ -2835,7 +2933,12 @@ class Cid3 : Serializable {
             me.isCrossValidation = false
             me.testDataExists = false
             me.isRandomForest = false
+
+            //Create command line options
             val options = Options()
+            val analysis = Option("a", "analysis", false, "show causal analysis report")
+            analysis.isRequired = false
+            options.addOption(analysis)
             val help = Option("h", "help", false, "print this message")
             help.isRequired = false
             options.addOption(help)
@@ -3048,17 +3151,6 @@ class Cid3 : Serializable {
                     me.readTestData(nameTestData)
                 }
 
-                //Print animation for creating calculations
-                val consoleHelperCalculating = ConsoleHelper()
-                val threadCalculating = Thread {
-                    while(me.runAnimationCalculating) {
-                        consoleHelperCalculating.animate()
-                        Thread.sleep(500)
-                    }
-                }
-                threadCalculating.priority = Thread.MAX_PRIORITY
-                threadCalculating.start()
-
                 //Initialize falsePositives and falseNegatives
                 me.falsePositivesTrain = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
                 me.falseNegativesTrain = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
@@ -3070,8 +3162,16 @@ class Cid3 : Serializable {
                 me.classNoOfCasesTest = IntArray(me.domainsIndexToValue[me.numAttributes - 1].size)
                 me.countClasses()
 
-                //Create a Tree or a Random Forest for saving to disk
-                if (cmd.hasOption("save")) {
+                if (cmd.hasOption("analysis")) {
+                    me.trainData.addAll(me.testData)
+                    me.root.data = me.trainData
+                    me.testData.clear()
+                    me.setMeanValues()
+                    me.setMostCommonValues()
+                    me.imputeMissing()
+                    me.createCausalAnalysisReport()
+                }//Create a Tree or a Random Forest for saving to disk
+                else if (cmd.hasOption("save")) {
                     me.save = true
                     me.trainData.addAll(me.testData)
                     me.root.data = me.trainData
@@ -3097,6 +3197,16 @@ class Cid3 : Serializable {
                     print("\n")
                 } //Create CV, RF, Tree without saving
                 else {
+                    //Print animation for creating calculations
+                    val consoleHelperCalculating = ConsoleHelper()
+                    val threadCalculating = Thread {
+                        while(me.runAnimationCalculating) {
+                            consoleHelperCalculating.animate()
+                            Thread.sleep(500)
+                        }
+                    }
+                    threadCalculating.priority = Thread.MAX_PRIORITY
+                    threadCalculating.start()
                     me.setMeanValues()
                     me.setMostCommonValues()
                     me.imputeMissing()

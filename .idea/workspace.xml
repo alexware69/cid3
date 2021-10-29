@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="prepared version 1.0.7">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="cleaned comments a bit more">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -82,7 +82,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/adult" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/monks-1 -a" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00187" summary="replaced car crash sound with funny... it is cool!">
-      <created>1632018568684</created>
-      <option name="number" value="00187" />
-      <option name="presentableId" value="LOCAL-00187" />
-      <option name="project" value="LOCAL" />
-      <updated>1632018568685</updated>
     </task>
     <task id="LOCAL-00188" summary="added animation to console">
       <created>1632470088863</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635462242005</updated>
     </task>
-    <option name="localTasksCounter" value="236" />
+    <task id="LOCAL-00236" summary="cleaned comments a bit more">
+      <created>1635463114801</created>
+      <option name="number" value="00236" />
+      <option name="presentableId" value="LOCAL-00236" />
+      <option name="project" value="LOCAL" />
+      <updated>1635463114801</updated>
+    </task>
+    <option name="localTasksCounter" value="237" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="finished implementing Done (*) message" />
     <MESSAGE value="improved implementing Done (*) message" />
     <MESSAGE value="fixed a bug implementing Done (*) message" />
     <MESSAGE value="optimized implementing Done (*) message" />
@@ -494,7 +493,8 @@
     <MESSAGE value="minor text formatting" />
     <MESSAGE value="now queryTree function won't exit on wrong user input" />
     <MESSAGE value="prepared version 1.0.7" />
-    <option name="LAST_COMMIT_MESSAGE" value="prepared version 1.0.7" />
+    <MESSAGE value="cleaned comments a bit more" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleaned comments a bit more" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
