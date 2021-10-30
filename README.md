@@ -6,6 +6,7 @@ This is a full-featured Decision Trees and Random Forests learner. It can save t
 % java -jar cid3.jar -h
 
 usage: java -jar cid3.jar
+ -a,--analysis         show causal analysis report
  -c,--criteria <arg>   input criteria: c[Certainty], e[Entropy], g[Gini]
  -f,--file <arg>       input file
  -h,--help             print this message
@@ -22,6 +23,7 @@ usage: java -jar cid3.jar
 **List of features:**
 
 * It uses a new Certainty formula as splitting criteria.
+* Shows causal analysis report, which shows how some attribute values cause a particular classification.
 * Creates full trees, showing error rates for train and test data, attribute importance, causes and false positives/negatives.
 * If no test data is provided, it can split the train dataset in 80% for training and 20% for testing.
 * Creates random forests, showing error rates for train and test data, attribute importance, causes and false positives/negatives. Random forests are created in parallel, so it is very fast.
@@ -38,13 +40,13 @@ Example run with titanic dataset:
 ```
 user@User-MBP datasets % java -jar cid3.jar -f titanic
 
-CID3 [Version 1.0.3]              Saturday October 23, 2021 12:09:35 PM
---------------------
+CID3 [Version 1.1]              Saturday October 30, 2021 06:34:11 AM
+------------------
 [ ✓ ] Read data: 891 cases for training. (10 attributes)
 [ ✓ ] Decision tree created.
 
-Rules:276
-Nodes:514
+Rules: 276
+Nodes: 514
 
 Importance Cause   Attribute Name
 ---------- -----   --------------
