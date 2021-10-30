@@ -23,7 +23,7 @@ usage: java -jar cid3.jar
 **List of features:**
 
 * It uses a new Certainty formula as splitting criteria.
-* Shows causal analysis report, which shows how some attribute values cause a particular classification.
+* Provides causal analysis report, which shows how some attribute values cause a particular classification.
 * Creates full trees, showing error rates for train and test data, attribute importance, causes and false positives/negatives.
 * If no test data is provided, it can split the train dataset in 80% for training and 20% for testing.
 * Creates random forests, showing error rates for train and test data, attribute importance, causes and false positives/negatives. Random forests are created in parallel, so it is very fast.
