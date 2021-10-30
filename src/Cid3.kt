@@ -187,6 +187,7 @@ class Cid3 : Serializable {
             var probability: Double
             var probabilityCAndA: Double
             for (j in 0 until numValuesGivenAtt) {
+                if (domainsIndexToValue[givenThatAttribute][j] == "?") continue
                 probability = probabilities[givenThatAttribute].prob[j]
                 sum = 0.0
                 for (i in 0 until numValuesClass) {
@@ -348,6 +349,7 @@ class Cid3 : Serializable {
             var probability: Double
             var probabilityCGivenA: Double
             for (j in 0 until numValuesGivenAtt) {
+                if (domainsIndexToValue[givenThatAttribute][j] == "?") continue
                 probability = probabilities[givenThatAttribute].prob[j]
                 sum = 0.0
                 for (i in 0 until numValuesClass) {
@@ -497,6 +499,7 @@ class Cid3 : Serializable {
             var probabilityCGivenA: Double
             var gini: Double
             for (j in 0 until numValuesGivenAtt) {
+                if (domainsIndexToValue[givenThatAttribute][j] == "?") continue
                 probability = probabilities[givenThatAttribute].prob[j]
                 sum = 0.0
                 for (i in 0 until numValuesClass) {
@@ -961,13 +964,6 @@ class Cid3 : Serializable {
                             point.attributes[i] = mostCommonValues[i]
                     }
                 }
-            }
-        }
-        for (attribute in 0 until numAttributes - 1) {
-            if (attributeTypes[attribute] == AttributeType.Discrete) {
-                val key = domainsValueToIndex[attribute]["?"]
-                domainsIndexToValue[attribute].remove(key)
-                domainsValueToIndex[attribute].remove("?")
             }
         }
     }
@@ -1581,6 +1577,7 @@ class Cid3 : Serializable {
                 print("\n")
                 for (j in 0 until domainsIndexToValue[sortedList[i].first].size){
                     if (attributeTypes[sortedList[i].first] ==  AttributeType.Discrete){
+                        if (domainsIndexToValue[sortedList[i].first][j] == "?") continue
                         print("  ")
                         print(domainsIndexToValue[sortedList[i].first][j])
                         print(" --> ")
@@ -2538,6 +2535,7 @@ class Cid3 : Serializable {
                     var values = StringBuilder()
                     val valuesArray = ArrayList<String>()
                     for (i in 0 until id3.domainsIndexToValue[currentNode.decompositionAttribute].size) {
+                        if (id3.domainsIndexToValue[currentNode.decompositionAttribute][i] == "?") continue
                         valuesArray.add(id3.domainsIndexToValue[currentNode.decompositionAttribute][i] as String)
                     }
                     valuesArray.sort()
@@ -2911,6 +2909,7 @@ class Cid3 : Serializable {
                     var values = StringBuilder()
                     val valuesArray = ArrayList<String>()
                     for (j in 0 until id3.domainsIndexToValue[i].size) {
+                        if (id3.domainsIndexToValue[i][j] == "?") continue
                         valuesArray.add(id3.domainsIndexToValue[i][j] as String)
                     }
                     valuesArray.sort()
