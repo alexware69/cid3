@@ -14,7 +14,7 @@ import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.0.7"
+    private val version = "1.1"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
@@ -1477,7 +1477,7 @@ class Cid3 : Serializable {
         return ret
     }
 
-    private fun calculateCausalCertainty(data: ArrayList<DataPoint>, attribute: Int, attributeValue: Int):Int{
+    private fun calculateCausalCertainty(data: ArrayList<DataPoint>, attribute: Int, attributeValue: Int): Pair<Int, Double>{
         val probabilities = calculateAllProbabilities(data)
         val numValuesClass = domainsIndexToValue[classAttribute].size
         var selectedClassValue = 0
@@ -1494,7 +1494,7 @@ class Cid3 : Serializable {
                 selectedClassValue = i
             }
         }
-        return selectedClassValue
+        return Pair(selectedClassValue, greaterCausalCertainty)
     }
 
     fun createCausalAnalysisReport(){
@@ -1572,19 +1572,23 @@ class Cid3 : Serializable {
         for (i in sortedList.indices){
             val isCause = sortedList[i].second - sortedList[i].third > 0
             if (isCause){
-                print("Attribute: " + attributeNames[sortedList[i].first])
+                print("[ Attribute: " + attributeNames[sortedList[i].first] + " ]")
                 print("\n")
                 print("\n")
                 for (j in 0 until domainsIndexToValue[sortedList[i].first].size){
                     if (attributeTypes[sortedList[i].first] ==  AttributeType.Discrete){
                         if (domainsIndexToValue[sortedList[i].first][j] == "?") continue
-                        print("  ")
+                        print("    ")
                         print(domainsIndexToValue[sortedList[i].first][j])
                         print(" --> ")
                         //Calculate causal certainties
-                        val selectedClassValue = calculateCausalCertainty(root.data, sortedList[i].first,j)
+                        val pair = calculateCausalCertainty(root.data, sortedList[i].first,j)
+                        val selectedClassValue = pair.first
+                        val causalCertainty = pair.second
+                        val rounded = String.format("%.2f", causalCertainty)
                         val selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassValue)
                         print(selectedClassValueName)
+                        print ("  ($rounded)")
 
                         print("\n")
                         print("\n")
@@ -1611,10 +1615,12 @@ class Cid3 : Serializable {
                             selectedClassBelowValue = c
                         }
                     }
-                    print(" <= " + threshold.value)
+                    var roundedCertainty = String.format("%.2f", causalCertaintyBelowGreater)
+                    print("    <= " + String.format("%.2f", threshold.value))
                     print("  ")
                     var selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassBelowValue)
                     print("--> $selectedClassValueName")
+                    print("  ($roundedCertainty)")
                     print("\n")
                     print("\n")
 
@@ -1632,11 +1638,12 @@ class Cid3 : Serializable {
                             selectedClassAboveValue = c
                         }
                     }
-
-                    print(" > " + threshold.value)
+                    roundedCertainty = String.format("%.2f", causalCertaintyAboveGreater)
+                    print("    > " + String.format("%.2f", threshold.value))
                     print("  ")
                     selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassAboveValue)
                     print("--> $selectedClassValueName")
+                    print("  ($roundedCertainty)")
                     print("\n")
                     print("\n")
                 }
@@ -3143,10 +3150,18 @@ class Cid3 : Serializable {
             val year = LocalDateTime.now().year.toString()
             print("CID3 [Version ${me.version}]              $day $month $dayInMonth, $year $timeString")
             print("\n")
-            print("--------------------")
+            print("------------------")
             print("\n")
 
             //Check for incompatible options
+            if (cmd.hasOption("analysis")){
+                if (cmd.hasOption("validation") || cmd.hasOption("save")
+                    || cmd.hasOption("forest") || cmd.hasOption("criteria") || cmd.hasOption("partition")
+                    || cmd.hasOption("output")){
+                    System.err.println("Options -v, -s, -c, -r, -p, -o are not compatible with -a.")
+                    exitProcess(1)
+                }
+            }
             if (cmd.hasOption("query")){
                 if (cmd.hasOption("validation") || cmd.hasOption("save")
                         || cmd.hasOption("forest") || cmd.hasOption("criteria") || cmd.hasOption("partition")){
