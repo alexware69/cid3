@@ -22,9 +22,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="fixed bug when imputing missing values">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="implemented causal report for continuous attributes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Certainty.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Certainty.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -83,7 +82,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/titanic -a" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/audiology.standardized -a" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -100,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00191" summary="fixed a bug on animation to console (3)">
-      <created>1632505997781</created>
-      <option name="number" value="00191" />
-      <option name="presentableId" value="LOCAL-00191" />
-      <option name="project" value="LOCAL" />
-      <updated>1632505997782</updated>
     </task>
     <task id="LOCAL-00192" summary="changed a character on animation to console (3)">
       <created>1632566474508</created>
@@ -444,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635540780772</updated>
     </task>
-    <option name="localTasksCounter" value="240" />
+    <task id="LOCAL-00240" summary="implemented causal report for continuous attributes">
+      <created>1635551168195</created>
+      <option name="number" value="00240" />
+      <option name="presentableId" value="LOCAL-00240" />
+      <option name="project" value="LOCAL" />
+      <updated>1635551168196</updated>
+    </task>
+    <option name="localTasksCounter" value="241" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -470,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="simplified and cleaned implementing Done (*) message" />
     <MESSAGE value="reinforced implementing Done (*) message" />
     <MESSAGE value="reinforced more implementing Done (*) message" />
     <MESSAGE value="replaced * for ✓" />
@@ -495,7 +493,8 @@
     <MESSAGE value="started implementing causal certainties report" />
     <MESSAGE value="almost done implementing causal certainties report" />
     <MESSAGE value="fixed bug when imputing missing values" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bug when imputing missing values" />
+    <MESSAGE value="implemented causal report for continuous attributes" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented causal report for continuous attributes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -949,16 +949,16 @@ class Cid3 : Serializable {
             for (i in 0 until point.attributes.size - 1){
                 if (point.attributes[i] == domainsValueToIndex[i]["?"]){
                     if (attributeTypes[i] == AttributeType.Discrete)
-                        point.attributes[i] = getMostCommonValue(i)
+                        point.attributes[i] = mostCommonValues[i]
                 }
             }
         }
         if (testDataExists) {
-            for (point in trainData) {
+            for (point in testData) {
                 for (i in 0 until point.attributes.size - 1) {
                     if (point.attributes[i] == domainsValueToIndex[i]["?"]) {
                         if (attributeTypes[i] == AttributeType.Discrete)
-                            point.attributes[i] = getMostCommonValue(i)
+                            point.attributes[i] = mostCommonValues[i]
                     }
                 }
             }
