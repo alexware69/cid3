@@ -662,17 +662,17 @@ class Cid3 : Serializable {
             if (attributeTypes[i] == AttributeType.Ignore) continue
             current = probabilities[i]
             for (j in current.prob.indices) {
-                current.prob[j] = current.prob[j] / numData
+                current.prob[j] = 1.0 * current.prob[j] / numData
             }
             for (j in current.probCAndA.indices) {
                 for (k in current.probCAndA[j].indices) {
-                    current.probCAndA[j][k] = current.probCAndA[j][k] / numData
+                    current.probCAndA[j][k] = 1.0 * current.probCAndA[j][k] / numData
                 }
             }
             //Calculate ProbC_Given_A
             for (j in current.probCGivenA.indices) {
                 for (k in current.probCGivenA[j].indices) {
-                    current.probCGivenA[j][k] = current.probCAndA[j][k] / current.prob[j]
+                    current.probCGivenA[j][k] = 1.0 * current.probCAndA[j][k] / current.prob[j]
                 }
             }
         }
@@ -1486,9 +1486,10 @@ class Cid3 : Serializable {
 
         //val probability: Double = probabilities[attribute].prob[attributeValue]
         var probabilityCGivenA: Double
+
         for (i in 0 until numValuesClass) {
             probabilityCGivenA = probabilities[attribute].probCGivenA[attributeValue][i]
-            causalCert = abs(probabilityCGivenA - 1 / numValuesClass)
+            causalCert = probabilityCGivenA
             if (causalCert > greaterCausalCertainty){
                 greaterCausalCertainty = causalCert
                 selectedClassValue = i
@@ -1622,7 +1623,7 @@ class Cid3 : Serializable {
                             0.0
                         }
 
-                        causalCertaintyBelow = abs(probCAndABelow/probABelow - 1 / numValuesClass)
+                        causalCertaintyBelow = abs(1.0 * probCAndABelow/probABelow)
                         if (causalCertaintyBelow > causalCertaintyBelowGreater){
                             causalCertaintyBelowGreater = causalCertaintyBelow
                             selectedClassBelowValue = c
@@ -1645,7 +1646,7 @@ class Cid3 : Serializable {
                             0.0
                         }
 
-                        causalCertaintyAbove = abs(probCAndAAbove/probAAbove - 1 / numValuesClass)
+                        causalCertaintyAbove = abs(1.0 * probCAndAAbove/probAAbove)
                         if (causalCertaintyAbove > causalCertaintyAboveGreater){
                             causalCertaintyAboveGreater = causalCertaintyAbove
                             selectedClassAboveValue = c
