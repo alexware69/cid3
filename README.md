@@ -97,6 +97,13 @@ As an example of causal analysis, which can be invoked with command:
 From this example we can see that when attribute "education" is "Doctorate" it causes the earnings to be greater than $50,000, with a causal certainty of 0.73. The certainty can take values between 0 and 1. A paper will soon be published with all the formulas used to calculate the Certainty for splitting the nodes and the Causal Certainty, used for causal analysis.
 
 ```
+Importance Cause   Attribute Name
+---------- -----   --------------
+      0.56   yes ······ education
+
+Report of causal certainties
+----------------------------
+
 [ Attribute: education ]
 
     Bachelors --> <=50K  (0.59)
