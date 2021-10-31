@@ -130,4 +130,4 @@ From this example we can see that when attribute "education" is "Doctorate" it c
     Preschool --> <=50K  (0.99)
 
     12th --> <=50K  (0.93)
-    ```
+```
