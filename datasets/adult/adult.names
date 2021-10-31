@@ -1,0 +1,14 @@
+>50K, <=50K.
+age: continuous.
+workclass: discrete.
+education: discrete.
+education-num: discrete.
+marital-status: discrete.
+occupation: discrete.
+relationship: discrete.
+race: discrete.
+sex: discrete.
+capital-gain: continuous.
+capital-loss: continuous.
+hours-per-week: continuous.
+native-country: discrete.
