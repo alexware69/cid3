@@ -7,17 +7,17 @@ This is a full-featured Decision Trees and Random Forests learner. It can save t
 
 usage: java -jar cid3.jar
  -a,--analysis <name>    show causal analysis report
- -c,--criteria <arg>   input criteria: c[Certainty], e[Entropy], g[Gini]
- -f,--file <arg>       input file
- -h,--help             print this message
- -o,--output <arg>     output file
- -p,--partition        partition train/test data
- -q,--query <arg>      query model, enter: t[Tree] or r[Random forest]
- -r,--forest <arg>     create random forest, enter # of trees
- -s,--save             save tree/random forest
- -t,--threads <arg>    maximum number of threads (default is 500)
- -v,--validation       create 10-fold cross-validation
- -ver,--version        version
+ -c,--criteria <name>    input criteria: c[Certainty], e[Entropy], g[Gini]
+ -f,--file <name>        input file
+ -h,--help               print this message
+ -o,--output <name>      output file
+ -p,--partition          partition train/test data
+ -q,--query <type>       query model, enter: t[Tree] or r[Random forest]
+ -r,--forest <amount>    create random forest, enter # of trees
+ -s,--save               save tree/random forest
+ -t,--threads <amount>   maximum number of threads (default is 500)
+ -v,--validation         create 10-fold cross-validation
+ -ver,--version          version
 ```
 
 **List of features:**
