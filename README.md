@@ -92,7 +92,7 @@ Embarked: discrete.
 
 As an example of causal analysis, which can be invoked with command: 
 ```
-% java -jar cid3.jar -file adult -a
+% java -jar cid3.jar -f adult -a
 ```
 From this example we can see that when attribute "education" is "Doctorate" it causes the earnings to be greater than $50,000, whith a causal certainty of 0.73. The certainty can take values between 0 and 1. A paper will soon be published with all the formulas used to calculate the Certainty for splitting the nodes and the Causal Certainty, used for causal analysis.
 
