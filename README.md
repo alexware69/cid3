@@ -89,3 +89,45 @@ Fare: continuous.
 Cabin: ignore.  
 Embarked: discrete.  
 ```
+
+As an example of causal analysis, which can be invoked with command: 
+```
+% java -jar cid3.jar -file adult -a
+```
+From this example we can see that when attribute "education" is "Doctorate" it causes the earnings to be greater than $50,000, whith a causal certainty of 0.73. The certainty can take values between 0 and 1. A paper will soon be published with all the formulas used to calculate the Certainty for splitting the nodes and the Causal Certainty, used for causal analysis.
+
+```
+[ Attribute: education ]
+
+    Bachelors --> <=50K  (0.59)
+
+    HS-grad --> <=50K  (0.84)
+
+    11th --> <=50K  (0.95)
+
+    Masters --> >50K  (0.55)
+
+    9th --> <=50K  (0.95)
+
+    Some-college --> <=50K  (0.81)
+
+    Assoc-acdm --> <=50K  (0.74)
+
+    Assoc-voc --> <=50K  (0.75)
+
+    7th-8th --> <=50K  (0.94)
+
+    Doctorate --> >50K  (0.73)
+
+    Prof-school --> >50K  (0.74)
+
+    5th-6th --> <=50K  (0.95)
+
+    10th --> <=50K  (0.94)
+
+    1st-4th --> <=50K  (0.97)
+
+    Preschool --> <=50K  (0.99)
+
+    12th --> <=50K  (0.93)
+    ```
