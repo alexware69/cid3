@@ -1497,7 +1497,7 @@ class Cid3 : Serializable {
         return Pair(selectedClassValue, greaterCausalCertainty)
     }
 
-    fun createCausalAnalysisReport(){
+    fun createCausalAnalysisReport(attributeName: String){
         val selectedAttributes = ArrayList<Int>()
         //First calculate class probabilities
         classProbabilities = calculateClassProbabilities()
@@ -1513,6 +1513,19 @@ class Cid3 : Serializable {
             certainty = calculateCertainty(root.data, selectedAtt)
             //Insert into attributeImportance
             attributeImportance.add(Triple(selectedAtt, certainty.certainty, certainty.certaintyClass))
+        }
+
+        //If an attribute name is passed just do that attribute
+        if (attributeName.isNotEmpty()){
+            var selectedAtt: Triple<Int,Double,Double> = Triple(0,0.0,0.0)
+            for (att in attributeImportance){
+                if (attributeNames[att.first] == attributeName) {
+                    selectedAtt = att
+                    break
+                }
+            }
+            attributeImportance.clear()
+            attributeImportance.add(selectedAtt)
         }
 
         val sortedList: List<Triple<Int, Double, Double>> = if (criteria == Criteria.Certainty)
@@ -3025,8 +3038,10 @@ class Cid3 : Serializable {
 
             //Create command line options
             val options = Options()
-            val analysis = Option("a", "analysis", false, "show causal analysis report")
+            val analysis = Option("a", "analysis", true, "show causal analysis report")
             analysis.isRequired = false
+            analysis.setOptionalArg(true)
+            analysis.argName = "name"
             options.addOption(analysis)
             val help = Option("h", "help", false, "print this message")
             help.isRequired = false
@@ -3042,24 +3057,30 @@ class Cid3 : Serializable {
             options.addOption(partition)
             val criteria = Option("c", "criteria", true, "input criteria: c[Certainty], e[Entropy], g[Gini]")
             criteria.isRequired = false
+            criteria.argName = "name"
             options.addOption(criteria)
             val file = Option("f", "file", true, "input file")
             file.isRequired = true
+            file.argName = "name"
             options.addOption(file)
             val crossValidation = Option("v", "validation", false, "create 10-fold cross-validation")
             crossValidation.isRequired = false
             options.addOption(crossValidation)
             val randomForest = Option("r", "forest", true, "create random forest, enter # of trees")
             randomForest.isRequired = false
+            randomForest.argName = "amount"
             options.addOption(randomForest)
             val query = Option("q", "query", true, "query model, enter: t[Tree] or r[Random forest]")
             query.isRequired = false
+            query.argName = "type"
             options.addOption(query)
             val output = Option("o", "output", true, "output file")
-            query.isRequired = false
+            output.isRequired = false
+            output.argName = "name"
             options.addOption(output)
             val threads = Option("t", "threads", true, "maximum number of threads (default is 500)")
-            query.isRequired = false
+            threads.isRequired = false
+            threads.argName = "amount"
             options.addOption(threads)
 
             //Declare parser and formatter
@@ -3266,7 +3287,17 @@ class Cid3 : Serializable {
                     me.setMeanValues()
                     me.setMostCommonValues()
                     me.imputeMissing()
-                    me.createCausalAnalysisReport()
+                    var attName = ""
+                    if(cmd.getOptionValue("analysis") != null) {
+                        attName = cmd.getOptionValue("analysis")
+                        if (!me.attributeNames.contains(attName)){
+                            print("\n")
+                            print("Error: Unknown attribute name.")
+                            print("\n")
+                            exitProcess(1)
+                        }
+                    }
+                    me.createCausalAnalysisReport(attName)
                 }//Create a Tree or a Random Forest for saving to disk
                 else if (cmd.hasOption("save")) {
                     me.save = true
