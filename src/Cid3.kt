@@ -1337,10 +1337,16 @@ class Cid3 : Serializable {
         //Set the attribute types.
         for (i in 0 until numAttributes - 1) {
             val attribute = attributes[i]
-            when (attribute.second.trim { it <= ' ' }) {
-                "continuous." -> attributeTypes.add(AttributeType.Continuous)
-                "ignore." -> attributeTypes.add(AttributeType.Ignore)
-                else -> attributeTypes.add(AttributeType.Discrete)
+            if (attribute.second.endsWith(".")) {
+                when (attribute.second.trim { it <= ' ' }) {
+                    "continuous." -> attributeTypes.add(AttributeType.Continuous)
+                    "ignore." -> attributeTypes.add(AttributeType.Ignore)
+                    else -> attributeTypes.add(AttributeType.Discrete)
+                }
+            }
+            else{
+                System.err.println("All lines in the names file must end with a dot.")
+                exitProcess(1)
             }
         }
 
