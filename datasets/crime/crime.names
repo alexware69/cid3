@@ -1,0 +1,8 @@
+.
+Descript:discrete.
+DayOfWeek:discrete.
+PdDistrict:discrete.
+Resolution:discrete.
+Address:discrete.
+X:continuous.
+Y:continuous.
