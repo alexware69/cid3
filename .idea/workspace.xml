@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="required to end lines with a dot in the names file" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="added crime San Francisco dataset" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -96,20 +96,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00200" summary="added serialVersionUID to each serializable class">
-      <created>1633058452759</created>
-      <option name="number" value="00200" />
-      <option name="presentableId" value="LOCAL-00200" />
-      <option name="project" value="LOCAL" />
-      <updated>1633058452759</updated>
-    </task>
-    <task id="LOCAL-00201" summary="cleaned up some comments">
-      <created>1633229072785</created>
-      <option name="number" value="00201" />
-      <option name="presentableId" value="LOCAL-00201" />
-      <option name="project" value="LOCAL" />
-      <updated>1633229072787</updated>
     </task>
     <task id="LOCAL-00202" summary="implemented serialVersionUID in subclasses">
       <created>1633231126409</created>
@@ -440,7 +426,21 @@
       <option name="project" value="LOCAL" />
       <updated>1635890477911</updated>
     </task>
-    <option name="localTasksCounter" value="249" />
+    <task id="LOCAL-00249" summary="added crime San Francisco dataset">
+      <created>1635992042402</created>
+      <option name="number" value="00249" />
+      <option name="presentableId" value="LOCAL-00249" />
+      <option name="project" value="LOCAL" />
+      <updated>1635992042404</updated>
+    </task>
+    <task id="LOCAL-00250" summary="added crime San Francisco dataset">
+      <created>1635992063856</created>
+      <option name="number" value="00250" />
+      <option name="presentableId" value="LOCAL-00250" />
+      <option name="project" value="LOCAL" />
+      <updated>1635992063856</updated>
+    </task>
+    <option name="localTasksCounter" value="251" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -466,7 +466,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="removed attribute importance from Entropy and Gini" />
     <MESSAGE value="updated version number" />
     <MESSAGE value="added attribute importance for Entropy and Gini" />
     <MESSAGE value="updated Kotlin version" />
@@ -491,7 +490,8 @@
     <MESSAGE value="changed the causal analysis report from causal certainty to conditional probability" />
     <MESSAGE value="prepared version 1.1.1" />
     <MESSAGE value="required to end lines with a dot in the names file" />
-    <option name="LAST_COMMIT_MESSAGE" value="required to end lines with a dot in the names file" />
+    <MESSAGE value="added crime San Francisco dataset" />
+    <option name="LAST_COMMIT_MESSAGE" value="added crime San Francisco dataset" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
