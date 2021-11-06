@@ -94,7 +94,7 @@ As an example of causal analysis, which can be invoked with command:
 ```
 % java -jar cid3.jar -f adult -a education
 ```
-From this example we can see that attribute "education" is a cause, which is based on the generalized causation formula I discovered. Once we know that it is a cause we then just calculate the conditional probabilities as usual. When it's value is "Doctorate" it causes the earnings to be greater than $50,000, with a probability of 0.73. A paper will soon be published with all the formulas used to calculate the Certainty for splitting the nodes and the Generalized Causation, used for causal analysis.
+From this example we can see that attribute "education" is a cause, which is based on the certainty-raising inequality. Once we know that it is a cause we then just calculate the conditional probabilities as usual. When it's value is "Doctorate" it causes the earnings to be greater than $50,000, with a probability of 0.73. A paper will soon be published with all the formulas used to calculate the Certainty for splitting the nodes and the Generalized Causation, used for causal analysis.
 
 ```
 Importance Cause   Attribute Name
