@@ -22,7 +22,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="added crime San Francisco dataset" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="re-added zipped crime San Francisco dataset">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -96,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00202" summary="implemented serialVersionUID in subclasses">
-      <created>1633231126409</created>
-      <option name="number" value="00202" />
-      <option name="presentableId" value="LOCAL-00202" />
-      <option name="project" value="LOCAL" />
-      <updated>1633231126409</updated>
     </task>
     <task id="LOCAL-00203" summary="got rid of an inner class">
       <created>1633416754562</created>
@@ -440,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635992063856</updated>
     </task>
-    <option name="localTasksCounter" value="251" />
+    <task id="LOCAL-00251" summary="re-added zipped crime San Francisco dataset">
+      <created>1635992222958</created>
+      <option name="number" value="00251" />
+      <option name="presentableId" value="LOCAL-00251" />
+      <option name="project" value="LOCAL" />
+      <updated>1635992222958</updated>
+    </task>
+    <option name="localTasksCounter" value="252" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -466,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="updated version number" />
     <MESSAGE value="added attribute importance for Entropy and Gini" />
     <MESSAGE value="updated Kotlin version" />
     <MESSAGE value="replaced deprecated methods" />
@@ -491,7 +493,8 @@
     <MESSAGE value="prepared version 1.1.1" />
     <MESSAGE value="required to end lines with a dot in the names file" />
     <MESSAGE value="added crime San Francisco dataset" />
-    <option name="LAST_COMMIT_MESSAGE" value="added crime San Francisco dataset" />
+    <MESSAGE value="re-added zipped crime San Francisco dataset" />
+    <option name="LAST_COMMIT_MESSAGE" value="re-added zipped crime San Francisco dataset" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
