@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="implemented specific attribute causes">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="started implementing the causal certainty inequality">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00205" summary="thorough cleanup of unnecessary nulls">
-      <created>1634089676778</created>
-      <option name="number" value="00205" />
-      <option name="presentableId" value="LOCAL-00205" />
-      <option name="project" value="LOCAL" />
-      <updated>1634089676778</updated>
     </task>
     <task id="LOCAL-00206" summary="removed unnecessary code">
       <created>1634091746330</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636247828426</updated>
     </task>
-    <option name="localTasksCounter" value="254" />
+    <task id="LOCAL-00254" summary="started implementing the causal certainty inequality">
+      <created>1636281121739</created>
+      <option name="number" value="00254" />
+      <option name="presentableId" value="LOCAL-00254" />
+      <option name="project" value="LOCAL" />
+      <updated>1636281121750</updated>
+    </task>
+    <option name="localTasksCounter" value="255" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="replaced deprecated methods" />
     <MESSAGE value="set console text alignment" />
     <MESSAGE value="prepared for release 1.0.6" />
     <MESSAGE value="aligned some console text" />
@@ -494,7 +493,8 @@
     <MESSAGE value="re-added zipped crime San Francisco dataset" />
     <MESSAGE value="prepared version 1.1.2" />
     <MESSAGE value="implemented specific attribute causes" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented specific attribute causes" />
+    <MESSAGE value="started implementing the causal certainty inequality" />
+    <option name="LAST_COMMIT_MESSAGE" value="started implementing the causal certainty inequality" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
