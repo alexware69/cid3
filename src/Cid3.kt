@@ -1483,7 +1483,36 @@ class Cid3 : Serializable {
         return ret
     }
 
-    private fun calculateCausalCertainty(data: ArrayList<DataPoint>, attribute: Int, attributeValue: Int): Pair<Int, Double>{
+    private fun calculateCertCGivenA(data: ArrayList<DataPoint>, attribute: Int) : Pair<Double, Double>{
+        val probabilities = calculateAllProbabilities(data)
+        var sum: Double
+        var sum2 = 0.0
+        var probability: Double
+        var probabilityCAndA: Double
+        var sumClass = 0.0
+
+        val numValuesClass = domainsIndexToValue[classAttribute].size
+        val numValuesGivenAtt = domainsIndexToValue[attribute].size
+
+        for (j in 0 until numValuesGivenAtt) {
+            if (domainsIndexToValue[attribute][j] == "?") continue
+            probability = probabilities[attribute].prob[j]
+            sum = 0.0
+            for (i in 0 until numValuesClass) {
+                probabilityCAndA = probabilities[attribute].probCAndA[j][i]
+                sum += abs(probabilityCAndA - 1.0 * probability / numValuesClass)
+            }
+            sum2 += sum
+        }
+        //Calculate class certainty
+        for (i in 0 until numValuesClass) {
+            probability = probabilities[classAttribute].prob[i]
+            sumClass += abs(probability - 1.0 * 1 / numValuesClass)
+        }
+        return Pair(sum2, sumClass)
+    }
+
+    private fun calculateProbCGivenA(data: ArrayList<DataPoint>, attribute: Int, attributeValue: Int): Pair<Int, Double>{
         val probabilities = calculateAllProbabilities(data)
         val numValuesClass = domainsIndexToValue[classAttribute].size
         var selectedClassValue = 0
@@ -1588,7 +1617,6 @@ class Cid3 : Serializable {
         var selectedClassAboveValue = 0
         var threshold: Threshold?
 
-
         for (i in sortedList.indices){
             val isCause = sortedList[i].second - sortedList[i].third > 0
             if (isCause){
@@ -1597,18 +1625,19 @@ class Cid3 : Serializable {
                 print("\n")
                 for (j in 0 until domainsIndexToValue[sortedList[i].first].size){
                     if (attributeTypes[sortedList[i].first] ==  AttributeType.Discrete){
+                        val certCGivenA = calculateCertCGivenA(root.data, sortedList[i].first)
                         if (domainsIndexToValue[sortedList[i].first][j] == "?") continue
                         print("    ")
                         print(domainsIndexToValue[sortedList[i].first][j])
                         print(" --> ")
                         //Calculate causal certainties
-                        val pair = calculateCausalCertainty(root.data, sortedList[i].first,j)
+                        val pair = calculateProbCGivenA(root.data, sortedList[i].first,j)
                         val selectedClassValue = pair.first
-                        val causalCertainty = pair.second
-                        val rounded = String.format("%.2f", causalCertainty)
+                        val probCGivenA = pair.second
+                        val rounded = String.format("%.2f", probCGivenA)
                         val selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassValue)
                         val probClass = classProbabilities.prob[selectedClassValue]
-                        if (causalCertainty > probClass) {
+                        if (certCGivenA.first * probCGivenA > certCGivenA.second * probClass) {
                             print(selectedClassValueName)
                             print("  ($rounded)")
                         }
