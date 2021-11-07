@@ -1482,6 +1482,46 @@ class Cid3 : Serializable {
         }
         return ret
     }
+    private fun calculateCertCGivenAContinuous(data: ArrayList<DataPoint>,threshold: Threshold) : Pair<Double, Double>{
+        val numData = data.size
+        val totalCertainty: Double
+        var sumClass = 0.0
+        var probability: Double
+        val numValuesClass = domainsIndexToValue[classAttribute].size
+        var probCAndABelow: Double
+        var probCAndAAbove: Double
+
+        //Now calculate probabilities
+        val probABelow: Double = 1.0 * threshold.sumABelow / numData
+        val probAAbove: Double = 1.0 * threshold.sumAAbove / numData
+
+        //Reset the certainty
+        var certaintyBelow = 0.0
+        var certaintyAbove = 0.0
+        for (c in 0 until numValuesClass) {
+            if (threshold.sumsClassesAndAttribute[c] != null) {
+                probCAndABelow = 1.0 * threshold.sumsClassesAndAttribute[c]!!.below / numData
+                probCAndAAbove = 1.0 * threshold.sumsClassesAndAttribute[c]!!.above / numData
+            } else {
+                probCAndABelow = 0.0
+                probCAndAAbove = 0.0
+            }
+            certaintyBelow += abs(probCAndABelow - probABelow / numValuesClass)
+            certaintyAbove += abs(probCAndAAbove - probAAbove / numValuesClass)
+        }
+        //Calculate totals
+        totalCertainty = certaintyBelow + certaintyAbove
+
+        //Calculate class certainty
+        //Only do for root node
+        if (data.size == root.data.size) {
+            for (i in 0 until numValuesClass) {
+                probability = classProbabilities.prob[i]
+                sumClass += abs(probability - 1.0 * 1 / numValuesClass)
+            }
+        }
+        return Pair(totalCertainty, sumClass)
+    }
 
     private fun calculateCertCGivenADiscrete(data: ArrayList<DataPoint>, attribute: Int) : Pair<Double, Double>{
         val probabilities = calculateAllProbabilities(data)
@@ -1607,10 +1647,10 @@ class Cid3 : Serializable {
         var probAAbove: Double
         var probCAndABelow: Double
         var probCAndAAbove: Double
-        var causalCertaintyBelow: Double
-        var causalCertaintyAbove: Double
-        var causalCertaintyBelowGreater = 0.0
-        var causalCertaintyAboveGreater = 0.0
+        var condProbabilityBelow: Double
+        var condProbabilityAbove: Double
+        var condProbabilityBelowGreater = 0.0
+        var condProbabilityAboveGreater = 0.0
         val numData = root.data.size
         val numValuesClass = domainsIndexToValue[classAttribute].size
         var selectedClassBelowValue = 0
@@ -1650,8 +1690,9 @@ class Cid3 : Serializable {
                 if (attributeTypes[sortedList[i].first] ==  AttributeType.Continuous){
                     val cert = calculateCertainty(root.data,sortedList[i].first)
                     threshold = cert.thresholdObject
+                    val certCGivenA = calculateCertCGivenAContinuous(root.data, threshold!!)
                     //Now calculate probabilities
-                    probABelow = 1.0 * threshold!!.sumABelow / numData
+                    probABelow = 1.0 * threshold.sumABelow / numData
                     probAAbove = 1.0 * threshold.sumAAbove / numData
 
                     //First below the threshold
@@ -1662,18 +1703,18 @@ class Cid3 : Serializable {
                             0.0
                         }
 
-                        causalCertaintyBelow = abs(1.0 * probCAndABelow/probABelow)
-                        if (causalCertaintyBelow > causalCertaintyBelowGreater){
-                            causalCertaintyBelowGreater = causalCertaintyBelow
+                        condProbabilityBelow = abs(1.0 * probCAndABelow/probABelow)
+                        if (condProbabilityBelow > condProbabilityBelowGreater){
+                            condProbabilityBelowGreater = condProbabilityBelow
                             selectedClassBelowValue = c
                         }
                     }
-                    var roundedCertainty = String.format("%.2f", causalCertaintyBelowGreater)
+                    var roundedCertainty = String.format("%.2f", condProbabilityBelowGreater)
                     print("    <= " + String.format("%.2f", threshold.value))
                     print("  ")
                     var selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassBelowValue)
                     var probClass = classProbabilities.prob[selectedClassBelowValue]
-                    if (causalCertaintyBelowGreater > probClass) {
+                    if (certCGivenA.first * condProbabilityBelowGreater > certCGivenA.second * probClass) {
                         print("--> $selectedClassValueName")
                         print("  ($roundedCertainty)")
                     }
@@ -1689,18 +1730,18 @@ class Cid3 : Serializable {
                             0.0
                         }
 
-                        causalCertaintyAbove = abs(1.0 * probCAndAAbove/probAAbove)
-                        if (causalCertaintyAbove > causalCertaintyAboveGreater){
-                            causalCertaintyAboveGreater = causalCertaintyAbove
+                        condProbabilityAbove = abs(1.0 * probCAndAAbove/probAAbove)
+                        if (condProbabilityAbove > condProbabilityAboveGreater){
+                            condProbabilityAboveGreater = condProbabilityAbove
                             selectedClassAboveValue = c
                         }
                     }
-                    roundedCertainty = String.format("%.2f", causalCertaintyAboveGreater)
+                    roundedCertainty = String.format("%.2f", condProbabilityAboveGreater)
                     print("    > " + String.format("%.2f", threshold.value))
                     print("  ")
                     selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassAboveValue)
                     probClass = classProbabilities.prob[selectedClassAboveValue]
-                    if (causalCertaintyAboveGreater > probClass) {
+                    if (certCGivenA.first * condProbabilityAboveGreater > certCGivenA.second * probClass) {
                         print("--> $selectedClassValueName")
                         print("  ($roundedCertainty)")
                     }
