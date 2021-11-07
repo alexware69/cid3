@@ -14,7 +14,7 @@ import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.1.2"
+    private val version = "1.1.3"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
@@ -1607,8 +1607,12 @@ class Cid3 : Serializable {
                         val causalCertainty = pair.second
                         val rounded = String.format("%.2f", causalCertainty)
                         val selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassValue)
-                        print(selectedClassValueName)
-                        print ("  ($rounded)")
+                        val probClass = classProbabilities.prob[selectedClassValue]
+                        if (causalCertainty > probClass) {
+                            print(selectedClassValueName)
+                            print("  ($rounded)")
+                        }
+                        else print("No cause.")
 
                         print("\n")
                         print("\n")
@@ -1639,8 +1643,12 @@ class Cid3 : Serializable {
                     print("    <= " + String.format("%.2f", threshold.value))
                     print("  ")
                     var selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassBelowValue)
-                    print("--> $selectedClassValueName")
-                    print("  ($roundedCertainty)")
+                    var probClass = classProbabilities.prob[selectedClassBelowValue]
+                    if (causalCertaintyBelowGreater > probClass) {
+                        print("--> $selectedClassValueName")
+                        print("  ($roundedCertainty)")
+                    }
+                    else print("No cause.")
                     print("\n")
                     print("\n")
 
@@ -1662,8 +1670,12 @@ class Cid3 : Serializable {
                     print("    > " + String.format("%.2f", threshold.value))
                     print("  ")
                     selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassAboveValue)
-                    print("--> $selectedClassValueName")
-                    print("  ($roundedCertainty)")
+                    probClass = classProbabilities.prob[selectedClassAboveValue]
+                    if (causalCertaintyAboveGreater > probClass) {
+                        print("--> $selectedClassValueName")
+                        print("  ($roundedCertainty)")
+                    }
+                    else print("No cause.")
                     print("\n")
                     print("\n")
                 }
