@@ -106,7 +106,7 @@ Report of causal certainties
 
 [ Attribute: education ]
 
-    Bachelors --> No cause.
+    Bachelors --> Non cause.
 
     HS-grad --> <=50K  (0.84)
 
