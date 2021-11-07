@@ -106,7 +106,7 @@ Report of causal certainties
 
 [ Attribute: education ]
 
-    Bachelors --> <=50K  (0.59)
+    Bachelors --> No cause.
 
     HS-grad --> <=50K  (0.84)
 
@@ -118,9 +118,9 @@ Report of causal certainties
 
     Some-college --> <=50K  (0.81)
 
-    Assoc-acdm --> <=50K  (0.74)
+    Assoc-acdm --> No cause.
 
-    Assoc-voc --> <=50K  (0.75)
+    Assoc-voc --> No cause.
 
     7th-8th --> <=50K  (0.94)
 
