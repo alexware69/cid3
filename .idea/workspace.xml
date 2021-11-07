@@ -22,8 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="continued implementing the causal certainty inequality">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="finished implementing the causal certainty inequality">
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -99,13 +98,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00207" summary="converted Arrays to ArrayLists to eliminate nulls check">
-      <created>1634120722120</created>
-      <option name="number" value="00207" />
-      <option name="presentableId" value="LOCAL-00207" />
-      <option name="project" value="LOCAL" />
-      <updated>1634120722120</updated>
     </task>
     <task id="LOCAL-00208" summary="converted java file to Kotlin">
       <created>1634260815325</created>
@@ -443,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636282289694</updated>
     </task>
-    <option name="localTasksCounter" value="256" />
+    <task id="LOCAL-00256" summary="finished implementing the causal certainty inequality">
+      <created>1636284214318</created>
+      <option name="number" value="00256" />
+      <option name="presentableId" value="LOCAL-00256" />
+      <option name="project" value="LOCAL" />
+      <updated>1636284214318</updated>
+    </task>
+    <option name="localTasksCounter" value="257" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +468,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="prepared for release 1.0.6" />
     <MESSAGE value="aligned some console text" />
     <MESSAGE value="replaced console.format with System.Out.printf" />
     <MESSAGE value="minor text formatting" />
@@ -494,18 +492,8 @@
     <MESSAGE value="implemented specific attribute causes" />
     <MESSAGE value="started implementing the causal certainty inequality" />
     <MESSAGE value="continued implementing the causal certainty inequality" />
-    <option name="LAST_COMMIT_MESSAGE" value="continued implementing the causal certainty inequality" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1679</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="finished implementing the causal certainty inequality" />
+    <option name="LAST_COMMIT_MESSAGE" value="finished implementing the causal certainty inequality" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
