@@ -1681,7 +1681,7 @@ class Cid3 : Serializable {
                             print(selectedClassValueName)
                             print("  ($rounded)")
                         }
-                        else print("No cause.")
+                        else print("Non cause.")
 
                         print("\n")
                         print("\n")
@@ -1718,7 +1718,7 @@ class Cid3 : Serializable {
                         print("--> $selectedClassValueName")
                         print("  ($roundedCertainty)")
                     }
-                    else print("No cause.")
+                    else print("Non cause.")
                     print("\n")
                     print("\n")
 
@@ -1745,7 +1745,7 @@ class Cid3 : Serializable {
                         print("--> $selectedClassValueName")
                         print("  ($roundedCertainty)")
                     }
-                    else print("No cause.")
+                    else print("Non cause.")
                     print("\n")
                     print("\n")
                 }
