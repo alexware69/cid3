@@ -94,7 +94,7 @@ As an example of causal analysis, which can be invoked with command:
 ```
 % java -jar cid3.jar -f adult -a education
 ```
-From this example we can see that attribute "education" is a cause, which is based on the certainty-raising inequality. Once we know that it is a cause we then calculate the conditional probabilities and compare it using the probability-raising inequality. When it's value is "Doctorate" it causes the earnings to be greater than $50,000, with a probability of 0.73. A paper will soon be published with all the formulas used to calculate the Certainty for splitting the nodes and the certainty-raising inequality, used for causal analysis.
+From this example we can see that attribute "education" is a cause, which is based on the certainty-raising inequality. Once we know that it is a cause we then compare the causal certainties of its values. When it's value is "Doctorate" it causes the earnings to be greater than $50,000, with a probability of 0.73. A paper will soon be published with all the formulas used to calculate the Certainty for splitting the nodes and the certainty-raising inequality, used for causal analysis.
 
 ```
 Importance Cause   Attribute Name
@@ -118,9 +118,9 @@ Report of causal certainties
 
     Some-college --> <=50K  (0.81)
 
-    Assoc-acdm --> No cause.
+    Assoc-acdm --> <=50K  (0.74)
 
-    Assoc-voc --> No cause.
+    Assoc-voc --> <=50K  (0.75)
 
     7th-8th --> <=50K  (0.94)
 
