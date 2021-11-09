@@ -106,35 +106,35 @@ Report of causal certainties
 
 [ Attribute: education ]
 
-    Bachelors --> Non cause.
+    1st-4th --> <=50K  (0.97)
 
-    HS-grad --> <=50K  (0.84)
+    5th-6th --> <=50K  (0.95)
 
-    11th --> <=50K  (0.95)
-
-    Masters --> >50K  (0.55)
+    7th-8th --> <=50K  (0.94)
 
     9th --> <=50K  (0.95)
 
-    Some-college --> <=50K  (0.81)
+    10th --> <=50K  (0.94)
+
+    11th --> <=50K  (0.95)
+
+    12th --> <=50K  (0.93)
 
     Assoc-acdm --> <=50K  (0.74)
 
     Assoc-voc --> <=50K  (0.75)
 
-    7th-8th --> <=50K  (0.94)
+    Bachelors --> Non cause.
 
     Doctorate --> >50K  (0.73)
 
-    Prof-school --> >50K  (0.74)
+    HS-grad --> <=50K  (0.84)
 
-    5th-6th --> <=50K  (0.95)
-
-    10th --> <=50K  (0.94)
-
-    1st-4th --> <=50K  (0.97)
+    Masters --> >50K  (0.55)
 
     Preschool --> <=50K  (0.99)
 
-    12th --> <=50K  (0.93)
+    Prof-school --> >50K  (0.74)
+
+    Some-college --> <=50K  (0.81)
 ```
