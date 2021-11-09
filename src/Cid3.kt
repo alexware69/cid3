@@ -13,7 +13,7 @@ import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.1.5"
+    private val version = "1.2"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
@@ -3273,7 +3273,7 @@ class Cid3 : Serializable {
             val year = LocalDateTime.now().year.toString()
             print("CID3 [Version ${me.version}]              $day $month $dayInMonth, $year $timeString")
             print("\n")
-            print("--------------------")
+            print("------------------")
             print("\n")
 
             //Check for incompatible options

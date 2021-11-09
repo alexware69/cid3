@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="added census-income dataset">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="some code optimizations when sorting elements">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -99,13 +99,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00212" summary="optimized implementing Done (*) message">
-      <created>1634270332199</created>
-      <option name="number" value="00212" />
-      <option name="presentableId" value="LOCAL-00212" />
-      <option name="project" value="LOCAL" />
-      <updated>1634270332199</updated>
     </task>
     <task id="LOCAL-00213" summary="simplified and cleaned implementing Done (*) message">
       <created>1634298103174</created>
@@ -443,7 +436,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636438692713</updated>
     </task>
-    <option name="localTasksCounter" value="261" />
+    <task id="LOCAL-00261" summary="some code optimizations when sorting elements">
+      <created>1636447541153</created>
+      <option name="number" value="00261" />
+      <option name="presentableId" value="LOCAL-00261" />
+      <option name="project" value="LOCAL" />
+      <updated>1636447541160</updated>
+    </task>
+    <option name="localTasksCounter" value="262" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +469,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="prepared version 1.0.7" />
     <MESSAGE value="cleaned comments a bit more" />
     <MESSAGE value="started implementing causal certainties report" />
     <MESSAGE value="almost done implementing causal certainties report" />
@@ -494,7 +493,8 @@
     <MESSAGE value="fixed a typo" />
     <MESSAGE value="now sorting attribute values in causal analysis report" />
     <MESSAGE value="added census-income dataset" />
-    <option name="LAST_COMMIT_MESSAGE" value="added census-income dataset" />
+    <MESSAGE value="some code optimizations when sorting elements" />
+    <option name="LAST_COMMIT_MESSAGE" value="some code optimizations when sorting elements" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
