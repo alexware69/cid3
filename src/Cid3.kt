@@ -8,7 +8,6 @@ import java.util.*
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 import javax.sound.sampled.AudioSystem
-import kotlin.collections.ArrayList
 import kotlin.math.*
 import kotlin.system.exitProcess
 
@@ -1663,13 +1662,12 @@ class Cid3 : Serializable {
                 print("[ Attribute: " + attributeNames[sortedList[i].first] + " ]")
                 print("\n")
                 print("\n")
+                val list: ArrayList<Triple<String,String,String>> = ArrayList()
                 for (j in 0 until domainsIndexToValue[sortedList[i].first].size){
                     if (attributeTypes[sortedList[i].first] ==  AttributeType.Discrete){
                         val certCGivenA = calculateCertCGivenADiscrete(root.data, sortedList[i].first)
                         if (domainsIndexToValue[sortedList[i].first][j] == "?") continue
-                        print("    ")
-                        print(domainsIndexToValue[sortedList[i].first][j])
-                        print(" --> ")
+
                         //Calculate causal certainties
                         val pair = calculateProbCGivenADiscrete(root.data, sortedList[i].first,j)
                         val selectedClassValue = pair.first
@@ -1677,16 +1675,33 @@ class Cid3 : Serializable {
                         val rounded = String.format("%.2f", probCGivenA)
                         val selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassValue)
                         val probClass = classProbabilities.prob[selectedClassValue]
-                        if (certCGivenA.first * probCGivenA > certCGivenA.second * probClass) {
-                            print(selectedClassValueName)
-                            print("  ($rounded)")
-                        }
-                        else print("Non cause.")
 
-                        print("\n")
-                        print("\n")
+                        if (certCGivenA.first * probCGivenA > certCGivenA.second * probClass) {
+                            list.add(
+                                Triple("    ", domainsIndexToValue[sortedList[i].first][j] + " --> ",
+                                "$selectedClassValueName  ($rounded)"
+                            )
+                            )
+                        }
+                        else {
+                            list.add(Triple("    ", domainsIndexToValue[sortedList[i].first][j] + " --> ",
+                                "Non cause."
+                            ))
+                        }
                     }
                 }
+                val comparator = NaturalOrderComparator()
+                val sortedList2: List<Triple<String,String,String>> = list.sortedWith(comparator)
+
+                for (pair2 in sortedList2){
+                    print(pair2.first)
+                    print(pair2.second)
+                    print(pair2.third)
+
+                    print("\n")
+                    print("\n")
+                }
+
                 if (attributeTypes[sortedList[i].first] ==  AttributeType.Continuous){
                     val cert = calculateCertainty(root.data,sortedList[i].first)
                     threshold = cert.thresholdObject
