@@ -1662,7 +1662,7 @@ class Cid3 : Serializable {
                 print("[ Attribute: " + attributeNames[sortedList[i].first] + " ]")
                 print("\n")
                 print("\n")
-                val list: ArrayList<Triple<String,String,String>> = ArrayList()
+                val list: ArrayList<String> = ArrayList()
                 for (j in 0 until domainsIndexToValue[sortedList[i].first].size){
                     if (attributeTypes[sortedList[i].first] ==  AttributeType.Discrete){
                         val certCGivenA = calculateCertCGivenADiscrete(root.data, sortedList[i].first)
@@ -1675,28 +1675,26 @@ class Cid3 : Serializable {
                         val rounded = String.format("%.2f", probCGivenA)
                         val selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassValue)
                         val probClass = classProbabilities.prob[selectedClassValue]
-
                         if (certCGivenA.first * probCGivenA > certCGivenA.second * probClass) {
-                            list.add(
-                                Triple("    ", domainsIndexToValue[sortedList[i].first][j] + " --> ",
+                            //the elements of list will be printed out to console
+                            list.add("    " + domainsIndexToValue[sortedList[i].first][j] + " --> " +
                                 "$selectedClassValueName  ($rounded)"
-                            )
                             )
                         }
                         else {
-                            list.add(Triple("    ", domainsIndexToValue[sortedList[i].first][j] + " --> ",
+                            //the elements of list will be printed out to console
+                            list.add("    " + domainsIndexToValue[sortedList[i].first][j] + " --> " +
                                 "Non cause."
-                            ))
+                            )
                         }
                     }
                 }
+                //print sorted elements of list
                 val comparator = NaturalOrderComparator()
-                val sortedList2: List<Triple<String,String,String>> = list.sortedWith(comparator)
+                val sortedList2: List<String> = list.sortedWith(comparator)
 
-                for (pair2 in sortedList2){
-                    print(pair2.first)
-                    print(pair2.second)
-                    print(pair2.third)
+                for (item in sortedList2){
+                    print(item)
 
                     print("\n")
                     print("\n")
