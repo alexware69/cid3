@@ -22,9 +22,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="fixed a typo">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="now sorting attribute values in causal analysis report">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,13 +98,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00210" summary="improved implementing Done (*) message">
-      <created>1634267901547</created>
-      <option name="number" value="00210" />
-      <option name="presentableId" value="LOCAL-00210" />
-      <option name="project" value="LOCAL" />
-      <updated>1634267901547</updated>
     </task>
     <task id="LOCAL-00211" summary="fixed a bug implementing Done (*) message">
       <created>1634269999392</created>
@@ -443,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636299556343</updated>
     </task>
-    <option name="localTasksCounter" value="259" />
+    <task id="LOCAL-00259" summary="now sorting attribute values in causal analysis report">
+      <created>1636437132519</created>
+      <option name="number" value="00259" />
+      <option name="presentableId" value="LOCAL-00259" />
+      <option name="project" value="LOCAL" />
+      <updated>1636437132520</updated>
+    </task>
+    <option name="localTasksCounter" value="260" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -469,7 +468,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="minor text formatting" />
     <MESSAGE value="now queryTree function won't exit on wrong user input" />
     <MESSAGE value="prepared version 1.0.7" />
     <MESSAGE value="cleaned comments a bit more" />
@@ -494,19 +492,20 @@
     <MESSAGE value="finished implementing the causal certainty inequality" />
     <MESSAGE value="prepared version 1.1.5" />
     <MESSAGE value="fixed a typo" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed a typo" />
+    <MESSAGE value="now sorting attribute values in causal analysis report" />
+    <option name="LAST_COMMIT_MESSAGE" value="now sorting attribute values in causal analysis report" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1731</line>
+          <line>1730</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1758</line>
+          <line>1757</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
