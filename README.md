@@ -1,4 +1,5 @@
 # CID3
+[![Github All Releases](https://img.shields.io/github/downloads/alexwareb9/cid3/total.svg)]()
 
 This is a full-featured Decision Trees and Random Forests learner. It can save trees or forests to disk for later use. It is possible to query trees and Random Forests and to fill out an unlabeled file with the predicted classes. Documentation is not yet available, although the program options can be shown with command:   
 
