@@ -1,6 +1,6 @@
 # CID3
 [![Latest Release](https://img.shields.io/github/release/alexwareb9/cid3.svg)](https://github.com/alexwareb9/cid3/releases/tag/v1.2)
-![License](https://img.shields.io/github/license/alexwareb9/cid3.svg)
+[![License](https://img.shields.io/github/license/alexwareb9/cid3.svg)](https://github.com/alexwareb9/cid3/blob/master/LICENSE)
 ![Github All Releases](https://img.shields.io/github/downloads/alexwareb9/cid3/total.svg)
 [![GitHub Follow](https://img.shields.io/github/followers/alexwareb9?style=social&logo=github)](https://github.com/alexwareb9)
 [![Twitter Follow](https://img.shields.io/twitter/follow/alexwareb9?style=social&logo=twitter)](https://twitter.com/alexwareb9)
