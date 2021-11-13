@@ -25,7 +25,7 @@ usage: java -jar cid3.jar
  -ver,--version          version
 ```
 
-**List of features:**
+## List of features
 
 * It uses a new Certainty formula as splitting criteria.
 * Provides causal analysis report, which shows how some attribute values cause a particular classification.
