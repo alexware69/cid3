@@ -41,7 +41,7 @@ usage: java -jar cid3.jar
 * Three different splitting criteria can be used: Certainty, Entropy and Gini. If no criteria is invoked then Certainty will be used.
 
 
-Example run with titanic dataset:
+## Example run with titanic dataset
 ```
 user@User-MBP datasets % java -jar cid3.jar -f titanic
 
@@ -77,6 +77,8 @@ Incorrect guesses: 16 (1.8%)
 Time: 0:00:00
 ```
 
+## Requirements
+
 CID3 requires JDK 15 or higher.
 
 The data format is similar to that of C4.5 and C5.0. The data file format is CSV, and it could be split in two separated files, like: titanic.data and titanic.test.   The class attribute column must be the last column of the file. The other necessary file is the "names" file, which should be named like: titanic.names, and it contains the names and types of the attributes. The first line is the class attribute possible values. This line could be left empty with just a dot(.) Below is an example of the titanic.names file:
@@ -95,7 +97,7 @@ Cabin: ignore.
 Embarked: discrete.  
 ```
 
-As an example of causal analysis, which can be invoked with command: 
+## Example of causal analysis 
 ```
 % java -jar cid3.jar -f adult -a education
 ```
