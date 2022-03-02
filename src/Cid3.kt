@@ -13,7 +13,7 @@ import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.2.1"
+    private val version = "1.2.2"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
@@ -86,6 +86,10 @@ class Cid3 : Serializable {
 
     @Transient
     var runAnimationCalculating = true
+
+    @Transient
+    var runAnimationAnalysis = true
+
 
     //The root of the decomposition tree
     var root = TreeNode()
@@ -1617,7 +1621,14 @@ class Cid3 : Serializable {
                 if (attName.length > longestString.length) longestString = attName
         }
         if (longestString!!.length < 14) longestString = "--------------"
+
+        //Stop the animation
+        runAnimationAnalysis= false
+        print("\r" + "[ * ] " + "Analysis report created.")
+
         print("\n")
+        print("\n")
+
         //Print console output
         if (this.criteria == Criteria.Certainty) {
             var fmt = "%1$10s %2$5s %3$1s %4$" + (longestString.length).toString() + "s%n"
@@ -3383,6 +3394,17 @@ class Cid3 : Serializable {
                 me.countClasses()
 
                 if (cmd.hasOption("analysis")) {
+                    //Print animation for creating analysis report
+                    val consoleHelperCalculating = ConsoleHelper()
+                    val threadCalculating = Thread {
+                        while(me.runAnimationAnalysis) {
+                            consoleHelperCalculating.animate()
+                            Thread.sleep(500)
+                        }
+                    }
+                    threadCalculating.priority = Thread.MAX_PRIORITY
+                    threadCalculating.start()
+
                     me.trainData.addAll(me.testData)
                     me.root.data = me.trainData
                     me.testData.clear()

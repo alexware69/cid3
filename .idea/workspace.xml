@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="replaced conflicting character">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="prepared version 1.2.1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -65,7 +65,7 @@
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.21401751" />
     <property name="project.structure.side.proportion" value="0.32484075" />
-    <property name="settings.editor.selected.configurable" value="preferences.language.Kotlin" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -102,13 +102,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00215" summary="reinforced more implementing Done (*) message">
-      <created>1634350961256</created>
-      <option name="number" value="00215" />
-      <option name="presentableId" value="LOCAL-00215" />
-      <option name="project" value="LOCAL" />
-      <updated>1634350961256</updated>
     </task>
     <task id="LOCAL-00216" summary="replaced * for ✓">
       <created>1634352778212</created>
@@ -446,7 +439,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642745002144</updated>
     </task>
-    <option name="localTasksCounter" value="264" />
+    <task id="LOCAL-00264" summary="prepared version 1.2.1">
+      <created>1642745256625</created>
+      <option name="number" value="00264" />
+      <option name="presentableId" value="LOCAL-00264" />
+      <option name="project" value="LOCAL" />
+      <updated>1642745256625</updated>
+    </task>
+    <option name="localTasksCounter" value="265" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -471,7 +471,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="almost done implementing causal certainties report" />
     <MESSAGE value="fixed bug when imputing missing values" />
     <MESSAGE value="implemented causal report for continuous attributes" />
     <MESSAGE value="fixed a bug when imputing missing values" />
@@ -496,20 +495,26 @@
     <MESSAGE value="some code optimizations when sorting elements" />
     <MESSAGE value="prepared version 1.2" />
     <MESSAGE value="replaced conflicting character" />
-    <option name="LAST_COMMIT_MESSAGE" value="replaced conflicting character" />
+    <MESSAGE value="prepared version 1.2.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="prepared version 1.2.1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1728</line>
+          <line>1739</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1755</line>
+          <line>1766</line>
           <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
+          <line>1688</line>
+          <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
