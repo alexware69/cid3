@@ -13,7 +13,7 @@ import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.2.2"
+    private val version = "1.2.3"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
@@ -3424,6 +3424,16 @@ class Cid3 : Serializable {
                     me.createCausalAnalysisReport(attName)
                 }//Create a Tree or a Random Forest for saving to disk
                 else if (cmd.hasOption("save")) {
+                    //Print animation for creating calculations
+                    val consoleHelperCalculating = ConsoleHelper()
+                    val threadCalculating = Thread {
+                        while(me.runAnimationCalculating) {
+                            consoleHelperCalculating.animate()
+                            Thread.sleep(500)
+                        }
+                    }
+                    threadCalculating.priority = Thread.MAX_PRIORITY
+                    threadCalculating.start()
                     me.save = true
                     me.trainData.addAll(me.testData)
                     me.root.data = me.trainData
