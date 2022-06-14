@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="prepared version 1.2.3">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="prepared version 1.2.4">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -85,7 +85,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="Cid3" />
       <module name="cid3" />
-      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/titanic -a Class" />
+      <option name="PROGRAM_PARAMETERS" value="-f $USER_HOME$/Desktop/datasets/titanic -a" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -102,13 +102,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00217" summary="implemented testing Random Forests in parallel">
-      <created>1634927724373</created>
-      <option name="number" value="00217" />
-      <option name="presentableId" value="LOCAL-00217" />
-      <option name="project" value="LOCAL" />
-      <updated>1634927724374</updated>
     </task>
     <task id="LOCAL-00218" summary="Made variable local when testing R. Forests in parallel">
       <created>1634928884651</created>
@@ -446,7 +439,14 @@
       <option name="project" value="LOCAL" />
       <updated>1646897175848</updated>
     </task>
-    <option name="localTasksCounter" value="266" />
+    <task id="LOCAL-00266" summary="prepared version 1.2.4">
+      <created>1651108693367</created>
+      <option name="number" value="00266" />
+      <option name="presentableId" value="LOCAL-00266" />
+      <option name="project" value="LOCAL" />
+      <updated>1651108693368</updated>
+    </task>
+    <option name="localTasksCounter" value="267" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -471,7 +471,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="implemented causal report for continuous attributes" />
     <MESSAGE value="fixed a bug when imputing missing values" />
     <MESSAGE value="fixed another bug when imputing missing values" />
     <MESSAGE value="prepared for version 1.1" />
@@ -496,30 +495,31 @@
     <MESSAGE value="replaced conflicting character" />
     <MESSAGE value="prepared version 1.2.1" />
     <MESSAGE value="prepared version 1.2.3" />
-    <option name="LAST_COMMIT_MESSAGE" value="prepared version 1.2.3" />
+    <MESSAGE value="prepared version 1.2.4" />
+    <option name="LAST_COMMIT_MESSAGE" value="prepared version 1.2.4" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1743</line>
+          <line>1751</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1770</line>
+          <line>1778</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1692</line>
+          <line>1700</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1597</line>
-          <option name="timeStamp" value="4" />
+          <line>3426</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

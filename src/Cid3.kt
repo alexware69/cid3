@@ -1595,7 +1595,19 @@ class Cid3 : Serializable {
         }
 
         //If an attribute name is passed just do that attribute
-        if (attributeName.isNotEmpty() && attributeName != "Class" && attributeNames.contains(attributeName)){
+        if (attributeName.isNotEmpty() && attributeName == "Class") {
+            print("\n")
+            print("Error: Attribute cannot be named \"Class\".")
+            exitProcess(1)
+        }
+        else
+        if (attributeName.isNotEmpty() && !attributeNames.contains(attributeName)){
+            print("\n")
+            print("Error: Attribute name not found.")
+            exitProcess(1)
+        }
+        else
+        if (attributeName.isNotEmpty() && attributeNames.contains(attributeName)){
             var selectedAtt: Triple<Int,Double,Double> = Triple(0,0.0,0.0)
             for (att in attributeImportance){
                 if (attributeNames[att.first] == attributeName) {
@@ -1605,10 +1617,6 @@ class Cid3 : Serializable {
             }
             attributeImportance.clear()
             attributeImportance.add(selectedAtt)
-        } else {
-            print("\n")
-            print("Error: Attribute name not found.")
-            exitProcess(1)
         }
 
         val sortedList: List<Triple<Int, Double, Double>> = if (criteria == Criteria.Certainty)
