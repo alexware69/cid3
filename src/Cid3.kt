@@ -7,13 +7,13 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
-import javax.sound.sampled.AudioSystem
+//import javax.sound.sampled.AudioSystem
 import kotlin.math.*
 import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.2.4"
+    private val version = "1.2.5"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
@@ -1671,23 +1671,27 @@ class Cid3 : Serializable {
         var probCAndAAbove: Double
         var condProbabilityBelow: Double
         var condProbabilityAbove: Double
-        var condProbabilityBelowGreater = 0.0
-        var condProbabilityAboveGreater = 0.0
+        var condProbabilityBelowGreater: Double
+        var condProbabilityAboveGreater: Double
         val numData = root.data.size
         val numValuesClass = domainsIndexToValue[classAttribute].size
-        var selectedClassBelowValue = 0
-        var selectedClassAboveValue = 0
+        var selectedClassBelowValue: Int
+        var selectedClassAboveValue: Int
         var threshold: Threshold?
 
         for (i in sortedList.indices){
+            condProbabilityBelowGreater = 0.0
+            condProbabilityAboveGreater = 0.0
+            selectedClassBelowValue = 0
+            selectedClassAboveValue = 0
             val isCause = sortedList[i].second - sortedList[i].third > 0
             if (isCause){
                 print("[ Attribute: " + attributeNames[sortedList[i].first] + " ]")
                 print("\n")
                 print("\n")
                 val list: ArrayList<String> = ArrayList()
-                for (j in 0 until domainsIndexToValue[sortedList[i].first].size){
-                    if (attributeTypes[sortedList[i].first] ==  AttributeType.Discrete){
+                if (attributeTypes[sortedList[i].first] ==  AttributeType.Discrete){
+                    for (j in 0 until domainsIndexToValue[sortedList[i].first].size){
                         val certCGivenA = calculateCertCGivenADiscrete(root.data, sortedList[i].first)
                         if (domainsIndexToValue[sortedList[i].first][j] == "?") continue
 
@@ -1711,18 +1715,18 @@ class Cid3 : Serializable {
                             )
                         }
                     }
+                    //print sorted elements of list
+                    val comparator = NaturalOrderComparator()
+                    val sortedList2: List<String> = list.sortedWith(comparator)
+
+                    for (item in sortedList2){
+                        print(item)
+
+                        print("\n")
+                        print("\n")
+                    }
                 }
-                //print sorted elements of list
-                val comparator = NaturalOrderComparator()
-                val sortedList2: List<String> = list.sortedWith(comparator)
-
-                for (item in sortedList2){
-                    print(item)
-
-                    print("\n")
-                    print("\n")
-                }
-
+                else
                 if (attributeTypes[sortedList[i].first] ==  AttributeType.Continuous){
                     val cert = calculateCertainty(root.data,sortedList[i].first)
                     threshold = cert.thresholdObject
@@ -3134,7 +3138,7 @@ class Cid3 : Serializable {
         return if (seconds < 0) "-$positive" else positive
     }
 
-    fun playSound() {
+    /*fun playSound() {
         try {
             val audioInputStream = AudioSystem.getAudioInputStream(
                 this.javaClass.getResource("breaks.wav")
@@ -3147,7 +3151,7 @@ class Cid3 : Serializable {
         } catch (ex: java.lang.Exception) {
             print(ex.toString())
         }
-    }
+    }*/
 
     companion object {
         private const val serialVersionUID: Long = 42L
@@ -3489,7 +3493,7 @@ class Cid3 : Serializable {
                     else if (me.isRandomForest) me.createRandomForest(me.root.data, me.rootsRandomForest, false)
                     else me.createDecisionTree()
                 }
-                me.playSound()
+                //me.playSound()
             }
         }
     }
