@@ -1045,7 +1045,7 @@ class Cid3 : Serializable {
             input = bin.readLine()
             currentLine++
         } catch (e: Exception) {
-            System.err.println("Unable to read line #$currentLine from test file.")
+            System.err.println("Unable to read first line from test file.")
             exitProcess(1)
         }
         if (input == null) {
@@ -1143,7 +1143,7 @@ class Cid3 : Serializable {
             input = bin.readLine()
             currentLine++
         } catch (e: Exception) {
-            System.err.println("Unable to read line #$currentLine from data file.")
+            System.err.println("Unable to read first line from data file.")
             exitProcess(1)
         }
         if (input == null) {
@@ -1262,8 +1262,7 @@ class Cid3 : Serializable {
             bin.readLine()
             lineNumber++
         } catch (e: Exception) {
-            val ln = lineNumber + 1
-            System.err.println("Unable to read line #$ln in names file.")
+            System.err.println("Unable to read first line in names file.")
             exitProcess(1)
         }
 
@@ -2687,8 +2686,9 @@ class Cid3 : Serializable {
                         if (id3.domainsIndexToValue[currentNode.decompositionAttribute][i] == "?") continue
                         valuesArray.add(id3.domainsIndexToValue[currentNode.decompositionAttribute][i] as String)
                     }
-                    valuesArray.sort()
-                    for (value in valuesArray) {
+                    val comparator = NaturalOrderComparator()
+                    val valuesList :List<String> = valuesArray.sortedWith(comparator).toList()
+                    for (value in valuesList) {
                         values.append(value)
                         values.append(", ")
                     }
@@ -3061,8 +3061,9 @@ class Cid3 : Serializable {
                         if (id3.domainsIndexToValue[i][j] == "?") continue
                         valuesArray.add(id3.domainsIndexToValue[i][j] as String)
                     }
-                    valuesArray.sort()
-                    for (item in valuesArray) {
+                    val comparator = NaturalOrderComparator()
+                    val valuesList :List<String> = valuesArray.sortedWith(comparator).toList()
+                    for (item in valuesList) {
                         values.append(item)
                         values.append(", ")
                     }
