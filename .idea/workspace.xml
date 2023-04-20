@@ -22,7 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="prepared version 1.2.5">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="sorting values naturally">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
@@ -91,13 +91,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00219" summary="Made variable local when testing R. Forests in parallel">
-      <created>1634957755900</created>
-      <option name="number" value="00219" />
-      <option name="presentableId" value="LOCAL-00219" />
-      <option name="project" value="LOCAL" />
-      <updated>1634957755900</updated>
     </task>
     <task id="LOCAL-00220" summary="Minor changes">
       <created>1634959369532</created>
@@ -435,7 +428,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681194913296</updated>
     </task>
-    <option name="localTasksCounter" value="268" />
+    <task id="LOCAL-00268" summary="sorting values naturally">
+      <created>1681979869403</created>
+      <option name="number" value="00268" />
+      <option name="presentableId" value="LOCAL-00268" />
+      <option name="project" value="LOCAL" />
+      <updated>1681979869404</updated>
+    </task>
+    <option name="localTasksCounter" value="269" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -460,7 +460,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed another bug when imputing missing values" />
     <MESSAGE value="prepared for version 1.1" />
     <MESSAGE value="added adult dataset" />
     <MESSAGE value="implemented causal analysis argument (optional)" />
@@ -485,7 +484,8 @@
     <MESSAGE value="prepared version 1.2.3" />
     <MESSAGE value="prepared version 1.2.4" />
     <MESSAGE value="prepared version 1.2.5" />
-    <option name="LAST_COMMIT_MESSAGE" value="prepared version 1.2.5" />
+    <MESSAGE value="sorting values naturally" />
+    <option name="LAST_COMMIT_MESSAGE" value="sorting values naturally" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
