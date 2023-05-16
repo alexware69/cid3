@@ -1,5 +1,5 @@
 >50K, <=50K.
-age: continuous.
+age: discrete.
 workclass: discrete.
 education: discrete.
 education-num: discrete.

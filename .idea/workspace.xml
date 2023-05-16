@@ -22,9 +22,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="sorting values naturally">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="prepared version 1.2.6">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/adult/adult.names" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/adult/adult.names" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/census-income/census-income.names" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/census-income/census-income.names" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,13 +92,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1588718919265</updated>
-    </task>
-    <task id="LOCAL-00220" summary="Minor changes">
-      <created>1634959369532</created>
-      <option name="number" value="00220" />
-      <option name="presentableId" value="LOCAL-00220" />
-      <option name="project" value="LOCAL" />
-      <updated>1634959369532</updated>
     </task>
     <task id="LOCAL-00221" summary="added sample datasets">
       <created>1635225982614</created>
@@ -435,7 +429,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681979869404</updated>
     </task>
-    <option name="localTasksCounter" value="269" />
+    <task id="LOCAL-00269" summary="prepared version 1.2.6">
+      <created>1681979961911</created>
+      <option name="number" value="00269" />
+      <option name="presentableId" value="LOCAL-00269" />
+      <option name="project" value="LOCAL" />
+      <updated>1681979961911</updated>
+    </task>
+    <option name="localTasksCounter" value="270" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -460,7 +461,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="prepared for version 1.1" />
     <MESSAGE value="added adult dataset" />
     <MESSAGE value="implemented causal analysis argument (optional)" />
     <MESSAGE value="changed the causal analysis report from causal certainty to conditional probability" />
@@ -485,18 +485,8 @@
     <MESSAGE value="prepared version 1.2.4" />
     <MESSAGE value="prepared version 1.2.5" />
     <MESSAGE value="sorting values naturally" />
-    <option name="LAST_COMMIT_MESSAGE" value="sorting values naturally" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/Cid3.kt</url>
-          <line>1480</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="prepared version 1.2.6" />
+    <option name="LAST_COMMIT_MESSAGE" value="prepared version 1.2.6" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
