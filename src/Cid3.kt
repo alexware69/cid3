@@ -13,7 +13,7 @@ import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.2.6"
+    private val version = "1.2.7"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
@@ -1701,7 +1701,7 @@ class Cid3 : Serializable {
                         val rounded = String.format("%.2f", probCGivenA)
                         val selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassValue)
                         val probClass = classProbabilities.prob[selectedClassValue]
-                        if (certCGivenA.first * probCGivenA > certCGivenA.second * probClass) {
+                        if (probCGivenA /certCGivenA.first > probClass / certCGivenA.second) {
                             //the elements of list will be printed out to console
                             list.add("    " + domainsIndexToValue[sortedList[i].first][j] + " --> " +
                                 "$selectedClassValueName  ($rounded)"
@@ -1753,7 +1753,7 @@ class Cid3 : Serializable {
                     print("  ")
                     var selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassBelowValue)
                     var probClass = classProbabilities.prob[selectedClassBelowValue]
-                    if (certCGivenA.first * condProbabilityBelowGreater > certCGivenA.second * probClass) {
+                    if (condProbabilityBelowGreater / certCGivenA.first > probClass / certCGivenA.second) {
                         print("--> $selectedClassValueName")
                         print("  ($roundedCertainty)")
                     }
@@ -1780,7 +1780,7 @@ class Cid3 : Serializable {
                     print("  ")
                     selectedClassValueName = domainsIndexToValue[classAttribute].getValue(selectedClassAboveValue)
                     probClass = classProbabilities.prob[selectedClassAboveValue]
-                    if (certCGivenA.first * condProbabilityAboveGreater > certCGivenA.second * probClass) {
+                    if (condProbabilityAboveGreater / certCGivenA.first > probClass / certCGivenA.second) {
                         print("--> $selectedClassValueName")
                         print("  ($roundedCertainty)")
                     }
