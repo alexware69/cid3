@@ -127,9 +127,9 @@ Report of causal certainties
 
     12th --> <=50K  (0.93)
 
-    Assoc-acdm --> <=50K  (0.74)
+    Assoc-acdm --> Non cause.
 
-    Assoc-voc --> <=50K  (0.75)
+    Assoc-voc --> Non cause.
 
     Bachelors --> Non cause.
 
@@ -143,5 +143,5 @@ Report of causal certainties
 
     Prof-school --> >50K  (0.74)
 
-    Some-college --> <=50K  (0.81)
+    Some-college --> Non cause.
 ```
