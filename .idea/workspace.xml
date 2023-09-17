@@ -22,17 +22,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="updated the paper.pdf">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="removed unnecessary libraries">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-reflect-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-reflect.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-stdlib-jdk7-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-stdlib-jdk7.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-stdlib-jdk8-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-stdlib-jdk8.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-stdlib-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-test-sources.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/kotlin-test.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/breaks.wav" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -447,7 +439,7 @@
       <option name="project" value="LOCAL" />
       <updated>1681979961911</updated>
     </task>
-    <option name="localTasksCounter" value="271" />
+    <option name="localTasksCounter" value="272" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -472,7 +464,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="implemented causal analysis argument (optional)" />
     <MESSAGE value="changed the causal analysis report from causal certainty to conditional probability" />
     <MESSAGE value="prepared version 1.1.1" />
     <MESSAGE value="required to end lines with a dot in the names file" />
@@ -497,7 +488,8 @@
     <MESSAGE value="sorting values naturally" />
     <MESSAGE value="prepared version 1.2.6" />
     <MESSAGE value="released version 1.2.7" />
-    <option name="LAST_COMMIT_MESSAGE" value="released version 1.2.7" />
+    <MESSAGE value="removed unnecessary libraries" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed unnecessary libraries" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
