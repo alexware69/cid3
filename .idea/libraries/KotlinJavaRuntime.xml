@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="KotlinJavaRuntime">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-1.9.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
