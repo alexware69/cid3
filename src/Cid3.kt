@@ -13,7 +13,7 @@ import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.2.7"
+    private val version = "1.2.8"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
@@ -1116,7 +1116,7 @@ class Cid3 : Serializable {
         //Stop the animation
         runAnimationReadingTest = false
 
-        print("\r" + "[ * ] " + "Read data: " + testData.size + " cases for testing. ")
+        print("\r" + "[ ✓ ] " + "Read data: " + testData.size + " cases for testing. ")
         print("\n")
     }
 
@@ -1227,11 +1227,11 @@ class Cid3 : Serializable {
         runAnimationReading = false
 
         if (splitTrainData && !testDataExists) {
-            print("\r" + "[ * ] " + "Read data: " + root.data.size + " cases for training. ($na attributes)")
+            print("\r" + "[ ✓ ] " + "Read data: " + root.data.size + " cases for training. ($na attributes)")
             print("\n")
-            print("\r" + "[ * ] " + "Read data: " + testData.size + " cases for testing.")
+            print("\r" + "[ ✓ ] " + "Read data: " + testData.size + " cases for testing.")
         } else {
-            print("\r" + "[ * ] " + "Read data: " + root.data.size + " cases for training. ($na attributes)")
+            print("\r" + "[ ✓ ] " + "Read data: " + root.data.size + " cases for training. ($na attributes)")
         }
         print("\n")
     } //End of function readData
@@ -1635,7 +1635,7 @@ class Cid3 : Serializable {
 
         //Stop the animation
         runAnimationAnalysis= false
-        print("\r" + "[ * ] " + "Analysis report created.")
+        print("\r" + "[ ✓ ] " + "Analysis report created.")
 
         print("\n")
         print("\n")
@@ -1814,7 +1814,7 @@ class Cid3 : Serializable {
 
         //Stop the animation
         runAnimationCalculating = false
-        print("\r" + "[ * ] " + "Decision tree created.")
+        print("\r" + "[ ✓ ] " + "Decision tree created.")
 
         print("\n")
         print("\n")
@@ -1954,7 +1954,7 @@ class Cid3 : Serializable {
         //Stop the animation
         runAnimationCalculating = false
 
-        print("\r" + "[ * ] " + "10-fold cross-validation created with " + root.data.size + " cases.")
+        print("\r" + "[ ✓ ] " + "10-fold cross-validation created with " + root.data.size + " cases.")
 
         print("\n")
         testCrossValidation()
@@ -2031,7 +2031,7 @@ class Cid3 : Serializable {
         }
         //Stop the animation
         runAnimationCalculating = false
-        print("\r" + "[ * ] " + "10-fold Random Forests cross-validation created with " + root.data.size + " cases.")
+        print("\r" + "[ ✓ ] " + "10-fold Random Forests cross-validation created with " + root.data.size + " cases.")
 
         print("\n")
 
@@ -2086,7 +2086,7 @@ class Cid3 : Serializable {
         if (!cv) {
             //Stop the animation
             runAnimationCalculating = false
-            print("\r" + "[ * ] " + "Random Forest of " + roots.size + " trees created.")
+            print("\r" + "[ ✓ ] " + "Random Forest of " + roots.size + " trees created.")
 
             print("\n")
             val sortedList: List<Triple<Int, Double, Double>> = if (criteria == Criteria.Certainty)
