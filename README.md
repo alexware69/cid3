@@ -11,7 +11,6 @@ This is a full-featured Decision Trees and Random Forests learner. It can save t
 
 usage: java -jar cid3.jar
  -a,--analysis <name>    show causal analysis report
- -c,--criteria <name>    input criteria: c[Certainty], e[Entropy], g[Gini]
  -f,--file <name>        input file
  -h,--help               print this message
  -o,--output <name>      output file
@@ -37,7 +36,6 @@ usage: java -jar cid3.jar
 * Make predictions and fill out cases files with those predictions, either from single trees or random forests.
 * Missing values imputation for train and test data is implemented. Continuous attributes are imputed as the mean value. Discrete attributes are imputed as MODE, which selects the value that is most frequent.
 * Ignoring attributes is implemented. In the .names file just set the attribute type as: ignore.
-* Three different splitting criteria can be used: Certainty, Entropy and Gini. If no criteria is invoked then Certainty will be used.
 
 
 ## Example run with titanic dataset
