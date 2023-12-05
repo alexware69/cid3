@@ -13,7 +13,7 @@ import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.2.8"
+    private val version = "1.2.9"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore

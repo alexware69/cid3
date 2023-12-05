@@ -22,8 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="releasing version 1.2.8">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="removed Entropy and Gini">
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -442,7 +441,7 @@
       <option name="project" value="LOCAL" />
       <updated>1681979961911</updated>
     </task>
-    <option name="localTasksCounter" value="275" />
+    <option name="localTasksCounter" value="276" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -467,7 +466,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added crime San Francisco dataset" />
     <MESSAGE value="re-added zipped crime San Francisco dataset" />
     <MESSAGE value="prepared version 1.1.2" />
     <MESSAGE value="implemented specific attribute causes" />
@@ -492,7 +490,8 @@
     <MESSAGE value="removed sound file" />
     <MESSAGE value="updated the paper.pdf" />
     <MESSAGE value="releasing version 1.2.8" />
-    <option name="LAST_COMMIT_MESSAGE" value="releasing version 1.2.8" />
+    <MESSAGE value="removed Entropy and Gini" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed Entropy and Gini" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
