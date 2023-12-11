@@ -7,13 +7,13 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
-//import javax.sound.sampled.AudioSystem
+import javax.sound.sampled.AudioSystem
 import kotlin.math.*
 import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.2.9"
+    private val version = "1.3.0"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
@@ -2785,7 +2785,7 @@ class Cid3 : Serializable {
         return if (seconds < 0) "-$positive" else positive
     }
 
-    /*fun playSound() {
+    fun playSound() {
         try {
             val audioInputStream = AudioSystem.getAudioInputStream(
                 this.javaClass.getResource("breaks.wav")
@@ -2798,7 +2798,7 @@ class Cid3 : Serializable {
         } catch (ex: java.lang.Exception) {
             print(ex.toString())
         }
-    }*/
+    }
 
     companion object {
         private const val serialVersionUID: Long = 42L
@@ -3126,7 +3126,7 @@ class Cid3 : Serializable {
                     else if (me.isRandomForest) me.createRandomForest(me.root.data, me.rootsRandomForest, false)
                     else me.createDecisionTree()
                 }
-                //me.playSound()
+                me.playSound()
             }
         }
     }

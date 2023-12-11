@@ -22,7 +22,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="removed Entropy and Gini">
+    <list default="true" id="e7d68b7c-f116-49a7-95f0-41a3657c49ab" name="Default Changelist" comment="releasing version 1.2.9">
+      <change afterPath="$PROJECT_DIR$/src/breaks.wav" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Cid3.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/Cid3.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,20 +50,23 @@
   &quot;associatedIndex&quot;: 5
 }</component>
   <component name="ProjectId" id="1bVYqbut3lblEG4civvMbbpqSbg" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Facets&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2678161&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.javacompiler&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "git-widget-placeholder": "master",
+    "project.structure.last.edited": "Facets",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2678161",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src" />
@@ -441,7 +446,7 @@
       <option name="project" value="LOCAL" />
       <updated>1681979961911</updated>
     </task>
-    <option name="localTasksCounter" value="276" />
+    <option name="localTasksCounter" value="277" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -466,7 +471,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="re-added zipped crime San Francisco dataset" />
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="prepared version 1.1.2" />
     <MESSAGE value="implemented specific attribute causes" />
     <MESSAGE value="started implementing the causal certainty inequality" />
@@ -491,7 +496,8 @@
     <MESSAGE value="updated the paper.pdf" />
     <MESSAGE value="releasing version 1.2.8" />
     <MESSAGE value="removed Entropy and Gini" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed Entropy and Gini" />
+    <MESSAGE value="releasing version 1.2.9" />
+    <option name="LAST_COMMIT_MESSAGE" value="releasing version 1.2.9" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
