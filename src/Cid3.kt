@@ -13,7 +13,7 @@ import kotlin.system.exitProcess
 
 
 class Cid3 : Serializable {
-    private val version = "1.3.0"
+    private val version = "1.3.1"
     private var createdWith = ""
     enum class AttributeType {
         Discrete, Continuous, Ignore
@@ -2865,14 +2865,14 @@ class Cid3 : Serializable {
                         //Print version
                         print("CID3 version: ${me.version}")
                         print("\n")
-                        exitProcess(1)
+                        exitProcess(0)
                     }
                 }
                 for (arg in args) {
                     if (arg == "-h" || arg == "--help") {
                         //Print help message
                         formatter.printHelp("java -jar cid3.jar", options)
-                        exitProcess(1)
+                        exitProcess(0)
                     }
                 }
                 cmd = parser.parse(options, args)
