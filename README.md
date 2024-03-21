@@ -1,8 +1,8 @@
 # CID3
-[![Latest Release](https://img.shields.io/github/release/alexwareb9/cid3.svg)](https://github.com/alexwareb9/cid3/releases/latest)
-[![License](https://img.shields.io/github/license/alexwareb9/cid3.svg)](https://github.com/alexwareb9/cid3/blob/master/LICENSE)
-[![Github All Releases](https://img.shields.io/github/downloads/alexwareb9/cid3/total.svg)](https://github.com/alexwareb9/cid3/releases)
-[![GitHub Follow](https://img.shields.io/github/followers/alexwareb9?style=social&logo=github)](https://github.com/alexwareb9)
+[![Latest Release](https://img.shields.io/github/release/alepedia69/cid3.svg)](https://github.com/alepedia69/cid3/releases/latest)
+[![License](https://img.shields.io/github/license/alepedia69/cid3.svg)](https://github.com/alepedia69/cid3/blob/master/LICENSE)
+[![Github All Releases](https://img.shields.io/github/downloads/alepedia69/cid3/total.svg)](https://github.com/alepedia69/cid3/releases)
+[![GitHub Follow](https://img.shields.io/github/followers/alepedia69?style=social&logo=github)](https://github.com/alepedia69)
 
 This is a full-featured Decision Trees and Random Forests learner. It can save trees or forests to disk for later use. It is possible to query trees and Random Forests and to fill out an unlabeled file with the predicted classes. Documentation is not yet available, although the program options can be shown with command:   
 
