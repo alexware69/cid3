@@ -4,7 +4,7 @@
 [![Github All Releases](https://img.shields.io/github/downloads/alepedia69/cid3/total.svg)](https://github.com/alepedia69/cid3/releases)
 [![GitHub Follow](https://img.shields.io/github/followers/alepedia69?style=social&logo=github)](https://github.com/alepedia69)
 
-<a href="https://buymeacoffee.com/alepedia" target="_blank">
+<a href="https://buymeacoffee.com/alepedia">
     <img align="right" src="https://github.com/alepedia69/Calcula_Pro/blob/main/Images/buy-me-a-coffee.jpeg" style="width: 100px; height: 100px; border: 2px solid black; margin-right: 10px;" />
 </a>
 
