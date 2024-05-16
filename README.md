@@ -44,36 +44,36 @@ usage: java -jar cid3.jar
 
 ## Example run with titanic dataset
 ```
-user@User-MBP datasets % java -jar cid3.jar -f titanic
+user@UsersLaptop datasets % java -jar cid3.jar -f titanic
 
-CID3 [Version 1.1]              Saturday October 30, 2021 06:34:11 AM
-------------------
+CID3 [Version 1.3.1]              Thursday May 16, 2024 06:22:15 PM
+--------------------
 [ ✓ ] Read data: 891 cases for training. (10 attributes)
 [ ✓ ] Decision tree created.
 
-Rules: 276
-Nodes: 514
+Rules: 401
+Nodes: 616
 
 Importance Cause   Attribute Name
 ---------- -----   --------------
       0.57   yes ············ Sex
       0.36   yes ········· Pclass
+      0.34   yes ············ Age
       0.30   yes ··········· Fare
-      0.28   yes ······· Embarked
+      0.27   yes ······· Embarked
       0.27   yes ·········· SibSp
       0.26   yes ·········· Parch
-      0.23    no ············ Age
 
 
 [==== TRAIN DATA ====] 
 
-Correct guesses:  875
-Incorrect guesses: 16 (1.8%)
+Correct guesses:   874
+Incorrect guesses:  17 (1.9%)
 
 # Of Cases  False Pos  False Neg   Class
 ----------  ---------  ---------   -----
-       549         14          2 ····· 0
-       342          2         14 ····· 1
+       549         15          2 ····· 0
+       342          2         15 ····· 1
 
 Time: 0:00:00
 ```
