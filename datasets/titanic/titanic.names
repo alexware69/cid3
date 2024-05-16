@@ -2,7 +2,7 @@
 PassengerId: ignore.
 Pclass: 1,2,3.
 Sex : male,female.
-Age: continuous.
+Age: discrete.
 SibSp: discrete.
 Parch: discrete.
 Ticket: ignore.
