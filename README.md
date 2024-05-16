@@ -89,7 +89,7 @@ The data format is similar to that of C4.5 and C5.0. The data file format is CSV
 PassengerId: ignore.  
 Pclass: 1,2,3.  
 Sex : male,female.  
-Age: continuous.  
+Age: discrete.  
 SibSp: discrete.  
 Parch: discrete.  
 Ticket: ignore.  
