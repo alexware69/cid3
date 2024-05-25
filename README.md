@@ -1,11 +1,11 @@
 # CID3
-[![Latest Release](https://img.shields.io/github/release/alepedia69/cid3.svg)](https://github.com/alepedia69/cid3/releases/latest)
-[![License](https://img.shields.io/github/license/alepedia69/cid3.svg)](https://github.com/alepedia69/cid3/blob/master/LICENSE)
-[![Github All Releases](https://img.shields.io/github/downloads/alepedia69/cid3/total.svg)](https://github.com/alepedia69/cid3/releases)
-[![GitHub Follow](https://img.shields.io/github/followers/alepedia69?style=social&logo=github)](https://github.com/alepedia69)
+[![Latest Release](https://img.shields.io/github/release/alexware69/cid3.svg)](https://github.com/alexware69/cid3/releases/latest)
+[![License](https://img.shields.io/github/license/alexware69/cid3.svg)](https://github.com/alexware69/cid3/blob/master/LICENSE)
+[![Github All Releases](https://img.shields.io/github/downloads/alexware69/cid3/total.svg)](https://github.com/alexware69/cid3/releases)
+[![GitHub Follow](https://img.shields.io/github/followers/alexware69?style=social&logo=github)](https://github.com/alexware69)
 
-<a href="https://buymeacoffee.com/alepedia">
-    <img align="right" src="https://github.com/alepedia69/Calcula_Pro/blob/main/Images/buy-me-a-coffee.jpeg" style="width: 100px; height: 100px; border: 2px solid black; margin-right: 10px;" />
+<a href="https://buymeacoffee.com/alexware69">
+    <img align="right" src="https://github.com/alexware69/Calcula_Pro/blob/main/Images/buy-me-a-coffee.jpeg" style="width: 100px; height: 100px; border: 2px solid black; margin-right: 10px;" />
 </a>
 
 This is a full-featured Decision Trees and Random Forests learner. It can save trees or forests to disk for later use. It is possible to query trees and Random Forests and to fill out an unlabeled file with the predicted classes. Documentation is not yet available, although the program options can be shown with command:   
