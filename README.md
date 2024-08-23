@@ -5,7 +5,7 @@
 [![GitHub Follow](https://img.shields.io/github/followers/alexware69?style=social&logo=github)](https://github.com/alexware69)
 
 <a href="https://buymeacoffee.com/alexware69">
-    <img align="right" src="https://github.com/alexware69/Calcula_Pro/blob/main/Images/buy-me-a-coffee.jpeg" style="width: 100px; height: 100px; border: 2px solid black; margin-right: 10px;" />
+    <img align="right" src="https://github.com/alexware69/Calcula-Pro/blob/master/OPS/wwwroot/Images/buy-me-a-coffee.jpeg" style="width: 100px; height: 100px; border: 2px solid black; margin-right: 10px;" />
 </a>
 
 This is a full-featured Decision Trees and Random Forests learner. It can save trees or forests to disk for later use. It is possible to query trees and Random Forests and to fill out an unlabeled file with the predicted classes. Documentation is not yet available, although the program options can be shown with command:   
